@@ -46,7 +46,12 @@ export default function Button(props) {
   }
 
   return (
-    <TouchableOpacity style={[styles.button, { backgroundColor: buttonBG }]}>
+    <TouchableOpacity
+      style={[
+        styles.button,
+        { backgroundColor: buttonBG, shadowColor: buttonBG },
+      ]}
+    >
       <Text style={styles.text}>{props.children}</Text>
       <FontAwesome
         style={styles.icon}
@@ -64,6 +69,13 @@ const styles = StyleSheet.create({
     paddingVertical: 22,
     borderRadius: 30,
     flexDirection: "row",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.9,
+    shadowRadius: 15.65,
+    elevation: 8,
   },
   text: {
     color: "white",
