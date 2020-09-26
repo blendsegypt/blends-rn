@@ -1,10 +1,19 @@
 import React from "react";
 import { TextInput, StyleSheet } from "react-native";
+// Custom font for Text Input fields
+import { useFonts, FiraSans_400Regular } from "@expo-google-fonts/fira-sans";
 
 export default function (props) {
+  const [fontsLoaded] = useFonts({
+    FiraSans_400Regular,
+  });
+  const customFont = {
+    fontFamily: "FiraSans_400Regular",
+  };
+
   return (
     <TextInput
-      style={styles.textInput}
+      style={[styles.textInput, fontsLoaded ? customFont : {}]}
       placeholder={props.children}
       placeholderTextColor="#BCBCBC"
     />
