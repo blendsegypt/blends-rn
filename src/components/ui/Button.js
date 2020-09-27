@@ -66,8 +66,8 @@ export default function Button(props) {
 const styles = StyleSheet.create({
   button: {
     paddingLeft: 25,
-    paddingVertical: 22,
-    borderRadius: 30,
+    paddingVertical: 26,
+    borderRadius: 50,
     flexDirection: "row",
     shadowOffset: {
       width: 0,
