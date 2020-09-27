@@ -37,7 +37,7 @@ export default function Button(props) {
           <FontAwesome
             style={styles.icon}
             name={buttonIcon}
-            size={12}
+            size={14}
             color="white"
           />
         </View>
@@ -66,7 +66,7 @@ export default function Button(props) {
 const styles = StyleSheet.create({
   button: {
     paddingLeft: 25,
-    paddingVertical: 26,
+    paddingVertical: 27,
     borderRadius: 50,
     flexDirection: "row",
     shadowOffset: {
@@ -79,9 +79,11 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
+    fontSize: 15,
     flex: 0.93,
   },
   icon: {
     paddingTop: 3,
+    fontSize: 15,
   },
 });
