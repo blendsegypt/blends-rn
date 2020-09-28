@@ -51,6 +51,9 @@ export default function Button(props) {
         styles.button,
         { backgroundColor: buttonBG, shadowColor: buttonBG },
       ]}
+      onPress={() => {
+        props.onPress();
+      }}
     >
       <Text style={styles.text}>{props.children}</Text>
       <FontAwesome
