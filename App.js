@@ -2,16 +2,19 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 //Redux
-import Store from "./src/redux/store";
+import { store, persistor } from "./src/redux/store";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+//Screens
+import PinDrop from "./src/screens/PinDrop";
 
 export default function App() {
   return (
-    <Provider store={Store}>
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <StatusBar style="auto" />
-      </View>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <PinDrop />
+        <StatusBar style="dark" />
+      </PersistGate>
     </Provider>
   );
 }
