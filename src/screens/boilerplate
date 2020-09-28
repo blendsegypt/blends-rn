@@ -3,12 +3,14 @@ import { View, StyleSheet } from "react-native";
 //UI Components
 import Text from "../components/ui/Text";
 
-export default function PinLocation() { 
+function Screen() { 
   return(
-    <h1>New Screen</h1>
+    <Text>New Screen</Text>
   );
 }
 
 const styles = StyleSheet.create({
 
 });
+
+export default Screen;
