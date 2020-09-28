@@ -7,13 +7,16 @@ import Text from "../components/ui/Text";
 import Link from "../components/ui/Link";
 import Button from "../components/ui/Button";
 import TextInput from "../components/ui/TextInput";
-// Geolocation
+//Geolocation
 import * as Location from "expo-location";
+//Redux
+import { connect } from "react-redux";
+import { addAddress } from "../redux/actions/user.action";
 
-export default function PinDrop() {
+function PinDrop({ addAddress }) {
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [addressLoaded, setAddressLoaded] = useState(false);
-  const [locationObject, setLocationObject] = useState({});
+  const [addressObject, setAddressObject] = useState({});
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -21,13 +24,13 @@ export default function PinDrop() {
   // Reverse Geocode address
   const reverseGeocode = async (coords) => {
     let location = await Location.reverseGeocodeAsync(coords);
-    const locationObject = {
+    const addressObject = {
       street: location[0].street,
       city: location[0].city,
       name: location[0].name,
       region: location[0].region,
     };
-    setLocationObject(locationObject);
+    setAddressObject(addressObject);
     setAddressLoaded(true);
   };
 
@@ -47,6 +50,10 @@ export default function PinDrop() {
       reverseGeocode(coordinates.coords);
     })();
   }, []);
+
+  const continueHandler = () => {
+    addAddress(addressObject);
+  };
 
   return (
     <View style={styles.outerContainer}>
@@ -91,11 +98,11 @@ export default function PinDrop() {
         <View style={styles.address}>
           {addressLoaded ? (
             <Text style={styles.addressText}>
-              {locationObject.region}
+              {addressObject.region}
               {"\n"}
-              {locationObject.city}
+              {addressObject.city}
               {"\n"}
-              {locationObject.street}
+              {addressObject.street}
             </Text>
           ) : (
             <View style={styles.loadingArea}>
@@ -117,7 +124,13 @@ export default function PinDrop() {
           </View>
         </View>
         {/* Continue Button */}
-        <Button>Continue</Button>
+        <Button
+          onPress={() => {
+            continueHandler();
+          }}
+        >
+          Continue
+        </Button>
       </View>
     </View>
   );
@@ -211,3 +224,11 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
 });
+
+const mapDispatchToProps = (dispatch) => ({
+  addAddress: (address) => {
+    dispatch(addAddress(address));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(PinDrop);
