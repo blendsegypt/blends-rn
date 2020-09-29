@@ -1,28 +1,22 @@
 import React from "react";
-import {
-  ScrollView,
-  View,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-} from "react-native";
+import { View, StyleSheet, SafeAreaView, Image, LogBox } from "react-native";
 //UI Components
 import Text from "../components/ui/Text";
 //Redux
 import { connect } from "react-redux";
 //Screens
 import PinDrop from "../screens/PinDrop";
-//Icon fonts
-import { FontAwesome } from "@expo/vector-icons";
 //Assets
 import Sun from "../../assets/Sun.png";
 //Components
 import Banners from "../components/Banners";
 import RecentOrders from "../components/RecentOrders";
+import Products from "../components/Products";
 
 function Home({ user }) {
   // If no address is selected show the pin location screen
   if (!user.location) return <PinDrop />;
+  //LogBox.ignoreAllLogs();
 
   return (
     <>
@@ -58,9 +52,13 @@ function Home({ user }) {
           </View>
         </SafeAreaView>
       </View>
-      <View style={{ paddingHorizontal: 25, marginTop: 40 }}>
+      <View style={{ paddingHorizontal: 25, marginTop: 40, paddingBottom: 50 }}>
         {/* Recent Orders */}
         <RecentOrders />
+        {/* Products */}
+        <View style={{ marginTop: 20 }}>
+          <Products />
+        </View>
       </View>
     </>
   );
