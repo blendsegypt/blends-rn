@@ -1,29 +1,35 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 //UI Components
 import Text from "../../components/ui/Text";
 //Icons Font
 import { FontAwesome } from "@expo/vector-icons";
 //Redux
 import { connect } from "react-redux";
+import { removeAddress } from "../../redux/actions/user.action";
 
-function HomeHeader({ user }) {
+function HomeHeader({ user, removeAddress }) {
   return (
     <>
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.buttonContainer}>
-          <View style={[styles.iconicButton, styles.locationButton]}>
+          <TouchableOpacity
+            style={[styles.iconicButton, styles.locationButton]}
+            onPress={() => {
+              removeAddress();
+            }}
+          >
             <FontAwesome name="map-marker" size={24} color="white" />
-          </View>
+          </TouchableOpacity>
           <View style={[styles.tag, styles.locationTag]}>
             <Text style={[styles.tagText]}>{user.location.city}</Text>
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <View style={[styles.iconicButton, styles.cartButton]}>
+          <TouchableOpacity style={[styles.iconicButton, styles.cartButton]}>
             <FontAwesome name="shopping-cart" size={21} color="white" />
-          </View>
+          </TouchableOpacity>
           <View style={[styles.tag, styles.cartTag]}>
             <Text style={[styles.tagText]}>5</Text>
           </View>
@@ -88,5 +94,10 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   user: state.userReducer,
 });
+const mapDispatchToProps = (dispatch) => ({
+  removeAddress: () => {
+    dispatch(removeAddress());
+  },
+});
 
-export default connect(mapStateToProps, null)(HomeHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(HomeHeader);

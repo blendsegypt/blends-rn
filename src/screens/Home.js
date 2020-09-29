@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView, Image, LogBox } from "react-native";
+import {
+  ScrollView,
+  View,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+} from "react-native";
 //UI Components
 import Text from "../components/ui/Text";
 //Redux
@@ -12,59 +18,70 @@ import Sun from "../../assets/Sun.png";
 import Banners from "../components/Banners";
 import RecentOrders from "../components/RecentOrders";
 import Products from "../components/Products";
+//Headers
+import HomeHeader from "./headers/HomeHeader";
 
 function Home({ user }) {
   // If no address is selected show the pin location screen
   if (!user.location) return <PinDrop />;
-  //LogBox.ignoreAllLogs();
+  console.warn(user);
 
   return (
     <>
-      <View style={styles.whiteContainer}>
-        <SafeAreaView>
-          <View style={{ paddingHorizontal: 25 }}>
-            {/* Good Morning Message */}
-            <View style={styles.goodMorning}>
-              <Image source={Sun} />
-              <Text style={styles.goodMorningText} regular>
-                Good Morning,
-              </Text>
-              <Text
-                style={[styles.goodMorningText, { paddingLeft: 3 }]}
-                semiBold
-              >
-                guest!
-              </Text>
+      <HomeHeader />
+      <ScrollView style={styles.background}>
+        <View style={styles.whiteContainer}>
+          <SafeAreaView>
+            <View style={{ paddingHorizontal: 25 }}>
+              {/* Good Morning Message */}
+              <View style={styles.goodMorning}>
+                <Image source={Sun} />
+                <Text style={styles.goodMorningText} regular>
+                  Good Morning,
+                </Text>
+                <Text
+                  style={[styles.goodMorningText, { paddingLeft: 3 }]}
+                  semiBold
+                >
+                  guest!
+                </Text>
+              </View>
+              {/* It's Coffee Time */}
+              <View style={styles.coffeeTime}>
+                <Text style={styles.coffeeTimeText} semiBold>
+                  It's Coffee time!
+                </Text>
+                <Text regular style={styles.coffeTimeSlogan}>
+                  your fresh coffee is few clicks away from you!
+                </Text>
+              </View>
             </View>
-            {/* It's Coffee Time */}
-            <View style={styles.coffeeTime}>
-              <Text style={styles.coffeeTimeText} semiBold>
-                It's Coffee time!
-              </Text>
-              <Text regular style={styles.coffeTimeSlogan}>
-                your fresh coffee is few clicks away from you!
-              </Text>
+            {/* Banners Section */}
+            <View style={{ marginTop: 15 }}>
+              <Banners />
             </View>
-          </View>
-          {/* Banners Section */}
-          <View style={{ marginTop: 15 }}>
-            <Banners />
-          </View>
-        </SafeAreaView>
-      </View>
-      <View style={{ paddingHorizontal: 25, marginTop: 30, paddingBottom: 50 }}>
-        {/* Recent Orders */}
-        <RecentOrders />
-        {/* Products */}
-        <View style={{ marginTop: 20 }}>
-          <Products />
+          </SafeAreaView>
         </View>
-      </View>
+        <View
+          style={{ paddingHorizontal: 25, marginTop: 30, paddingBottom: 50 }}
+        >
+          {/* Recent Orders */}
+          <RecentOrders />
+          {/* Products */}
+          <View style={{ marginTop: 20 }}>
+            <Products />
+          </View>
+        </View>
+      </ScrollView>
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    backgroundColor: "#FCFBFB",
+  },
   whiteContainer: {
     backgroundColor: "white",
     shadowColor: "#000",
