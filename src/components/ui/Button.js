@@ -50,6 +50,7 @@ export default function Button(props) {
       style={[
         styles.button,
         { backgroundColor: buttonBG, shadowColor: buttonBG },
+        props.style,
       ]}
       onPress={() => {
         props.onPress();
