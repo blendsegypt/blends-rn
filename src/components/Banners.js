@@ -13,7 +13,7 @@ function Banners() {
   useEffect(() => {
     setTimeout(() => {
       setImagesLoaded(true);
-    }, 5000);
+    }, 2000);
   }, []);
 
   const entries = [CoffeeAmericanoOffer, SignatureLatteOffer];
