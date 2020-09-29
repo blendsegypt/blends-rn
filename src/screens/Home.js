@@ -52,7 +52,7 @@ function Home({ user }) {
           </View>
         </SafeAreaView>
       </View>
-      <View style={{ paddingHorizontal: 25, marginTop: 40, paddingBottom: 50 }}>
+      <View style={{ paddingHorizontal: 25, marginTop: 30, paddingBottom: 50 }}>
         {/* Recent Orders */}
         <RecentOrders />
         {/* Products */}
