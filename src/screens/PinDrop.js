@@ -12,6 +12,8 @@ import * as Location from "expo-location";
 //Redux
 import { connect } from "react-redux";
 import { addAddress } from "../redux/actions/user.action";
+// Loading Skeleton
+import SkeletonContent from "react-native-skeleton-content";
 
 function PinDrop({ addAddress }) {
   const [locationLoaded, setLocationLoaded] = useState(false);
@@ -105,11 +107,35 @@ function PinDrop({ addAddress }) {
               {addressObject.street}
             </Text>
           ) : (
-            <View style={styles.loadingArea}>
-              <View style={styles.loadingBar}></View>
-              <View style={styles.loadingBar}></View>
-              <View style={styles.loadingBar}></View>
-            </View>
+            <SkeletonContent
+              containerStyle={{ width: 100, height: 70 }}
+              isLoading={true}
+              animationDirection="horizontalLeft"
+              duration="800"
+              boneColor="#D1D1D1"
+              layout={[
+                {
+                  key: "address1",
+                  width: 130,
+                  height: 20,
+                  borderRadius: 10,
+                },
+                {
+                  key: "address2",
+                  width: 100,
+                  height: 20,
+                  borderRadius: 10,
+                  marginTop: 5,
+                },
+                {
+                  key: "address3",
+                  width: 150,
+                  height: 20,
+                  borderRadius: 10,
+                  marginTop: 5,
+                },
+              ]}
+            />
           )}
           <View>
             {addressLoaded ? (
@@ -117,9 +143,23 @@ function PinDrop({ addAddress }) {
                 <Text style={styles.supportedTagText}>Supported</Text>
               </View>
             ) : (
-              <View>
-                <View style={styles.loadingTag}></View>
-              </View>
+              <SkeletonContent
+                containerStyle={{ width: 100, height: 70 }}
+                isLoading={true}
+                animationDirection="horizontalLeft"
+                duration="800"
+                boneColor="#D1D1D1"
+                layout={[
+                  {
+                    key: "tag",
+                    width: 100,
+                    height: 25,
+                    borderRadius: 10,
+                    marginLeft: 135,
+                    marginTop: 15,
+                  },
+                ]}
+              />
             )}
           </View>
         </View>
