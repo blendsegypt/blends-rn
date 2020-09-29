@@ -4,6 +4,7 @@ import { View, StyleSheet, FlatList, Image } from "react-native";
 import Text from "./ui/Text";
 //Item Image (Only for testing purposes)
 import Espresso from "../../assets/Espresso.png";
+import Latte from "../../assets/Latte.png";
 //Icons Font
 import { FontAwesome } from "@expo/vector-icons";
 // Loading Skeleton
@@ -29,7 +30,7 @@ function RecentOrders() {
       id: "2",
       name: "Latte",
       price: "24.99 EGP",
-      image: Espresso,
+      image: Latte,
     },
   ];
 
@@ -38,7 +39,7 @@ function RecentOrders() {
     <View style={[styles.recentOrder, index == 0 ? { marginLeft: 0 } : {}]}>
       <Image
         source={item.image}
-        style={{ width: 55, height: 55, alignSelf: "center" }}
+        style={{ width: 55, height: 55, alignSelf: "center", marginTop: 5 }}
       />
       <View style={styles.itemData}>
         <Text style={styles.itemName}>{item.name}</Text>
@@ -129,6 +130,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#EBF2FF",
     marginTop: 15,
     padding: 15,
+    paddingVertical: 10,
     flexDirection: "row",
     borderRadius: 20,
     marginLeft: 15,
