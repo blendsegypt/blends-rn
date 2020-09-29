@@ -80,7 +80,7 @@ function Products() {
     setTimeout(() => {
       setCategoriesLoaded(true);
       setProductsLoaded(true);
-    }, 5000);
+    }, 2000);
   }, []);
 
   return (
