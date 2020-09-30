@@ -74,7 +74,7 @@ function Home({ navigation }) {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: "#FCFBFB",
+    backgroundColor: "#f2f2f2",
   },
   whiteContainer: {
     backgroundColor: "white",
