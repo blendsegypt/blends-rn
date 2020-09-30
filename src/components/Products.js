@@ -77,10 +77,13 @@ function Products() {
   );
 
   useEffect(() => {
-    setTimeout(() => {
+    const fakeLoading = setTimeout(() => {
       setCategoriesLoaded(true);
       setProductsLoaded(true);
     }, 2000);
+    return () => {
+      clearTimeout(fakeLoading);
+    };
   }, []);
 
   return (

@@ -14,9 +14,12 @@ function RecentOrders() {
   const [itemsLoaded, setItemsLoaded] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
+    const fakeLoading = setTimeout(() => {
       setItemsLoaded(true);
     }, 1500);
+    return () => {
+      clearTimeout(fakeLoading);
+    };
   }, []);
 
   const recentOrders = [

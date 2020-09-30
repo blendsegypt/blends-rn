@@ -11,9 +11,12 @@ import SkeletonContent from "react-native-skeleton-content";
 function Banners() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   useEffect(() => {
-    setTimeout(() => {
+    const fakeLoading = setTimeout(() => {
       setImagesLoaded(true);
     }, 2000);
+    return () => {
+      clearTimeout(fakeLoading);
+    };
   }, []);
 
   const entries = [CoffeeAmericanoOffer, SignatureLatteOffer];
