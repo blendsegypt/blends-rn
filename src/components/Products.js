@@ -136,13 +136,7 @@ function Products() {
           keyExtractor={(item) => item.id}
           numColumns="2"
           renderItem={({ item }) => {
-            return (
-              <ProductItem
-                name={item.name}
-                price={item.price}
-                image={item.image}
-              />
-            );
+            return <ProductItem {...item} />;
           }}
         />
       ) : (
