@@ -4,10 +4,14 @@ import { View, StyleSheet, Image } from "react-native";
 import Text from "../components/ui/Text";
 import Button from "../components/ui/Button";
 
-function ProductItem({ name, price, image, offer, newPrice }) {
+function ProductItem({ name, price, image, instantAdd, offer, newPrice }) {
   return (
     <View style={styles.item}>
-      <Image source={image} style={{ width: 120, height: 110 }} />
+      <Image
+        source={image}
+        style={{ width: 110, height: 110 }}
+        resizeMode="contain"
+      />
       <Text style={styles.productName}>{name}</Text>
       {offer ? (
         <View style={{ flexDirection: "row" }}>
@@ -16,12 +20,20 @@ function ProductItem({ name, price, image, offer, newPrice }) {
             <Text style={styles.newPriceText}>{newPrice}</Text>
           </View>
         </View>
-      ) : (
+      ) : !instantAdd ? (
         <Text style={styles.productPrice} regular>
           Starts from <Text>{price}</Text>
         </Text>
+      ) : (
+        <Text style={styles.productPrice}>{price}</Text>
       )}
-      <Button style={styles.itemButton}>Select</Button>
+      {!instantAdd ? (
+        <Button style={styles.itemButton}>Select</Button>
+      ) : (
+        <Button style={styles.itemButton} icon="plus">
+          Add to Cart
+        </Button>
+      )}
     </View>
   );
 }
@@ -61,6 +73,7 @@ const styles = StyleSheet.create({
   },
   newPriceText: {
     color: "#fff",
+    fontSize: 12,
   },
 });
 
