@@ -7,6 +7,7 @@ import ProductItem from "../components/ProductItem";
 //Images (for testing purposes)
 import Espresso from "../../assets/Espresso.png";
 import Latte from "../../assets/Latte.png";
+import PotatoChips from "../../assets/PotatoChips.png";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content";
 
@@ -43,9 +44,10 @@ function Products() {
     },
     {
       id: "3",
-      name: "Espresso",
+      name: "Lay’s Potato Chips Tomatoes Flavor (30g)",
       price: "14.99 EGP",
-      image: Espresso,
+      image: PotatoChips,
+      instantAdd: true,
     },
     {
       id: "4",
@@ -132,6 +134,7 @@ function Products() {
       {/* Products */}
       {productsLoaded ? (
         <FlatList
+          style={{ flex: 1 }}
           data={products}
           keyExtractor={(item) => item.id}
           numColumns="2"
