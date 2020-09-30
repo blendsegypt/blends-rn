@@ -1,10 +1,6 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 //UI Components
 import Text from "./Text";
 //Icons Font
@@ -73,13 +69,6 @@ const styles = StyleSheet.create({
     paddingVertical: 27,
     borderRadius: 50,
     flexDirection: "row",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 15.65,
-    elevation: 8,
   },
   text: {
     color: "white",
