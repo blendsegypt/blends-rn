@@ -57,7 +57,7 @@ function App() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: "white",
+    backgroundColor: "#fff",
     marginBottom: 10,
     marginHorizontal: 15,
     borderRadius: 50,
