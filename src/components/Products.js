@@ -32,6 +32,8 @@ function Products() {
       name: "Espresso",
       price: "14.99 EGP",
       image: Espresso,
+      offer: true,
+      newPrice: "10.99 EGP",
     },
     {
       id: "2",
