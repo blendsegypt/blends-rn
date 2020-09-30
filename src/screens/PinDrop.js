@@ -7,7 +7,7 @@ import {
   Image,
 } from "react-native";
 import MapView from "react-native-maps";
-import { Marker } from "react-native-maps";
+import { Circle } from "react-native-maps";
 //UI Components
 import Text from "../components/ui/Text";
 import Link from "../components/ui/Link";
@@ -79,17 +79,14 @@ function PinDrop({ addAddress, user, navigation }) {
             latitudeDelta: 0.005,
           }}
         >
-          <Marker
-            coordinate={{
+          <Circle
+            center={{
               longitude,
               latitude,
             }}
-            draggable
-            image={PinMarker}
-            onDragEnd={(e) => {
-              setAddressLoaded(false);
-              reverseGeocode(e.nativeEvent.coordinate);
-            }}
+            radius={100}
+            strokeWidth={0}
+            fillColor="rgba(121, 232, 149, 0.4)"
           />
         </MapView>
       )}
