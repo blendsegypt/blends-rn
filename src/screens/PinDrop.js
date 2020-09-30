@@ -61,10 +61,16 @@ function PinDrop({ addAddress, user, navigation }) {
     })();
   }, []);
 
+  // Handler for continue button
   const continueHandler = () => {
     addAddress(addressObject);
     navigation.navigate("Home");
   };
+
+  //Redirect to Home Screen if location is already chosen
+  useEffect(() => {
+    if (user.address) navigation.navigate("Home");
+  }, []);
 
   return (
     <View style={styles.outerContainer}>
@@ -80,13 +86,13 @@ function PinDrop({ addAddress, user, navigation }) {
           }}
         >
           <Circle
+            strokeWidth={0}
+            fillColor="rgba(121, 232, 149, 0.4)"
             center={{
               longitude,
               latitude,
             }}
             radius={100}
-            strokeWidth={0}
-            fillColor="rgba(121, 232, 149, 0.4)"
           />
         </MapView>
       )}
