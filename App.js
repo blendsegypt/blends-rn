@@ -7,31 +7,47 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 //Screens
 import Home from "./src/screens/Home";
+import PinDrop from "./src/screens/PinDrop";
 import Support from "./src/screens/Support";
 //Tab Navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 //Tab Bar settings
 import tabBarSettings from "./src/tabBarSettings";
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+function HomeTabs() {
+  return (
+    <Tab.Navigator
+      tabBarOptions={{
+        style: styles.tabBar,
+        activeTintColor: "#C84D49",
+        showLabel: false,
+      }}
+      screenOptions={tabBarSettings}
+    >
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen
+        name="Support"
+        component={Support}
+        tabBarOptions={{ style: {} }}
+      />
+    </Tab.Navigator>
+  );
+}
 
 function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <NavigationContainer>
-          <Tab.Navigator
-            tabBarOptions={{
-              style: styles.tabBar,
-              activeTintColor: "#C84D49",
-              showLabel: false,
-            }}
-            screenOptions={tabBarSettings}
-          >
-            <Tab.Screen name="Home" component={Home} />
-            <Tab.Screen name="Support" component={Support} />
-          </Tab.Navigator>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="PinDrop" component={PinDrop} />
+            <Stack.Screen name="Home" component={HomeTabs} />
+          </Stack.Navigator>
         </NavigationContainer>
         <StatusBar style="dark" />
       </PersistGate>
