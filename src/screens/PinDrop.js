@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, SafeAreaView, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  Dimensions,
+  Image,
+} from "react-native";
 import MapView from "react-native-maps";
 import { Marker } from "react-native-maps";
 //UI Components
@@ -14,8 +20,10 @@ import { connect } from "react-redux";
 import { addAddress } from "../redux/actions/user.action";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content";
+// Custom Marker
+import PinMarker from "../../assets/mapMarker.png";
 
-function PinDrop({ addAddress }) {
+function PinDrop({ addAddress, user, navigation }) {
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [addressLoaded, setAddressLoaded] = useState(false);
   const [addressObject, setAddressObject] = useState({});
@@ -55,6 +63,7 @@ function PinDrop({ addAddress }) {
 
   const continueHandler = () => {
     addAddress(addressObject);
+    navigation.navigate("Home");
   };
 
   return (
@@ -76,6 +85,7 @@ function PinDrop({ addAddress }) {
               latitude,
             }}
             draggable
+            image={PinMarker}
             onDragEnd={(e) => {
               setAddressLoaded(false);
               reverseGeocode(e.nativeEvent.coordinate);
@@ -178,14 +188,13 @@ function PinDrop({ addAddress }) {
 
 const styles = StyleSheet.create({
   outerContainer: {
-    position: "relative",
-    flex: 1,
-    width: "100%",
     backgroundColor: "#f5f5f5",
+    height: "100%",
   },
   map: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+    zIndex: -1,
   },
   container: {
     backgroundColor: "white",
@@ -194,14 +203,15 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
     paddingBottom: 40,
     bottom: 0,
-    flex: 1,
     width: "100%",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
+    zIndex: 9999,
   },
   search: {
     position: "absolute",
     width: "100%",
+    zIndex: 999,
   },
   searchContainer: {
     paddingHorizontal: 25,
@@ -265,10 +275,14 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = (state) => ({
+  user: state.userReducer,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   addAddress: (address) => {
     dispatch(addAddress(address));
   },
 });
 
-export default connect(null, mapDispatchToProps)(PinDrop);
+export default connect(mapStateToProps, mapDispatchToProps)(PinDrop);
