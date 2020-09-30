@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ScrollView,
   View,
@@ -8,10 +8,6 @@ import {
 } from "react-native";
 //UI Components
 import Text from "../components/ui/Text";
-//Redux
-import { connect } from "react-redux";
-//Screens
-import PinDrop from "../screens/PinDrop";
 //Assets
 import Sun from "../../assets/Sun.png";
 //Components
@@ -21,15 +17,11 @@ import Products from "../components/Products";
 //Headers
 import HomeHeader from "./headers/HomeHeader";
 
-function Home({ user }) {
-  // If no address is selected show the pin location screen
-  if (!user.location) return <PinDrop />;
-  console.warn(user);
-
+function Home({ navigation }) {
   return (
     <>
       <View style={{ backgroundColor: "#fff" }}>
-        <HomeHeader />
+        <HomeHeader navigation={navigation} />
       </View>
       <ScrollView style={styles.background}>
         <View style={styles.whiteContainer}>
@@ -126,8 +118,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => ({
-  user: state.userReducer,
-});
-
-export default connect(mapStateToProps, null)(Home);
+export default Home;
