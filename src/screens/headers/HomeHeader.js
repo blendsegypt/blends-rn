@@ -1,5 +1,6 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 //UI Components
 import Text from "../../components/ui/Text";
 //Icons Font
@@ -8,7 +9,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { removeAddress } from "../../redux/actions/user.action";
 
-function HomeHeader({ user, removeAddress }) {
+function HomeHeader({ user, removeAddress, navigation }) {
   return (
     <>
       {/* Header */}
@@ -17,13 +18,16 @@ function HomeHeader({ user, removeAddress }) {
           <TouchableOpacity
             style={[styles.iconicButton, styles.locationButton]}
             onPress={() => {
+              navigation.navigate("PinDrop");
               removeAddress();
             }}
           >
             <FontAwesome name="map-marker" size={24} color="white" />
           </TouchableOpacity>
           <View style={[styles.tag, styles.locationTag]}>
-            <Text style={[styles.tagText]}>{user.location.city}</Text>
+            <Text style={[styles.tagText]}>
+              {user.address ? user.address.city : "Not Selected"}
+            </Text>
           </View>
         </View>
         <View style={styles.buttonContainer}>
