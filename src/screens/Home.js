@@ -28,7 +28,9 @@ function Home({ user }) {
 
   return (
     <>
-      <HomeHeader />
+      <View style={{ backgroundColor: "#fff" }}>
+        <HomeHeader />
+      </View>
       <ScrollView style={styles.background}>
         <View style={styles.whiteContainer}>
           <SafeAreaView>
