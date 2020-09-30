@@ -32,6 +32,8 @@ function Products() {
       name: "Espresso",
       price: "14.99 EGP",
       image: Espresso,
+      offer: true,
+      newPrice: "10.99 EGP",
     },
     {
       id: "2",
@@ -134,13 +136,7 @@ function Products() {
           keyExtractor={(item) => item.id}
           numColumns="2"
           renderItem={({ item }) => {
-            return (
-              <ProductItem
-                name={item.name}
-                price={item.price}
-                image={item.image}
-              />
-            );
+            return <ProductItem {...item} />;
           }}
         />
       ) : (
