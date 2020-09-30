@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     fontSize: 19,
   },
   recentOrder: {
-    backgroundColor: "#EBF2FF",
+    backgroundColor: "#dae3f5",
     marginTop: 15,
     padding: 15,
     paddingVertical: 10,
