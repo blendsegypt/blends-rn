@@ -4,6 +4,8 @@ import { SafeAreaView, View, StyleSheet, TouchableOpacity } from "react-native";
 import Text from "../components/ui/Text";
 //Icons Font
 import { FontAwesome } from "@expo/vector-icons";
+//Components
+import CartIcon from "../components/CartIcon";
 
 function Product({ navigation }) {
   return (
@@ -21,6 +23,7 @@ function Product({ navigation }) {
             color="#11203E"
           />
         </TouchableOpacity>
+        <CartIcon />
       </View>
     </SafeAreaView>
   );
@@ -30,6 +33,7 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 25,
     marginTop: 30,
+    flexDirection: "row",
   },
 });
 

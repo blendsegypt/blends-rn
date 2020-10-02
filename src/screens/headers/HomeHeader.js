@@ -8,6 +8,8 @@ import { FontAwesome } from "@expo/vector-icons";
 //Redux
 import { connect } from "react-redux";
 import { removeAddress } from "../../redux/actions/user.action";
+//Components
+import CartIcon from "../../components/CartIcon";
 
 function HomeHeader({ user, removeAddress, navigation }) {
   return (
@@ -30,14 +32,7 @@ function HomeHeader({ user, removeAddress, navigation }) {
             </Text>
           </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={[styles.iconicButton, styles.cartButton]}>
-            <FontAwesome name="shopping-cart" size={21} color="white" />
-          </TouchableOpacity>
-          <View style={[styles.tag, styles.cartTag]}>
-            <Text style={[styles.tagText]}>5</Text>
-          </View>
-        </View>
+        <CartIcon />
       </View>
     </>
   );
