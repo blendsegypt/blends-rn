@@ -53,7 +53,7 @@ export default function Button(props) {
         props.style,
       ]}
       onPress={() => {
-        props.onPress();
+        if (props.onPress) props.onPress();
       }}
     >
       <Text style={styles.text}>{props.children}</Text>
