@@ -57,13 +57,19 @@ function PinDrop({ addAddress, user, navigation }) {
         }
         // Get Coordinates for Google Map View
         let coordinates = await Location.getCurrentPositionAsync({});
+        console.log(coordinates.coords);
         setLatitude(coordinates.coords.latitude);
         setLongitude(coordinates.coords.longitude);
         setLocationLoaded(true);
         // Reverse Geocode the coordinates to physical address
         reverseGeocode();
         mapRef.current.animateToRegion(
-          { longitude, latitude, longitudeDelta: 0.005, latitudeDelta: 0.005 },
+          {
+            longitude: coordinates.coords.longitude,
+            latitude: coordinates.coords.latitude,
+            longitudeDelta: 0.005,
+            latitudeDelta: 0.005,
+          },
           500
         );
       })();
