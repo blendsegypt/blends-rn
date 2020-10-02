@@ -63,7 +63,7 @@ function Home({ navigation }) {
           <RecentOrders />
           {/* Products */}
           <View style={{ marginTop: 20 }}>
-            <Products />
+            <Products navigation={navigation} />
           </View>
         </View>
       </ScrollView>
