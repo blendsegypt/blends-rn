@@ -30,11 +30,7 @@ function HomeTabs() {
       screenOptions={tabBarSettings}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen
-        name="Support"
-        component={Support}
-        tabBarOptions={{ style: {} }}
-      />
+      <Tab.Screen name="Support" component={Support} />
     </Tab.Navigator>
   );
 }
