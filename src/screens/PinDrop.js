@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -6,8 +6,9 @@ import {
   Dimensions,
   Image,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import MapView from "react-native-maps";
-import { Circle } from "react-native-maps";
+import { Marker } from "react-native-maps";
 //UI Components
 import Text from "../components/ui/Text";
 import Link from "../components/ui/Link";
@@ -30,9 +31,11 @@ function PinDrop({ addAddress, user, navigation }) {
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
   const [errorMsg, setErrorMsg] = useState(null);
+  const mapRef = useRef();
 
   // Reverse Geocode address
-  const reverseGeocode = async (coords) => {
+  const reverseGeocode = async () => {
+    const coords = { longitude, latitude };
     let location = await Location.reverseGeocodeAsync(coords);
     const addressObject = {
       street: location[0].street,
@@ -45,21 +48,27 @@ function PinDrop({ addAddress, user, navigation }) {
   };
 
   // Detect user's location
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Please allow Blends to access your Location.");
-      }
-      // Get Coordinates for Google Map View
-      let coordinates = await Location.getCurrentPositionAsync({});
-      setLatitude(coordinates.coords.latitude);
-      setLongitude(coordinates.coords.longitude);
-      setLocationLoaded(true);
-      // Reverse Geocode the coordinates to physical address
-      reverseGeocode(coordinates.coords);
-    })();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        let { status } = await Location.requestPermissionsAsync();
+        if (status !== "granted") {
+          setErrorMsg("Please allow Blends to access your Location.");
+        }
+        // Get Coordinates for Google Map View
+        let coordinates = await Location.getCurrentPositionAsync({});
+        setLatitude(coordinates.coords.latitude);
+        setLongitude(coordinates.coords.longitude);
+        setLocationLoaded(true);
+        // Reverse Geocode the coordinates to physical address
+        reverseGeocode();
+        mapRef.current.animateToRegion(
+          { longitude, latitude, longitudeDelta: 0.005, latitudeDelta: 0.005 },
+          500
+        );
+      })();
+    }, [user.location])
+  );
 
   // Handler for continue button
   const continueHandler = () => {
@@ -76,6 +85,7 @@ function PinDrop({ addAddress, user, navigation }) {
     <View style={styles.outerContainer}>
       {locationLoaded && (
         <MapView
+          ref={mapRef}
           provider="google"
           style={styles.map}
           initialRegion={{
@@ -84,16 +94,15 @@ function PinDrop({ addAddress, user, navigation }) {
             longitudeDelta: 0.005,
             latitudeDelta: 0.005,
           }}
+          onRegionChange={(region) => {
+            setLongitude(region.longitude);
+            setLatitude(region.latitude);
+          }}
+          onRegionChangeComplete={() => {
+            reverseGeocode();
+          }}
         >
-          <Circle
-            strokeWidth={0}
-            fillColor="rgba(121, 232, 149, 0.4)"
-            center={{
-              longitude,
-              latitude,
-            }}
-            radius={100}
-          />
+          <Marker image={PinMarker} coordinate={{ longitude, latitude }} />
         </MapView>
       )}
       <SafeAreaView style={styles.search}>
