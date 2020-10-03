@@ -10,6 +10,7 @@ import RNPickerSelect from "react-native-picker-select";
 export default function Dropdown(props) {
   return (
     <RNPickerSelect
+      placeholder={{}}
       style={pickerStyles}
       items={props.items}
       onValueChange={(value) => {

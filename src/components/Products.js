@@ -11,7 +11,7 @@ import PotatoChips from "../../assets/PotatoChips.png";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content";
 
-function Products() {
+function Products({ navigation }) {
   console.disableYellowBox = true;
   const categories = [
     {
@@ -139,7 +139,7 @@ function Products() {
           keyExtractor={(item) => item.id}
           numColumns="2"
           renderItem={({ item }) => {
-            return <ProductItem {...item} />;
+            return <ProductItem {...item} navigation={navigation} />;
           }}
         />
       ) : (

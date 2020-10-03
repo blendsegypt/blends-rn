@@ -4,7 +4,15 @@ import { View, StyleSheet, Image } from "react-native";
 import Text from "../components/ui/Text";
 import Button from "../components/ui/Button";
 
-function ProductItem({ name, price, image, instantAdd, offer, newPrice }) {
+function ProductItem({
+  name,
+  price,
+  image,
+  instantAdd,
+  offer,
+  newPrice,
+  navigation,
+}) {
   return (
     <View style={styles.item}>
       <Image
@@ -28,7 +36,14 @@ function ProductItem({ name, price, image, instantAdd, offer, newPrice }) {
         <Text style={styles.productPrice}>{price}</Text>
       )}
       {!instantAdd ? (
-        <Button style={styles.itemButton}>Select</Button>
+        <Button
+          onPress={() => {
+            navigation.navigate("Product");
+          }}
+          style={styles.itemButton}
+        >
+          Select
+        </Button>
       ) : (
         <Button style={styles.itemButton} icon="plus">
           Add to Cart
