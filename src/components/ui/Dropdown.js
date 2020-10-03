@@ -14,7 +14,7 @@ export default function Dropdown(props) {
       style={pickerStyles}
       items={props.items}
       onValueChange={(value) => {
-        console.log("changed");
+        if (props.onChange) props.onChange(value);
       }}
       useNativeAndroidPickerStyle={false}
       Icon={() => {
