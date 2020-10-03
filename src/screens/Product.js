@@ -276,7 +276,8 @@ function Product({ navigation }) {
           paddingBottom: 25,
         }}
       >
-        <Button>Add to Cart</Button>
+        {/* Add to Cart Button */}
+        <Button price="24.99 EGP">Add to Cart</Button>
       </View>
     </View>
   );
