@@ -57,12 +57,18 @@ export default function Button(props) {
       }}
     >
       <Text style={styles.text}>{props.children}</Text>
-      <FontAwesome
-        style={styles.icon}
-        name={buttonIcon}
-        size={12}
-        color="white"
-      />
+      {props.price ? (
+        <Text bold style={styles.price}>
+          {props.price}
+        </Text>
+      ) : (
+        <FontAwesome
+          style={styles.icon}
+          name={buttonIcon}
+          size={12}
+          color="white"
+        />
+      )}
     </TouchableOpacity>
   );
 }
@@ -81,6 +87,10 @@ const styles = StyleSheet.create({
   },
   icon: {
     paddingTop: 3,
+    fontSize: 15,
+  },
+  price: {
+    color: "#fff",
     fontSize: 15,
   },
 });
