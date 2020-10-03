@@ -21,12 +21,13 @@ import LatteLarge from "../../assets/LatteLarge.png";
 import SkeletonContent from "react-native-skeleton-content";
 
 function Product({ navigation }) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [productData, setProductData] = useState({
     image: LatteLarge,
     name: "Latte",
     desc:
       "Coffee drink made with espresso, steamed milk and thin layer of foam",
+    price: 24.99,
     tags: [
       {
         bgColor: "#F4D977",
@@ -43,10 +44,12 @@ function Product({ navigation }) {
         options: [
           {
             label: "Small (0 EGP)",
+            price: 0,
             value: "sm",
           },
           {
             label: "Large (5 EGP)",
+            price: 5,
             value: "lg",
           },
         ],
@@ -56,10 +59,12 @@ function Product({ navigation }) {
         options: [
           {
             label: "Skimmed (0 EGP)",
+            price: 0,
             value: "skm",
           },
           {
             label: "Full Cream (0 EGP)",
+            price: 0,
             value: "fc",
           },
         ],
@@ -70,11 +75,13 @@ function Product({ navigation }) {
         label: "Whipped Cream",
         options: [
           {
-            label: "No",
+            label: "No (0 EGP)",
+            price: 0,
             value: false,
           },
           {
-            label: "Yes",
+            label: "Yes (0 EGP)",
+            price: 0,
             value: true,
           },
         ],
@@ -82,6 +89,7 @@ function Product({ navigation }) {
     ],
   });
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [price, setPrice] = useState(productData.price);
 
   // Load Product data from backend API
   useEffect(() => {
@@ -89,6 +97,31 @@ function Product({ navigation }) {
       setLoading(false);
     }, 1000);
   });
+
+  // Product Custom Option handler
+  const addCustomOption = (label, value, price) => {
+    let options = [...selectedOptions];
+    // Remove option if it already exists
+    options = options.filter((option) => {
+      return label != option.label;
+    });
+    const option = {
+      label,
+      value,
+      price,
+    };
+    options.push(option);
+    setSelectedOptions(options);
+  };
+
+  // Refresh Price based on selected options
+  useEffect(() => {
+    let amount = 0;
+    selectedOptions.forEach((option) => {
+      amount += option.price;
+    });
+    setPrice(productData.price + amount);
+  }, [selectedOptions]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -239,7 +272,16 @@ function Product({ navigation }) {
                   {customOption.label}
                 </Text>
                 <View style={{ flex: 0.6 }}>
-                  <Dropdown items={customOption.options} />
+                  <Dropdown
+                    items={customOption.options}
+                    onChange={(value) => {
+                      let price;
+                      customOption.options.forEach((option) => {
+                        if (option.value == value) price = option.price;
+                      });
+                      addCustomOption(customOption.label, value, price);
+                    }}
+                  />
                 </View>
               </View>
             );
@@ -261,7 +303,16 @@ function Product({ navigation }) {
                     {customOption.label}
                   </Text>
                   <View style={{ flex: 0.6 }}>
-                    <Dropdown items={customOption.options} />
+                    <Dropdown
+                      items={customOption.options}
+                      onChange={(value) => {
+                        let price;
+                        customOption.options.forEach((option) => {
+                          if (option.value == value) price = option.price;
+                        });
+                        addCustomOption(customOption.label, value, price);
+                      }}
+                    />
                   </View>
                 </View>
               );
@@ -277,7 +328,7 @@ function Product({ navigation }) {
         }}
       >
         {/* Add to Cart Button */}
-        <Button price="24.99 EGP">Add to Cart</Button>
+        <Button price={price + " EGP"}>Add to Cart</Button>
       </View>
     </View>
   );
