@@ -141,7 +141,7 @@ function Product({ navigation }) {
               color="#11203E"
             />
           </TouchableOpacity>
-          <CartIcon />
+          <CartIcon navigation={navigation} />
         </View>
       </SafeAreaView>
       {/* Product Image */}
