@@ -50,15 +50,17 @@ function CheckoutProgress({ steps }) {
       >
         {steps.map((step, index) => {
           return (
-            <Text
-              regular
-              style={{
-                color: step.active ? "#64AB84" : "#BBBBBB",
-                paddingLeft: labelsPadding[index],
-              }}
-            >
-              {step.label}
-            </Text>
+            <View>
+              <Text
+                regular
+                style={{
+                  color: step.active ? "#64AB84" : "#BBBBBB",
+                  paddingLeft: labelsPadding[index],
+                }}
+              >
+                {step.label}
+              </Text>
+            </View>
           );
         })}
       </View>
