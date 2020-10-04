@@ -46,11 +46,13 @@ function Product({ navigation }) {
             label: "Small (0 EGP)",
             price: 0,
             value: "sm",
+            textValue: "Small",
           },
           {
             label: "Large (5 EGP)",
             price: 5,
             value: "lg",
+            textValue: "Large",
           },
         ],
       },
@@ -61,11 +63,13 @@ function Product({ navigation }) {
             label: "Skimmed (0 EGP)",
             price: 0,
             value: "skm",
+            textValue: "Skimmed",
           },
           {
             label: "Full Cream (0 EGP)",
             price: 0,
             value: "fc",
+            textValue: "Full Cream",
           },
         ],
       },
@@ -78,11 +82,13 @@ function Product({ navigation }) {
             label: "No (0 EGP)",
             price: 0,
             value: false,
+            textValue: "No Whipped Cream",
           },
           {
             label: "Yes (0 EGP)",
             price: 0,
             value: true,
+            textValue: "Whipped Cream",
           },
         ],
       },
@@ -109,6 +115,7 @@ function Product({ navigation }) {
       label,
       value,
       price,
+      textValue,
     };
     options.push(option);
     setSelectedOptions(options);
