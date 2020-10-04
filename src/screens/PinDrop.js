@@ -4,11 +4,11 @@ import {
   StyleSheet,
   SafeAreaView,
   Dimensions,
+  TouchableOpacity,
   Image,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import MapView from "react-native-maps";
-import { Marker } from "react-native-maps";
 //UI Components
 import Text from "../components/ui/Text";
 import Link from "../components/ui/Link";
@@ -23,14 +23,20 @@ import { addAddress } from "../redux/actions/user.action";
 import SkeletonContent from "react-native-skeleton-content";
 // Custom Marker
 import PinMarker from "../../assets/mapMarker.png";
+// Font Icons
+import { FontAwesome } from "@expo/vector-icons";
 
 function PinDrop({ addAddress, user, navigation }) {
+  // Loading state
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [addressLoaded, setAddressLoaded] = useState(false);
+  // Address
   const [addressObject, setAddressObject] = useState({});
+  // Coordinates
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
   const [errorMsg, setErrorMsg] = useState(null);
+  // MapView ref
   const mapRef = useRef();
 
   // Reverse Geocode address
@@ -48,31 +54,33 @@ function PinDrop({ addAddress, user, navigation }) {
   };
 
   // Detect user's location
+  const getUserLocation = async () => {
+    let { status } = await Location.requestPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Please allow Blends to access your Location.");
+    }
+    // Get Coordinates for Google Map View
+    let coordinates = await Location.getCurrentPositionAsync({});
+    setLatitude(coordinates.coords.latitude);
+    setLongitude(coordinates.coords.longitude);
+    setLocationLoaded(true);
+    // Reverse Geocode the coordinates to physical address
+    reverseGeocode();
+    mapRef.current.animateToRegion(
+      {
+        longitude: coordinates.coords.longitude,
+        latitude: coordinates.coords.latitude,
+        longitudeDelta: 0.005,
+        latitudeDelta: 0.005,
+      },
+      500
+    );
+  };
+
+  // Get user location as soon as screen is loaded
   useFocusEffect(
     useCallback(() => {
-      (async () => {
-        let { status } = await Location.requestPermissionsAsync();
-        if (status !== "granted") {
-          setErrorMsg("Please allow Blends to access your Location.");
-        }
-        // Get Coordinates for Google Map View
-        let coordinates = await Location.getCurrentPositionAsync({});
-        console.log(coordinates.coords);
-        setLatitude(coordinates.coords.latitude);
-        setLongitude(coordinates.coords.longitude);
-        setLocationLoaded(true);
-        // Reverse Geocode the coordinates to physical address
-        reverseGeocode();
-        mapRef.current.animateToRegion(
-          {
-            longitude: coordinates.coords.longitude,
-            latitude: coordinates.coords.latitude,
-            longitudeDelta: 0.005,
-            latitudeDelta: 0.005,
-          },
-          500
-        );
-      })();
+      getUserLocation();
     }, [user.location])
   );
 
@@ -82,7 +90,7 @@ function PinDrop({ addAddress, user, navigation }) {
     navigation.navigate("Home");
   };
 
-  //Redirect to Home Screen if location is already chosen
+  // Redirect to Home Screen if location is already chosen
   useEffect(() => {
     if (user.address) navigation.navigate("Home");
   }, []);
@@ -90,45 +98,62 @@ function PinDrop({ addAddress, user, navigation }) {
   return (
     <View style={styles.outerContainer}>
       {locationLoaded && (
-        <MapView
-          ref={mapRef}
-          provider="google"
-          style={styles.map}
-          initialRegion={{
-            longitude,
-            latitude,
-            longitudeDelta: 0.005,
-            latitudeDelta: 0.005,
-          }}
-          onRegionChange={(region) => {
-            setLongitude(region.longitude);
-            setLatitude(region.latitude);
-          }}
-          onRegionChangeComplete={() => {
-            reverseGeocode();
-          }}
-        >
-          <View
-            pointerEvents="none"
-            style={{
-              position: "absolute",
-              top: 0,
-              bottom: 20,
-              left: 0,
-              right: 0,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "transparent",
+        <>
+          <MapView
+            ref={mapRef}
+            provider="google"
+            style={styles.map}
+            initialRegion={{
+              longitude,
+              latitude,
+              longitudeDelta: 0.005,
+              latitudeDelta: 0.005,
+            }}
+            onRegionChange={(region) => {
+              setLongitude(region.longitude);
+              setLatitude(region.latitude);
+            }}
+            onRegionChangeComplete={() => {
+              reverseGeocode();
             }}
           >
-            <Image
+            <View
               pointerEvents="none"
-              source={PinMarker}
-              style={{ width: 34, height: 70 }}
-              resizeMode="contain"
-            />
-          </View>
-        </MapView>
+              style={{
+                position: "absolute",
+                top: 0,
+                bottom: 20,
+                left: 0,
+                right: 0,
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                pointerEvents="none"
+                source={PinMarker}
+                style={{ width: 34, height: 70 }}
+                resizeMode="contain"
+              />
+            </View>
+          </MapView>
+          <TouchableOpacity
+            style={{
+              position: "absolute",
+              bottom: 290,
+              right: 30,
+              backgroundColor: "#0E2241",
+              padding: 11,
+              borderRadius: 5,
+            }}
+            onPress={() => {
+              getUserLocation();
+            }}
+          >
+            <FontAwesome name="location-arrow" size={23} color="#fff" />
+          </TouchableOpacity>
+        </>
       )}
       <SafeAreaView style={styles.search}>
         <View style={styles.searchContainer}>
