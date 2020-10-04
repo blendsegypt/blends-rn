@@ -108,7 +108,26 @@ function PinDrop({ addAddress, user, navigation }) {
             reverseGeocode();
           }}
         >
-          <Marker image={PinMarker} coordinate={{ longitude, latitude }} />
+          <View
+            pointerEvents="none"
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 20,
+              left: 0,
+              right: 0,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "transparent",
+            }}
+          >
+            <Image
+              pointerEvents="none"
+              source={PinMarker}
+              style={{ width: 34, height: 70 }}
+              resizeMode="contain"
+            />
+          </View>
         </MapView>
       )}
       <SafeAreaView style={styles.search}>
