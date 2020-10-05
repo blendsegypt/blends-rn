@@ -30,7 +30,7 @@ function Product({ navigation }) {
     price: 25.0,
     tags: [
       {
-        bgColor: "#F4D977",
+        bgColor: "#C94D4D",
         label: "Hot",
       },
       {
