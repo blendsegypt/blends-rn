@@ -10,8 +10,7 @@ function CheckoutProgress({ steps }) {
     <View
       style={{
         paddingHorizontal: 25,
-        marginTop: 30,
-        marginBottom: 50,
+        marginVertical: 30,
       }}
     >
       {/* Progress Bar */}
