@@ -6,6 +6,7 @@
 
 //Assets (for testing!!)
 import Latte from "../../../assets/Latte.png";
+import Espresso from "../../../assets/Espresso.png";
 
 let exampleCart = [
   {
@@ -29,6 +30,21 @@ let exampleCart = [
       },
     ],
   },
+  {
+    id: 2,
+    image: Espresso,
+    name: "Espresso",
+    price: 14.99,
+    quantity: 1,
+    selectedOptions: [
+      {
+        label: "Cup Size",
+        value: "sm",
+        price: "0",
+        textValue: "Small",
+      },
+    ],
+  },
 ];
 
 export default function cartReducer(state = exampleCart, action) {
@@ -49,7 +65,7 @@ export default function cartReducer(state = exampleCart, action) {
       // Copy state to aoid mutation
       newState = [...state];
       // Find target item and filter it out of cart array
-      newState.filter((item) => item.id != action.itemID);
+      newState = newState.filter((item) => item.id != action.itemID);
       return newState;
     default:
       return state;
