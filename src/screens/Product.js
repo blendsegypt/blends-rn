@@ -200,9 +200,12 @@ function Product({ navigation }) {
             ]}
           />
         ) : (
-          productData.tags.map((tag) => {
+          productData.tags.map((tag, index) => {
             return (
-              <View style={[styles.tag, { backgroundColor: tag.bgColor }]}>
+              <View
+                key={index}
+                style={[styles.tag, { backgroundColor: tag.bgColor }]}
+              >
                 <Text style={[styles.tagText, { color: "#fff" }]}>
                   {tag.label}
                 </Text>
@@ -272,9 +275,9 @@ function Product({ navigation }) {
             ]}
           />
         ) : (
-          productData.customOptions.map((customOption) => {
+          productData.customOptions.map((customOption, index) => {
             return (
-              <View style={styles.customOption}>
+              <View style={styles.customOption} key={index}>
                 <Text regular style={styles.customOptionText}>
                   {customOption.label}
                 </Text>
@@ -312,9 +315,9 @@ function Product({ navigation }) {
             >
               Extras
             </Text>
-            {productData.extraOptions.map((customOption) => {
+            {productData.extraOptions.map((customOption, index) => {
               return (
-                <View style={styles.customOption}>
+                <View style={styles.customOption} key={index}>
                   <Text regular style={styles.customOptionText}>
                     {customOption.label}
                   </Text>
@@ -344,7 +347,7 @@ function Product({ navigation }) {
         }}
       >
         {/* Add to Cart Button */}
-        <Button price={price + " EGP"}>Add to Cart</Button>
+        <Button price={price.toFixed(2) + " EGP"}>Add to Cart</Button>
       </View>
     </View>
   );
