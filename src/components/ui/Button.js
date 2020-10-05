@@ -18,12 +18,14 @@ export default function Button(props) {
   const colorScheme = {
     primary: "#C84D49",
     secondary: "#11203E",
+    success: "#7EAD61",
     disabled: "#C0C0C0",
   };
 
   // Determine button background color
   let buttonBG = colorScheme.primary; // Default
   if (props.secondary) buttonBG = colorScheme.secondary;
+  if (props.success) buttonBG = colorScheme.success;
 
   // Determine button icon
   let buttonIcon = "chevron-right"; // Default
