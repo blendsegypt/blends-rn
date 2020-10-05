@@ -26,13 +26,13 @@ function RecentOrders() {
     {
       id: "1",
       name: "Espresso",
-      price: "19.99 EGP",
+      price: "15.00 EGP",
       image: Espresso,
     },
     {
       id: "2",
       name: "Latte",
-      price: "24.99 EGP",
+      price: "25.00 EGP",
       image: Latte,
     },
   ];

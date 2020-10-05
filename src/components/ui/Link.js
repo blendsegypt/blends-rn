@@ -5,8 +5,12 @@ import Text from "./Text";
 
 export default function Link(props) {
   return (
-    <TouchableOpacity>
-      <Text style={styles.text}>{props.children}</Text>
+    <TouchableOpacity
+      onPress={() => {
+        if (props.onPress) props.onPress();
+      }}
+    >
+      <Text style={[styles.text, props.style]}>{props.children}</Text>
     </TouchableOpacity>
   );
 }

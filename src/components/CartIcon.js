@@ -5,10 +5,15 @@ import { FontAwesome } from "@expo/vector-icons";
 //UI Components
 import Text from "../components/ui/Text";
 
-function CartIcon() {
+function CartIcon({ navigation }) {
   return (
     <View style={styles.buttonContainer}>
-      <TouchableOpacity style={[styles.iconicButton, styles.cartButton]}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Cart");
+        }}
+        style={[styles.iconicButton, styles.cartButton]}
+      >
         <FontAwesome name="shopping-cart" size={21} color="white" />
       </TouchableOpacity>
       <View style={[styles.tag, styles.cartTag]}>

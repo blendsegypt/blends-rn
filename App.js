@@ -10,6 +10,7 @@ import Home from "./src/screens/Home";
 import PinDrop from "./src/screens/PinDrop";
 import Support from "./src/screens/Support";
 import Product from "./src/screens/Product";
+import Cart from "./src/screens/Cart";
 //Tab Navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -45,6 +46,7 @@ function App() {
             <Stack.Screen name="PinDrop" component={PinDrop} />
             <Stack.Screen name="Home" component={HomeTabs} />
             <Stack.Screen name="Product" component={Product} />
+            <Stack.Screen name="Cart" component={Cart} />
           </Stack.Navigator>
         </NavigationContainer>
         <StatusBar style="dark" />

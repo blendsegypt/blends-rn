@@ -27,7 +27,7 @@ function Product({ navigation }) {
     name: "Latte",
     desc:
       "Coffee drink made with espresso, steamed milk and thin layer of foam",
-    price: 24.99,
+    price: 25.0,
     tags: [
       {
         bgColor: "#F4D977",
@@ -46,11 +46,13 @@ function Product({ navigation }) {
             label: "Small (0 EGP)",
             price: 0,
             value: "sm",
+            textValue: "Small",
           },
           {
             label: "Large (5 EGP)",
             price: 5,
             value: "lg",
+            textValue: "Large",
           },
         ],
       },
@@ -61,11 +63,13 @@ function Product({ navigation }) {
             label: "Skimmed (0 EGP)",
             price: 0,
             value: "skm",
+            textValue: "Skimmed",
           },
           {
             label: "Full Cream (0 EGP)",
             price: 0,
             value: "fc",
+            textValue: "Full Cream",
           },
         ],
       },
@@ -78,11 +82,13 @@ function Product({ navigation }) {
             label: "No (0 EGP)",
             price: 0,
             value: false,
+            textValue: "No Whipped Cream",
           },
           {
             label: "Yes (0 EGP)",
             price: 0,
             value: true,
+            textValue: "Whipped Cream",
           },
         ],
       },
@@ -99,7 +105,7 @@ function Product({ navigation }) {
   });
 
   // Product Custom Option handler
-  const addCustomOption = (label, value, price) => {
+  const addCustomOption = (label, value, price, textValue) => {
     let options = [...selectedOptions];
     // Remove option if it already exists
     options = options.filter((option) => {
@@ -109,6 +115,7 @@ function Product({ navigation }) {
       label,
       value,
       price,
+      textValue,
     };
     options.push(option);
     setSelectedOptions(options);
@@ -141,7 +148,7 @@ function Product({ navigation }) {
               color="#11203E"
             />
           </TouchableOpacity>
-          <CartIcon />
+          <CartIcon navigation={navigation} />
         </View>
       </SafeAreaView>
       {/* Product Image */}
@@ -276,10 +283,19 @@ function Product({ navigation }) {
                     items={customOption.options}
                     onChange={(value) => {
                       let price;
+                      let textValue;
                       customOption.options.forEach((option) => {
-                        if (option.value == value) price = option.price;
+                        if (option.value == value) {
+                          price = option.price;
+                          textValue = option.textValue;
+                        }
                       });
-                      addCustomOption(customOption.label, value, price);
+                      addCustomOption(
+                        customOption.label,
+                        value,
+                        price,
+                        textValue
+                      );
                     }}
                   />
                 </View>

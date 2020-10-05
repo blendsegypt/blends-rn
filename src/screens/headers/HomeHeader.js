@@ -32,7 +32,7 @@ function HomeHeader({ user, removeAddress, navigation }) {
             </Text>
           </View>
         </View>
-        <CartIcon />
+        <CartIcon navigation={navigation} />
       </View>
     </>
   );

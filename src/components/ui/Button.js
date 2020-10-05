@@ -2,6 +2,7 @@ import React from "react";
 import {
   View,
   StyleSheet,
+  Image,
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from "react-native";
@@ -9,6 +10,8 @@ import {
 import Text from "./Text";
 //Icons Font
 import { FontAwesome } from "@expo/vector-icons";
+//Blends Icon (for blend icon-based buttons)
+import BlendsIconWhite from "../../../assets/BlendsIconWhite.png";
 
 export default function Button(props) {
   // Blends color scheme
@@ -45,6 +48,27 @@ export default function Button(props) {
     );
   }
 
+  let symbol;
+  if (props.price) {
+    symbol = (
+      <Text bold style={styles.price}>
+        {props.price}
+      </Text>
+    );
+  } else if (props.blends) {
+    symbol = (
+      <Image source={BlendsIconWhite} style={{ width: 22, height: 17 }} />
+    );
+  } else {
+    symbol = (
+      <FontAwesome
+        style={styles.icon}
+        name={buttonIcon}
+        size={12}
+        color="white"
+      />
+    );
+  }
   return (
     <TouchableOpacity
       style={[
@@ -57,18 +81,7 @@ export default function Button(props) {
       }}
     >
       <Text style={styles.text}>{props.children}</Text>
-      {props.price ? (
-        <Text bold style={styles.price}>
-          {props.price}
-        </Text>
-      ) : (
-        <FontAwesome
-          style={styles.icon}
-          name={buttonIcon}
-          size={12}
-          color="white"
-        />
-      )}
+      {symbol}
     </TouchableOpacity>
   );
 }

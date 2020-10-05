@@ -1,5 +1,73 @@
-let defaultState = {};
+/*
+ *
+ *  Cart Reducer
+ *
+ */
 
-export default function cartReducer(state = defaultState, action) {
-  return state;
+//Assets (for testing!!)
+import Latte from "../../../assets/Latte.png";
+import Espresso from "../../../assets/Espresso.png";
+
+let exampleCart = [
+  {
+    id: 1,
+    image: Latte,
+    name: "Latte",
+    price: 25.0,
+    quantity: 1,
+    selectedOptions: [
+      {
+        label: "Cup Size",
+        value: "sm",
+        price: "0",
+        textValue: "Small",
+      },
+      {
+        label: "Milk Type",
+        value: "skm",
+        price: "0",
+        textValue: "Skimmed",
+      },
+    ],
+  },
+  {
+    id: 2,
+    image: Espresso,
+    name: "Espresso",
+    price: 15.0,
+    quantity: 1,
+    selectedOptions: [
+      {
+        label: "Cup Size",
+        value: "sm",
+        price: "0",
+        textValue: "Small",
+      },
+    ],
+  },
+];
+
+export default function cartReducer(state = exampleCart, action) {
+  let newState;
+  switch (action.type) {
+    case "ADD_TO_CART":
+      // Push new item to cart array
+      return [...state].push(action.item);
+    case "CHANGE_QUANTITY":
+      // Copy state to avoid mutation
+      newState = [...state];
+      // Find target item and change its quantity
+      newState.forEach((item) => {
+        if (item.id == action.itemID) item.quantity = action.newQuantity;
+      });
+      return newState;
+    case "REMOVE_FROM_CART":
+      // Copy state to aoid mutation
+      newState = [...state];
+      // Find target item and filter it out of cart array
+      newState = newState.filter((item) => item.id != action.itemID);
+      return newState;
+    default:
+      return state;
+  }
 }
