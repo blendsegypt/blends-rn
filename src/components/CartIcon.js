@@ -4,8 +4,11 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 //UI Components
 import Text from "../components/ui/Text";
+//Redux
+import { connect } from "react-redux";
+import { getCartItems } from "../redux/selectors/cartItems";
 
-function CartIcon({ navigation }) {
+function CartIcon({ navigation, cartCount }) {
   return (
     <View style={styles.buttonContainer}>
       <TouchableOpacity
@@ -16,9 +19,11 @@ function CartIcon({ navigation }) {
       >
         <FontAwesome name="shopping-cart" size={21} color="white" />
       </TouchableOpacity>
-      <View style={[styles.tag, styles.cartTag]}>
-        <Text style={[styles.tagText]}>5</Text>
-      </View>
+      {cartCount > 0 && (
+        <View style={[styles.tag, styles.cartTag]}>
+          <Text style={[styles.tagText]}>{cartCount}</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -68,4 +73,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CartIcon;
+const mapStateToProps = (state) => {
+  const { cartCount } = getCartItems(state);
+  return {
+    cartCount,
+  };
+};
+
+export default connect(mapStateToProps, null)(CartIcon);
