@@ -73,7 +73,7 @@ function CartItem({
       {/* Product Price */}
       <View style={{ flex: 0.3 }}>
         <Text semiBold style={styles.price}>
-          {price} EGP
+          {price.toFixed(2)} EGP
         </Text>
       </View>
       {/* Remove from Cart */}

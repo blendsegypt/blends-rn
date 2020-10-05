@@ -13,7 +13,7 @@ let exampleCart = [
     id: 1,
     image: Latte,
     name: "Latte",
-    price: 24.99,
+    price: 25.0,
     quantity: 1,
     selectedOptions: [
       {
@@ -34,7 +34,7 @@ let exampleCart = [
     id: 2,
     image: Espresso,
     name: "Espresso",
-    price: 14.99,
+    price: 15.0,
     quantity: 1,
     selectedOptions: [
       {

@@ -27,7 +27,7 @@ function Product({ navigation }) {
     name: "Latte",
     desc:
       "Coffee drink made with espresso, steamed milk and thin layer of foam",
-    price: 24.99,
+    price: 25.0,
     tags: [
       {
         bgColor: "#F4D977",

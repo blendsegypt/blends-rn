@@ -31,28 +31,28 @@ function Products({ navigation }) {
     {
       id: "1",
       name: "Espresso",
-      price: "14.99 EGP",
+      price: "15.00 EGP",
       image: Espresso,
       offer: true,
-      newPrice: "10.99 EGP",
+      newPrice: "11.00 EGP",
     },
     {
       id: "2",
       name: "Latte",
-      price: "24.99 EGP",
+      price: "25.00 EGP",
       image: Latte,
     },
     {
       id: "3",
       name: "Lay’s Potato Chips Tomatoes Flavor (30g)",
-      price: "14.99 EGP",
+      price: "11.00 EGP",
       image: PotatoChips,
       instantAdd: true,
     },
     {
       id: "4",
       name: "Latte",
-      price: "24.99 EGP",
+      price: "25.00 EGP",
       image: Latte,
     },
   ];
