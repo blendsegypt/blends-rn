@@ -4,8 +4,20 @@ import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Text from "./ui/Text";
 //Icons Font
 import { FontAwesome } from "@expo/vector-icons";
+//Redux
+import { connect } from "react-redux";
+import { removeFromCart, changeQuantity } from "../redux/actions/cart.action";
 
-function CartItem({ image, name, price, quantity, selectedOptions }) {
+function CartItem({
+  id,
+  image,
+  name,
+  price,
+  quantity,
+  selectedOptions,
+  removeFromCart,
+  changeQuantity,
+}) {
   // Quantity state
   const [itemQuantity, setItemQuantity] = useState(quantity);
   // Generate the text for product customization
@@ -21,7 +33,9 @@ function CartItem({ image, name, price, quantity, selectedOptions }) {
       <View style={{ flex: 0.6, paddingLeft: 10 }}>
         {/* Title and Custom requests */}
         <Text style={{ fontSize: 15 }}>{name}</Text>
-        <Text regular>{selectedOptionsText}</Text>
+        <Text regular style={{ color: "#999999" }}>
+          {selectedOptionsText}
+        </Text>
         {/* Increase / Decrease quantity */}
         <View style={styles.changeQuantity}>
           {/* Decrease Quantity */}
@@ -32,7 +46,11 @@ function CartItem({ image, name, price, quantity, selectedOptions }) {
               itemQuantity > 1 && { backgroundColor: "#8BBE78" },
             ]}
             onPress={() => {
-              if (itemQuantity > 1) setItemQuantity(itemQuantity - 1);
+              if (itemQuantity > 1) {
+                const newQuantity = itemQuantity - 1;
+                setItemQuantity(newQuantity);
+                changeQuantity(id, newQuantity);
+              }
             }}
           >
             <Text style={{ color: "#fff", fontSize: 20 }}>-</Text>
@@ -43,7 +61,9 @@ function CartItem({ image, name, price, quantity, selectedOptions }) {
           <TouchableOpacity
             style={[styles.quantityButton, { backgroundColor: "#8BBE78" }]}
             onPress={() => {
-              setItemQuantity(itemQuantity + 1);
+              const newQuantity = itemQuantity + 1;
+              setItemQuantity(newQuantity);
+              changeQuantity(id, newQuantity);
             }}
           >
             <Text style={{ color: "#fff", fontSize: 20 }}>+</Text>
@@ -59,7 +79,12 @@ function CartItem({ image, name, price, quantity, selectedOptions }) {
       {/* Remove from Cart */}
       <View style={{ flex: 0.1 }}>
         <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity style={styles.deleteContainer}>
+          <TouchableOpacity
+            style={styles.deleteContainer}
+            onPress={() => {
+              removeFromCart(id);
+            }}
+          >
             <FontAwesome name="trash" size={14} color="#fff" />
           </TouchableOpacity>
         </View>
@@ -71,6 +96,7 @@ function CartItem({ image, name, price, quantity, selectedOptions }) {
 const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
+    marginTop: 30,
   },
   price: {
     color: "#11203E",
@@ -101,4 +127,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CartItem;
+const mapDispatchToProps = (dispatch) => ({
+  removeFromCart: (itemID) => {
+    dispatch(removeFromCart(itemID));
+  },
+  changeQuantity: (itemID, newQuantity) => {
+    dispatch(changeQuantity(itemID, newQuantity));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(CartItem);
