@@ -67,13 +67,13 @@ function Product({ navigation, addToCart }) {
             label: "Skimmed (0 EGP)",
             price: 0,
             value: "skm",
-            textValue: "Skimmed",
+            textValue: "Skimmed Milk",
           },
           {
             label: "Full Cream (0 EGP)",
             price: 0,
             value: "fc",
-            textValue: "Full Cream",
+            textValue: "Full Cream Milk",
           },
         ],
       },
@@ -139,9 +139,18 @@ function Product({ navigation, addToCart }) {
   useEffect(() => {
     // Add default customization options
     const defaultOptions = [];
-    productData.customOptions.forEach((option) => {
-      defaultOptions.push(option.options[0]);
+    productData.customOptions.forEach((option, index) => {
+      // First option of each customization option is always the default
+      const firstOption = option.options[0];
+      const defaultOption = {
+        label: option.label,
+        price: firstOption.price,
+        textValue: firstOption.textValue,
+        value: firstOption.value,
+      };
+      defaultOptions.push(defaultOption);
     });
+    console.log(productData);
     setSelectedOptions(defaultOptions);
   }, []);
 
