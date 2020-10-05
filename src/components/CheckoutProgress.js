@@ -19,7 +19,7 @@ function CheckoutProgress({ steps }) {
         {steps.map((step, index) => {
           const lastIndex = steps.length - 1;
           return (
-            <>
+            <React.Fragment key={index}>
               <View
                 style={[
                   styles.circle,
@@ -36,7 +36,7 @@ function CheckoutProgress({ steps }) {
                   ]}
                 ></View>
               )}
-            </>
+            </React.Fragment>
           );
         })}
       </View>
@@ -50,7 +50,7 @@ function CheckoutProgress({ steps }) {
       >
         {steps.map((step, index) => {
           return (
-            <View>
+            <View key={index}>
               <Text
                 regular
                 style={{
