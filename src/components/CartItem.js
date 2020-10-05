@@ -22,7 +22,11 @@ function CartItem({
   let selectedOptionsText = "";
   selectedOptions.forEach((option, index) => {
     selectedOptionsText += option.textValue;
-    if (index != selectedOptions.length - 1) selectedOptionsText += " & ";
+    if (index == selectedOptions.length - 2) {
+      selectedOptionsText += " & ";
+    } else if (index != selectedOptions.length - 1) {
+      selectedOptionsText += ", ";
+    }
   });
   return (
     <View style={styles.itemContainer}>
