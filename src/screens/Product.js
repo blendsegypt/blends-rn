@@ -19,9 +19,13 @@ import CartIcon from "../components/CartIcon";
 import LatteLarge from "../../assets/LatteLarge.png";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content";
+//Redux
+import { connect } from "react-redux";
+import { addToCart } from "../redux/actions/cart.action";
 
-function Product({ navigation }) {
+function Product({ navigation, addToCart }) {
   const [loading, setLoading] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
   const [productData, setProductData] = useState({
     image: LatteLarge,
     name: "Latte",
@@ -123,12 +127,39 @@ function Product({ navigation }) {
 
   // Refresh Price based on selected options
   useEffect(() => {
+    // Calculate Total price (with customization)
     let amount = 0;
     selectedOptions.forEach((option) => {
       amount += option.price;
     });
     setPrice(productData.price + amount);
   }, [selectedOptions]);
+
+  // Add default options to selectedOptions array
+  useEffect(() => {
+    // Add default customization options
+    const defaultOptions = [];
+    productData.customOptions.forEach((option) => {
+      defaultOptions.push(option.options[0]);
+    });
+    setSelectedOptions(defaultOptions);
+  }, []);
+
+  // Add Product to Cart
+  const addProductToCart = () => {
+    const cartItem = {
+      image: productData.image,
+      name: productData.name,
+      price: productData.price,
+      quantity: 1,
+      selectedOptions,
+    };
+    addToCart(cartItem);
+    setAddedToCart(true);
+    setTimeout(() => {
+      navigation.navigate("Home");
+    }, 500);
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -347,7 +378,20 @@ function Product({ navigation }) {
         }}
       >
         {/* Add to Cart Button */}
-        <Button price={price.toFixed(2) + " EGP"}>Add to Cart</Button>
+        {!addedToCart ? (
+          <Button
+            price={price.toFixed(2) + " EGP"}
+            onPress={() => {
+              addProductToCart();
+            }}
+          >
+            Add to Cart
+          </Button>
+        ) : (
+          <Button noIcon success>
+            Added to Cart!
+          </Button>
+        )}
       </View>
     </View>
   );
@@ -421,4 +465,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Product;
+const mapDispatchToProps = (dispatch) => ({
+  addToCart: (item) => {
+    dispatch(addToCart(item));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(Product);

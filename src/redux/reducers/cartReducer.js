@@ -4,55 +4,24 @@
  *
  */
 
-//Assets (for testing!!)
-import Latte from "../../../assets/Latte.png";
-import Espresso from "../../../assets/Espresso.png";
+// Generate a unique ID for each item in cart
+const generateID = (cartItem) => {
+  let id = cartItem.name;
+  id += String(Math.floor(Math.random() * 1000));
+  return id;
+};
 
-let exampleCart = [
-  {
-    id: 1,
-    image: Latte,
-    name: "Latte",
-    price: 25.0,
-    quantity: 1,
-    selectedOptions: [
-      {
-        label: "Cup Size",
-        value: "sm",
-        price: "0",
-        textValue: "Small",
-      },
-      {
-        label: "Milk Type",
-        value: "skm",
-        price: "0",
-        textValue: "Skimmed",
-      },
-    ],
-  },
-  {
-    id: 2,
-    image: Espresso,
-    name: "Espresso",
-    price: 15.0,
-    quantity: 1,
-    selectedOptions: [
-      {
-        label: "Cup Size",
-        value: "sm",
-        price: "0",
-        textValue: "Small",
-      },
-    ],
-  },
-];
-
-export default function cartReducer(state = exampleCart, action) {
+export default function cartReducer(state = [], action) {
   let newState;
   switch (action.type) {
     case "ADD_TO_CART":
+      newState = [...state];
+      // Assign an id to the new item
+      action.item.id = generateID(action.item);
       // Push new item to cart array
-      return [...state].push(action.item);
+      newState.push(action.item);
+      console.log(newState);
+      return newState;
     case "CHANGE_QUANTITY":
       // Copy state to avoid mutation
       newState = [...state];
