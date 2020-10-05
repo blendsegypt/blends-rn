@@ -18,9 +18,7 @@ function CartItem({
   removeFromCart,
   changeQuantity,
 }) {
-  // Quantity state
-  const [itemQuantity, setItemQuantity] = useState(quantity);
-  // Generate the text for product customization
+  // Generate the text for product customization description
   let selectedOptionsText = "";
   selectedOptions.forEach((option, index) => {
     selectedOptionsText += option.textValue;
@@ -43,12 +41,11 @@ function CartItem({
             style={[
               styles.quantityButton,
               { paddingHorizontal: 9 },
-              itemQuantity > 1 && { backgroundColor: "#8BBE78" },
+              quantity > 1 && { backgroundColor: "#8BBE78" },
             ]}
             onPress={() => {
-              if (itemQuantity > 1) {
-                const newQuantity = itemQuantity - 1;
-                setItemQuantity(newQuantity);
+              if (quantity > 1) {
+                const newQuantity = quantity - 1;
                 changeQuantity(id, newQuantity);
               }
             }}
@@ -56,13 +53,12 @@ function CartItem({
             <Text style={{ color: "#fff", fontSize: 20 }}>-</Text>
           </TouchableOpacity>
           {/* Quantity */}
-          <Text style={styles.productQuantity}>{itemQuantity}</Text>
+          <Text style={styles.productQuantity}>{quantity}</Text>
           {/* Increase Quantity */}
           <TouchableOpacity
             style={[styles.quantityButton, { backgroundColor: "#8BBE78" }]}
             onPress={() => {
-              const newQuantity = itemQuantity + 1;
-              setItemQuantity(newQuantity);
+              const newQuantity = quantity + 1;
               changeQuantity(id, newQuantity);
             }}
           >
