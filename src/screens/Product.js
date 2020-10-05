@@ -366,10 +366,19 @@ function Product({ navigation, addToCart }) {
                       items={customOption.options}
                       onChange={(value) => {
                         let price;
+                        let textValue;
                         customOption.options.forEach((option) => {
-                          if (option.value == value) price = option.price;
+                          if (option.value == value) {
+                            price = option.price;
+                            textValue = option.textValue;
+                          }
                         });
-                        addCustomOption(customOption.label, value, price);
+                        addCustomOption(
+                          customOption.label,
+                          value,
+                          price,
+                          textValue
+                        );
                       }}
                     />
                   </View>
