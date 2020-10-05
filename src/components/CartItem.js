@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 //UI Components
 import Text from "./ui/Text";
@@ -6,6 +6,8 @@ import Text from "./ui/Text";
 import { FontAwesome } from "@expo/vector-icons";
 
 function CartItem({ image, name, price, quantity, selectedOptions }) {
+  // Quantity state
+  const [itemQuantity, setItemQuantity] = useState(quantity);
   // Generate the text for product customization
   let selectedOptionsText = "";
   selectedOptions.forEach((option, index) => {
@@ -22,14 +24,27 @@ function CartItem({ image, name, price, quantity, selectedOptions }) {
         <Text regular>{selectedOptionsText}</Text>
         {/* Increase / Decrease quantity */}
         <View style={styles.changeQuantity}>
+          {/* Decrease Quantity */}
           <TouchableOpacity
-            style={[styles.quantityButton, { paddingHorizontal: 9 }]}
+            style={[
+              styles.quantityButton,
+              { paddingHorizontal: 9 },
+              itemQuantity > 1 && { backgroundColor: "#8BBE78" },
+            ]}
+            onPress={() => {
+              if (itemQuantity > 1) setItemQuantity(itemQuantity - 1);
+            }}
           >
             <Text style={{ color: "#fff", fontSize: 20 }}>-</Text>
           </TouchableOpacity>
-          <Text style={styles.productQuantity}>{quantity}</Text>
+          {/* Quantity */}
+          <Text style={styles.productQuantity}>{itemQuantity}</Text>
+          {/* Increase Quantity */}
           <TouchableOpacity
             style={[styles.quantityButton, { backgroundColor: "#8BBE78" }]}
+            onPress={() => {
+              setItemQuantity(itemQuantity + 1);
+            }}
           >
             <Text style={{ color: "#fff", fontSize: 20 }}>+</Text>
           </TouchableOpacity>
