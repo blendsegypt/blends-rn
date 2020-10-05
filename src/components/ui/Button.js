@@ -61,6 +61,8 @@ export default function Button(props) {
     symbol = (
       <Image source={BlendsIconWhite} style={{ width: 22, height: 17 }} />
     );
+  } else if (props.noIcon) {
+    symbol = <></>;
   } else {
     symbol = (
       <FontAwesome
