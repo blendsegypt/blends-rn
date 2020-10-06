@@ -111,9 +111,15 @@ function Product({ navigation, addToCart }) {
   // Product Custom Option handler
   const addCustomOption = (label, value, price, textValue) => {
     let options = [...selectedOptions];
-    // Remove option if it already exists
-    options = options.filter((option) => {
-      return label != option.label;
+    // Change option if it exists in selectedOptions
+    let alreadyExists = false;
+    let alreadyExistsIndex = null;
+    options.forEach((option, index) => {
+      // return label != option.label;
+      if (label == option.label) {
+        alreadyExists = true;
+        alreadyExistsIndex = index;
+      }
     });
     const option = {
       label,
@@ -121,7 +127,11 @@ function Product({ navigation, addToCart }) {
       price,
       textValue,
     };
-    options.push(option);
+    if (alreadyExists) {
+      options[alreadyExistsIndex] = option;
+    } else {
+      options.push(option);
+    }
     setSelectedOptions(options);
   };
 
@@ -150,7 +160,6 @@ function Product({ navigation, addToCart }) {
       };
       defaultOptions.push(defaultOption);
     });
-    console.log(productData);
     setSelectedOptions(defaultOptions);
   }, []);
 
