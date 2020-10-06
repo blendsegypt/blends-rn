@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   ScrollView,
@@ -15,6 +15,8 @@ import { FontAwesome } from "@expo/vector-icons";
 //Components
 import CheckoutProgress from "../components/CheckoutProgress";
 import CartItem from "../components/CartItem";
+//Bottom Sheets
+import PhoneConfirmation from "./PhoneConfirmation";
 //Redux
 import { connect } from "react-redux";
 import { getCartItems } from "../redux/selectors/cartItems";
@@ -22,6 +24,9 @@ import { getCartItems } from "../redux/selectors/cartItems";
 import EmptyCartIllustration from "../../assets/EmptyCartIllustration.png";
 
 function Cart({ navigation, cartItems, cartTotal, cartCount }) {
+  // Show / hide phone confirmation bottom sheet
+  const [showPhoneConfirmation, setShowPhoneConfirmation] = useState(false);
+
   // Check if cart is empty
   if (cartCount == 0) {
     return (
@@ -80,58 +85,76 @@ function Cart({ navigation, cartItems, cartTotal, cartCount }) {
     );
   }
   return (
-    <View style={{ flex: 1 }}>
-      <SafeAreaView>
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Home");
-            }}
-            style={{ flex: 0.5, paddingTop: 25 }}
-          >
-            <FontAwesome name="chevron-left" size={22} color="#11203E" />
-          </TouchableOpacity>
-          <Text bold style={styles.screenTitle}>
-            Cart{" "}
-          </Text>
-          <View style={styles.count}>
-            <Text style={{ color: "#fff" }}>{cartCount}</Text>
+    <>
+      {showPhoneConfirmation && (
+        <TouchableOpacity
+          style={styles.overlay}
+          onPress={() => {
+            setShowPhoneConfirmation(false);
+          }}
+        ></TouchableOpacity>
+      )}
+      <View style={{ flex: 1 }}>
+        <SafeAreaView>
+          <View style={styles.header}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Home");
+              }}
+              style={{ flex: 0.5, paddingTop: 25 }}
+            >
+              <FontAwesome name="chevron-left" size={22} color="#11203E" />
+            </TouchableOpacity>
+            <Text bold style={styles.screenTitle}>
+              Cart{" "}
+            </Text>
+            <View style={styles.count}>
+              <Text style={{ color: "#fff" }}>{cartCount}</Text>
+            </View>
           </View>
+        </SafeAreaView>
+        <CheckoutProgress
+          steps={[
+            {
+              label: "Cart",
+              active: true,
+            },
+            {
+              label: "Delivery Details",
+              active: false,
+            },
+            {
+              label: "Confirm",
+              active: false,
+            },
+          ]}
+        />
+        {/* Cart Items */}
+        <ScrollView style={styles.cartContainer}>
+          {cartItems.map((item, index) => {
+            return <CartItem {...item} key={index} />;
+          })}
+        </ScrollView>
+        <View
+          style={{
+            paddingHorizontal: 25,
+            backgroundColor: "#fff",
+            paddingBottom: 25,
+          }}
+        >
+          {/* Add to Cart Button */}
+          <Button
+            price={cartTotal + " EGP"}
+            onPress={() => {
+              setShowPhoneConfirmation(true);
+            }}
+          >
+            Checkout
+          </Button>
         </View>
-      </SafeAreaView>
-      <CheckoutProgress
-        steps={[
-          {
-            label: "Cart",
-            active: true,
-          },
-          {
-            label: "Delivery Details",
-            active: false,
-          },
-          {
-            label: "Confirm",
-            active: false,
-          },
-        ]}
-      />
-      {/* Cart Items */}
-      <ScrollView style={styles.cartContainer}>
-        {cartItems.map((item, index) => {
-          return <CartItem {...item} key={index} />;
-        })}
-      </ScrollView>
-      <View
-        style={{
-          paddingHorizontal: 25,
-          backgroundColor: "#fff",
-          paddingBottom: 25,
-        }}
-      >
-        {/* Add to Cart Button */}
-        <Button price={cartTotal + " EGP"}>Checkout</Button>
       </View>
-    </View>
+      {showPhoneConfirmation && <PhoneConfirmation />}
+    </>
   );
 }
 
@@ -182,6 +205,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#919191",
     lineHeight: 22,
+  },
+  overlay: {
+    backgroundColor: "black",
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    opacity: 0.8,
+    zIndex: 99,
   },
 });
 
