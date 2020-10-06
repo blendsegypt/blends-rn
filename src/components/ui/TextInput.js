@@ -13,9 +13,14 @@ export default function (props) {
 
   return (
     <TextInput
-      style={[styles.textInput, fontsLoaded ? customFont : {}]}
+      style={[styles.textInput, fontsLoaded ? customFont : {}, props.style]}
       placeholder={props.children}
       placeholderTextColor="#BCBCBC"
+      onChangeText={(text) => {
+        if (props.onChangeText) props.onChangeText(text);
+      }}
+      keyboardType={props.keyboardType}
+      maxLength={props.maxLength}
     />
   );
 }
