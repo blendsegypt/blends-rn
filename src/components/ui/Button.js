@@ -36,7 +36,11 @@ export default function Button(props) {
     return (
       <TouchableWithoutFeedback>
         <View
-          style={[styles.button, { backgroundColor: colorScheme.disabled }]}
+          style={[
+            styles.button,
+            { backgroundColor: colorScheme.disabled },
+            props.style,
+          ]}
         >
           <Text style={styles.text}>{props.children}</Text>
           <FontAwesome
