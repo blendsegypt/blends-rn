@@ -55,6 +55,7 @@ function PinDrop({ addAddress, user, navigation }) {
 
   // Detect user's location
   const getUserLocation = async () => {
+    if (user.address) return;
     let { status } = await Location.requestPermissionsAsync();
     if (status !== "granted") {
       setErrorMsg("Please allow Blends to access your Location.");
