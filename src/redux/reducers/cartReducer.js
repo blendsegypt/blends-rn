@@ -20,7 +20,6 @@ export default function cartReducer(state = [], action) {
       action.item.id = generateID(action.item);
       // Push new item to cart array
       newState.push(action.item);
-      console.log(newState);
       return newState;
     case "CHANGE_QUANTITY":
       // Copy state to avoid mutation
