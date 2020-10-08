@@ -45,7 +45,7 @@ function Cart({
       navigation.navigate("AddressDetails");
     } else if (phoneNumberConfirmed && addressConfirmed) {
       // If both phone number and address are confirmed, navigate to Review Order screen
-      navigation.navigate("ReviewOrder");
+      navigation.navigate("ReviewOrder", { threeStepsCheckout: false });
     } else {
       // If nothing is confirmed, show phone confirmation bottom sheet
       setShowPhoneConfirmation(true);

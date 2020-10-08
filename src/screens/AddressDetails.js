@@ -95,7 +95,7 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
       deliveryNotes: deliveryNotes.value,
     };
     addAddress(address);
-    navigation.navigate("ReviewOrder");
+    navigation.navigate("ReviewOrder", { threeStepsCheckout: true });
   };
 
   return (
