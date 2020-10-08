@@ -23,6 +23,7 @@ export default function userReducer(state = { savedAddresses: [] }, action) {
       return newState;
     case "ADD_ADDRESS":
       newState = { ...state };
+      newState.addressConfirmed = true;
       newState.savedAddresses.push(action.address);
       return newState;
     default:
