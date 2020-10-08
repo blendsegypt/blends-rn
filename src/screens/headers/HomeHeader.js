@@ -12,6 +12,14 @@ import { removeLocation } from "../../redux/actions/user.action";
 import CartIcon from "../../components/CartIcon";
 
 function HomeHeader({ user, removeLocation, navigation }) {
+  let location;
+  if (user.savedAddresses.length > 0) {
+    location = user.savedAddresses[0].addressName;
+  } else if (user.location) {
+    location = user.location.city;
+  } else {
+    location = "Not Selected";
+  }
   return (
     <>
       {/* Header */}
@@ -27,9 +35,7 @@ function HomeHeader({ user, removeLocation, navigation }) {
             <FontAwesome name="map-marker" size={24} color="white" />
           </TouchableOpacity>
           <View style={[styles.tag, styles.locationTag]}>
-            <Text style={[styles.tagText]}>
-              {user.location ? user.location.city : "Not Selected"}
-            </Text>
+            <Text style={[styles.tagText]}>{location}</Text>
           </View>
         </View>
         <CartIcon navigation={navigation} />
