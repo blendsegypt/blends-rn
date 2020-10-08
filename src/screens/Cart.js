@@ -27,6 +27,11 @@ function Cart({ navigation, cartItems, cartTotal, cartCount }) {
   // Show / hide phone confirmation bottom sheet
   const [showPhoneConfirmation, setShowPhoneConfirmation] = useState(false);
 
+  const confirmUser = () => {
+    setShowPhoneConfirmation(false);
+    navigation.navigate("DeliveryDetails");
+  };
+
   // Check if cart is empty
   if (cartCount == 0) {
     return (
@@ -153,7 +158,7 @@ function Cart({ navigation, cartItems, cartTotal, cartCount }) {
           </Button>
         </View>
       </View>
-      {showPhoneConfirmation && <PhoneConfirmation />}
+      {showPhoneConfirmation && <PhoneConfirmation confirmUser={confirmUser} />}
     </>
   );
 }
