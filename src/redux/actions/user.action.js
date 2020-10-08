@@ -18,7 +18,7 @@ export const confirmPhoneNumber = (phoneNumber) => ({
   phoneNumber,
 });
 
-export const addAddres = (address) => ({
+export const addAddress = (address) => ({
   type: "ADD_ADDRESS",
   address,
 });
