@@ -16,8 +16,10 @@ import RecentOrders from "../components/RecentOrders";
 import Products from "../components/Products";
 //Headers
 import HomeHeader from "./headers/HomeHeader";
+//Redux
+import { connect } from "react-redux";
 
-function Home({ navigation }) {
+function Home({ navigation, firstName }) {
   return (
     <>
       <View style={{ backgroundColor: "#fff" }}>
@@ -37,7 +39,7 @@ function Home({ navigation }) {
                   style={[styles.goodMorningText, { paddingLeft: 3 }]}
                   semiBold
                 >
-                  guest!
+                  {firstName}!
                 </Text>
               </View>
               {/* It's Coffee Time */}
@@ -118,4 +120,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+const mapStateToProps = (state) => {
+  if (state.userReducer.savedAddresses.length > 0) {
+    const firstName = state.userReducer.savedAddresses[0].fullName.split(
+      " "
+    )[0];
+    return {
+      firstName,
+    };
+  }
+  return {
+    firstName: "guest",
+  };
+};
+
+export default connect(mapStateToProps, null)(Home);
