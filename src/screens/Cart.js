@@ -36,7 +36,6 @@ function Cart({
 
   const confirmUser = () => {
     setShowPhoneConfirmation(false);
-    setThreeStepsCheckout(true);
     navigation.navigate("AddressDetails");
   };
 
