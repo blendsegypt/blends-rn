@@ -12,3 +12,8 @@ export const addAddress = (address) => ({
 export const removeAddress = () => ({
   type: "REMOVE_ADDRESS",
 });
+
+export const confirmPhoneNumber = (phoneNumber) => ({
+  type: "CONFIRM_PHONE_NUMBER",
+  phoneNumber,
+});
