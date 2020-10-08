@@ -4,13 +4,13 @@
  *
  */
 
-export const addAddress = (address) => ({
-  type: "ADD_ADDRESS",
-  address,
+export const addLocation = (location) => ({
+  type: "ADD_LOCATION",
+  location,
 });
 
-export const removeAddress = () => ({
-  type: "REMOVE_ADDRESS",
+export const removeLocation = () => ({
+  type: "REMOVE_LOCATION",
 });
 
 export const confirmPhoneNumber = (phoneNumber) => ({

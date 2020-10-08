@@ -7,14 +7,14 @@
 export default function userReducer(state = {}, action) {
   let newState;
   switch (action.type) {
-    case "ADD_ADDRESS":
+    case "ADD_LOCATION":
       newState = { ...state };
-      delete newState.address;
-      newState.address = action.address;
+      delete newState.location;
+      newState.location = action.location;
       return newState;
-    case "REMOVE_ADDRESS":
+    case "REMOVE_LOCATION":
       newState = { ...state };
-      delete newState.address;
+      delete newState.location;
       return newState;
     case "CONFIRM_PHONE_NUMBER":
       newState = { ...state };
