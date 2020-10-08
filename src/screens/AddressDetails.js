@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -9,7 +9,6 @@ import {
 //UI Components
 import Text from "../components/ui/Text";
 import TextInput from "../components/ui/TextInput";
-import Link from "../components/ui/Link";
 import Button from "../components/ui/Button";
 //Icons Font
 import { FontAwesome } from "@expo/vector-icons";
@@ -17,10 +16,108 @@ import { FontAwesome } from "@expo/vector-icons";
 import CheckoutProgress from "../components/CheckoutProgress";
 //Redux
 import { connect } from "react-redux";
+import { addAddress } from "../redux/actions/user.action";
 //Keyboard Aware ScrollView
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-function AddressDetails({ navigation, userLocation }) {
+function AddressDetails({ navigation, userLocation, addAddress }) {
+  // Address Fields state
+  const [fullName, setFullName] = useState({
+    text: "Full Name",
+    value: "",
+    notEmpty: true,
+    regex: /^[a-zA-Z\s]*$/,
+    regexErrorMessage: "Full Name can only contain letters",
+    validated: false,
+    errors: [],
+  });
+  const [addressName, setAddressName] = useState({
+    text: "Address Name",
+    value: "",
+    notEmpty: true,
+    validated: false,
+    errors: [],
+  });
+  const [addressDesc, setAddressDesc] = useState({
+    text: "Address Description",
+    value: "",
+    notEmpty: true,
+    validated: false,
+    errors: [],
+  });
+  const [floor, setFloor] = useState({
+    value: "",
+  });
+  const [apartment, setApartment] = useState({
+    value: "",
+  });
+  const [deliveryNotes, setDeliveryNotes] = useState({
+    value: "",
+  });
+  // Review Order button state
+  const [buttonActive, setButtonActive] = useState(false);
+
+  // Universal field validation method
+  const validate = (field, fieldSetter) => {
+    let value = field.value;
+    let fieldText = field.text;
+    // Perform a deep clone to errors object
+    let errors = JSON.parse(JSON.stringify(field.errors));
+    // Check if field must not be empty
+    if (field.notEmpty) {
+      // Remove notEmpty error if it exists
+      errors = errors.filter((error) => error.type != "notEmpty");
+      if (value.length == 0) {
+        // Add notEmpty error
+        errors.push({
+          type: "notEmpty",
+          message: `${fieldText} cannot be empty`,
+        });
+      }
+    }
+    // Check if there's a regex for the field
+    if (field.regex) {
+      // Remove regex error if it exists
+      errors = errors.filter((error) => error.type != "regex");
+      if (!field.regex.test(value)) {
+        // Add regex error
+        errors.push({ type: "regex", message: field.regexErrorMessage });
+      }
+    }
+    fieldSetter({ ...field, errors, validated: true });
+  };
+
+  // Check if there's no errors, activate the continue button
+  useEffect(() => {
+    const errorsLength = [
+      ...fullName.errors,
+      ...addressName.errors,
+      ...addressDesc.errors,
+    ].length;
+    const fieldsValidated =
+      fullName.validated && addressName.validated && addressDesc.validated;
+
+    if (errorsLength == 0 && fieldsValidated) {
+      setButtonActive(true);
+    } else {
+      setButtonActive(false);
+    }
+  }, [fullName.errors, addressName.errors, addressDesc.errors]);
+
+  // Review order button handler
+  const reviewOrder = () => {
+    const address = {
+      fullName: fullName.value,
+      addressName: addressName.value,
+      addressDesc: addressDesc.value,
+      floor: floor.value,
+      apartment: apartment.value,
+      deliveryNotes: deliveryNotes.value,
+    };
+    addAddress(address);
+    navigation.navigate("ReviewOrder");
+  };
+
   return (
     <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
@@ -71,26 +168,80 @@ function AddressDetails({ navigation, userLocation }) {
                 {userLocation.street}
               </Text>
             </View>
+            {/* Error Messages */}
+            {[
+              ...fullName.errors,
+              ...addressName.errors,
+              ...addressDesc.errors,
+            ].map((error, index) => {
+              return (
+                <View style={styles.errorMessage} key={index}>
+                  <Text regular style={{ color: "#b55b5b" }}>
+                    {error.message}
+                  </Text>
+                </View>
+              );
+            })}
             {/* Address Form */}
             <View>
-              <TextInput style={styles.textInput}>Full Name</TextInput>
-              <TextInput style={styles.textInput}>
-                Address Name (eg. Home / Work)
+              <TextInput
+                style={styles.textInput}
+                onChangeText={(text) => {
+                  setFullName({ ...fullName, value: text });
+                }}
+                onBlur={() => {
+                  validate(fullName, setFullName);
+                }}
+              >
+                Full Name *
               </TextInput>
-              <TextInput style={styles.textInput}>
-                Address Description
+              <TextInput
+                style={styles.textInput}
+                onChangeText={(text) => {
+                  setAddressName({ ...addressName, value: text });
+                }}
+                onBlur={() => {
+                  validate(addressName, setAddressName);
+                }}
+              >
+                Address Name (eg. Home / Work) *
+              </TextInput>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={(text) => {
+                  setAddressDesc({ ...addressDesc, value: text });
+                }}
+                onBlur={() => {
+                  validate(addressDesc, setAddressDesc);
+                }}
+              >
+                Address Description *
               </TextInput>
               <View style={{ flexDirection: "row" }}>
                 <TextInput
                   style={[styles.textInput, { flex: 0.4, marginRight: 10 }]}
+                  keyboardType="numeric"
+                  onChangeText={(text) => {
+                    setFloor({ ...floor, value: text });
+                  }}
                 >
                   Floor
                 </TextInput>
-                <TextInput style={[styles.textInput, { flex: 0.6 }]}>
+                <TextInput
+                  style={[styles.textInput, { flex: 0.6 }]}
+                  onChangeText={(text) => {
+                    setApartment({ ...apartment, value: text });
+                  }}
+                >
                   Apartment
                 </TextInput>
               </View>
-              <TextInput style={styles.textInput}>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={(text) => {
+                  setDeliveryNotes({ ...deliveryNotes, value: text });
+                }}
+              >
                 Delivery Notes (eg. beside police station)
               </TextInput>
             </View>
@@ -103,7 +254,11 @@ function AddressDetails({ navigation, userLocation }) {
             paddingBottom: 25,
           }}
         >
-          <Button>Review Order</Button>
+          {buttonActive ? (
+            <Button onPress={() => reviewOrder()}>Review Order</Button>
+          ) : (
+            <Button disabled>Review Order</Button>
+          )}
         </View>
       </View>
     </KeyboardAwareScrollView>
@@ -151,10 +306,22 @@ const styles = StyleSheet.create({
   textInput: {
     marginVertical: 7,
   },
+  errorMessage: {
+    backgroundColor: "#F3E1E1",
+    padding: 15,
+    marginBottom: 10,
+    borderRadius: 20,
+  },
 });
 
 const mapStateToProps = (state) => ({
   userLocation: state.userReducer.location,
 });
 
-export default connect(mapStateToProps, null)(AddressDetails);
+const mapDispatchToProps = (dispatch) => ({
+  addAddress: (address) => {
+    dispatch(addAddress(address));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddressDetails);
