@@ -29,6 +29,7 @@ function Cart({
   cartTotal,
   cartCount,
   phoneNumberConfirmed,
+  addressConfirmed,
 }) {
   // Show / hide phone confirmation bottom sheet
   const [showPhoneConfirmation, setShowPhoneConfirmation] = useState(false);
@@ -39,9 +40,14 @@ function Cart({
   };
 
   const checkout = () => {
-    if (phoneNumberConfirmed) {
+    if (phoneNumberConfirmed && !addressConfirmed) {
+      // If phone number is confirmed and there's no address, navigate to Address Details
       navigation.navigate("AddressDetails");
+    } else if (phoneNumberConfirmed && addressConfirmed) {
+      // If both phone number and address are confirmed, navigate to Review Order screen
+      navigation.navigate("ReviewOrder");
     } else {
+      // If nothing is confirmed, show phone confirmation bottom sheet
       setShowPhoneConfirmation(true);
     }
   };
@@ -132,22 +138,37 @@ function Cart({
             </View>
           </View>
         </SafeAreaView>
-        <CheckoutProgress
-          steps={[
-            {
-              label: "Cart",
-              active: true,
-            },
-            {
-              label: "Address Details",
-              active: false,
-            },
-            {
-              label: "Confirm",
-              active: false,
-            },
-          ]}
-        />
+        {addressConfirmed ? (
+          <CheckoutProgress
+            steps={[
+              {
+                label: "Cart",
+                active: true,
+              },
+              {
+                label: "Review",
+                active: false,
+              },
+            ]}
+          />
+        ) : (
+          <CheckoutProgress
+            steps={[
+              {
+                label: "Cart",
+                active: true,
+              },
+              {
+                label: "Address Details",
+                active: false,
+              },
+              {
+                label: "Review",
+                active: false,
+              },
+            ]}
+          />
+        )}
         {/* Cart Items */}
         <ScrollView style={styles.cartContainer}>
           {cartItems.map((item, index) => {
@@ -237,12 +258,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   const { cartItems, cartTotal, cartCount } = getCartItems(state);
-  const { phoneNumberConfirmed } = state.userReducer;
+  const { phoneNumberConfirmed, addressConfirmed } = state.userReducer;
   return {
     cartItems,
     cartTotal,
     cartCount,
     phoneNumberConfirmed,
+    addressConfirmed,
   };
 };
 
