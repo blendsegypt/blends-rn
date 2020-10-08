@@ -5,7 +5,8 @@ import Text from "./ui/Text";
 
 function CheckoutProgress({ steps }) {
   // Padding array used to add proper padding for either 2 / 3 steps progress bar
-  const labelsPadding = [10, 50, 50];
+  const twoStepsPadding = [10, 90];
+  const threeStepsPadding = [10, 55, 50];
   return (
     <View
       style={{
@@ -54,7 +55,10 @@ function CheckoutProgress({ steps }) {
                 regular
                 style={{
                   color: step.active ? "#64AB84" : "#BBBBBB",
-                  paddingLeft: labelsPadding[index],
+                  paddingLeft:
+                    steps.length == 2
+                      ? twoStepsPadding[index]
+                      : threeStepsPadding[index],
                 }}
               >
                 {step.label}
