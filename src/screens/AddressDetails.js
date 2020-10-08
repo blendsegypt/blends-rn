@@ -66,18 +66,10 @@ function AddressDetails({ navigation, userLocation }) {
                 marginVertical: 5,
               }}
             >
-              <View style={{ flex: 0.8 }}>
-                <Text style={styles.location}>
-                  {userLocation.region}
-                  {"\n"}
-                  {userLocation.city}
-                  {"\n"}
-                  {userLocation.street}
-                </Text>
-              </View>
-              <View style={{ flex: 0.2, marginTop: 10 }}>
-                <Link>Change</Link>
-              </View>
+              <Text style={styles.location}>
+                {userLocation.region} - {userLocation.city} -{" "}
+                {userLocation.street}
+              </Text>
             </View>
             {/* Address Form */}
             <View>
@@ -154,6 +146,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingLeft: 10,
     lineHeight: 23,
+    marginVertical: 10,
   },
   textInput: {
     marginVertical: 7,
