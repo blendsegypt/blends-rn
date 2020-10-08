@@ -10,9 +10,12 @@ import BottomSheet from "reanimated-bottom-sheet";
 //Assets
 import BlendsLogo from "../../assets/BlendsLogo.png";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+//Redux
+import { connect } from "react-redux";
+import { confirmPhoneNumber } from "../redux/actions/user.action";
 
 // Phone number entry bottom sheet
-function Sheet() {
+function Sheet({ confirmUser, confirmPhoneNumber }) {
   // Phone number sheet state
   const [phoneNumber, setPhoneNumber] = useState("");
   const [showOTP, setShowOTP] = useState(false);
@@ -162,7 +165,15 @@ function Sheet() {
         </View>
       </View>
       {confirmButtonActive ? (
-        <Button style={{ marginTop: 20 }}>Confirm</Button>
+        <Button
+          style={{ marginTop: 20 }}
+          onPress={() => {
+            confirmPhoneNumber(phoneNumber);
+            confirmUser();
+          }}
+        >
+          Confirm
+        </Button>
       ) : (
         <Button style={{ marginTop: 20 }} disabled>
           Confirm
@@ -172,7 +183,7 @@ function Sheet() {
   );
 }
 
-function PhoneConfirmation() {
+function PhoneConfirmation({ confirmUser, confirmPhoneNumber }) {
   const sheetRef = useRef(null);
   // Once mounted scroll up the bottom sheet
   useEffect(() => {
@@ -204,7 +215,12 @@ function PhoneConfirmation() {
       snapPoints={[450, 750, 0]}
       borderRadius={20}
       renderContent={() => {
-        return <Sheet />;
+        return (
+          <Sheet
+            confirmUser={confirmUser}
+            confirmPhoneNumber={confirmPhoneNumber}
+          />
+        );
       }}
       initialSnap={2}
     />
@@ -239,4 +255,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PhoneConfirmation;
+const mapDispatchToProps = (dispatch) => ({
+  confirmPhoneNumber: (phoneNumber) => {
+    dispatch(confirmPhoneNumber(phoneNumber));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(PhoneConfirmation);

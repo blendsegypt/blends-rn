@@ -7,11 +7,11 @@ import Text from "../../components/ui/Text";
 import { FontAwesome } from "@expo/vector-icons";
 //Redux
 import { connect } from "react-redux";
-import { removeAddress } from "../../redux/actions/user.action";
+import { removeLocation } from "../../redux/actions/user.action";
 //Components
 import CartIcon from "../../components/CartIcon";
 
-function HomeHeader({ user, removeAddress, navigation }) {
+function HomeHeader({ user, removeLocation, navigation }) {
   return (
     <>
       {/* Header */}
@@ -21,14 +21,14 @@ function HomeHeader({ user, removeAddress, navigation }) {
             style={[styles.iconicButton, styles.locationButton]}
             onPress={() => {
               navigation.navigate("PinDrop");
-              removeAddress();
+              removeLocation();
             }}
           >
             <FontAwesome name="map-marker" size={24} color="white" />
           </TouchableOpacity>
           <View style={[styles.tag, styles.locationTag]}>
             <Text style={[styles.tagText]}>
-              {user.address ? user.address.city : "Not Selected"}
+              {user.location ? user.location.city : "Not Selected"}
             </Text>
           </View>
         </View>
@@ -94,8 +94,8 @@ const mapStateToProps = (state) => ({
   user: state.userReducer,
 });
 const mapDispatchToProps = (dispatch) => ({
-  removeAddress: () => {
-    dispatch(removeAddress());
+  removeLocation: () => {
+    dispatch(removeLocation());
   },
 });
 

@@ -23,9 +23,28 @@ import { getCartItems } from "../redux/selectors/cartItems";
 //Assets
 import EmptyCartIllustration from "../../assets/EmptyCartIllustration.png";
 
-function Cart({ navigation, cartItems, cartTotal, cartCount }) {
+function Cart({
+  navigation,
+  cartItems,
+  cartTotal,
+  cartCount,
+  phoneNumberConfirmed,
+}) {
   // Show / hide phone confirmation bottom sheet
   const [showPhoneConfirmation, setShowPhoneConfirmation] = useState(false);
+
+  const confirmUser = () => {
+    setShowPhoneConfirmation(false);
+    navigation.navigate("AddressDetails");
+  };
+
+  const checkout = () => {
+    if (phoneNumberConfirmed) {
+      navigation.navigate("AddressDetails");
+    } else {
+      setShowPhoneConfirmation(true);
+    }
+  };
 
   // Check if cart is empty
   if (cartCount == 0) {
@@ -120,7 +139,7 @@ function Cart({ navigation, cartItems, cartTotal, cartCount }) {
               active: true,
             },
             {
-              label: "Delivery Details",
+              label: "Address Details",
               active: false,
             },
             {
@@ -142,18 +161,18 @@ function Cart({ navigation, cartItems, cartTotal, cartCount }) {
             paddingBottom: 25,
           }}
         >
-          {/* Add to Cart Button */}
+          {/* Checkout Button */}
           <Button
             price={cartTotal + " EGP"}
             onPress={() => {
-              setShowPhoneConfirmation(true);
+              checkout();
             }}
           >
             Checkout
           </Button>
         </View>
       </View>
-      {showPhoneConfirmation && <PhoneConfirmation />}
+      {showPhoneConfirmation && <PhoneConfirmation confirmUser={confirmUser} />}
     </>
   );
 }
@@ -218,10 +237,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   const { cartItems, cartTotal, cartCount } = getCartItems(state);
+  const { phoneNumberConfirmed } = state.userReducer;
   return {
     cartItems,
     cartTotal,
     cartCount,
+    phoneNumberConfirmed,
   };
 };
 

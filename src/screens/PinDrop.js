@@ -18,7 +18,7 @@ import TextInput from "../components/ui/TextInput";
 import * as Location from "expo-location";
 //Redux
 import { connect } from "react-redux";
-import { addAddress } from "../redux/actions/user.action";
+import { addLocation } from "../redux/actions/user.action";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content";
 // Custom Marker
@@ -26,12 +26,12 @@ import PinMarker from "../../assets/mapMarker.png";
 // Font Icons
 import { FontAwesome } from "@expo/vector-icons";
 
-function PinDrop({ addAddress, user, navigation }) {
+function PinDrop({ addLocation, user, navigation }) {
   // Loading state
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [addressLoaded, setAddressLoaded] = useState(false);
-  // Address
-  const [addressObject, setAddressObject] = useState({});
+  // Location Object
+  const [locationObject, setLocationObject] = useState({});
   // Coordinates
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
@@ -43,19 +43,19 @@ function PinDrop({ addAddress, user, navigation }) {
   const reverseGeocode = async () => {
     const coords = { longitude, latitude };
     let location = await Location.reverseGeocodeAsync(coords);
-    const addressObject = {
+    const locationObject = {
       street: location[0].street,
       city: location[0].city,
       name: location[0].name,
       region: location[0].region,
     };
-    setAddressObject(addressObject);
+    setLocationObject(locationObject);
     setAddressLoaded(true);
   };
 
   // Detect user's location
   const getUserLocation = async () => {
-    if (user.address) return;
+    if (user.location) return;
     let { status } = await Location.requestPermissionsAsync();
     if (status !== "granted") {
       setErrorMsg("Please allow Blends to access your Location.");
@@ -87,13 +87,13 @@ function PinDrop({ addAddress, user, navigation }) {
 
   // Handler for continue button
   const continueHandler = () => {
-    addAddress(addressObject);
+    addLocation(locationObject);
     navigation.navigate("Home");
   };
 
   // Redirect to Home Screen if location is already chosen
   useEffect(() => {
-    if (user.address) navigation.navigate("Home");
+    if (user.location) navigation.navigate("Home");
   }, []);
 
   return (
@@ -173,11 +173,11 @@ function PinDrop({ addAddress, user, navigation }) {
         <View style={styles.address}>
           {addressLoaded ? (
             <Text style={styles.addressText}>
-              {addressObject.region}
+              {locationObject.region}
               {"\n"}
-              {addressObject.city}
+              {locationObject.city}
               {"\n"}
-              {addressObject.street}
+              {locationObject.street}
             </Text>
           ) : (
             <SkeletonContent
@@ -343,8 +343,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  addAddress: (address) => {
-    dispatch(addAddress(address));
+  addLocation: (location) => {
+    dispatch(addLocation(location));
   },
 });
 
