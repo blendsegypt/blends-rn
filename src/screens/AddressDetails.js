@@ -19,6 +19,8 @@ import { connect } from "react-redux";
 import { addAddress } from "../redux/actions/user.action";
 //Keyboard Aware ScrollView
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+//Form validation
+import validateField from "../utils/validateField";
 
 function AddressDetails({ navigation, userLocation, addAddress }) {
   // Address Fields state
@@ -57,34 +59,12 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
   // Review Order button state
   const [buttonActive, setButtonActive] = useState(false);
 
-  // Universal field validation method
+  // Validate fields using validate.js from utils folder
   const validate = (field, fieldSetter) => {
-    let value = field.value;
-    let fieldText = field.text;
-    // Perform a deep clone to errors object
-    let errors = JSON.parse(JSON.stringify(field.errors));
-    // Check if field must not be empty
-    if (field.notEmpty) {
-      // Remove notEmpty error if it exists
-      errors = errors.filter((error) => error.type != "notEmpty");
-      if (value.length == 0) {
-        // Add notEmpty error
-        errors.push({
-          type: "notEmpty",
-          message: `${fieldText} cannot be empty`,
-        });
-      }
-    }
-    // Check if there's a regex for the field
-    if (field.regex) {
-      // Remove regex error if it exists
-      errors = errors.filter((error) => error.type != "regex");
-      if (!field.regex.test(value)) {
-        // Add regex error
-        errors.push({ type: "regex", message: field.regexErrorMessage });
-      }
-    }
-    fieldSetter({ ...field, errors, validated: true });
+    // Validate field
+    const fieldAfterValidation = validateField(field);
+    // Use the supplied setter to set the validated field
+    fieldSetter(fieldAfterValidation);
   };
 
   // Check if there's no errors, activate the continue button
