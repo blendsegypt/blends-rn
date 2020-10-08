@@ -23,13 +23,27 @@ import { getCartItems } from "../redux/selectors/cartItems";
 //Assets
 import EmptyCartIllustration from "../../assets/EmptyCartIllustration.png";
 
-function Cart({ navigation, cartItems, cartTotal, cartCount }) {
+function Cart({
+  navigation,
+  cartItems,
+  cartTotal,
+  cartCount,
+  phoneNumberConfirmed,
+}) {
   // Show / hide phone confirmation bottom sheet
   const [showPhoneConfirmation, setShowPhoneConfirmation] = useState(false);
 
   const confirmUser = () => {
     setShowPhoneConfirmation(false);
     navigation.navigate("DeliveryDetails");
+  };
+
+  const checkout = () => {
+    if (phoneNumberConfirmed) {
+      navigation.navigate("DeliveryDetails");
+    } else {
+      setShowPhoneConfirmation(true);
+    }
   };
 
   // Check if cart is empty
@@ -147,11 +161,11 @@ function Cart({ navigation, cartItems, cartTotal, cartCount }) {
             paddingBottom: 25,
           }}
         >
-          {/* Add to Cart Button */}
+          {/* Checkout Button */}
           <Button
             price={cartTotal + " EGP"}
             onPress={() => {
-              setShowPhoneConfirmation(true);
+              checkout();
             }}
           >
             Checkout
@@ -223,10 +237,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   const { cartItems, cartTotal, cartCount } = getCartItems(state);
+  const { phoneNumberConfirmed } = state.userReducer;
   return {
     cartItems,
     cartTotal,
     cartCount,
+    phoneNumberConfirmed,
   };
 };
 
