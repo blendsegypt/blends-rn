@@ -35,12 +35,12 @@ function Cart({
 
   const confirmUser = () => {
     setShowPhoneConfirmation(false);
-    navigation.navigate("DeliveryDetails");
+    navigation.navigate("AddressDetails");
   };
 
   const checkout = () => {
     if (phoneNumberConfirmed) {
-      navigation.navigate("DeliveryDetails");
+      navigation.navigate("AddressDetails");
     } else {
       setShowPhoneConfirmation(true);
     }
@@ -139,7 +139,7 @@ function Cart({
               active: true,
             },
             {
-              label: "Delivery Details",
+              label: "Address Details",
               active: false,
             },
             {
