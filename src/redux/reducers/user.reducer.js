@@ -4,7 +4,7 @@
  *
  */
 
-export default function userReducer(state = {}, action) {
+export default function userReducer(state = { savedAddresses: [] }, action) {
   let newState;
   switch (action.type) {
     case "ADD_LOCATION":
@@ -20,6 +20,10 @@ export default function userReducer(state = {}, action) {
       newState = { ...state };
       newState.phoneNumber = action.phoneNumber;
       newState.phoneNumberConfirmed = true;
+      return newState;
+    case "ADD_ADDRESS":
+      newState = { ...state };
+      newState.savedAddresses.push(action.address);
       return newState;
     default:
       return state;
