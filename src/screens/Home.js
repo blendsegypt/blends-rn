@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  if (state.userReducer.savedAddresses.length > 0) {
+  if (state.userReducer.addressConfirmed) {
     const firstName = state.userReducer.savedAddresses[0].fullName.split(
       " "
     )[0];
