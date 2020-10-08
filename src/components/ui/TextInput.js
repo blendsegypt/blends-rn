@@ -19,6 +19,9 @@ export default function (props) {
       onChangeText={(text) => {
         if (props.onChangeText) props.onChangeText(text);
       }}
+      onBlur={() => {
+        if (props.onBlur) props.onBlur();
+      }}
       keyboardType={props.keyboardType}
       maxLength={props.maxLength}
     />
