@@ -249,7 +249,13 @@ function ReviewOrder({ route, navigation, userAddress, cartItems, cartTotal }) {
             paddingVertical: 25,
           }}
         >
-          <Button>Confirm Order</Button>
+          <Button
+            onPress={() => {
+              navigation.navigate("OrderConfirmed");
+            }}
+          >
+            Confirm Order
+          </Button>
         </View>
       </View>
     </KeyboardAwareScrollView>

@@ -7,12 +7,14 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 //Screens
 import Home from "./src/screens/Home";
+import Orders from "./src/screens/Orders";
 import PinDrop from "./src/screens/PinDrop";
 import Support from "./src/screens/Support";
 import Product from "./src/screens/Product";
 import Cart from "./src/screens/Cart";
 import AddressDetails from "./src/screens/AddressDetails";
 import ReviewOrder from "./src/screens/ReviewOrder";
+import OrderConfirmed from "./src/screens/OrderConfirmed";
 //Tab Navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -34,6 +36,7 @@ function HomeTabs() {
       screenOptions={tabBarSettings}
     >
       <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Orders" component={Orders} />
       <Tab.Screen name="Support" component={Support} />
     </Tab.Navigator>
   );
@@ -51,6 +54,7 @@ function App() {
             <Stack.Screen name="Cart" component={Cart} />
             <Stack.Screen name="AddressDetails" component={AddressDetails} />
             <Stack.Screen name="ReviewOrder" component={ReviewOrder} />
+            <Stack.Screen name="OrderConfirmed" component={OrderConfirmed} />
           </Stack.Navigator>
         </NavigationContainer>
         <StatusBar style="dark" />
