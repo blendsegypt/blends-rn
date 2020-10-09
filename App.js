@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 //Screens
 import Home from "./src/screens/Home";
+import Orders from "./src/screens/Orders";
 import PinDrop from "./src/screens/PinDrop";
 import Support from "./src/screens/Support";
 import Product from "./src/screens/Product";
@@ -35,6 +36,7 @@ function HomeTabs() {
       screenOptions={tabBarSettings}
     >
       <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Orders" component={Orders} />
       <Tab.Screen name="Support" component={Support} />
     </Tab.Navigator>
   );
