@@ -72,6 +72,7 @@ function RecentOrders() {
             renderItem={renderItem}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ marginLeft: 25 }}
           />
         ) : (
           <SkeletonContent
@@ -128,6 +129,7 @@ const styles = StyleSheet.create({
   titleText: {
     color: "#11203E",
     fontSize: 19,
+    paddingLeft: 25,
   },
   recentOrder: {
     backgroundColor: "#dae3f5",

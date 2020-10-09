@@ -58,13 +58,11 @@ function Home({ navigation, firstName }) {
             </View>
           </SafeAreaView>
         </View>
-        <View
-          style={{ paddingHorizontal: 25, marginTop: 30, paddingBottom: 50 }}
-        >
+        <View style={{ marginTop: 30, paddingBottom: 50 }}>
           {/* Recent Orders */}
           <RecentOrders />
           {/* Products */}
-          <View style={{ marginTop: 20 }}>
+          <View style={{ marginTop: 20, paddingHorizontal: 25 }}>
             <Products navigation={navigation} />
           </View>
         </View>
