@@ -6,10 +6,13 @@ import { store, persistor } from "./src/redux/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 //Screens
+//Tab Screens
 import Home from "./src/screens/Home";
 import Orders from "./src/screens/Orders";
-import PinDrop from "./src/screens/PinDrop";
+import Account from "./src/screens/Account";
 import Support from "./src/screens/Support";
+//Stack navigation screens
+import PinDrop from "./src/screens/PinDrop";
 import Product from "./src/screens/Product";
 import Cart from "./src/screens/Cart";
 import AddressDetails from "./src/screens/AddressDetails";
@@ -37,6 +40,7 @@ function HomeTabs() {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Orders" component={Orders} />
+      <Tab.Screen name="Account" component={Account} />
       <Tab.Screen name="Support" component={Support} />
     </Tab.Navigator>
   );
