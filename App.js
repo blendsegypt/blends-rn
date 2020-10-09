@@ -83,6 +83,7 @@ function App() {
 
 const styles = StyleSheet.create({
   tabBar: {
+    position: "absolute",
     backgroundColor: "#fff",
     marginBottom: 20,
     marginHorizontal: 15,
