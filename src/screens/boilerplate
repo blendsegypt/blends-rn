@@ -1,11 +1,13 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 //UI Components
 import Text from "../components/ui/Text";
 
 function Screen() { 
   return(
-    <Text>New Screen</Text>
+    <SafeAreaView>
+      <Text>Screen</Text>
+    </SafeAreaView>
   );
 }
 
