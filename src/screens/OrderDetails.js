@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   ScrollView,
@@ -15,6 +15,8 @@ import OrderReceipt from "../components/OrderReceipt";
 import { FontAwesome } from "@expo/vector-icons";
 //Assets (for testing)
 import Latte from "../../assets/Latte.png";
+// Loading Skeleton
+import SkeletonContent from "react-native-skeleton-content";
 
 function OrderDetails({ navigation }) {
   const order = {
@@ -48,6 +50,16 @@ function OrderDetails({ navigation }) {
     cartTotal: 24.99,
     orderTotal: 29.99,
   };
+  const [orderLoaded, setOrderLoaded] = useState(false);
+  //Fake loading (will be changed latter to send an API request)
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setOrderLoaded(true);
+    }, 1000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
   return (
     <View style={{ flex: 1 }}>
       {/* Header */}
@@ -67,82 +79,221 @@ function OrderDetails({ navigation }) {
         </View>
       </SafeAreaView>
       <ScrollView style={[styles.container, { paddingTop: 25 }]}>
-        {/* Order Details */}
-        <View style={styles.detailsContainer}>
-          {/* Status & Order time */}
-          <View
-            style={{
-              flexDirection: "row",
-              paddingHorizontal: 25,
-              paddingVertical: 20,
-              borderBottomWidth: 1,
-              borderBottomColor: "#EEEEEE",
-            }}
-          >
-            <View style={{ flex: 0.7 }}>
-              <Text style={{ color: "#B9B9B9" }}>Order Status</Text>
-              <Text semiBold>{order.status}</Text>
-            </View>
+        {/* Check if order was loaded */}
+        {orderLoaded ? (
+          <View style={styles.detailsContainer}>
+            {/* Status & Order time */}
             <View
               style={{
-                flex: 0.3,
+                flexDirection: "row",
+                paddingHorizontal: 25,
+                paddingVertical: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "#EEEEEE",
               }}
             >
-              <View>
-                <Text style={{ color: "#B9B9B9", textAlign: "left" }}>
-                  Ordered
-                </Text>
-                <Text semiBold style={{ textAlign: "left" }}>
-                  {order.ordered}
-                </Text>
+              <View style={{ flex: 0.7 }}>
+                <Text style={{ color: "#B9B9B9" }}>Order Status</Text>
+                <Text semiBold>{order.status}</Text>
+              </View>
+              <View
+                style={{
+                  flex: 0.3,
+                }}
+              >
+                <View>
+                  <Text style={{ color: "#B9B9B9", textAlign: "left" }}>
+                    Ordered
+                  </Text>
+                  <Text semiBold style={{ textAlign: "left" }}>
+                    {order.ordered}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            {/* Expected Delivery & Order Number */}
+            <View
+              style={{
+                flexDirection: "row",
+                paddingHorizontal: 25,
+                paddingVertical: 20,
+              }}
+            >
+              <View style={{ flex: 0.7 }}>
+                <Text style={{ color: "#B9B9B9" }}>Delivery Address</Text>
+                <View style={{ flexDirection: "row" }}>
+                  <FontAwesome
+                    name="map-marker"
+                    size={15}
+                    color="#11203E"
+                    style={{ paddingTop: 1 }}
+                  />
+                  <Text semiBold style={{ paddingLeft: 4 }}>
+                    {order.deliveryAddress}
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  flex: 0.3,
+                }}
+              >
+                <View>
+                  <Text style={{ color: "#B9B9B9", textAlign: "left" }}>
+                    Order Number
+                  </Text>
+                  <Text semiBold style={{ textAlign: "left" }}>
+                    #{order.number}
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
-          {/* Expected Delivery & Order Number */}
-          <View
-            style={{
-              flexDirection: "row",
-              paddingHorizontal: 25,
-              paddingVertical: 20,
+        ) : (
+          <SkeletonContent
+            containerStyle={{
+              backgroundColor: "#D1D1D1",
+              borderRadius: 20,
+              height: 110,
+              paddingHorizontal: 20,
             }}
-          >
-            <View style={{ flex: 0.7 }}>
-              <Text style={{ color: "#B9B9B9" }}>Delivery Address</Text>
-              <View style={{ flexDirection: "row" }}>
-                <FontAwesome
-                  name="map-marker"
-                  size={15}
-                  color="#11203E"
-                  style={{ paddingTop: 1 }}
-                />
-                <Text semiBold style={{ paddingLeft: 4 }}>
-                  {order.deliveryAddress}
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flex: 0.3,
-              }}
-            >
-              <View>
-                <Text style={{ color: "#B9B9B9", textAlign: "left" }}>
-                  Order Number
-                </Text>
-                <Text semiBold style={{ textAlign: "left" }}>
-                  #{order.number}
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        {/* Order Receipt */}
+            isLoading={true}
+            animationDirection="horizontalLeft"
+            duration="800"
+            boneColor="#e3e3e3"
+            layout={[
+              {
+                paddingVertical: 20,
+                flexDirection: "row",
+                children: [
+                  {
+                    key: "status",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                  },
+                  {
+                    key: "details",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                    marginLeft: 100,
+                  },
+                ],
+              },
+              {
+                paddingVertical: 5,
+                flexDirection: "row",
+                children: [
+                  {
+                    key: "ordered",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                  },
+                  {
+                    key: "orderNumber",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                    marginLeft: 100,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
         <View style={{ marginTop: 30 }}>
           <Text style={styles.containerTitle}>Order Receipt</Text>
-          <OrderReceipt
-            cartItems={order.cartItems}
-            cartTotal={order.cartTotal}
-          />
+          {/* Order Receipt loading / loaded */}
+          {orderLoaded ? (
+            <OrderReceipt
+              cartItems={order.cartItems}
+              cartTotal={order.cartTotal}
+            />
+          ) : (
+            <SkeletonContent
+              containerStyle={{
+                marginTop: 25,
+                backgroundColor: "#D1D1D1",
+                borderRadius: 20,
+                height: 180,
+                paddingHorizontal: 20,
+              }}
+              isLoading={true}
+              animationDirection="horizontalLeft"
+              duration="800"
+              boneColor="#e3e3e3"
+              layout={[
+                {
+                  paddingVertical: 20,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  children: [
+                    {
+                      key: "productImage",
+                      width: 40,
+                      height: 40,
+                      borderRadius: 100,
+                    },
+                    {
+                      key: "productName",
+                      width: 70,
+                      height: 20,
+                      borderRadius: 20,
+                      marginLeft: 15,
+                    },
+                    {
+                      key: "productPrice",
+                      width: 70,
+                      height: 20,
+                      borderRadius: 20,
+                      marginLeft: 120,
+                    },
+                  ],
+                },
+                {
+                  paddingVertical: 5,
+                  flexDirection: "row",
+                  children: [
+                    {
+                      key: "subtotal",
+                      width: 100,
+                      height: 20,
+                      borderRadius: 20,
+                    },
+                    {
+                      key: "subtotalValue",
+                      width: 70,
+                      height: 20,
+                      borderRadius: 20,
+                      marginLeft: 150,
+                    },
+                  ],
+                },
+                {
+                  paddingVertical: 5,
+                  flexDirection: "row",
+                  marginTop: 20,
+                  children: [
+                    {
+                      key: "total",
+                      width: 100,
+                      height: 20,
+                      borderRadius: 20,
+                    },
+                    {
+                      key: "totalValue",
+                      width: 70,
+                      height: 20,
+                      borderRadius: 20,
+                      marginLeft: 150,
+                    },
+                  ],
+                },
+              ]}
+            />
+          )}
         </View>
       </ScrollView>
       <View
