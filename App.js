@@ -6,18 +6,20 @@ import { store, persistor } from "./src/redux/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 //Screens
-//Tab Screens
+// -- Tab Screens
 import Home from "./src/screens/Home";
 import Orders from "./src/screens/Orders";
 import Account from "./src/screens/Account";
 import Support from "./src/screens/Support";
-//Stack navigation screens
+// -- Home Stack navigation screens
 import PinDrop from "./src/screens/PinDrop";
 import Product from "./src/screens/Product";
 import Cart from "./src/screens/Cart";
 import AddressDetails from "./src/screens/AddressDetails";
 import ReviewOrder from "./src/screens/ReviewOrder";
 import OrderConfirmed from "./src/screens/OrderConfirmed";
+// -- Orders Stack navigation screens
+import OrderDetails from "./src/screens/OrderDetails";
 //Tab Navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -27,7 +29,19 @@ import tabBarSettings from "./src/tabBarSettings";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+const StackOrders = createStackNavigator();
 
+// Orders Stack screens
+function OrdersStack() {
+  return (
+    <StackOrders.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Orders" component={Orders} />
+      <Stack.Screen name="OrderDetails" component={OrderDetails} />
+    </StackOrders.Navigator>
+  );
+}
+
+// Home Tabs screens
 function HomeTabs() {
   return (
     <Tab.Navigator
@@ -39,7 +53,7 @@ function HomeTabs() {
       screenOptions={tabBarSettings}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Orders" component={Orders} />
+      <Tab.Screen name="Orders" component={OrdersStack} />
       <Tab.Screen name="Account" component={Account} />
       <Tab.Screen name="Support" component={Support} />
     </Tab.Navigator>
