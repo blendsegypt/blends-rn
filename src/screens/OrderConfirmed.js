@@ -40,7 +40,13 @@ function OrderConfirmed({ navigation, resetCart }) {
           paddingBottom: 25,
         }}
       >
-        <Button secondary style={{ marginBottom: 10 }}>
+        <Button
+          secondary
+          style={{ marginBottom: 10 }}
+          onPress={() => {
+            navigation.navigate("Orders");
+          }}
+        >
           Track your Order
         </Button>
         <Button
