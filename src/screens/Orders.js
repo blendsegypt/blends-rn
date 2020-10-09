@@ -1,11 +1,5 @@
-import React from "react";
-import {
-  View,
-  ScrollView,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, ScrollView, StyleSheet, SafeAreaView } from "react-native";
 //UI Components
 import Text from "../components/ui/Text";
 import Button from "../components/ui/Button";
@@ -14,8 +8,20 @@ import Link from "../components/ui/Link";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
+// Loading Skeleton
+import SkeletonContent from "react-native-skeleton-content";
 
 function Orders({ navigation }) {
+  const [ordersLoaded, setOrdersLoaded] = useState(false);
+  //Fake loading (will be changed latter to send an API request)
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setOrdersLoaded(true);
+    }, 1000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
   const orders = [
     {
       number: 1123,
@@ -40,13 +46,82 @@ function Orders({ navigation }) {
         </View>
       </SafeAreaView>
       <ScrollView style={styles.ordersContainer}>
-        {/* Orders */}
-        {orders.map((order) => {
-          if (order.status == "Delivered") {
-            return <DeliveredOrder {...order} navigation={navigation} />;
-          }
-          return <OrderInProgress {...order} navigation={navigation} />;
-        })}
+        {/* Orders loading / loaded */}
+        {ordersLoaded ? (
+          orders.map((order, index) => {
+            if (order.status == "Delivered") {
+              return (
+                <DeliveredOrder
+                  {...order}
+                  navigation={navigation}
+                  key={index}
+                />
+              );
+            }
+            return <OrderInProgress {...order} navigation={navigation} />;
+          })
+        ) : (
+          <SkeletonContent
+            containerStyle={{
+              marginTop: 25,
+              backgroundColor: "#D1D1D1",
+              borderRadius: 20,
+              height: 170,
+              paddingHorizontal: 20,
+            }}
+            isLoading={true}
+            animationDirection="horizontalLeft"
+            duration="800"
+            boneColor="#e3e3e3"
+            layout={[
+              {
+                paddingVertical: 20,
+                flexDirection: "row",
+                children: [
+                  {
+                    key: "status",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                  },
+                  {
+                    key: "details",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                    marginLeft: 100,
+                  },
+                ],
+              },
+              {
+                paddingVertical: 5,
+                flexDirection: "row",
+                children: [
+                  {
+                    key: "ordered",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                  },
+                  {
+                    key: "orderNumber",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                    marginLeft: 100,
+                  },
+                ],
+              },
+              {
+                key: "button",
+                width: "100%",
+                height: 50,
+                borderRadius: 50,
+                marginTop: 15,
+              },
+            ]}
+          />
+        )}
       </ScrollView>
     </View>
   );
