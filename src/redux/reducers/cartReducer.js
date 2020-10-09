@@ -35,6 +35,9 @@ export default function cartReducer(state = [], action) {
       // Find target item and filter it out of cart array
       newState = newState.filter((item) => item.id != action.itemID);
       return newState;
+    case "RESET_CART":
+      newState = [];
+      return newState;
     default:
       return state;
   }
