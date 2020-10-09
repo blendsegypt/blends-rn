@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, StyleSheet } from "react-native";
+import { Image, Dimensions } from "react-native";
 // Images Carousel
 import Carousel from "react-native-snap-carousel";
 // Offers image (only for testing, should be called from backend API)
@@ -21,7 +21,9 @@ function Banners() {
 
   const entries = [CoffeeAmericanoOffer, SignatureLatteOffer];
   const renderItem = ({ item, index }) => {
-    return <Image source={item} style={{ width: 325, height: 140 }} />;
+    return (
+      <Image key={index} source={item} style={{ width: 360, height: 155 }} />
+    );
   };
   return (
     <>
@@ -29,8 +31,8 @@ function Banners() {
         <Carousel
           data={entries}
           renderItem={renderItem}
-          sliderWidth={380}
-          itemWidth={325}
+          sliderWidth={Dimensions.get("window").width}
+          itemWidth={362}
         />
       ) : (
         <SkeletonContent
@@ -52,15 +54,5 @@ function Banners() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  loadingBanner: {
-    width: 325,
-    height: 140,
-    backgroundColor: "#f5f5f5",
-    marginLeft: 25,
-    borderRadius: 15,
-  },
-});
 
 export default Banners;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   ScrollView,
   View,
@@ -28,7 +28,7 @@ function Home({ navigation, firstName }) {
       <ScrollView style={styles.background}>
         <View style={styles.whiteContainer}>
           <SafeAreaView>
-            <View style={{ paddingHorizontal: 25 }}>
+            <View>
               {/* Good Morning Message */}
               <View style={styles.goodMorning}>
                 <Image source={Sun} />
@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 25,
     padding: 20,
+    marginHorizontal: 25,
   },
   goodMorningText: {
     color: "#8E6B39",
@@ -108,6 +109,7 @@ const styles = StyleSheet.create({
   },
   coffeeTime: {
     marginTop: 15,
+    marginHorizontal: 25,
   },
   coffeeTimeText: {
     fontSize: 33,
