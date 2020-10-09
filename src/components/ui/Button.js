@@ -64,7 +64,7 @@ export default function Button(props) {
   let symbol;
   if (props.price) {
     symbol = (
-      <Text bold style={styles.price}>
+      <Text bold style={[styles.price, { color: buttonTextColor }]}>
         {props.price}
       </Text>
     );
@@ -80,7 +80,7 @@ export default function Button(props) {
         style={styles.icon}
         name={buttonIcon}
         size={12}
-        color="white"
+        color={buttonTextColor}
       />
     );
   }
