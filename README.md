@@ -2,6 +2,7 @@
 
 ![alt text](https://i.ibb.co/YcgJCrq/Logo.png "Blends Logo")
 - <b>Customers mobile application</b>
+- <b>Version:</b> Beta
 - <b>Status:</b> In Progress
 - <b>Tech Stack:</b> Expo / React Native / Redux
 ## Components Map
