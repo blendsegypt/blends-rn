@@ -27,6 +27,10 @@ export default function Button(props) {
   if (props.secondary) buttonBG = colorScheme.secondary;
   if (props.success) buttonBG = colorScheme.success;
 
+  // Determine button text color
+  let buttonTextColor = "#fff";
+  if (props.textColor) buttonTextColor = props.textColor;
+
   // Determine button icon
   let buttonIcon = "chevron-right"; // Default
   if (props.icon) buttonIcon = props.icon;
@@ -42,7 +46,9 @@ export default function Button(props) {
             props.style,
           ]}
         >
-          <Text style={styles.text}>{props.children}</Text>
+          <Text style={[styles.text, { color: buttonTextColor }]}>
+            {props.children}
+          </Text>
           <FontAwesome
             style={styles.icon}
             name={buttonIcon}
@@ -54,10 +60,11 @@ export default function Button(props) {
     );
   }
 
+  // Render the symbol based on props (symbol is the shape on the right hand sight of the button)
   let symbol;
   if (props.price) {
     symbol = (
-      <Text bold style={styles.price}>
+      <Text bold style={[styles.price, { color: buttonTextColor }]}>
         {props.price}
       </Text>
     );
@@ -73,7 +80,7 @@ export default function Button(props) {
         style={styles.icon}
         name={buttonIcon}
         size={12}
-        color="white"
+        color={buttonTextColor}
       />
     );
   }
@@ -88,7 +95,9 @@ export default function Button(props) {
         if (props.onPress) props.onPress();
       }}
     >
-      <Text style={styles.text}>{props.children}</Text>
+      <Text style={[styles.text, { color: buttonTextColor }]}>
+        {props.children}
+      </Text>
       {symbol}
     </TouchableOpacity>
   );
