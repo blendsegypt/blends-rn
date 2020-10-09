@@ -25,7 +25,10 @@ function Home({ navigation, firstName }) {
       <View style={{ backgroundColor: "#fff" }}>
         <HomeHeader navigation={navigation} />
       </View>
-      <ScrollView style={styles.background}>
+      <ScrollView
+        style={styles.background}
+        contentContainerStyle={{ paddingBottom: 50 }}
+      >
         <View style={styles.whiteContainer}>
           <SafeAreaView>
             <View>
@@ -67,6 +70,7 @@ function Home({ navigation, firstName }) {
           </View>
         </View>
       </ScrollView>
+      <View style={styles.tabBarOverlay}></View>
     </>
   );
 }
@@ -117,6 +121,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#999",
     paddingTop: 2,
+  },
+  tabBarOverlay: {
+    width: 100,
+    height: 30,
   },
 });
 
