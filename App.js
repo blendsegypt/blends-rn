@@ -9,7 +9,6 @@ import { PersistGate } from "redux-persist/integration/react";
 // -- Tab Screens
 import Home from "./src/screens/Home";
 import Orders from "./src/screens/Orders";
-import Account from "./src/screens/Account";
 import Support from "./src/screens/Support";
 // -- Home Stack navigation screens
 import PinDrop from "./src/screens/PinDrop";
@@ -20,6 +19,11 @@ import ReviewOrder from "./src/screens/ReviewOrder";
 import OrderConfirmed from "./src/screens/OrderConfirmed";
 // -- Orders Stack navigation screens
 import OrderDetails from "./src/screens/OrderDetails";
+// -- Account Stack navigation screens
+import Account from "./src/screens/Account";
+import PersonalInformation from "./src/screens/AccountStack/PersonalInformation";
+import SavedAddresses from "./src/screens/AccountStack/SavedAdresses";
+import InviteAFriend from "./src/screens/AccountStack/InviteAFriend";
 //Tab Navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -30,6 +34,7 @@ import tabBarSettings from "./src/tabBarSettings";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const StackOrders = createStackNavigator();
+const StackAccount = createStackNavigator();
 
 // Orders Stack screens
 function OrdersStack() {
@@ -38,6 +43,17 @@ function OrdersStack() {
       <Stack.Screen name="Orders" component={Orders} />
       <Stack.Screen name="OrderDetails" component={OrderDetails} />
     </StackOrders.Navigator>
+  );
+}
+
+function AccountStack() {
+  return(
+    <StackAccount.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Account" component={Account} />
+      <Stack.Screen name="PersonalInformation" component={PersonalInformation} />
+      <Stack.Screen name="SavedAddresses" component={SavedAddresses} />
+      <Stack.Screen name="InviteAFriend" component={InviteAFriend} />
+    </StackAccount.Navigator>
   );
 }
 
@@ -54,7 +70,7 @@ function HomeTabs() {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Orders" component={OrdersStack} />
-      <Tab.Screen name="Account" component={Account} />
+      <Tab.Screen name="Account" component={AccountStack} />
       <Tab.Screen name="Support" component={Support} />
     </Tab.Navigator>
   );
