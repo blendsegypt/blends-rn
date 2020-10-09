@@ -1,4 +1,4 @@
-# Blends (React Native User Application)
+# Blends (Customers Application)
 
 ![alt text](https://i.ibb.co/YcgJCrq/Logo.png "Blends Logo")
 - <b>Customers mobile application</b>
