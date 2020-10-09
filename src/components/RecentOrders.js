@@ -93,6 +93,7 @@ function RecentOrders({ navigation }) {
               borderRadius: 10,
               backgroundColor: "#D1D1D1",
               flexDirection: "row",
+              marginLeft: 25,
             }}
             isLoading={true}
             animationDirection="horizontalLeft"
