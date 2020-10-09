@@ -300,7 +300,7 @@ function OrderDetails({ navigation }) {
         style={{
           paddingHorizontal: 25,
           backgroundColor: "#fff",
-          paddingBottom: 20,
+          paddingBottom: 110,
         }}
       >
         <Button
