@@ -13,6 +13,7 @@ import Product from "./src/screens/Product";
 import Cart from "./src/screens/Cart";
 import AddressDetails from "./src/screens/AddressDetails";
 import ReviewOrder from "./src/screens/ReviewOrder";
+import OrderConfirmed from "./src/screens/OrderConfirmed";
 //Tab Navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -51,6 +52,7 @@ function App() {
             <Stack.Screen name="Cart" component={Cart} />
             <Stack.Screen name="AddressDetails" component={AddressDetails} />
             <Stack.Screen name="ReviewOrder" component={ReviewOrder} />
+            <Stack.Screen name="OrderConfirmed" component={OrderConfirmed} />
           </Stack.Navigator>
         </NavigationContainer>
         <StatusBar style="dark" />
