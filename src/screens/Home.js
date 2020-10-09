@@ -63,7 +63,7 @@ function Home({ navigation, firstName }) {
         </View>
         <View style={{ marginTop: 30, paddingBottom: 50 }}>
           {/* Recent Orders */}
-          <RecentOrders />
+          <RecentOrders navigation={navigation} />
           {/* Products */}
           <View style={{ marginTop: 20, paddingHorizontal: 25 }}>
             <Products navigation={navigation} />
