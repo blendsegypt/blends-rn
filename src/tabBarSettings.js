@@ -23,9 +23,15 @@ export default ({ route }) => ({
       }
     } else if (route.name == "Orders") {
       if (focused) {
-        return <FontAwesome name="bars" size={23} color="#C84D49" />;
+        return <FontAwesome name="bars" size={21} color="#C84D49" />;
       } else {
-        return <FontAwesome name="bars" size={23} color="#AFAFAF" />;
+        return <FontAwesome name="bars" size={21} color="#AFAFAF" />;
+      }
+    } else if (route.name == "Account") {
+      if (focused) {
+        return <FontAwesome name="user" size={21} color="#C84D49" />;
+      } else {
+        return <FontAwesome name="user" size={21} color="#AFAFAF" />;
       }
     } else if (route.name == "Support") {
       if (focused) {
