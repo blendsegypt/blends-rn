@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, FlatList, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 //UI Components
 import Text from "./ui/Text";
 //Item Image (Only for testing purposes)
@@ -10,7 +16,7 @@ import { FontAwesome } from "@expo/vector-icons";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content";
 
-function RecentOrders() {
+function RecentOrders({ navigation }) {
   const [itemsLoaded, setItemsLoaded] = useState(false);
 
   useEffect(() => {
@@ -39,7 +45,12 @@ function RecentOrders() {
 
   // Render single item
   const renderItem = ({ item, index }) => (
-    <View style={[styles.recentOrder, index == 0 ? { marginLeft: 0 } : {}]}>
+    <TouchableOpacity
+      style={[styles.recentOrder, index == 0 ? { marginLeft: 0 } : {}]}
+      onPress={() => {
+        navigation.navigate("Product");
+      }}
+    >
       <Image
         source={item.image}
         style={{ width: 55, height: 55, alignSelf: "center", marginTop: 5 }}
@@ -56,9 +67,8 @@ function RecentOrders() {
         size={14}
         color="#BCCAE9"
       />
-    </View>
+    </TouchableOpacity>
   );
-
   return (
     <>
       <Text semiBold style={styles.titleText}>
