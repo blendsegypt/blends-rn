@@ -19,3 +19,7 @@ export const removeFromCart = (itemID) => ({
   type: "REMOVE_FROM_CART",
   itemID,
 });
+
+export const resetCart = () => ({
+  type: "RESET_CART",
+});
