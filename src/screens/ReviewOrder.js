@@ -95,7 +95,7 @@ function ReviewOrder({ route, navigation, userAddress, cartItems, cartTotal }) {
                 size={27}
                 color="#11203E"
               />
-              <Text bold style={{ flex: 0.83, fontSize: 15 }}>
+              <Text bold style={{ flex: 0.83, fontSize: 15, color: "#11203E" }}>
                 {userAddress.addressName}
               </Text>
               <Link disabled style={{ flex: 0.04 }}>
@@ -109,7 +109,7 @@ function ReviewOrder({ route, navigation, userAddress, cartItems, cartTotal }) {
                 size={23}
                 color="#11203E"
               />
-              <Text bold style={{ flex: 0.83, fontSize: 15 }}>
+              <Text bold style={{ flex: 0.83, fontSize: 15, color: "#11203E" }}>
                 Cash on Delivery
               </Text>
               <Link disabled style={{ flex: 0.04 }}>
@@ -149,7 +149,10 @@ function ReviewOrder({ route, navigation, userAddress, cartItems, cartTotal }) {
                       <Text style={{ color: "#fff" }}>{item.quantity}</Text>
                     </View>
                   </View>
-                  <Text bold style={{ flex: 0.27, textAlign: "right" }}>
+                  <Text
+                    bold
+                    style={{ flex: 0.27, textAlign: "right", color: "#11203E" }}
+                  >
                     {item.price.toFixed(2)} EGP
                   </Text>
                 </View>
