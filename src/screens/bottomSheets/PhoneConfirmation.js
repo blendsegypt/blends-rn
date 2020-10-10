@@ -1,18 +1,18 @@
 import React, { useRef, useEffect, useState } from "react";
 import { View, ScrollView, StyleSheet, Image, Keyboard } from "react-native";
 //UI Components
-import Text from "../components/ui/Text";
-import TextInput from "../components/ui/TextInput";
-import Button from "../components/ui/Button";
-import Link from "../components/ui/Link";
+import Text from "../../components/ui/Text";
+import TextInput from "../../components/ui/TextInput";
+import Button from "../../components/ui/Button";
+import Link from "../../components/ui/Link";
 //Bottom Sheet
 import BottomSheet from "reanimated-bottom-sheet";
 //Assets
-import BlendsLogo from "../../assets/BlendsLogo.png";
+import BlendsLogo from "../../../assets/BlendsLogo.png";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 //Redux
 import { connect } from "react-redux";
-import { confirmUser } from "../redux/actions/user.action";
+import { confirmUser } from "../../redux/actions/user.action";
 
 // Phone number entry bottom sheet
 function Sheet({ confirmUser, confirmUserRedux }) {
