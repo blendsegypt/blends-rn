@@ -168,8 +168,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => ({
-  fullName: state.userReducer.savedAddresses[0].fullName,
-});
+const mapStateToProps = (state) => {
+  if (state.userReducer.addressConfirmed) {
+    return {
+      fullName: state.userReducer.savedAddresses[0].fullName,
+    }
+  }
+  return {
+    fullName: "Guest"
+  }
+};
 
 export default connect(mapStateToProps, null)(Account);
