@@ -12,11 +12,19 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import validateField from "../../utils/validateField";
 //Redux
 import { connect } from "react-redux";
-import { changeAddress, removeAddress } from "../../redux/actions/user.action";
+import { addAddress, changeAddress, removeAddress } from "../../redux/actions/user.action";
 
-function EditAddress({ navigation, route, changeAddress, removeAddress }) {
-  const { address } = route.params;
+function EditAddress({ navigation, route, changeAddress, removeAddress, addAddress }) {
+  const { address, newAddress } = route.params;
+  console.log(navigation);
   // Address Fields state
+  const [addressName, setAddressName] = useState({
+    text: "Address Name",
+    value: "",
+    notEmpty: true,
+    validated: false,
+    errors: [],
+  });
   const [addressDesc, setAddressDesc] = useState({
     text: "Address Description",
     value: address.addressDesc,
@@ -48,17 +56,18 @@ function EditAddress({ navigation, route, changeAddress, removeAddress }) {
   // Check if there's no errors, activate the continue button
   useEffect(() => {
     const errorsLength = [
+      ...addressName.errors,
       ...addressDesc.errors,
     ].length;
     const fieldsValidated =
-      addressDesc.validated && formChanged;
+      addressName.validated && addressDesc.validated && formChanged;
 
     if (errorsLength == 0 && fieldsValidated) {
       setButtonActive(true);
     } else {
       setButtonActive(false);
     }
-  }, [addressDesc.errors, formChanged]);
+  }, [addressName.errors, addressDesc.errors, formChanged]);
 
   // Save button handler
   const saveAddress = () => {
@@ -70,9 +79,22 @@ function EditAddress({ navigation, route, changeAddress, removeAddress }) {
       apartment: apartment.value,
       deliveryNotes: deliveryNotes.value,
     };
-    changeAddress(addressObject.addressName, addressObject);
-    navigation.navigate("SavedAddresses");
+    if (newAddress) {
+      addressObject.addressName = addressName.value;
+      addAddress(addressObject);
+    } else {
+      changeAddress(addressObject.addressName, addressObject);
+    }
+    if (newAddress) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Account' }, { name: "SavedAddresses" }],
+      });
+    } else {
+      navigation.navigate("SavedAddresses");
+    }
   };
+
   return (
     <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
       {/* Header */}
@@ -92,27 +114,34 @@ function EditAddress({ navigation, route, changeAddress, removeAddress }) {
             />
           </TouchableOpacity>
           <Text bold style={styles.screenTitle}>
-            Edit Address ({address.addressName})
+            {newAddress ?
+              "New Address"
+              :
+              `Edit Address (${address.addressName})`
+            }
           </Text>
-          <TouchableOpacity
-            onPress={() => {
-              removeAddress(address.addressName);
-              navigation.navigate("SavedAddresses");
-            }}
-            style={{ flex: 0.5, paddingTop: 22, alignItems: "flex-end" }}
-          >
-            <FontAwesome
-              style={styles.headerChevron}
-              name="trash"
-              size={22}
-              color="#ba4b43"
-            />
-          </TouchableOpacity>
+          {!newAddress &&
+            <TouchableOpacity
+              onPress={() => {
+                removeAddress(address.addressName);
+                navigation.navigate("SavedAddresses");
+              }}
+              style={{ flex: 0.5, paddingTop: 22, alignItems: "flex-end" }}
+            >
+              <FontAwesome
+                style={styles.headerChevron}
+                name="trash"
+                size={22}
+                color="#ba4b43"
+              />
+            </TouchableOpacity>
+          }
         </View>
       </SafeAreaView>
       <ScrollView style={styles.container}>
         {/* Error Messages */}
         {[
+          ...addressName.errors,
           ...addressDesc.errors,
         ].map((error, index) => {
           return (
@@ -125,6 +154,17 @@ function EditAddress({ navigation, route, changeAddress, removeAddress }) {
         })}
         {/* Address Data Form */}
         <View>
+          <TextInput
+            style={[styles.textInput, !newAddress ? { display: "none" } : {}]}
+            onChangeText={(text) => {
+              setAddressName({ ...addressName, value: text });
+            }}
+            onBlur={() => {
+              validate(addressName, setAddressName);
+            }}
+          >
+            Address Name (eg. Home / Work) *
+              </TextInput>
           <TextInput
             style={styles.textInput}
             onChangeText={(text) => {
@@ -148,7 +188,7 @@ function EditAddress({ navigation, route, changeAddress, removeAddress }) {
               }}
               defaultValue={floor.value}
             >
-              {address.floor == "" ? "Floor" : ""}
+              Floor
             </TextInput>
             <TextInput
               style={[styles.textInput, { flex: 0.6 }]}
@@ -220,6 +260,9 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  addAddress: (address) => {
+    dispatch(addAddress(address));
+  },
   changeAddress: (addressName, newAddress) => {
     dispatch(changeAddress(addressName, newAddress));
   },
