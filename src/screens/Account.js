@@ -81,7 +81,7 @@ function Account({ navigation, fullName }) {
             />
           </TouchableOpacity>
           {/* Invite a friend */}
-          <TouchableOpacity style={styles.setting} onPress={() => { navigation.navigate("InviteAFriend"); }}>
+          <TouchableOpacity style={[styles.setting, { borderBottomWidth: 0 }]} onPress={() => { navigation.navigate("InviteAFriend"); }}>
             <FontAwesome
               name="gift"
               size={22}
