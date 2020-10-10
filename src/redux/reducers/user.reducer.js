@@ -29,13 +29,13 @@ export default function userReducer(state = { savedAddresses: [] }, action) {
     case "REMOVE_ADDRESS":
       newState = { ...state };
       // Find target item and filter it out of cart array
-      newState = newState.savedAddresses.filter((address) => address.addressName != action.addressName);
+      newState.savedAddresses = newState.savedAddresses.filter((address) => address.addressName != action.addressName);
       if (newState.savedAddresses.length == 0) newState.addressConfirmed = false;
       return newState;
     case "CHANGE_ADDRESS":
       newState = { ...state };
       // Find target item and replace it with new address
-      newState = newState.savedAddresses.map((address) => {
+      newState.savedAddresses = newState.savedAddresses.map((address) => {
         if (address.addressName == action.addressName) return action.newAddress;
         return address;
       });
