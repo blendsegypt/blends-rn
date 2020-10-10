@@ -2,6 +2,7 @@ import React from "react";
 import { View, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 //UI Components
 import Text from "../../components/ui/Text";
+import Button from "../../components/ui/Button";
 //Icons Font
 import { FontAwesome } from "@expo/vector-icons";
 //Redux
@@ -76,6 +77,22 @@ function SavedAddresses({ navigation, savedAddresses }) {
           );
         })}
       </ScrollView>
+      <View
+        style={{
+          paddingHorizontal: 25,
+          backgroundColor: "#fff",
+          paddingBottom: 110,
+        }}
+      >
+        <Button
+          icon="map-marker"
+          onPress={() => {
+            navigation.navigate("PinDrop", { existingUser: true });
+          }}
+        >
+          Add New Address
+        </Button>
+      </View>
     </View>
   );
 }
