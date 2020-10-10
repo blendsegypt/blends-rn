@@ -22,3 +22,14 @@ export const addAddress = (address) => ({
   type: "ADD_ADDRESS",
   address,
 });
+
+export const removeAddress = (addressName) => ({
+  type: "REMOVE_ADDRESS",
+  addressName
+});
+
+export const changeAddress = (addressName, newAddress) => ({
+  type: "CHANGE_ADDRESS",
+  addressName,
+  newAddress,
+});
