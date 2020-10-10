@@ -87,6 +87,7 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
   // Review order button handler
   const reviewOrder = () => {
     const address = {
+      userLocation,
       fullName: fullName.value,
       addressName: addressName.value,
       addressDesc: addressDesc.value,
@@ -237,8 +238,8 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
           {buttonActive ? (
             <Button onPress={() => reviewOrder()}>Review Order</Button>
           ) : (
-            <Button disabled>Review Order</Button>
-          )}
+              <Button disabled>Review Order</Button>
+            )}
         </View>
       </View>
     </KeyboardAwareScrollView>
