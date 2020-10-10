@@ -24,6 +24,7 @@ export default function (props) {
       }}
       keyboardType={props.keyboardType}
       maxLength={props.maxLength}
+      defaultValue={props.defaultValue}
     />
   );
 }
