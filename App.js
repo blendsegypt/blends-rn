@@ -24,6 +24,7 @@ import Account from "./src/screens/Account";
 import PersonalInformation from "./src/screens/AccountStack/PersonalInformation";
 import SavedAddresses from "./src/screens/AccountStack/SavedAdresses";
 import InviteAFriend from "./src/screens/AccountStack/InviteAFriend";
+import EditAddress from "./src/screens/AccountStack/EditAddress";
 //Tab Navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -47,11 +48,12 @@ function OrdersStack() {
 }
 
 function AccountStack() {
-  return(
+  return (
     <StackAccount.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="PersonalInformation" component={PersonalInformation} />
       <Stack.Screen name="SavedAddresses" component={SavedAddresses} />
+      <Stack.Screen name="EditAddress" component={EditAddress} />
       <Stack.Screen name="InviteAFriend" component={InviteAFriend} />
     </StackAccount.Navigator>
   );
