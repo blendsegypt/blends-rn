@@ -12,12 +12,13 @@ import BlendsLogo from "../../assets/BlendsLogo.png";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 //Redux
 import { connect } from "react-redux";
-import { confirmPhoneNumber } from "../redux/actions/user.action";
+import { confirmUser } from "../redux/actions/user.action";
 
 // Phone number entry bottom sheet
-function Sheet({ confirmUser, confirmPhoneNumber }) {
+function Sheet({ confirmUser, confirmUserRedux }) {
   // Phone number sheet state
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [fullName, setFullName] = useState("");
   const [showOTP, setShowOTP] = useState(false);
   const [sendOTPButtonActive, setSendOTPButtonActive] = useState(false);
   // OTP sheet state
@@ -61,28 +62,45 @@ function Sheet({ confirmUser, confirmPhoneNumber }) {
   if (!showOTP) {
     return (
       <ScrollView style={styles.bottomSheetContainer} extraScrollHeight={10}>
-        <Image
-          source={BlendsLogo}
-          style={{ width: 80, height: 62 }}
-          resizeMode="contain"
-        />
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+          <Image
+            source={BlendsLogo}
+            style={{ width: 80, height: 62 }}
+            resizeMode="contain"
+          />
+          <Link
+            onPress={() => {
+              // Navigate to Login ------------------------- TBC
+            }}
+          >
+            Already a User?
+        </Link>
+        </View>
         <Text bold style={styles.title}>
-          Please enter your phone number
+          Please enter your name & phone number
         </Text>
         <Text regular style={styles.message}>
           We’ll send you an OTP (one time password) to confirm your phone number
         </Text>
-        <Text style={[styles.message, { paddingTop: 3 }]}>
-          If you’re already a user you’ll be redirected to login
-        </Text>
+        <TextInput
+          onChangeText={(text) => {
+            setFullName(text);
+          }}
+          style={{ marginTop: 15, marginVertical: 7 }}
+          defaultValue={fullName}
+        >
+          Full Name *
+        </TextInput>
         <TextInput
           onChangeText={(text) => {
             setPhoneNumber(text);
           }}
           keyboardType="numeric"
           maxLength={11}
+          style={{ marginVertical: 7 }}
+          defaultValue={phoneNumber}
         >
-          Phone Number (01XXXXXXXXX)
+          Phone Number (01XXXXXXXXX) *
         </TextInput>
         {sendOTPButtonActive ? (
           <Button
@@ -92,13 +110,13 @@ function Sheet({ confirmUser, confirmPhoneNumber }) {
               startResendCounter();
             }}
           >
-            Sign Up / Login
+            Register
           </Button>
         ) : (
-          <Button style={{ marginTop: 20 }} disabled>
-            Sign Up / Login
-          </Button>
-        )}
+            <Button style={{ marginTop: 20 }} disabled>
+              Register
+            </Button>
+          )}
       </ScrollView>
     );
   }
@@ -106,14 +124,13 @@ function Sheet({ confirmUser, confirmPhoneNumber }) {
   // Enter OTP Sheet
   return (
     <KeyboardAwareScrollView style={styles.bottomSheetContainer}>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
         <Image
           source={BlendsLogo}
           style={{ width: 80, height: 62 }}
           resizeMode="contain"
         />
         <Link
-          style={{ marginLeft: 85 }}
           onPress={() => {
             clearTimeout(resendTimeout);
             setShowOTP(false);
@@ -154,36 +171,36 @@ function Sheet({ confirmUser, confirmPhoneNumber }) {
               Resend
             </Button>
           ) : (
-            <Button
-              disabled
-              icon="envelope"
-              style={{ paddingVertical: 23, marginTop: 7, paddingRight: 15 }}
-            >
-              Resend
-            </Button>
-          )}
+              <Button
+                disabled
+                icon="envelope"
+                style={{ paddingVertical: 23, marginTop: 7, paddingRight: 15 }}
+              >
+                Resend
+              </Button>
+            )}
         </View>
       </View>
       {confirmButtonActive ? (
         <Button
           style={{ marginTop: 20 }}
           onPress={() => {
-            confirmPhoneNumber(phoneNumber);
+            confirmUserRedux(fullName, phoneNumber);
             confirmUser();
           }}
         >
           Confirm
         </Button>
       ) : (
-        <Button style={{ marginTop: 20 }} disabled>
-          Confirm
-        </Button>
-      )}
+          <Button style={{ marginTop: 20 }} disabled>
+            Confirm
+          </Button>
+        )}
     </KeyboardAwareScrollView>
   );
 }
 
-function PhoneConfirmation({ confirmUser, confirmPhoneNumber }) {
+function PhoneConfirmation({ confirmUser, confirmUserRedux }) {
   const sheetRef = useRef(null);
   // Once mounted scroll up the bottom sheet
   useEffect(() => {
@@ -212,13 +229,13 @@ function PhoneConfirmation({ confirmUser, confirmPhoneNumber }) {
   return (
     <BottomSheet
       ref={sheetRef}
-      snapPoints={[450, 750, 0]}
+      snapPoints={[500, 750, 0]}
       borderRadius={20}
       renderContent={() => {
         return (
           <Sheet
             confirmUser={confirmUser}
-            confirmPhoneNumber={confirmPhoneNumber}
+            confirmUserRedux={confirmUserRedux}
           />
         );
       }}
@@ -256,8 +273,8 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  confirmPhoneNumber: (phoneNumber) => {
-    dispatch(confirmPhoneNumber(phoneNumber));
+  confirmUserRedux: (fullName, phoneNumber) => {
+    dispatch(confirmUser(fullName, phoneNumber));
   },
 });
 

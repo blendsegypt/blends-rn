@@ -13,8 +13,9 @@ export const removeLocation = () => ({
   type: "REMOVE_LOCATION",
 });
 
-export const confirmPhoneNumber = (phoneNumber) => ({
-  type: "CONFIRM_PHONE_NUMBER",
+export const confirmUser = (fullName, phoneNumber) => ({
+  type: "CONFIRM_USER",
+  fullName,
   phoneNumber,
 });
 

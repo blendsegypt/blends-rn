@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  fullName: state.userReducer.savedAddresses[0].fullName,
+  fullName: state.userReducer.fullName,
   phoneNumber: state.userReducer.phoneNumber,
 })
 

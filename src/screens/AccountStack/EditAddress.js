@@ -17,15 +17,6 @@ import { changeAddress, removeAddress } from "../../redux/actions/user.action";
 function EditAddress({ navigation, route, changeAddress, removeAddress }) {
   const { address } = route.params;
   // Address Fields state
-  const [fullName, setFullName] = useState({
-    text: "Full Name",
-    value: address.fullName,
-    notEmpty: true,
-    regex: /^[a-zA-Z\s]*$/,
-    regexErrorMessage: "Full Name can only contain letters",
-    validated: true,
-    errors: [],
-  });
   const [addressDesc, setAddressDesc] = useState({
     text: "Address Description",
     value: address.addressDesc,
@@ -57,24 +48,22 @@ function EditAddress({ navigation, route, changeAddress, removeAddress }) {
   // Check if there's no errors, activate the continue button
   useEffect(() => {
     const errorsLength = [
-      ...fullName.errors,
       ...addressDesc.errors,
     ].length;
     const fieldsValidated =
-      fullName.validated && addressDesc.validated && formChanged;
+      addressDesc.validated && formChanged;
 
     if (errorsLength == 0 && fieldsValidated) {
       setButtonActive(true);
     } else {
       setButtonActive(false);
     }
-  }, [fullName.errors, addressDesc.errors, formChanged]);
+  }, [addressDesc.errors, formChanged]);
 
   // Save button handler
   const saveAddress = () => {
     const addressObject = {
       userLocation: address.userLocation,
-      fullName: fullName.value,
       addressName: address.addressName,
       addressDesc: addressDesc.value,
       floor: floor.value,
@@ -124,7 +113,6 @@ function EditAddress({ navigation, route, changeAddress, removeAddress }) {
       <ScrollView style={styles.container}>
         {/* Error Messages */}
         {[
-          ...fullName.errors,
           ...addressDesc.errors,
         ].map((error, index) => {
           return (
@@ -137,19 +125,6 @@ function EditAddress({ navigation, route, changeAddress, removeAddress }) {
         })}
         {/* Address Data Form */}
         <View>
-          <TextInput
-            style={styles.textInput}
-            onChangeText={(text) => {
-              setFormChanged(true);
-              setFullName({ ...fullName, value: text });
-            }}
-            onBlur={() => {
-              validate(fullName, setFullName);
-            }}
-            defaultValue={fullName.value}
-          >
-            Full Name *
-          </TextInput>
           <TextInput
             style={styles.textInput}
             onChangeText={(text) => {

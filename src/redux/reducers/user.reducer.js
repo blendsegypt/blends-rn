@@ -16,9 +16,10 @@ export default function userReducer(state = { savedAddresses: [] }, action) {
       newState = { ...state };
       delete newState.location;
       return newState;
-    case "CONFIRM_PHONE_NUMBER":
+    case "CONFIRM_USER":
       newState = { ...state };
       newState.phoneNumber = action.phoneNumber;
+      newState.fullName = action.fullName;
       newState.phoneNumberConfirmed = true;
       return newState;
     case "ADD_ADDRESS":

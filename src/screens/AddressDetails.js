@@ -23,16 +23,16 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import validateField from "../utils/validateField";
 
 function AddressDetails({ navigation, userLocation, addAddress }) {
-  // Address Fields state
-  const [fullName, setFullName] = useState({
-    text: "Full Name",
-    value: "",
-    notEmpty: true,
-    regex: /^[a-zA-Z\s]*$/,
-    regexErrorMessage: "Full Name can only contain letters",
-    validated: false,
-    errors: [],
-  });
+  // Address Fields state ------------------------------------------------ To be transfered to phoneConfirmation bottom sheet
+  // const [fullName, setFullName] = useState({
+  //   text: "Full Name",
+  //   value: "",
+  //   notEmpty: true,
+  //   regex: /^[a-zA-Z\s]*$/,
+  //   regexErrorMessage: "Full Name can only contain letters",
+  //   validated: false,
+  //   errors: [],
+  // });
   const [addressName, setAddressName] = useState({
     text: "Address Name",
     value: "",
@@ -70,25 +70,23 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
   // Check if there's no errors, activate the continue button
   useEffect(() => {
     const errorsLength = [
-      ...fullName.errors,
       ...addressName.errors,
       ...addressDesc.errors,
     ].length;
     const fieldsValidated =
-      fullName.validated && addressName.validated && addressDesc.validated;
+      addressName.validated && addressDesc.validated;
 
     if (errorsLength == 0 && fieldsValidated) {
       setButtonActive(true);
     } else {
       setButtonActive(false);
     }
-  }, [fullName.errors, addressName.errors, addressDesc.errors]);
+  }, [addressName.errors, addressDesc.errors]);
 
   // Review order button handler
   const reviewOrder = () => {
     const address = {
       userLocation,
-      fullName: fullName.value,
       addressName: addressName.value,
       addressDesc: addressDesc.value,
       floor: floor.value,
@@ -151,7 +149,6 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
             </View>
             {/* Error Messages */}
             {[
-              ...fullName.errors,
               ...addressName.errors,
               ...addressDesc.errors,
             ].map((error, index) => {
@@ -165,17 +162,6 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
             })}
             {/* Address Form */}
             <View>
-              <TextInput
-                style={styles.textInput}
-                onChangeText={(text) => {
-                  setFullName({ ...fullName, value: text });
-                }}
-                onBlur={() => {
-                  validate(fullName, setFullName);
-                }}
-              >
-                Full Name *
-              </TextInput>
               <TextInput
                 style={styles.textInput}
                 onChangeText={(text) => {

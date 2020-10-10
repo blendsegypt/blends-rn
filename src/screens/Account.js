@@ -169,9 +169,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  if (state.userReducer.addressConfirmed) {
+  if (state.userReducer.phoneNumberConfirmed) {
     return {
-      fullName: state.userReducer.savedAddresses[0].fullName,
+      fullName: state.userReducer.fullName,
     }
   }
   return {
