@@ -26,7 +26,7 @@ import PinMarker from "../../assets/mapMarker.png";
 // Font Icons
 import { FontAwesome } from "@expo/vector-icons";
 
-function PinDrop({ addLocation, user, navigation }) {
+function PinDrop({ addLocation, user, navigation, route }) {
   // Loading state
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [addressLoaded, setAddressLoaded] = useState(false);
@@ -38,6 +38,8 @@ function PinDrop({ addLocation, user, navigation }) {
   const [errorMsg, setErrorMsg] = useState(null);
   // MapView ref
   const mapRef = useRef();
+  // Guest (default) / previous user
+  const [existingUser, setExistingUser] = useState(false);
 
   // Reverse Geocode address
   const reverseGeocode = async () => {
@@ -55,7 +57,7 @@ function PinDrop({ addLocation, user, navigation }) {
 
   // Detect user's location
   const getUserLocation = async () => {
-    if (user.location) return;
+    if (user.location && route.params == undefined) return;
     let { status } = await Location.requestPermissionsAsync();
     if (status !== "granted") {
       setErrorMsg("Please allow Blends to access your Location.");
@@ -77,6 +79,20 @@ function PinDrop({ addLocation, user, navigation }) {
       500
     );
   };
+
+  // Check if existing user
+  useFocusEffect(
+    useCallback(() => {
+      if (route.params) {
+        if (route.params.existingUser) {
+          setExistingUser(true);
+        } else {
+          setExistingUser(false);
+        }
+      }
+      getUserLocation();
+    }, [route.params])
+  );
 
   // Get user location as soon as screen is loaded
   useFocusEffect(
@@ -180,42 +196,6 @@ function PinDrop({ addLocation, user, navigation }) {
               {locationObject.street}
             </Text>
           ) : (
-            <SkeletonContent
-              containerStyle={{ width: 100, height: 70 }}
-              isLoading={true}
-              animationDirection="horizontalLeft"
-              duration="800"
-              boneColor="#D1D1D1"
-              layout={[
-                {
-                  key: "address1",
-                  width: 130,
-                  height: 20,
-                  borderRadius: 10,
-                },
-                {
-                  key: "address2",
-                  width: 100,
-                  height: 20,
-                  borderRadius: 10,
-                  marginTop: 5,
-                },
-                {
-                  key: "address3",
-                  width: 150,
-                  height: 20,
-                  borderRadius: 10,
-                  marginTop: 5,
-                },
-              ]}
-            />
-          )}
-          <View>
-            {addressLoaded ? (
-              <View style={styles.supportedTag}>
-                <Text style={styles.supportedTagText}>Supported</Text>
-              </View>
-            ) : (
               <SkeletonContent
                 containerStyle={{ width: 100, height: 70 }}
                 isLoading={true}
@@ -224,26 +204,81 @@ function PinDrop({ addLocation, user, navigation }) {
                 boneColor="#D1D1D1"
                 layout={[
                   {
-                    key: "tag",
-                    width: 100,
-                    height: 25,
+                    key: "address1",
+                    width: 130,
+                    height: 20,
                     borderRadius: 10,
-                    marginLeft: 135,
-                    marginTop: 15,
+                  },
+                  {
+                    key: "address2",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 10,
+                    marginTop: 5,
+                  },
+                  {
+                    key: "address3",
+                    width: 150,
+                    height: 20,
+                    borderRadius: 10,
+                    marginTop: 5,
                   },
                 ]}
               />
             )}
+          <View>
+            {addressLoaded ? (
+              <View style={styles.supportedTag}>
+                <Text style={styles.supportedTagText}>Supported</Text>
+              </View>
+            ) : (
+                <SkeletonContent
+                  containerStyle={{ width: 100, height: 70 }}
+                  isLoading={true}
+                  animationDirection="horizontalLeft"
+                  duration="800"
+                  boneColor="#D1D1D1"
+                  layout={[
+                    {
+                      key: "tag",
+                      width: 100,
+                      height: 25,
+                      borderRadius: 10,
+                      marginLeft: 135,
+                      marginTop: 15,
+                    },
+                  ]}
+                />
+              )}
           </View>
         </View>
         {/* Continue Button */}
-        <Button
-          onPress={() => {
-            continueHandler();
-          }}
-        >
-          Continue
+        {!existingUser ?
+          <Button
+            onPress={() => {
+              continueHandler();
+            }}
+          >
+            Continue
         </Button>
+          :
+          <Button
+            onPress={() => {
+              // Navigate to Edit Address in Account
+              const address = {
+                userLocation: locationObject,
+                addressDesc: "",
+                floor: "",
+                apartment: "",
+                deliveryNotes: "",
+              }
+              navigation.navigate("Home", { screen: "Account", params: { screen: "EditAddress", params: { address, newAddress: true } } });
+            }}
+          >
+            Add Location
+        </Button>
+        }
+
       </View>
     </View>
   );

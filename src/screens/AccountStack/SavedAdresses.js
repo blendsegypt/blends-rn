@@ -35,7 +35,7 @@ function SavedAddresses({ navigation, savedAddresses }) {
         {/* Saved Addresses */}
         {savedAddresses.map((address, index) => {
           return (
-            <TouchableOpacity style={styles.address} key={index} onPress={() => navigation.navigate("EditAddress", { address })}>
+            <TouchableOpacity style={styles.address} key={index} onPress={() => navigation.navigate("EditAddress", { address, newAddress: false })}>
               <View style={{ flex: 0.4, justifyContent: "space-between" }}>
                 <View style={{ flexDirection: "row", paddingRight: 15, }}>
                   {/* Address Name */}

@@ -28,7 +28,7 @@ function HomeHeader({ user, removeLocation, navigation }) {
           <TouchableOpacity
             style={[styles.iconicButton, styles.locationButton]}
             onPress={() => {
-              navigation.navigate("PinDrop");
+              navigation.navigate("PinDrop", { existingUser: false });
               removeLocation();
             }}
           >
