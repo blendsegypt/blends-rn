@@ -25,7 +25,7 @@ export default function userReducer(state = { savedAddresses: [] }, action) {
     case "ADD_ADDRESS":
       newState = { ...state };
       newState.addressConfirmed = true;
-      newState.savedAddresses.push(action.address);
+      newState.savedAddresses.unshift(action.address);
       return newState;
     case "REMOVE_ADDRESS":
       newState = { ...state };
