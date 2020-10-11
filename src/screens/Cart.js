@@ -193,7 +193,7 @@ function Cart({
           </Button>
         </View>
       </View>
-      {showPhoneConfirmation && <PhoneConfirmation confirmUser={confirmUser} />}
+      <PhoneConfirmation showPhoneConfirmation={showPhoneConfirmation} confirmUser={confirmUser} />
     </>
   );
 }

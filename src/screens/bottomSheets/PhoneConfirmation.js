@@ -200,12 +200,16 @@ function Sheet({ confirmUser, confirmUserRedux }) {
   );
 }
 
-function PhoneConfirmation({ confirmUser, confirmUserRedux }) {
+function PhoneConfirmation({ confirmUser, confirmUserRedux, showPhoneConfirmation }) {
   const sheetRef = useRef(null);
-  // Once mounted scroll up the bottom sheet
+  // Show / Hide based on showPhoneConfirmation prop
   useEffect(() => {
-    sheetRef.current.snapTo(0);
-  }, []);
+    if (showPhoneConfirmation) {
+      sheetRef.current.snapTo(0);
+    } else {
+      sheetRef.current.snapTo(2);
+    }
+  }, [showPhoneConfirmation]);
 
   // Scroll bottom sheet up when keyboard is triggered
   useEffect(() => {
