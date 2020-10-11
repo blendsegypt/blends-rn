@@ -46,7 +46,7 @@ export default function userReducer(state = { savedAddresses: [] }, action) {
     case "SWITCH_ACTIVE_ADDRESS":
       newState = { ...state };
       // Find target address and save it
-      const newActive = newstate.savedAddresses.find((address) => address.addressName == action.addressName);
+      const newActive = newState.savedAddresses.find((address) => address.addressName == action.addressName);
       // Find target address and filter it out of addresses array
       newState.savedAddresses = newState.savedAddresses.filter((address) => address.addressName != action.addressName);
       // Add the new active address in the beginning of the array
