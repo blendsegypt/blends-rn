@@ -62,7 +62,7 @@ function AccountStack() {
 }
 
 // Home Tabs screens
-function HomeTabs() {
+function HomeTabs({ navigation }) {
   /*
    *
    *  (note) Bottom sheet was placed here to snap above the tab bar 
@@ -97,7 +97,7 @@ function HomeTabs() {
         <Tab.Screen name="Support" component={Support} />
       </Tab.Navigator>
       {/* Choose Address Bottom Sheet */}
-      <ChooseAddress chooseAddressShown={chooseAddressShown} setChooseAddressShown={setChooseAddressShown} />
+      <ChooseAddress chooseAddressShown={chooseAddressShown} setChooseAddressShown={setChooseAddressShown} navigation={navigation} />
     </>
   );
 }
