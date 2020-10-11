@@ -34,3 +34,8 @@ export const changeAddress = (addressName, newAddress) => ({
   addressName,
   newAddress,
 });
+
+export const switchActiveAddress = (addressName) => ({
+  type: "SWITCH_ACTIVE_ADDRESS",
+  addressName,
+});

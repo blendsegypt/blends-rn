@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
 //Redux
 import { store, persistor } from "./src/redux/store";
 import { Provider } from "react-redux";
@@ -31,6 +31,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 //Tab Bar settings
 import tabBarSettings from "./src/tabBarSettings";
+//Bottom Sheets
+import ChooseAddress from "./src/screens/bottomSheets/ChooseAddress";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -60,21 +62,43 @@ function AccountStack() {
 }
 
 // Home Tabs screens
-function HomeTabs() {
+function HomeTabs({ navigation }) {
+  /*
+   *
+   *  (note) Bottom sheet was placed here to snap above the tab bar 
+   *
+  */
+  const [chooseAddressShown, setChooseAddressShown] = useState(false);
+
   return (
-    <Tab.Navigator
-      tabBarOptions={{
-        style: styles.tabBar,
-        activeTintColor: "#C84D49",
-        showLabel: false,
-      }}
-      screenOptions={tabBarSettings}
-    >
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Orders" component={OrdersStack} />
-      <Tab.Screen name="Account" component={AccountStack} />
-      <Tab.Screen name="Support" component={Support} />
-    </Tab.Navigator>
+    <>
+      {/* Bottom Sheet Overlay */}
+      {chooseAddressShown && (
+        <TouchableOpacity
+          style={styles.overlay}
+          onPress={() => {
+            setChooseAddressShown(false);
+          }}
+        ></TouchableOpacity>
+      )}
+      <Tab.Navigator
+        tabBarOptions={{
+          style: styles.tabBar,
+          activeTintColor: "#C84D49",
+          showLabel: false,
+        }}
+        screenOptions={tabBarSettings}
+      >
+        <Tab.Screen name="Home">
+          {(props) => <Home {...props} setChooseAddressShown={setChooseAddressShown} chooseAddressShown={chooseAddressShown} />}
+        </Tab.Screen>
+        <Tab.Screen name="Orders" component={OrdersStack} />
+        <Tab.Screen name="Account" component={AccountStack} />
+        <Tab.Screen name="Support" component={Support} />
+      </Tab.Navigator>
+      {/* Choose Address Bottom Sheet */}
+      <ChooseAddress chooseAddressShown={chooseAddressShown} setChooseAddressShown={setChooseAddressShown} navigation={navigation} />
+    </>
   );
 }
 
@@ -118,6 +142,14 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderColor: "#fff",
     paddingBottom: 0,
+  },
+  overlay: {
+    backgroundColor: "black",
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    opacity: 0.8,
+    zIndex: 99,
   },
 });
 

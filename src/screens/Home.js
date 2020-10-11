@@ -19,11 +19,11 @@ import HomeHeader from "./headers/HomeHeader";
 //Redux
 import { connect } from "react-redux";
 
-function Home({ navigation, firstName }) {
+function Home({ setChooseAddressShown, navigation, firstName, chooseAddressShown }) {
   return (
     <>
       <View style={{ backgroundColor: "#fff" }}>
-        <HomeHeader navigation={navigation} />
+        <HomeHeader navigation={navigation} setChooseAddressShown={setChooseAddressShown} chooseAddressShown={chooseAddressShown} />
       </View>
       <ScrollView
         style={styles.background}

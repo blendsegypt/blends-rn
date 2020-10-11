@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 //UI Components
@@ -11,7 +11,7 @@ import { removeLocation } from "../../redux/actions/user.action";
 //Components
 import CartIcon from "../../components/CartIcon";
 
-function HomeHeader({ user, removeLocation, navigation }) {
+function HomeHeader({ user, removeLocation, navigation, setChooseAddressShown, chooseAddressShown }) {
   let location;
   if (user.savedAddresses.length > 0) {
     location = user.savedAddresses[0].addressName;
@@ -28,8 +28,12 @@ function HomeHeader({ user, removeLocation, navigation }) {
           <TouchableOpacity
             style={[styles.iconicButton, styles.locationButton]}
             onPress={() => {
-              navigation.navigate("PinDrop", { existingUser: false });
-              removeLocation();
+              if (user.addressConfirmed) {
+                setChooseAddressShown(!chooseAddressShown);
+              } else {
+                navigation.navigate("PinDrop", { existingUser: false });
+                removeLocation();
+              }
             }}
           >
             <FontAwesome name="map-marker" size={24} color="white" />
