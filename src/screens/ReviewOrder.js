@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   ScrollView,
@@ -15,6 +15,8 @@ import TextInput from "../components/ui/TextInput";
 //Components
 import CheckoutProgress from "../components/CheckoutProgress";
 import OrderReceipt from "../components/OrderReceipt";
+//Bottom Sheets
+import ChooseAddress from "../screens/bottomSheets/ChooseAddress";
 //Icons Font
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -24,10 +26,20 @@ import { getCartItems } from "../redux/selectors/cartItems";
 //Keyboard Aware ScrollView
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-function ReviewOrder({ route, navigation, userAddress, cartItems, cartTotal }) {
+function ReviewOrder({ route, navigation, activeAddress, cartItems, cartTotal, savedAddresses }) {
   const { threeStepsCheckout } = route.params;
+  const [chooseAddressShown, setChooseAddressShown] = useState(false);
   return (
     <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
+      {/* Bottom Sheet Overlay */}
+      {chooseAddressShown && (
+        <TouchableOpacity
+          style={styles.overlay}
+          onPress={() => {
+            setChooseAddressShown(false);
+          }}
+        ></TouchableOpacity>
+      )}
       <View style={{ flex: 1 }}>
         {/* Header */}
         <SafeAreaView>
@@ -64,19 +76,19 @@ function ReviewOrder({ route, navigation, userAddress, cartItems, cartTotal }) {
             ]}
           />
         ) : (
-          <CheckoutProgress
-            steps={[
-              {
-                label: "Cart",
-                active: true,
-              },
-              {
-                label: "Review",
-                active: true,
-              },
-            ]}
-          />
-        )}
+            <CheckoutProgress
+              steps={[
+                {
+                  label: "Cart",
+                  active: true,
+                },
+                {
+                  label: "Review",
+                  active: true,
+                },
+              ]}
+            />
+          )}
         <ScrollView
           style={styles.container}
           contentContainerStyle={{ paddingBottom: 50 }}
@@ -96,26 +108,36 @@ function ReviewOrder({ route, navigation, userAddress, cartItems, cartTotal }) {
                 size={27}
                 color="#11203E"
               />
-              <Text bold style={{ flex: 0.83, fontSize: 15, color: "#11203E" }}>
-                {userAddress.addressName}
+              <Text bold style={{ flex: 0.5, fontSize: 15, color: "#11203E" }}>
+                {activeAddress.addressName}
               </Text>
-              <Link disabled style={{ flex: 0.04 }}>
-                Change
-              </Link>
+              <View style={{ flex: 0.37, alignItems: "flex-end" }}>
+                {savedAddresses.length > 1 ?
+                  <Link onPress={() => { setChooseAddressShown(true) }}>
+                    Change
+                </Link>
+                  :
+                  <Link disabled>
+                    Change
+                </Link>
+                }
+              </View>
             </View>
-            <View style={[styles.deliveryOption, { paddingVertical: 21 }]}>
+            <View style={[styles.deliveryOption]}>
               <FontAwesome5
                 style={{ flex: 0.13 }}
                 name="hand-holding-usd"
                 size={23}
                 color="#11203E"
               />
-              <Text bold style={{ flex: 0.83, fontSize: 15, color: "#11203E" }}>
+              <Text bold style={{ flex: 0.5, fontSize: 15, color: "#11203E" }}>
                 Cash on Delivery
               </Text>
-              <Link disabled style={{ flex: 0.04 }}>
-                Change
-              </Link>
+              <View style={{ flex: 0.37, alignItems: "flex-end" }}>
+                <Link disabled style={{ flex: 0.04 }}>
+                  Change
+                </Link>
+              </View>
             </View>
           </View>
           {/* Order Receipt */}
@@ -142,6 +164,7 @@ function ReviewOrder({ route, navigation, userAddress, cartItems, cartTotal }) {
           </Button>
         </View>
       </View>
+      <ChooseAddress chooseAddressShown={chooseAddressShown} setChooseAddressShown={setChooseAddressShown} navigation={navigation} />
     </KeyboardAwareScrollView>
   );
 }
@@ -198,12 +221,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: "center",
   },
+  overlay: {
+    backgroundColor: "black",
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    opacity: 0.8,
+    zIndex: 99,
+  },
 });
 
 const mapStateToProps = (state) => {
   const { cartItems, cartTotal } = getCartItems(state);
   return {
-    userAddress: state.userReducer.savedAddresses[0],
+    activeAddress: state.userReducer.savedAddresses[0],
+    savedAddresses: state.userReducer.savedAddresses,
     cartItems,
     cartTotal,
   };
