@@ -52,6 +52,9 @@ export default function userReducer(state = { savedAddresses: [] }, action) {
       // Add the new active address in the beginning of the array
       newState.savedAddresses.unshift(newActive);
       return newState;
+    case "UPDATE_PERSONAL_INFO":
+      newState = { ...state, ...action.personalInfo };
+      return newState;
     default:
       return state;
   }

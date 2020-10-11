@@ -39,3 +39,8 @@ export const switchActiveAddress = (addressName) => ({
   type: "SWITCH_ACTIVE_ADDRESS",
   addressName,
 });
+
+export const updatePersonalInfo = (personalInfo) => ({
+  type: "UPDATE_PERSONAL_INFO",
+  personalInfo,
+});
