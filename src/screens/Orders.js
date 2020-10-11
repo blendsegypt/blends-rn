@@ -69,6 +69,7 @@ function Orders({ navigation }) {
                 borderRadius: 20,
                 height: 170,
                 paddingHorizontal: 20,
+                marginHorizontal: 25,
               }}
               isLoading={true}
               animationDirection="horizontalLeft"
@@ -290,7 +291,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   ordersContainer: {
-    marginTop: 25,
+    marginVertical: 25,
     backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: {
@@ -303,9 +304,9 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#fff",
-    paddingHorizontal: 25,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    paddingTop: 10,
   },
   orderContainer: {
     backgroundColor: "#fff",
@@ -318,7 +319,8 @@ const styles = StyleSheet.create({
     shadowRadius: 15.65,
     elevation: 8,
     borderRadius: 25,
-    marginTop: 25,
+    marginVertical: 15,
+    marginHorizontal: 25,
   },
   statusBar: {
     flexDirection: "row",

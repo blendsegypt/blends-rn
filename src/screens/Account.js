@@ -27,7 +27,7 @@ function Account({ navigation, fullName }) {
       <ScrollView style={styles.accountContainer}>
         {/* Personal Data (Name and Balance) */}
         <View style={styles.personalInformatoin}>
-          <View style={{ flexDirection: "row", flex: 0.5 }}>
+          <View style={{ flexDirection: "row", flex: 0.5, alignItems: "center" }}>
             <FontAwesome name="user" size={17} color="#C84D49" />
             <Text style={{ color: "#C84D49", fontSize: 17, paddingLeft: 8 }}>
               {fullName}
@@ -100,7 +100,7 @@ function Account({ navigation, fullName }) {
           </TouchableOpacity>
         </View>
         <Button
-          style={{ marginTop: 15, backgroundColor: "#A46B6B" }}
+          style={{ marginTop: 15, backgroundColor: "#A46B6B", marginHorizontal: 25 }}
           icon="power-off"
         >
           Logout
@@ -134,7 +134,6 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#fff",
-    paddingHorizontal: 25,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
@@ -144,9 +143,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginTop: 25,
     flexDirection: "row",
+    marginHorizontal: 25,
   },
   settingsContainer: {
     backgroundColor: "#fff",
+    marginHorizontal: 25,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

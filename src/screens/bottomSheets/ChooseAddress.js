@@ -27,6 +27,7 @@ function Sheet({ savedAddresses, setChooseAddressShown, navigation }) {
 }
 
 function ChooseAddress({ chooseAddressShown, savedAddresses, setChooseAddressShown, navigation }) {
+  if (!savedAddresses) return (<View></View>);
   // Sheet ref
   const sheetRef = useRef(null);
   // Snap bottom sheet based on props

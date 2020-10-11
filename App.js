@@ -97,7 +97,6 @@ function HomeTabs({ navigation }) {
         <Tab.Screen name="Support" component={Support} />
       </Tab.Navigator>
       {/* Choose Address Bottom Sheet */}
-      <ChooseAddress chooseAddressShown={chooseAddressShown} setChooseAddressShown={setChooseAddressShown} navigation={navigation} />
     </>
   );
 }
@@ -143,6 +142,7 @@ const styles = StyleSheet.create({
     borderColor: "#fff",
     paddingBottom: 0,
     borderTopWidth: 0,
+    minHeight: 70
   },
   overlay: {
     backgroundColor: "black",

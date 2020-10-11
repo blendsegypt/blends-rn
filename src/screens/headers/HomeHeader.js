@@ -13,7 +13,7 @@ import CartIcon from "../../components/CartIcon";
 
 function HomeHeader({ user, removeLocation, navigation, setChooseAddressShown, chooseAddressShown }) {
   let location;
-  if (user.savedAddresses.length > 0) {
+  if (user.addressConfirmed) {
     location = user.savedAddresses[0].addressName;
   } else if (user.location) {
     location = user.location.city;

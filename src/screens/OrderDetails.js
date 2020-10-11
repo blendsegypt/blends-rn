@@ -78,7 +78,7 @@ function OrderDetails({ navigation }) {
           </Text>
         </View>
       </SafeAreaView>
-      <ScrollView style={[styles.container, { paddingTop: 25 }]}>
+      <ScrollView style={[styles.container, { paddingTop: 25 }]} contentContainerStyle={{ paddingBottom: 100 }}>
         {/* Check if order was loaded */}
         {orderLoaded ? (
           <View style={styles.detailsContainer}>
@@ -150,74 +150,11 @@ function OrderDetails({ navigation }) {
             </View>
           </View>
         ) : (
-          <SkeletonContent
-            containerStyle={{
-              backgroundColor: "#D1D1D1",
-              borderRadius: 20,
-              height: 110,
-              paddingHorizontal: 20,
-            }}
-            isLoading={true}
-            animationDirection="horizontalLeft"
-            duration="800"
-            boneColor="#e3e3e3"
-            layout={[
-              {
-                paddingVertical: 20,
-                flexDirection: "row",
-                children: [
-                  {
-                    key: "status",
-                    width: 100,
-                    height: 20,
-                    borderRadius: 20,
-                  },
-                  {
-                    key: "details",
-                    width: 100,
-                    height: 20,
-                    borderRadius: 20,
-                    marginLeft: 100,
-                  },
-                ],
-              },
-              {
-                paddingVertical: 5,
-                flexDirection: "row",
-                children: [
-                  {
-                    key: "ordered",
-                    width: 100,
-                    height: 20,
-                    borderRadius: 20,
-                  },
-                  {
-                    key: "orderNumber",
-                    width: 100,
-                    height: 20,
-                    borderRadius: 20,
-                    marginLeft: 100,
-                  },
-                ],
-              },
-            ]}
-          />
-        )}
-        <View style={{ marginTop: 30 }}>
-          <Text style={styles.containerTitle}>Order Receipt</Text>
-          {/* Order Receipt loading / loaded */}
-          {orderLoaded ? (
-            <OrderReceipt
-              cartItems={order.cartItems}
-              cartTotal={order.cartTotal}
-            />
-          ) : (
             <SkeletonContent
               containerStyle={{
-                marginTop: 25,
                 backgroundColor: "#D1D1D1",
                 borderRadius: 20,
-                height: 180,
+                height: 110,
                 paddingHorizontal: 20,
               }}
               isLoading={true}
@@ -228,27 +165,19 @@ function OrderDetails({ navigation }) {
                 {
                   paddingVertical: 20,
                   flexDirection: "row",
-                  alignItems: "center",
                   children: [
                     {
-                      key: "productImage",
-                      width: 40,
-                      height: 40,
-                      borderRadius: 100,
-                    },
-                    {
-                      key: "productName",
-                      width: 70,
+                      key: "status",
+                      width: 100,
                       height: 20,
                       borderRadius: 20,
-                      marginLeft: 15,
                     },
                     {
-                      key: "productPrice",
-                      width: 70,
+                      key: "details",
+                      width: 100,
                       height: 20,
                       borderRadius: 20,
-                      marginLeft: 120,
+                      marginLeft: 100,
                     },
                   ],
                 },
@@ -257,43 +186,114 @@ function OrderDetails({ navigation }) {
                   flexDirection: "row",
                   children: [
                     {
-                      key: "subtotal",
+                      key: "ordered",
                       width: 100,
                       height: 20,
                       borderRadius: 20,
                     },
                     {
-                      key: "subtotalValue",
-                      width: 70,
-                      height: 20,
-                      borderRadius: 20,
-                      marginLeft: 150,
-                    },
-                  ],
-                },
-                {
-                  paddingVertical: 5,
-                  flexDirection: "row",
-                  marginTop: 20,
-                  children: [
-                    {
-                      key: "total",
+                      key: "orderNumber",
                       width: 100,
                       height: 20,
                       borderRadius: 20,
-                    },
-                    {
-                      key: "totalValue",
-                      width: 70,
-                      height: 20,
-                      borderRadius: 20,
-                      marginLeft: 150,
+                      marginLeft: 100,
                     },
                   ],
                 },
               ]}
             />
           )}
+        <View style={{ marginTop: 30, marginHorizontal: 25, }}>
+          <Text style={styles.containerTitle}>Order Receipt</Text>
+          {/* Order Receipt loading / loaded */}
+          {orderLoaded ? (
+            <OrderReceipt
+              cartItems={order.cartItems}
+              cartTotal={order.cartTotal}
+            />
+          ) : (
+              <SkeletonContent
+                containerStyle={{
+                  marginTop: 25,
+                  backgroundColor: "#D1D1D1",
+                  borderRadius: 20,
+                  height: 180,
+                  paddingHorizontal: 20,
+                }}
+                isLoading={true}
+                animationDirection="horizontalLeft"
+                duration="800"
+                boneColor="#e3e3e3"
+                layout={[
+                  {
+                    paddingVertical: 20,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    children: [
+                      {
+                        key: "productImage",
+                        width: 40,
+                        height: 40,
+                        borderRadius: 100,
+                      },
+                      {
+                        key: "productName",
+                        width: 70,
+                        height: 20,
+                        borderRadius: 20,
+                        marginLeft: 15,
+                      },
+                      {
+                        key: "productPrice",
+                        width: 70,
+                        height: 20,
+                        borderRadius: 20,
+                        marginLeft: 120,
+                      },
+                    ],
+                  },
+                  {
+                    paddingVertical: 5,
+                    flexDirection: "row",
+                    children: [
+                      {
+                        key: "subtotal",
+                        width: 100,
+                        height: 20,
+                        borderRadius: 20,
+                      },
+                      {
+                        key: "subtotalValue",
+                        width: 70,
+                        height: 20,
+                        borderRadius: 20,
+                        marginLeft: 150,
+                      },
+                    ],
+                  },
+                  {
+                    paddingVertical: 5,
+                    flexDirection: "row",
+                    marginTop: 20,
+                    children: [
+                      {
+                        key: "total",
+                        width: 100,
+                        height: 20,
+                        borderRadius: 20,
+                      },
+                      {
+                        key: "totalValue",
+                        width: 70,
+                        height: 20,
+                        borderRadius: 20,
+                        marginLeft: 150,
+                      },
+                    ],
+                  },
+                ]}
+              />
+            )}
         </View>
       </ScrollView>
       <View
@@ -339,7 +339,6 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#fff",
-    paddingHorizontal: 25,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
@@ -359,6 +358,7 @@ const styles = StyleSheet.create({
     elevation: 8,
     borderRadius: 25,
     marginTop: 15,
+    marginHorizontal: 25,
   },
 });
 
