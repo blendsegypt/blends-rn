@@ -4,6 +4,7 @@ import { View, ScrollView, StyleSheet, SafeAreaView } from "react-native";
 import Text from "../components/ui/Text";
 import Button from "../components/ui/Button";
 import Link from "../components/ui/Link";
+import Stars from "../components/ui/Stars";
 //Icons Fonts
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -252,19 +253,11 @@ function DeliveredOrder({ number, status, deliveryDate, stars, navigation }) {
             flex: 0.5,
           }}
         >
-          {[...Array(5)].map((star, index) => {
-            let color = "#ECECEC";
-            if (index < stars) color = "#F4E385";
-            return (
-              <FontAwesome
-                key={index}
-                name="star"
-                size={24}
-                color={color}
-                style={{ paddingRight: 5 }}
-              />
-            );
-          })}
+          {stars ?
+            <Stars initialStars={stars} /> // Add onChange to send an API request and update order rating
+            :
+            <Stars initialStars={0} /> // Add onChange to send an API request and rate the order
+          }
         </View>
         {/* View Order Details */}
         <View style={{ flex: 0.5 }}>
