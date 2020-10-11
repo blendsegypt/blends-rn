@@ -38,12 +38,12 @@ function Sheet({ confirmUser, confirmUserRedux }) {
 
   // Make button active when phone number is fully entered
   useEffect(() => {
-    if (phoneNumber.length == 11) {
+    if (phoneNumber.length == 11 && fullName.length > 1) {
       setSendOTPButtonActive(true);
     } else {
       setSendOTPButtonActive(false);
     }
-  }, [phoneNumber]);
+  }, [phoneNumber, fullName]);
 
   // Make button active when OTP is fully entered
   useEffect(() => {
