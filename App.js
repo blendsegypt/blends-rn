@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderColor: "#fff",
     paddingBottom: 0,
+    borderTopWidth: 0,
   },
   overlay: {
     backgroundColor: "black",
