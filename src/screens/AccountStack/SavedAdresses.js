@@ -33,7 +33,7 @@ function SavedAddresses({ navigation, savedAddresses }) {
           </Text>
         </View>
       </SafeAreaView>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 20 }}>
         {/* Saved Addresses */}
         {savedAddresses.map((address, index) => {
           return (
@@ -46,6 +46,7 @@ function SavedAddresses({ navigation, savedAddresses }) {
           paddingHorizontal: 25,
           backgroundColor: "#fff",
           paddingBottom: 110,
+          paddingTop: 10,
         }}
       >
         <Button
