@@ -61,7 +61,7 @@ function Cart({
             <View style={styles.header}>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("Home");
+                  navigation.goBack();
                 }}
                 style={{ flex: 0.5, paddingTop: 25 }}
               >
@@ -124,7 +124,7 @@ function Cart({
           <View style={styles.header}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("Home");
+                navigation.goBack();
               }}
               style={{ flex: 0.5, paddingTop: 25 }}
             >
