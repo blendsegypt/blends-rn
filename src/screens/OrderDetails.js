@@ -156,6 +156,7 @@ function OrderDetails({ navigation }) {
                 borderRadius: 20,
                 height: 110,
                 paddingHorizontal: 20,
+                marginHorizontal: 25,
               }}
               isLoading={true}
               animationDirection="horizontalLeft"
