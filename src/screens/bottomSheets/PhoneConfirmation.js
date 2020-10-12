@@ -77,7 +77,7 @@ function Sheet({ confirmUser, confirmUserRedux }) {
         </Link>
         </View>
         <Text bold style={styles.title}>
-          Please enter your name & phone number
+          Confirm your Account
         </Text>
         <Text regular style={styles.message}>
           We’ll send you an OTP (one time password) to confirm your phone number
@@ -113,9 +113,14 @@ function Sheet({ confirmUser, confirmUserRedux }) {
             Register
           </Button>
         ) : (
-            <Button style={{ marginTop: 20 }} disabled>
-              Register
-            </Button>
+            <>
+              <Button style={{ marginTop: 20 }} disabled>
+                Register
+              </Button>
+              <Button style={{ marginTop: 10, backgroundColor: "#3077F2" }} icon="facebook">
+                Sign in using Facebook
+              </Button>
+            </>
           )}
       </ScrollView>
     );
@@ -233,7 +238,7 @@ function PhoneConfirmation({ confirmUser, confirmUserRedux, showPhoneConfirmatio
   return (
     <BottomSheet
       ref={sheetRef}
-      snapPoints={[500, 750, 0]}
+      snapPoints={[600, 750, 0]}
       borderRadius={20}
       renderContent={() => {
         return (
@@ -250,7 +255,7 @@ function PhoneConfirmation({ confirmUser, confirmUserRedux, showPhoneConfirmatio
 
 const styles = StyleSheet.create({
   bottomSheetContainer: {
-    height: 750,
+    height: 800,
     backgroundColor: "#fff",
     paddingTop: 50,
     paddingHorizontal: 25,
