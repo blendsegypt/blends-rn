@@ -64,9 +64,13 @@ export default function Button(props) {
   let symbol;
   if (props.price) {
     symbol = (
-      <Text bold style={[styles.price, { color: buttonTextColor }]}>
-        {props.price}
-      </Text>
+      <View style={{ justifyContent: "center" }}>
+        <View style={{ backgroundColor: "#11203E", padding: 8, paddingHorizontal: 12, borderRadius: 20 }}>
+          <Text bold style={[styles.price, { color: buttonTextColor }]}>
+            {props.price}
+          </Text>
+        </View>
+      </View>
     );
   } else if (props.blends) {
     symbol = (
@@ -106,7 +110,6 @@ export default function Button(props) {
 const styles = StyleSheet.create({
   button: {
     paddingLeft: 25,
-    paddingVertical: 27,
     borderRadius: 50,
     flexDirection: "row",
   },
@@ -114,6 +117,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 15,
     flex: 0.93,
+    paddingVertical: 27,
   },
   icon: {
     paddingTop: 3,
@@ -121,6 +125,6 @@ const styles = StyleSheet.create({
   },
   price: {
     color: "#fff",
-    fontSize: 15,
+    fontSize: 14,
   },
 });
