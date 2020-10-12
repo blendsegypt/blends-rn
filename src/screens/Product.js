@@ -47,13 +47,13 @@ function Product({ navigation, addToCart }) {
         label: "Cup Size",
         options: [
           {
-            label: "Small (0 EGP)",
+            label: "Small (+0 EGP)",
             price: 0,
             value: "sm",
             textValue: "Small",
           },
           {
-            label: "Large (5 EGP)",
+            label: "Large (+5 EGP)",
             price: 5,
             value: "lg",
             textValue: "Large",
@@ -64,13 +64,13 @@ function Product({ navigation, addToCart }) {
         label: "Milk Type",
         options: [
           {
-            label: "Skimmed (0 EGP)",
+            label: "Skimmed (+0 EGP)",
             price: 0,
             value: "skm",
             textValue: "Skimmed Milk",
           },
           {
-            label: "Full Cream (0 EGP)",
+            label: "Full Cream (+0 EGP)",
             price: 0,
             value: "fc",
             textValue: "Full Cream Milk",
@@ -83,13 +83,13 @@ function Product({ navigation, addToCart }) {
         label: "Whipped Cream",
         options: [
           {
-            label: "No (0 EGP)",
+            label: "No (+0 EGP)",
             price: 0,
             value: false,
             textValue: "No Whipped Cream",
           },
           {
-            label: "Yes (0 EGP)",
+            label: "Yes (+0 EGP)",
             price: 0,
             value: true,
             textValue: "Whipped Cream",
@@ -219,11 +219,11 @@ function Product({ navigation, addToCart }) {
             ]}
           />
         ) : (
-          <Image
-            source={productData.image}
-            style={{ width: 230, height: 230 }}
-          />
-        )}
+            <Image
+              source={productData.image}
+              style={{ width: 230, height: 230 }}
+            />
+          )}
       </View>
       {/* Product Title */}
       <View style={styles.productTitle}>
@@ -249,19 +249,19 @@ function Product({ navigation, addToCart }) {
             ]}
           />
         ) : (
-          productData.tags.map((tag, index) => {
-            return (
-              <View
-                key={index}
-                style={[styles.tag, { backgroundColor: tag.bgColor }]}
-              >
-                <Text style={[styles.tagText, { color: "#fff" }]}>
-                  {tag.label}
-                </Text>
-              </View>
-            );
-          })
-        )}
+            productData.tags.map((tag, index) => {
+              return (
+                <View
+                  key={index}
+                  style={[styles.tag, { backgroundColor: tag.bgColor }]}
+                >
+                  <Text style={[styles.tagText, { color: "#fff" }]}>
+                    {tag.label}
+                  </Text>
+                </View>
+              );
+            })
+          )}
       </View>
       {/* Product Description */}
       <View style={{ paddingHorizontal: 25, paddingTop: 5 }}>
@@ -289,10 +289,10 @@ function Product({ navigation, addToCart }) {
             ]}
           />
         ) : (
-          <Text regular style={styles.productDesc}>
-            {productData.desc}
-          </Text>
-        )}
+            <Text regular style={styles.productDesc}>
+              {productData.desc}
+            </Text>
+          )}
       </View>
       <ScrollView style={styles.customizationSection}>
         <Text semiBold style={styles.customizationTitle}>
@@ -324,37 +324,37 @@ function Product({ navigation, addToCart }) {
             ]}
           />
         ) : (
-          productData.customOptions.map((customOption, index) => {
-            return (
-              <View style={styles.customOption} key={index}>
-                <Text regular style={styles.customOptionText}>
-                  {customOption.label}
-                </Text>
-                <View style={{ flex: 0.6 }}>
-                  <Dropdown
-                    items={customOption.options}
-                    onChange={(value) => {
-                      let price;
-                      let textValue;
-                      customOption.options.forEach((option) => {
-                        if (option.value == value) {
-                          price = option.price;
-                          textValue = option.textValue;
-                        }
-                      });
-                      addCustomOption(
-                        customOption.label,
-                        value,
-                        price,
-                        textValue
-                      );
-                    }}
-                  />
+            productData.customOptions.map((customOption, index) => {
+              return (
+                <View style={styles.customOption} key={index}>
+                  <Text regular style={styles.customOptionText}>
+                    {customOption.label}
+                  </Text>
+                  <View style={{ flex: 0.6 }}>
+                    <Dropdown
+                      items={customOption.options}
+                      onChange={(value) => {
+                        let price;
+                        let textValue;
+                        customOption.options.forEach((option) => {
+                          if (option.value == value) {
+                            price = option.price;
+                            textValue = option.textValue;
+                          }
+                        });
+                        addCustomOption(
+                          customOption.label,
+                          value,
+                          price,
+                          textValue
+                        );
+                      }}
+                    />
+                  </View>
                 </View>
-              </View>
-            );
-          })
-        )}
+              );
+            })
+          )}
         {/* Extra Customization Options */}
         {loading == false && (
           <View style={{ marginTop: 20 }}>
@@ -415,10 +415,10 @@ function Product({ navigation, addToCart }) {
             Add to Cart
           </Button>
         ) : (
-          <Button noIcon success>
-            Added to Cart!
-          </Button>
-        )}
+            <Button noIcon success>
+              Added to Cart!
+            </Button>
+          )}
       </View>
     </View>
   );
