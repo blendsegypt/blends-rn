@@ -64,7 +64,7 @@ export default function Button(props) {
   let symbol;
   if (props.price) {
     symbol = (
-      <View style={{ justifyContent: "center" }}>
+      <View style={{ position: "absolute", right: 0, top: 0, bottom: 0, top: 0, alignSelf: "center", justifyContent: "center", marginRight: 15 }}>
         <View style={{ backgroundColor: "#11203E", padding: 8, paddingHorizontal: 12, borderRadius: 20 }}>
           <Text bold style={[styles.price, { color: buttonTextColor }]}>
             {props.price}
@@ -74,18 +74,22 @@ export default function Button(props) {
     );
   } else if (props.blends) {
     symbol = (
-      <Image source={BlendsIconWhite} style={{ width: 22, height: 17 }} />
+      <View style={{ justifyContent: "center" }}>
+        <Image source={BlendsIconWhite} style={{ width: 22, height: 17 }} />
+      </View>
     );
   } else if (props.noIcon) {
     symbol = <></>;
   } else {
     symbol = (
-      <FontAwesome
-        style={styles.icon}
-        name={buttonIcon}
-        size={12}
-        color={buttonTextColor}
-      />
+      <View style={{ justifyContent: "center" }}>
+        <FontAwesome
+          style={styles.icon}
+          name={buttonIcon}
+          size={12}
+          color={buttonTextColor}
+        />
+      </View>
     );
   }
   return (
@@ -99,7 +103,7 @@ export default function Button(props) {
         if (props.onPress) props.onPress();
       }}
     >
-      <Text style={[styles.text, { color: buttonTextColor }]}>
+      <Text style={[styles.text, { color: buttonTextColor, alignSelf: "center" }]}>
         {props.children}
       </Text>
       {symbol}
@@ -112,15 +116,16 @@ const styles = StyleSheet.create({
     paddingLeft: 25,
     borderRadius: 50,
     flexDirection: "row",
+    paddingVertical: 27,
   },
   text: {
     color: "white",
     fontSize: 15,
     flex: 0.93,
-    paddingVertical: 27,
   },
   icon: {
     paddingTop: 3,
+    alignSelf: "center",
     fontSize: 15,
   },
   price: {
