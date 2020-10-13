@@ -40,5 +40,17 @@ export default validateField = (field) => {
       errors.push({ type: "regex", message: field.regexErrorMessage });
     }
   }
+  // Check if there's a minimum length
+  if (field.minLength) {
+    // Remove minLength error if it exists
+    errors = errors.filter((error) => error.type != "minLength");
+    if (value.length < field.minLength) {
+      // Add minLength error
+      errors.push({
+        type: "minLength",
+        message: `${fieldText} must be atleast ${field.minLength} characters`,
+      });
+    }
+  }
   return { ...field, errors, validated: true };
 };
