@@ -16,7 +16,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import CheckoutProgress from "../components/CheckoutProgress";
 import CartItem from "../components/CartItem";
 //Bottom Sheets
-import PhoneConfirmation from "./bottomSheets/PhoneConfirmation";
+import Sheet from "./bottomSheets/RegisterSheet";
 //Redux
 import { connect } from "react-redux";
 import { getCartItems } from "../redux/selectors/cartItems";
@@ -152,23 +152,23 @@ function Cart({
             ]}
           />
         ) : (
-            <CheckoutProgress
-              steps={[
-                {
-                  label: "Cart",
-                  active: true,
-                },
-                {
-                  label: "Address Details",
-                  active: false,
-                },
-                {
-                  label: "Review",
-                  active: false,
-                },
-              ]}
-            />
-          )}
+          <CheckoutProgress
+            steps={[
+              {
+                label: "Cart",
+                active: true,
+              },
+              {
+                label: "Address Details",
+                active: false,
+              },
+              {
+                label: "Review",
+                active: false,
+              },
+            ]}
+          />
+        )}
         {/* Cart Items */}
         <ScrollView style={styles.cartContainer}>
           {cartItems.map((item, index) => {
@@ -193,7 +193,10 @@ function Cart({
           </Button>
         </View>
       </View>
-      <PhoneConfirmation showPhoneConfirmation={showPhoneConfirmation} confirmUser={confirmUser} />
+      <Sheet
+        showPhoneConfirmation={showPhoneConfirmation}
+        confirmUser={confirmUser}
+      />
     </>
   );
 }
