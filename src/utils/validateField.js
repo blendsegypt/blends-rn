@@ -52,5 +52,17 @@ export default validateField = (field) => {
       });
     }
   }
+  // Check if there's an equality validation
+  if (field.equals) {
+    // Remove equality error if it exists
+    errors = errors.filter((error) => error.type != "equality");
+    if (value.length < field.equality) {
+      // Add equality error
+      errors.push({
+        type: "equality",
+        message: `Password Confirmation doesn't match password`, //always used for password confirmation
+      });
+    }
+  }
   return { ...field, errors, validated: true };
 };
