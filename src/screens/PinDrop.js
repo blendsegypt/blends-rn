@@ -196,6 +196,42 @@ function PinDrop({ addLocation, user, navigation, route }) {
               {locationObject.street}
             </Text>
           ) : (
+            <SkeletonContent
+              containerStyle={{ width: 100, height: 70 }}
+              isLoading={true}
+              animationDirection="horizontalLeft"
+              duration="800"
+              boneColor="#D1D1D1"
+              layout={[
+                {
+                  key: "address1",
+                  width: 130,
+                  height: 20,
+                  borderRadius: 10,
+                },
+                {
+                  key: "address2",
+                  width: 100,
+                  height: 20,
+                  borderRadius: 10,
+                  marginTop: 5,
+                },
+                {
+                  key: "address3",
+                  width: 150,
+                  height: 20,
+                  borderRadius: 10,
+                  marginTop: 5,
+                },
+              ]}
+            />
+          )}
+          <View>
+            {addressLoaded ? (
+              <View style={styles.supportedTag}>
+                <Text style={styles.supportedTagText}>Supported</Text>
+              </View>
+            ) : (
               <SkeletonContent
                 containerStyle={{ width: 100, height: 70 }}
                 isLoading={true}
@@ -204,64 +240,32 @@ function PinDrop({ addLocation, user, navigation, route }) {
                 boneColor="#D1D1D1"
                 layout={[
                   {
-                    key: "address1",
-                    width: 130,
-                    height: 20,
-                    borderRadius: 10,
-                  },
-                  {
-                    key: "address2",
+                    key: "tag",
                     width: 100,
-                    height: 20,
+                    height: 25,
                     borderRadius: 10,
-                    marginTop: 5,
-                  },
-                  {
-                    key: "address3",
-                    width: 150,
-                    height: 20,
-                    borderRadius: 10,
-                    marginTop: 5,
+                    marginLeft: 135,
+                    marginTop: 15,
                   },
                 ]}
               />
             )}
-          <View>
-            {addressLoaded ? (
-              <View style={styles.supportedTag}>
-                <Text style={styles.supportedTagText}>Supported</Text>
-              </View>
-            ) : (
-                <SkeletonContent
-                  containerStyle={{ width: 100, height: 70 }}
-                  isLoading={true}
-                  animationDirection="horizontalLeft"
-                  duration="800"
-                  boneColor="#D1D1D1"
-                  layout={[
-                    {
-                      key: "tag",
-                      width: 100,
-                      height: 25,
-                      borderRadius: 10,
-                      marginLeft: 135,
-                      marginTop: 15,
-                    },
-                  ]}
-                />
-              )}
           </View>
         </View>
         {/* Continue Button */}
-        {!existingUser ?
-          <Button
-            onPress={() => {
-              continueHandler();
-            }}
-          >
-            Continue
-        </Button>
-          :
+        {!existingUser ? (
+          addressLoaded ? (
+            <Button
+              onPress={() => {
+                continueHandler();
+              }}
+            >
+              Continue
+            </Button>
+          ) : (
+            <Button disabled>test</Button>
+          )
+        ) : (
           <Button
             onPress={() => {
               // Navigate to Edit Address in Account
@@ -271,14 +275,19 @@ function PinDrop({ addLocation, user, navigation, route }) {
                 floor: "",
                 apartment: "",
                 deliveryNotes: "",
-              }
-              navigation.navigate("Home", { screen: "Account", params: { screen: "EditAddress", params: { address, newAddress: true } } });
+              };
+              navigation.navigate("Home", {
+                screen: "Account",
+                params: {
+                  screen: "EditAddress",
+                  params: { address, newAddress: true },
+                },
+              });
             }}
           >
             Add Location
-        </Button>
-        }
-
+          </Button>
+        )}
       </View>
     </View>
   );
