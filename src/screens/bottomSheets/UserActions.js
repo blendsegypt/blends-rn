@@ -62,8 +62,9 @@ function SheetsRouter({ closeSheet, confirmUser, setSnap }) {
     );
   } else if (sheet == "NewAccountFBSheet") {
     return <NewAccountFBSheet setSheet={setSheet} setFacebook={setFacebook} />;
+  } else if (sheet == "OTPSheet") {
+    setSnap(6);
   }
-  setSnap(6);
   return (
     <OTPSheet
       setSheet={setSheet}
@@ -134,6 +135,7 @@ function UserActions({ closeSheet, confirmUser, showPhoneConfirmation }) {
     if (showPhoneConfirmation) {
       sheetRef.current.snapTo(snap);
     } else {
+      console.log("close sheet");
       sheetRef.current.snapTo(0);
     }
   }, [showPhoneConfirmation, snap]);
@@ -151,11 +153,11 @@ function UserActions({ closeSheet, confirmUser, showPhoneConfirmation }) {
 
   // Each bottom sheet snap has an adjacent index that allows for keyboard movement
   const _keyboardWillShow = () => {
-    sheetRef.current.snapTo(snap + 1);
+    if (showPhoneConfirmation) sheetRef.current.snapTo(snap + 1);
   };
 
   const _keyboardWillHide = () => {
-    sheetRef.current.snapTo(snap);
+    if (showPhoneConfirmation) sheetRef.current.snapTo(snap);
   };
 
   return (
