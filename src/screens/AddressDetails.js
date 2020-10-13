@@ -23,16 +23,6 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import validateField from "../utils/validateField";
 
 function AddressDetails({ navigation, userLocation, addAddress }) {
-  // Address Fields state ------------------------------------------------ To be transfered to phoneConfirmation bottom sheet
-  // const [fullName, setFullName] = useState({
-  //   text: "Full Name",
-  //   value: "",
-  //   notEmpty: true,
-  //   regex: /^[a-zA-Z\s]*$/,
-  //   regexErrorMessage: "Full Name can only contain letters",
-  //   validated: false,
-  //   errors: [],
-  // });
   const [addressName, setAddressName] = useState({
     text: "Address Name",
     value: "",
@@ -69,12 +59,8 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
 
   // Check if there's no errors, activate the continue button
   useEffect(() => {
-    const errorsLength = [
-      ...addressName.errors,
-      ...addressDesc.errors,
-    ].length;
-    const fieldsValidated =
-      addressName.validated && addressDesc.validated;
+    const errorsLength = [...addressName.errors, ...addressDesc.errors].length;
+    const fieldsValidated = addressName.validated && addressDesc.validated;
 
     if (errorsLength == 0 && fieldsValidated) {
       setButtonActive(true);
@@ -148,18 +134,17 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
               </Text>
             </View>
             {/* Error Messages */}
-            {[
-              ...addressName.errors,
-              ...addressDesc.errors,
-            ].map((error, index) => {
-              return (
-                <View style={styles.errorMessage} key={index}>
-                  <Text regular style={{ color: "#b55b5b" }}>
-                    {error.message}
-                  </Text>
-                </View>
-              );
-            })}
+            {[...addressName.errors, ...addressDesc.errors].map(
+              (error, index) => {
+                return (
+                  <View style={styles.errorMessage} key={index}>
+                    <Text regular style={{ color: "#b55b5b" }}>
+                      {error.message}
+                    </Text>
+                  </View>
+                );
+              }
+            )}
             {/* Address Form */}
             <View>
               <TextInput
@@ -224,8 +209,8 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
           {buttonActive ? (
             <Button onPress={() => reviewOrder()}>Review Order</Button>
           ) : (
-              <Button disabled>Review Order</Button>
-            )}
+            <Button disabled>Review Order</Button>
+          )}
         </View>
       </View>
     </KeyboardAwareScrollView>

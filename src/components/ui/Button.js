@@ -64,8 +64,26 @@ export default function Button(props) {
   let symbol;
   if (props.price) {
     symbol = (
-      <View style={{ position: "absolute", right: 0, top: 0, bottom: 0, top: 0, alignSelf: "center", justifyContent: "center", marginRight: 15 }}>
-        <View style={{ backgroundColor: "#11203E", padding: 8, paddingHorizontal: 12, borderRadius: 20 }}>
+      <View
+        style={{
+          position: "absolute",
+          right: 0,
+          top: 0,
+          bottom: 0,
+          top: 0,
+          alignSelf: "center",
+          justifyContent: "center",
+          marginRight: 15,
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: "#11203E",
+            padding: 8,
+            paddingHorizontal: 12,
+            borderRadius: 20,
+          }}
+        >
           <Text bold style={[styles.price, { color: buttonTextColor }]}>
             {props.price}
           </Text>
@@ -103,7 +121,9 @@ export default function Button(props) {
         if (props.onPress) props.onPress();
       }}
     >
-      <Text style={[styles.text, { color: buttonTextColor, alignSelf: "center" }]}>
+      <Text
+        style={[styles.text, { color: buttonTextColor, alignSelf: "center" }]}
+      >
         {props.children}
       </Text>
       {symbol}

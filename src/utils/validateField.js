@@ -40,5 +40,30 @@ export default validateField = (field) => {
       errors.push({ type: "regex", message: field.regexErrorMessage });
     }
   }
+  // Check if there's a minimum length
+  if (field.minLength) {
+    // Remove minLength error if it exists
+    errors = errors.filter((error) => error.type != "minLength");
+    if (value.length < field.minLength) {
+      // Add minLength error
+      errors.push({
+        type: "minLength",
+        message: `${fieldText} must be atleast ${field.minLength} characters`,
+      });
+    }
+  }
+  // Check if there's an equality validation
+  if (field.equality) {
+    console.log("hello");
+    // Remove equality error if it exists
+    errors = errors.filter((error) => error.type != "equality");
+    if (value != field.equals) {
+      // Add equality error
+      errors.push({
+        type: "equality",
+        message: `Password Confirmation doesn't match password`, //always used for password confirmation
+      });
+    }
+  }
   return { ...field, errors, validated: true };
 };
