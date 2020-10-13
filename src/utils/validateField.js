@@ -53,10 +53,11 @@ export default validateField = (field) => {
     }
   }
   // Check if there's an equality validation
-  if (field.equals) {
+  if (field.equality) {
+    console.log("hello");
     // Remove equality error if it exists
     errors = errors.filter((error) => error.type != "equality");
-    if (value.length < field.equality) {
+    if (value != field.equals) {
       // Add equality error
       errors.push({
         type: "equality",
