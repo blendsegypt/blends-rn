@@ -26,7 +26,14 @@ import { getCartItems } from "../redux/selectors/cartItems";
 //Keyboard Aware ScrollView
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-function ReviewOrder({ route, navigation, activeAddress, cartItems, cartTotal, savedAddresses }) {
+function ReviewOrder({
+  route,
+  navigation,
+  activeAddress,
+  cartItems,
+  cartTotal,
+  savedAddresses,
+}) {
   const { threeStepsCheckout } = route.params;
   const [chooseAddressShown, setChooseAddressShown] = useState(false);
   return (
@@ -76,19 +83,19 @@ function ReviewOrder({ route, navigation, activeAddress, cartItems, cartTotal, s
             ]}
           />
         ) : (
-            <CheckoutProgress
-              steps={[
-                {
-                  label: "Cart",
-                  active: true,
-                },
-                {
-                  label: "Review",
-                  active: true,
-                },
-              ]}
-            />
-          )}
+          <CheckoutProgress
+            steps={[
+              {
+                label: "Cart",
+                active: true,
+              },
+              {
+                label: "Review",
+                active: true,
+              },
+            ]}
+          />
+        )}
         <ScrollView
           style={styles.container}
           contentContainerStyle={{ paddingBottom: 50 }}
@@ -112,18 +119,20 @@ function ReviewOrder({ route, navigation, activeAddress, cartItems, cartTotal, s
                 {activeAddress.addressName}
               </Text>
               <View style={{ flex: 0.37, alignItems: "flex-end" }}>
-                {savedAddresses.length > 1 ?
-                  <Link onPress={() => { setChooseAddressShown(true) }}>
+                {savedAddresses.length > 1 ? (
+                  <Link
+                    onPress={() => {
+                      setChooseAddressShown(true);
+                    }}
+                  >
                     Change
-                </Link>
-                  :
-                  <Link disabled>
-                    Change
-                </Link>
-                }
+                  </Link>
+                ) : (
+                  <Link disabled>Change</Link>
+                )}
               </View>
             </View>
-            <View style={[styles.deliveryOption]}>
+            <View style={[styles.deliveryOption, { paddingBottom: 10 }]}>
               <FontAwesome5
                 style={{ flex: 0.13 }}
                 name="hand-holding-usd"
@@ -164,7 +173,11 @@ function ReviewOrder({ route, navigation, activeAddress, cartItems, cartTotal, s
           </Button>
         </View>
       </View>
-      <ChooseAddress chooseAddressShown={chooseAddressShown} setChooseAddressShown={setChooseAddressShown} navigation={navigation} />
+      <ChooseAddress
+        chooseAddressShown={chooseAddressShown}
+        setChooseAddressShown={setChooseAddressShown}
+        navigation={navigation}
+      />
     </KeyboardAwareScrollView>
   );
 }
