@@ -16,7 +16,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import CheckoutProgress from "../components/CheckoutProgress";
 import CartItem from "../components/CartItem";
 //Bottom Sheets
-import Sheet from "./bottomSheets/RegisterSheet";
+import UserActions from "./bottomSheets/UserActions";
 //Redux
 import { connect } from "react-redux";
 import { getCartItems } from "../redux/selectors/cartItems";
@@ -34,7 +34,7 @@ function Cart({
   // Show / hide phone confirmation bottom sheet
   const [showPhoneConfirmation, setShowPhoneConfirmation] = useState(false);
 
-  const confirmUser = () => {
+  const closeSheet = () => {
     setShowPhoneConfirmation(false);
     navigation.navigate("AddressDetails");
   };
@@ -193,9 +193,9 @@ function Cart({
           </Button>
         </View>
       </View>
-      <Sheet
+      <UserActions
         showPhoneConfirmation={showPhoneConfirmation}
-        confirmUser={confirmUser}
+        closeSheet={closeSheet}
       />
     </>
   );
