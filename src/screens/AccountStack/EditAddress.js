@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 //UI Components
 import Text from "../../components/ui/Text";
 import TextInput from "../../components/ui/TextInput";
@@ -12,11 +18,20 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import validateField from "../../utils/validateField";
 //Redux
 import { connect } from "react-redux";
-import { addAddress, changeAddress, removeAddress } from "../../redux/actions/user.action";
+import {
+  addAddress,
+  changeAddress,
+  removeAddress,
+} from "../../redux/actions/user.action";
 
-function EditAddress({ navigation, route, changeAddress, removeAddress, addAddress }) {
+function EditAddress({
+  navigation,
+  route,
+  changeAddress,
+  removeAddress,
+  addAddress,
+}) {
   const { address, newAddress } = route.params;
-  console.log(navigation);
   // Address Fields state
   const [addressName, setAddressName] = useState({
     text: "Address Name",
@@ -55,10 +70,7 @@ function EditAddress({ navigation, route, changeAddress, removeAddress, addAddre
 
   // Check if there's no errors, activate the continue button
   useEffect(() => {
-    const errorsLength = [
-      ...addressName.errors,
-      ...addressDesc.errors,
-    ].length;
+    const errorsLength = [...addressName.errors, ...addressDesc.errors].length;
     const fieldsValidated =
       addressName.validated && addressDesc.validated && formChanged;
 
@@ -88,7 +100,7 @@ function EditAddress({ navigation, route, changeAddress, removeAddress, addAddre
     if (newAddress) {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Account' }, { name: "SavedAddresses" }],
+        routes: [{ name: "Account" }, { name: "SavedAddresses" }],
       });
     } else {
       navigation.navigate("SavedAddresses");
@@ -114,13 +126,11 @@ function EditAddress({ navigation, route, changeAddress, removeAddress, addAddre
             />
           </TouchableOpacity>
           <Text bold style={styles.screenTitle}>
-            {newAddress ?
-              "New Address"
-              :
-              `Edit Address (${address.addressName})`
-            }
+            {newAddress
+              ? "New Address"
+              : `Edit Address (${address.addressName})`}
           </Text>
-          {!newAddress &&
+          {!newAddress && (
             <TouchableOpacity
               onPress={() => {
                 removeAddress(address.addressName);
@@ -135,15 +145,12 @@ function EditAddress({ navigation, route, changeAddress, removeAddress, addAddre
                 color="#ba4b43"
               />
             </TouchableOpacity>
-          }
+          )}
         </View>
       </SafeAreaView>
       <ScrollView style={styles.container}>
         {/* Error Messages */}
-        {[
-          ...addressName.errors,
-          ...addressDesc.errors,
-        ].map((error, index) => {
+        {[...addressName.errors, ...addressDesc.errors].map((error, index) => {
           return (
             <View style={styles.errorMessage} key={index}>
               <Text regular style={{ color: "#b55b5b" }}>
@@ -164,7 +171,7 @@ function EditAddress({ navigation, route, changeAddress, removeAddress, addAddre
             }}
           >
             Address Name (eg. Home / Work) *
-              </TextInput>
+          </TextInput>
           <TextInput
             style={styles.textInput}
             onChangeText={(text) => {
@@ -211,11 +218,19 @@ function EditAddress({ navigation, route, changeAddress, removeAddress, addAddre
           >
             Delivery Notes
           </TextInput>
-          {buttonActive ?
-            <Button style={{ marginTop: 5 }} icon="check" onPress={() => saveAddress()}>Save</Button>
-            :
-            <Button disabled style={{ marginTop: 5 }} icon="check">Save</Button>
-          }
+          {buttonActive ? (
+            <Button
+              style={{ marginTop: 5 }}
+              icon="check"
+              onPress={() => saveAddress()}
+            >
+              Save
+            </Button>
+          ) : (
+            <Button disabled style={{ marginTop: 5 }} icon="check">
+              Save
+            </Button>
+          )}
         </View>
       </ScrollView>
     </KeyboardAwareScrollView>
@@ -268,7 +283,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   removeAddress: (addressName) => {
     dispatch(removeAddress(addressName));
-  }
+  },
 });
 
 export default connect(null, mapDispatchToProps)(EditAddress);

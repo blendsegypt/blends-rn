@@ -54,7 +54,6 @@ export default validateField = (field) => {
   }
   // Check if there's an equality validation
   if (field.equality) {
-    console.log("hello");
     // Remove equality error if it exists
     errors = errors.filter((error) => error.type != "equality");
     if (value != field.equals) {
