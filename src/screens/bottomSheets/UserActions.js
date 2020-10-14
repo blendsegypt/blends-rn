@@ -5,12 +5,10 @@ import {
   StyleSheet,
   Image,
   Keyboard,
-  TouchableOpacity,
   Dimensions,
 } from "react-native";
 //UI Components
 import Text from "../../components/ui/Text";
-import TextInput from "../../components/ui/TextInput";
 import Button from "../../components/ui/Button";
 import Link from "../../components/ui/Link";
 //Bottom Sheet
@@ -20,8 +18,6 @@ import BlendsLogo from "../../../assets/BlendsLogo.png";
 //Redux
 import { connect } from "react-redux";
 import { confirmUser } from "../../redux/actions/user.action";
-//Icons Font
-import { FontAwesome } from "@expo/vector-icons";
 //Sheets
 import LoginSheet from "./UserActionsSheets/LoginSheet";
 import NewAccountSheet from "./UserActionsSheets/NewAccountSheet";
@@ -127,18 +123,17 @@ function StartSheet({ setSheet }) {
   );
 }
 
-function UserActions({ closeSheet, confirmUser, showPhoneConfirmation }) {
+function UserActions({ closeSheet, confirmUser, showUserActionsSheet }) {
   const sheetRef = useRef(null);
   const [snap, setSnap] = useState(0);
-  // Show / Hide based on showPhoneConfirmation prop
+  // Show / Hide based on showUserActionsSheet prop
   useEffect(() => {
-    if (showPhoneConfirmation) {
+    if (showUserActionsSheet) {
       sheetRef.current.snapTo(snap);
     } else {
-      console.log("close sheet");
       sheetRef.current.snapTo(0);
     }
-  }, [showPhoneConfirmation, snap]);
+  }, [showUserActionsSheet, snap]);
 
   // Scroll bottom sheet up when keyboard is triggered
   useEffect(() => {
@@ -153,11 +148,11 @@ function UserActions({ closeSheet, confirmUser, showPhoneConfirmation }) {
 
   // Each bottom sheet snap has an adjacent index that allows for keyboard movement
   const _keyboardWillShow = () => {
-    if (showPhoneConfirmation) sheetRef.current.snapTo(snap + 1);
+    if (showUserActionsSheet) sheetRef.current.snapTo(snap + 1);
   };
 
   const _keyboardWillHide = () => {
-    if (showPhoneConfirmation) sheetRef.current.snapTo(snap);
+    if (showUserActionsSheet) sheetRef.current.snapTo(snap);
   };
 
   return (
@@ -195,6 +190,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingTop: 50,
     paddingHorizontal: 25,
+    zIndex: 99,
   },
   title: {
     fontSize: 19,
