@@ -25,7 +25,7 @@ import NewAccountFBSheet from "./UserActionsSheets/NewAccountFBSheet";
 import OTPSheet from "./UserActionsSheets/OTPSheet";
 
 // Phone number entry bottom sheet
-function SheetsRouter({ closeSheet, confirmUser, setSnap }) {
+function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
   // Sheet to be shown
   const [sheet, setSheet] = useState("StartSheet");
   const [facebook, setFacebook] = useState(false);
@@ -33,6 +33,19 @@ function SheetsRouter({ closeSheet, confirmUser, setSnap }) {
     fullName: "Khalid Khalil",
     phoneNumber: "01149050646",
   });
+
+  // If Login mode
+  if (loginMode) {
+    setSnap(2);
+    return (
+      <LoginSheet
+        setSheet={setSheet}
+        closeSheet={closeSheet}
+        confirmUser={confirmUser}
+        loginMode
+      />
+    );
+  }
 
   // Sheets navigation
   if (sheet == "StartSheet") {
@@ -123,7 +136,12 @@ function StartSheet({ setSheet }) {
   );
 }
 
-function UserActions({ closeSheet, confirmUser, showUserActionsSheet }) {
+function UserActions({
+  closeSheet,
+  confirmUser,
+  showUserActionsSheet,
+  loginMode,
+}) {
   const sheetRef = useRef(null);
   const [snap, setSnap] = useState(0);
   // Show / Hide based on showUserActionsSheet prop
@@ -175,6 +193,7 @@ function UserActions({ closeSheet, confirmUser, showUserActionsSheet }) {
             closeSheet={closeSheet}
             confirmUser={confirmUser}
             setSnap={setSnap}
+            loginMode={loginMode}
           />
         );
       }}

@@ -25,8 +25,18 @@ import SkeletonContent from "react-native-skeleton-content";
 import PinMarker from "../../assets/mapMarker.png";
 // Font Icons
 import { FontAwesome } from "@expo/vector-icons";
+//Bottom Sheet
+import UserActions from "../screens/bottomSheets/UserActions";
 
-function PinDrop({ addLocation, user, navigation, route }) {
+function PinDrop({
+  addLocation,
+  user,
+  navigation,
+  route,
+  phoneNumberConfirmed,
+}) {
+  // UserActions bottom sheet state
+  const [showUserActionsSheet, setShowUserActionsSheet] = useState(false);
   // Loading state
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [addressLoaded, setAddressLoaded] = useState(false);
@@ -112,125 +122,113 @@ function PinDrop({ addLocation, user, navigation, route }) {
     if (user.location) navigation.navigate("Home");
   }, []);
 
+  // Close UserActions Bottom sheet
+  const closeSheet = () => {
+    setShowUserActionsSheet(false);
+  };
+
+  useEffect(() => {
+    if (phoneNumberConfirmed) {
+      if (user.savedAddresses.length > 0) navigation.navigate("Home");
+    }
+  }, [phoneNumberConfirmed]);
+
   return (
-    <View style={styles.outerContainer}>
-      {locationLoaded && (
-        <>
-          <MapView
-            ref={mapRef}
-            provider="google"
-            style={styles.map}
-            initialRegion={{
-              longitude,
-              latitude,
-              longitudeDelta: 0.005,
-              latitudeDelta: 0.005,
-            }}
-            onRegionChange={(region) => {
-              setLongitude(region.longitude);
-              setLatitude(region.latitude);
-            }}
-            onRegionChangeComplete={() => {
-              reverseGeocode();
-            }}
-          >
-            <View
-              pointerEvents="none"
-              style={{
-                position: "absolute",
-                top: 0,
-                bottom: 20,
-                left: 0,
-                right: 0,
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "transparent",
+    <>
+      {showUserActionsSheet && (
+        <TouchableOpacity
+          style={styles.overlay}
+          onPress={() => {
+            setShowUserActionsSheet(false);
+          }}
+        ></TouchableOpacity>
+      )}
+      <View style={styles.outerContainer}>
+        {locationLoaded && (
+          <>
+            <MapView
+              ref={mapRef}
+              provider="google"
+              style={styles.map}
+              initialRegion={{
+                longitude,
+                latitude,
+                longitudeDelta: 0.005,
+                latitudeDelta: 0.005,
+              }}
+              onRegionChange={(region) => {
+                setLongitude(region.longitude);
+                setLatitude(region.latitude);
+              }}
+              onRegionChangeComplete={() => {
+                reverseGeocode();
               }}
             >
-              <Image
+              <View
                 pointerEvents="none"
-                source={PinMarker}
-                style={{ width: 34, height: 70 }}
-                resizeMode="contain"
-              />
-            </View>
-          </MapView>
-          <TouchableOpacity
-            style={{
-              position: "absolute",
-              bottom: 290,
-              right: 30,
-              backgroundColor: "#0E2241",
-              padding: 11,
-              borderRadius: 5,
-            }}
-            onPress={() => {
-              getUserLocation();
-            }}
-          >
-            <FontAwesome name="location-arrow" size={23} color="#fff" />
-          </TouchableOpacity>
-        </>
-      )}
-      <SafeAreaView style={styles.search}>
-        <View style={styles.searchContainer}>
-          <TextInput>Search...</TextInput>
-        </View>
-      </SafeAreaView>
-      <View style={styles.container}>
-        {/* Title */}
-        <View style={styles.title}>
-          <Text style={styles.titleText} semiBold>
-            Confirm your Location
-          </Text>
-          <Link>Already a User?</Link>
-        </View>
-        {/* Address */}
-        <View style={styles.address}>
-          {addressLoaded ? (
-            <Text style={styles.addressText}>
-              {locationObject.region}
-              {"\n"}
-              {locationObject.city}
-              {"\n"}
-              {locationObject.street}
-            </Text>
-          ) : (
-            <SkeletonContent
-              containerStyle={{ width: 100, height: 70 }}
-              isLoading={true}
-              animationDirection="horizontalLeft"
-              duration="800"
-              boneColor="#D1D1D1"
-              layout={[
-                {
-                  key: "address1",
-                  width: 130,
-                  height: 20,
-                  borderRadius: 10,
-                },
-                {
-                  key: "address2",
-                  width: 100,
-                  height: 20,
-                  borderRadius: 10,
-                  marginTop: 5,
-                },
-                {
-                  key: "address3",
-                  width: 150,
-                  height: 20,
-                  borderRadius: 10,
-                  marginTop: 5,
-                },
-              ]}
-            />
-          )}
-          <View>
-            {addressLoaded ? (
-              <View style={styles.supportedTag}>
-                <Text style={styles.supportedTagText}>Supported</Text>
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  bottom: 20,
+                  left: 0,
+                  right: 0,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "transparent",
+                }}
+              >
+                <Image
+                  pointerEvents="none"
+                  source={PinMarker}
+                  style={{ width: 34, height: 70 }}
+                  resizeMode="contain"
+                />
               </View>
+            </MapView>
+            <TouchableOpacity
+              style={{
+                position: "absolute",
+                bottom: 290,
+                right: 30,
+                backgroundColor: "#0E2241",
+                padding: 11,
+                borderRadius: 5,
+              }}
+              onPress={() => {
+                getUserLocation();
+              }}
+            >
+              <FontAwesome name="location-arrow" size={23} color="#fff" />
+            </TouchableOpacity>
+          </>
+        )}
+        <SafeAreaView style={styles.search}>
+          <View style={styles.searchContainer}>
+            <TextInput>Search...</TextInput>
+          </View>
+        </SafeAreaView>
+        <View style={styles.container}>
+          {/* Title */}
+          <View style={styles.title}>
+            <Text style={styles.titleText} semiBold>
+              Confirm your Location
+            </Text>
+            {!existingUser && (
+              <Link onPress={() => setShowUserActionsSheet(true)}>
+                Already a User?
+              </Link>
+            )}
+          </View>
+          {/* Address */}
+          <View style={styles.address}>
+            {addressLoaded ? (
+              <Text style={styles.addressText}>
+                {locationObject.region}
+                {"\n"}
+                {locationObject.city}
+                {"\n"}
+                {locationObject.street}
+              </Text>
             ) : (
               <SkeletonContent
                 containerStyle={{ width: 100, height: 70 }}
@@ -240,56 +238,98 @@ function PinDrop({ addLocation, user, navigation, route }) {
                 boneColor="#D1D1D1"
                 layout={[
                   {
-                    key: "tag",
-                    width: 100,
-                    height: 25,
+                    key: "address1",
+                    width: 130,
+                    height: 20,
                     borderRadius: 10,
-                    marginLeft: 135,
-                    marginTop: 15,
+                  },
+                  {
+                    key: "address2",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 10,
+                    marginTop: 5,
+                  },
+                  {
+                    key: "address3",
+                    width: 150,
+                    height: 20,
+                    borderRadius: 10,
+                    marginTop: 5,
                   },
                 ]}
               />
             )}
+            <View>
+              {addressLoaded ? (
+                <View style={styles.supportedTag}>
+                  <Text style={styles.supportedTagText}>Supported</Text>
+                </View>
+              ) : (
+                <SkeletonContent
+                  containerStyle={{ width: 100, height: 70 }}
+                  isLoading={true}
+                  animationDirection="horizontalLeft"
+                  duration="800"
+                  boneColor="#D1D1D1"
+                  layout={[
+                    {
+                      key: "tag",
+                      width: 100,
+                      height: 25,
+                      borderRadius: 10,
+                      marginLeft: 135,
+                      marginTop: 15,
+                    },
+                  ]}
+                />
+              )}
+            </View>
           </View>
-        </View>
-        {/* Continue Button */}
-        {!existingUser ? (
-          addressLoaded ? (
+          {/* Continue Button */}
+          {!existingUser ? (
+            addressLoaded ? (
+              <Button
+                onPress={() => {
+                  continueHandler();
+                }}
+              >
+                Continue
+              </Button>
+            ) : (
+              <Button disabled>Continue</Button>
+            )
+          ) : (
             <Button
               onPress={() => {
-                continueHandler();
+                // Navigate to Edit Address in Account
+                const address = {
+                  userLocation: locationObject,
+                  addressDesc: "",
+                  floor: "",
+                  apartment: "",
+                  deliveryNotes: "",
+                };
+                navigation.navigate("Home", {
+                  screen: "Account",
+                  params: {
+                    screen: "EditAddress",
+                    params: { address, newAddress: true },
+                  },
+                });
               }}
             >
-              Continue
+              Add Location
             </Button>
-          ) : (
-            <Button disabled>Continue</Button>
-          )
-        ) : (
-          <Button
-            onPress={() => {
-              // Navigate to Edit Address in Account
-              const address = {
-                userLocation: locationObject,
-                addressDesc: "",
-                floor: "",
-                apartment: "",
-                deliveryNotes: "",
-              };
-              navigation.navigate("Home", {
-                screen: "Account",
-                params: {
-                  screen: "EditAddress",
-                  params: { address, newAddress: true },
-                },
-              });
-            }}
-          >
-            Add Location
-          </Button>
-        )}
+          )}
+        </View>
       </View>
-    </View>
+      <UserActions
+        showUserActionsSheet={showUserActionsSheet}
+        closeSheet={closeSheet}
+        loginMode
+      />
+    </>
   );
 }
 
@@ -380,10 +420,19 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 50,
   },
+  overlay: {
+    backgroundColor: "black",
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    opacity: 0.8,
+    zIndex: 99,
+  },
 });
 
 const mapStateToProps = (state) => ({
   user: state.userReducer,
+  phoneNumberConfirmed: state.userReducer.phoneNumberConfirmed,
 });
 
 const mapDispatchToProps = (dispatch) => ({

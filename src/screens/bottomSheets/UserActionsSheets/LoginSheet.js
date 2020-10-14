@@ -11,7 +11,12 @@ import BlendsLogo from "../../../../assets/BlendsLogo.png";
 import validateField from "../../../utils/validateField";
 
 // Login Sheet
-export default function LoginSheet({ setSheet, closeSheet, confirmUser }) {
+export default function LoginSheet({
+  setSheet,
+  closeSheet,
+  confirmUser,
+  loginMode,
+}) {
   const [buttonActive, setButtonActive] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState({
     text: "Phone Number",
@@ -72,13 +77,15 @@ export default function LoginSheet({ setSheet, closeSheet, confirmUser }) {
             style={{ width: 80, height: 62 }}
             resizeMode="contain"
           />
-          <Link
-            onPress={() => {
-              setSheet("StartSheet");
-            }}
-          >
-            Create a new Account
-          </Link>
+          {!loginMode && (
+            <Link
+              onPress={() => {
+                setSheet("StartSheet");
+              }}
+            >
+              Create a new Account
+            </Link>
+          )}
         </View>
         <Text bold style={styles.title}>
           Login
