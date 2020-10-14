@@ -27,6 +27,7 @@ import PinMarker from "../../assets/mapMarker.png";
 import { FontAwesome } from "@expo/vector-icons";
 //Bottom Sheet
 import UserActions from "../screens/bottomSheets/UserActions";
+import BottomSheetOverlay from "../components/BottomSheetOverlay";
 
 function PinDrop({
   addLocation,
@@ -136,12 +137,9 @@ function PinDrop({
   return (
     <>
       {showUserActionsSheet && (
-        <TouchableOpacity
-          style={styles.overlay}
-          onPress={() => {
-            setShowUserActionsSheet(false);
-          }}
-        ></TouchableOpacity>
+        <BottomSheetOverlay
+          setShowBottomSheet={(state) => setShowUserActionsSheet(state)}
+        />
       )}
       <View style={styles.outerContainer}>
         {locationLoaded && (
