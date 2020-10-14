@@ -16,6 +16,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import CheckoutProgress from "../components/CheckoutProgress";
 import CartItem from "../components/CartItem";
 //Bottom Sheets
+import BottomSheetOverlay from "../components/BottomSheetOverlay";
 import UserActions from "./bottomSheets/UserActions";
 //Redux
 import { connect } from "react-redux";
@@ -112,12 +113,9 @@ function Cart({
   return (
     <>
       {showUserActionsSheet && (
-        <TouchableOpacity
-          style={styles.overlay}
-          onPress={() => {
-            setShowUserActionsSheet(false);
-          }}
-        ></TouchableOpacity>
+        <BottomSheetOverlay
+          setShowBottomSheet={(state) => setShowUserActionsSheet(state)}
+        />
       )}
       <View style={{ flex: 1 }}>
         <SafeAreaView>
@@ -248,14 +246,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#919191",
     lineHeight: 22,
-  },
-  overlay: {
-    backgroundColor: "black",
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    opacity: 0.8,
-    zIndex: 99,
   },
 });
 

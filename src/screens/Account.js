@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import { FontAwesome } from "@expo/vector-icons";
 //Bottom Sheets
 import UserActions from "./bottomSheets/UserActions";
+import BottomSheetOverlay from "../components/BottomSheetOverlay";
 
 function Account({ navigation, fullName, phoneNumberConfirmed }) {
   const [showUserActionsSheet, setShowUserActionsSheet] = useState(false);
@@ -49,12 +50,7 @@ function Account({ navigation, fullName, phoneNumberConfirmed }) {
   return (
     <>
       {showUserActionsSheet && (
-        <TouchableOpacity
-          style={styles.overlay}
-          onPress={() => {
-            closeSheet();
-          }}
-        ></TouchableOpacity>
+        <BottomSheetOverlay setShowBottomSheet={(state) => closeSheet()} />
       )}
       <View style={{ flex: 1 }}>
         <SafeAreaView>

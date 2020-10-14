@@ -33,6 +33,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import tabBarSettings from "./src/tabBarSettings";
 //Bottom Sheets
 import ChooseAddress from "./src/screens/bottomSheets/ChooseAddress";
+import BottomSheetOverlay from "./src/components/BottomSheetOverlay";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -53,7 +54,10 @@ function AccountStack() {
   return (
     <StackAccount.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Account" component={Account} />
-      <Stack.Screen name="PersonalInformation" component={PersonalInformation} />
+      <Stack.Screen
+        name="PersonalInformation"
+        component={PersonalInformation}
+      />
       <Stack.Screen name="SavedAddresses" component={SavedAddresses} />
       <Stack.Screen name="EditAddress" component={EditAddress} />
       <Stack.Screen name="InviteAFriend" component={InviteAFriend} />
@@ -65,21 +69,18 @@ function AccountStack() {
 function HomeTabs({ navigation }) {
   /*
    *
-   *  (note) Bottom sheet was placed here to snap above the tab bar 
+   *  (note) Bottom sheet was placed here to snap above the tab bar
    *
-  */
+   */
   const [chooseAddressShown, setChooseAddressShown] = useState(false);
 
   return (
     <>
       {/* Bottom Sheet Overlay */}
       {chooseAddressShown && (
-        <TouchableOpacity
-          style={styles.overlay}
-          onPress={() => {
-            setChooseAddressShown(false);
-          }}
-        ></TouchableOpacity>
+        <BottomSheetOverlay
+          setShowBottomSheet={(state) => setChooseAddressShown(state)}
+        />
       )}
       <Tab.Navigator
         tabBarOptions={{
@@ -90,14 +91,24 @@ function HomeTabs({ navigation }) {
         screenOptions={tabBarSettings}
       >
         <Tab.Screen name="Home">
-          {(props) => <Home {...props} setChooseAddressShown={setChooseAddressShown} chooseAddressShown={chooseAddressShown} />}
+          {(props) => (
+            <Home
+              {...props}
+              setChooseAddressShown={setChooseAddressShown}
+              chooseAddressShown={chooseAddressShown}
+            />
+          )}
         </Tab.Screen>
         <Tab.Screen name="Orders" component={OrdersStack} />
         <Tab.Screen name="Account" component={AccountStack} />
         <Tab.Screen name="Support" component={Support} />
       </Tab.Navigator>
       {/* Choose Address Bottom Sheet */}
-      <ChooseAddress chooseAddressShown={chooseAddressShown} setChooseAddressShown={setChooseAddressShown} navigation={navigation} />
+      <ChooseAddress
+        chooseAddressShown={chooseAddressShown}
+        setChooseAddressShown={setChooseAddressShown}
+        navigation={navigation}
+      />
     </>
   );
 }
@@ -143,7 +154,7 @@ const styles = StyleSheet.create({
     borderColor: "#fff",
     paddingBottom: 0,
     borderTopWidth: 0,
-    minHeight: 70
+    minHeight: 70,
   },
   overlay: {
     backgroundColor: "black",
