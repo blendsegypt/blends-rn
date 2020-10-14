@@ -32,10 +32,10 @@ function Cart({
   addressConfirmed,
 }) {
   // Show / hide phone confirmation bottom sheet
-  const [showPhoneConfirmation, setShowPhoneConfirmation] = useState(false);
+  const [showUserActionsSheet, setShowUserActionsSheet] = useState(false);
 
   const closeSheet = () => {
-    setShowPhoneConfirmation(false);
+    setShowUserActionsSheet(false);
     navigation.navigate("AddressDetails");
   };
 
@@ -48,7 +48,7 @@ function Cart({
       navigation.navigate("ReviewOrder", { threeStepsCheckout: false });
     } else {
       // If nothing is confirmed, show phone confirmation bottom sheet
-      setShowPhoneConfirmation(true);
+      setShowUserActionsSheet(true);
     }
   };
 
@@ -111,11 +111,11 @@ function Cart({
   }
   return (
     <>
-      {showPhoneConfirmation && (
+      {showUserActionsSheet && (
         <TouchableOpacity
           style={styles.overlay}
           onPress={() => {
-            setShowPhoneConfirmation(false);
+            setShowUserActionsSheet(false);
           }}
         ></TouchableOpacity>
       )}
@@ -194,7 +194,7 @@ function Cart({
         </View>
       </View>
       <UserActions
-        showPhoneConfirmation={showPhoneConfirmation}
+        showUserActionsSheet={showUserActionsSheet}
         closeSheet={closeSheet}
       />
     </>
