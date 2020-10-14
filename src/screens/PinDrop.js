@@ -263,7 +263,7 @@ function PinDrop({ addLocation, user, navigation, route }) {
               Continue
             </Button>
           ) : (
-            <Button disabled>test</Button>
+            <Button disabled>Continue</Button>
           )
         ) : (
           <Button
