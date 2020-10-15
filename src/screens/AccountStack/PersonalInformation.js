@@ -146,10 +146,10 @@ function PersonalInformation({
         {/* Full Name */}
         <TextInput
           onChangeText={(text) => {
-            setFormChanged(true);
             setFullName({ ...fullName, value: text });
           }}
           onBlur={() => {
+            setFormChanged(true);
             validate(fullName, setFullName);
           }}
           defaultValue={fullName.value}
@@ -160,10 +160,10 @@ function PersonalInformation({
         {/* Phone Number */}
         <TextInput
           onChangeText={(text) => {
-            setFormChanged(true);
             setPhoneNumber({ ...phoneNumber, value: text });
           }}
           onBlur={() => {
+            setFormChanged(true);
             validate(phoneNumber, setPhoneNumber);
           }}
           keyboardType="numeric"
@@ -176,10 +176,10 @@ function PersonalInformation({
         {/* Email */}
         <TextInput
           onChangeText={(text) => {
-            setFormChanged(true);
             setEmail({ ...email, value: text });
           }}
           onBlur={() => {
+            setFormChanged(true);
             validate(email, setEmail);
           }}
           style={{ marginVertical: 7 }}
@@ -190,7 +190,6 @@ function PersonalInformation({
         <TextInput
           secureTextEntry
           onChangeText={(text) => {
-            setFormChanged(true);
             setPassword({ ...password, value: text });
             setPasswordConfirmation({
               ...passwordConfirmation,
@@ -206,10 +205,10 @@ function PersonalInformation({
         <TextInput
           secureTextEntry
           onChangeText={(text) => {
-            setFormChanged(true);
             setPasswordConfirmation({ ...passwordConfirmation, value: text });
           }}
           onBlur={() => {
+            setFormChanged(true);
             validate(passwordConfirmation, setPasswordConfirmation);
           }}
           style={{ marginVertical: 7 }}

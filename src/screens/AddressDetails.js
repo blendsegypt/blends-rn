@@ -129,8 +129,7 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
               }}
             >
               <Text style={styles.location}>
-                {userLocation.region} - {userLocation.city} -{" "}
-                {userLocation.street}
+                {userLocation.formattedAddress}
               </Text>
             </View>
             {/* Error Messages */}
