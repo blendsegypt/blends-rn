@@ -27,7 +27,7 @@ export default function NewAccountSheet({
   const [fullName, setFullName] = useState({
     text: "Full Name",
     value: userObject.fullName,
-    validated: false,
+    validated: Boolean(userObject.fullName),
     notEmpty: true,
     regex: /^[a-zA-Z\s]*$/,
     regexErrorMessage: "Full Name can only contain characters and spaces",
@@ -37,7 +37,7 @@ export default function NewAccountSheet({
     text: "Phone Number",
     value: userObject.phoneNumber,
     minLength: 11,
-    validated: false,
+    validated: Boolean(userObject.phoneNumber),
     errors: [],
   });
   const [password, setPassword] = useState({
