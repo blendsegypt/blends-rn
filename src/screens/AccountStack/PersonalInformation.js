@@ -59,9 +59,12 @@ function PersonalInformation({
     validated: true,
   });
   const [passwordConfirmation, setPasswordConfirmation] = useState({
-    text: "Full Name",
+    text: "Password Confirmation",
     value: "",
+    equality: true,
+    equals: "",
     validated: true,
+    errors: [],
   });
 
   // Validate fields using validate.js from utils folder
@@ -78,11 +81,13 @@ function PersonalInformation({
       ...fullName.errors,
       ...phoneNumber.errors,
       ...email.errors,
+      ...passwordConfirmation.errors,
     ].length;
     const fieldsValidated =
       fullName.validated &&
       phoneNumber.validated &&
       email.validated &&
+      passwordConfirmation.validated &&
       formChanged;
 
     if (errorsLength == 0 && fieldsValidated) {
@@ -90,7 +95,13 @@ function PersonalInformation({
     } else {
       setButtonActive(false);
     }
-  }, [fullName.errors, phoneNumber.errors, email.errors, formChanged]);
+  }, [
+    fullName.errors,
+    phoneNumber.errors,
+    email.errors,
+    passwordConfirmation.errors,
+    formChanged,
+  ]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -118,17 +129,20 @@ function PersonalInformation({
       {/* Personal Information Form */}
       <ScrollView style={styles.container}>
         {/* Error Messages */}
-        {[...fullName.errors, ...phoneNumber.errors, ...email.errors].map(
-          (error, index) => {
-            return (
-              <View style={styles.errorMessage} key={index}>
-                <Text regular style={{ color: "#b55b5b" }}>
-                  {error.message}
-                </Text>
-              </View>
-            );
-          }
-        )}
+        {[
+          ...fullName.errors,
+          ...phoneNumber.errors,
+          ...email.errors,
+          ...passwordConfirmation.errors,
+        ].map((error, index) => {
+          return (
+            <View style={styles.errorMessage} key={index}>
+              <Text regular style={{ color: "#b55b5b" }}>
+                {error.message}
+              </Text>
+            </View>
+          );
+        })}
         {/* Full Name */}
         <TextInput
           onChangeText={(text) => {
@@ -174,12 +188,15 @@ function PersonalInformation({
         </TextInput>
         {/* Password */}
         <TextInput
+          secureTextEntry
           onChangeText={(text) => {
             setFormChanged(true);
             setPassword({ ...password, value: text });
-          }}
-          onBlur={() => {
-            validate(password, setPassword);
+            setPasswordConfirmation({
+              ...passwordConfirmation,
+              equals: text,
+              validated: false,
+            });
           }}
           style={{ marginVertical: 7 }}
         >
@@ -187,6 +204,7 @@ function PersonalInformation({
         </TextInput>
         {/* Password Confirmation */}
         <TextInput
+          secureTextEntry
           onChangeText={(text) => {
             setFormChanged(true);
             setPasswordConfirmation({ ...passwordConfirmation, value: text });
