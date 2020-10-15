@@ -28,6 +28,8 @@ import { FontAwesome } from "@expo/vector-icons";
 //Bottom Sheet
 import UserActions from "../screens/bottomSheets/UserActions";
 import BottomSheetOverlay from "../components/BottomSheetOverlay";
+//Axios
+import Axios from "../utils/axios";
 
 function PinDrop({
   addLocation,
@@ -42,7 +44,8 @@ function PinDrop({
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [addressLoaded, setAddressLoaded] = useState(false);
   // Location Object
-  const [locationObject, setLocationObject] = useState({});
+  const [formattedAddress, setFormattedAddress] = useState("");
+  const [area, setArea] = useState("");
   // Coordinates
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
@@ -53,16 +56,20 @@ function PinDrop({
   const [existingUser, setExistingUser] = useState(false);
 
   // Reverse Geocode address
-  const reverseGeocode = async () => {
-    const coords = { longitude, latitude };
-    let location = await Location.reverseGeocodeAsync(coords);
-    const locationObject = {
-      street: location[0].street,
-      city: location[0].city,
-      name: location[0].name,
-      region: location[0].region,
-    };
-    setLocationObject(locationObject);
+  const reverseGeocode = () => {
+    // Reverse Geocode coordinates using Google Maps API
+    Axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY`
+    )
+      .then((response) => {
+        const formattedAddress = response.data.results[0].formatted_address;
+        const area = response.data.results[0].address_components[1].short_name;
+        setFormattedAddress(formattedAddress);
+        setArea(area);
+      })
+      .catch((error) => {
+        console.log("Error: " + error);
+      });
     setAddressLoaded(true);
   };
 
@@ -114,7 +121,7 @@ function PinDrop({
 
   // Handler for continue button
   const continueHandler = () => {
-    addLocation(locationObject);
+    addLocation({ area, formattedAddress });
     navigation.navigate("Home");
   };
 
@@ -183,21 +190,29 @@ function PinDrop({
                 />
               </View>
             </MapView>
-            <TouchableOpacity
+            <View
               style={{
                 position: "absolute",
-                bottom: 290,
-                right: 30,
-                backgroundColor: "#0E2241",
-                padding: 11,
-                borderRadius: 5,
-              }}
-              onPress={() => {
-                getUserLocation();
+                top: 130,
+                right: 0,
+                left: 0,
+                alignItems: "center",
               }}
             >
-              <FontAwesome name="location-arrow" size={23} color="#fff" />
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#0E2241",
+                  padding: 13,
+                  paddingHorizontal: 15,
+                  borderRadius: 50,
+                }}
+                onPress={() => {
+                  getUserLocation();
+                }}
+              >
+                <FontAwesome name="location-arrow" size={23} color="#fff" />
+              </TouchableOpacity>
+            </View>
           </>
         )}
         <SafeAreaView style={styles.search}>
@@ -220,13 +235,7 @@ function PinDrop({
           {/* Address */}
           <View style={styles.address}>
             {addressLoaded ? (
-              <Text style={styles.addressText}>
-                {locationObject.region}
-                {"\n"}
-                {locationObject.city}
-                {"\n"}
-                {locationObject.street}
-              </Text>
+              <Text style={styles.addressText}>{formattedAddress}</Text>
             ) : (
               <SkeletonContent
                 containerStyle={{ width: 100, height: 70 }}
@@ -302,7 +311,7 @@ function PinDrop({
               onPress={() => {
                 // Navigate to Edit Address in Account
                 const address = {
-                  userLocation: locationObject,
+                  userLocation: { area, formattedAddress },
                   addressDesc: "",
                   floor: "",
                   apartment: "",
@@ -375,6 +384,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: 15,
     paddingHorizontal: 10,
+    alignContent: "space-between",
   },
   addressText: {
     fontSize: 16,

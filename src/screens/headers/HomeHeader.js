@@ -11,12 +11,18 @@ import { removeLocation } from "../../redux/actions/user.action";
 //Components
 import CartIcon from "../../components/CartIcon";
 
-function HomeHeader({ user, removeLocation, navigation, setChooseAddressShown, chooseAddressShown }) {
+function HomeHeader({
+  user,
+  removeLocation,
+  navigation,
+  setChooseAddressShown,
+  chooseAddressShown,
+}) {
   let location;
   if (user.addressConfirmed) {
     location = user.savedAddresses[0].addressName;
   } else if (user.location) {
-    location = user.location.city;
+    location = user.location.area;
   } else {
     location = "Not Selected";
   }

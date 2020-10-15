@@ -8,7 +8,14 @@ import { FontAwesome } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { switchActiveAddress } from "../redux/actions/user.action";
 
-function Address({ navigation, address, index, addressSelection, switchActiveAddress, setChooseAddressShown }) {
+function Address({
+  navigation,
+  address,
+  index,
+  addressSelection,
+  switchActiveAddress,
+  setChooseAddressShown,
+}) {
   //Address in Address Selection screen
   if (addressSelection) {
     return (
@@ -20,30 +27,28 @@ function Address({ navigation, address, index, addressSelection, switchActiveAdd
         }}
       >
         <View style={{ flex: 0.5, justifyContent: "space-between" }}>
-          <View style={{ flexDirection: "row", paddingRight: 15, }}>
+          <View style={{ flexDirection: "row", paddingRight: 15 }}>
             {/* Address Name */}
-            <FontAwesome
-              name="map-marker"
-              size={18}
-              color="#11203E"
-            />
-            <Text style={{ fontSize: 15, paddingHorizontal: 5, color: "#11203E" }}>{address.addressName}</Text>
+            <FontAwesome name="map-marker" size={18} color="#11203E" />
+            <Text
+              style={{ fontSize: 15, paddingHorizontal: 5, color: "#11203E" }}
+            >
+              {address.addressName}
+            </Text>
           </View>
           {/* Address Active? */}
-          {index == 0 &&
+          {index == 0 && (
             <View style={{ flexDirection: "row" }}>
               <View style={styles.activeAddressTag}>
                 <Text style={{ color: "#fff", fontSize: 12 }}>Active</Text>
               </View>
             </View>
-          }
+          )}
         </View>
         <View style={{ flex: 0.5 }}>
           {/* Address Location */}
           <Text style={{ fontSize: 14, lineHeight: 19, color: "#9c9c9c" }}>
-            {address.userLocation.region}{"\n"}
-            {address.userLocation.city}{"\n"}
-            {address.userLocation.street}
+            {address.userLocation.formattedAddress}
           </Text>
         </View>
       </TouchableOpacity>
@@ -51,32 +56,35 @@ function Address({ navigation, address, index, addressSelection, switchActiveAdd
   }
   //Address in Saved addresses screen
   return (
-    <TouchableOpacity style={styles.address} onPress={() => navigation.navigate("EditAddress", { address, newAddress: false })}>
+    <TouchableOpacity
+      style={styles.address}
+      onPress={() =>
+        navigation.navigate("EditAddress", { address, newAddress: false })
+      }
+    >
       <View style={{ flex: 0.4, justifyContent: "space-between" }}>
-        <View style={{ flexDirection: "row", paddingRight: 15, }}>
+        <View style={{ flexDirection: "row", paddingRight: 15 }}>
           {/* Address Name */}
-          <FontAwesome
-            name="map-marker"
-            size={18}
-            color="#11203E"
-          />
-          <Text style={{ fontSize: 15, paddingHorizontal: 5, color: "#11203E" }}>{address.addressName}</Text>
+          <FontAwesome name="map-marker" size={18} color="#11203E" />
+          <Text
+            style={{ fontSize: 15, paddingHorizontal: 5, color: "#11203E" }}
+          >
+            {address.addressName}
+          </Text>
         </View>
         {/* Address Active? */}
-        {index == 0 &&
+        {index == 0 && (
           <View style={{ flexDirection: "row" }}>
             <View style={styles.activeAddressTag}>
               <Text style={{ color: "#fff", fontSize: 12 }}>Active</Text>
             </View>
           </View>
-        }
+        )}
       </View>
       <View style={{ flex: 0.5 }}>
         {/* Address Location */}
         <Text style={{ fontSize: 14, lineHeight: 19, color: "#9c9c9c" }}>
-          {address.userLocation.region}{"\n"}
-          {address.userLocation.city}{"\n"}
-          {address.userLocation.street}
+          {address.userLocation.formattedAddress}
         </Text>
       </View>
       {/* Chevron Right */}
@@ -118,13 +126,13 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 9,
     borderRadius: 20,
-  }
+  },
 });
 
 const mapDispatchToProps = (dispatch) => ({
   switchActiveAddress: (addressName) => {
     dispatch(switchActiveAddress(addressName));
-  }
+  },
 });
 
 export default connect(null, mapDispatchToProps)(Address);
