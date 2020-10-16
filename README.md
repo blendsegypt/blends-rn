@@ -5,6 +5,7 @@
 - <b>Version:</b> ---
 - <b>Status:</b> In Progress
 - <b>Tech Stack:</b> Expo / React Native / Redux
+- <b>3rd Party Toolkits:</b> Google Maps API / Firebase Analytics / Support Chat (TBD)
 ## Components Map
 | Component        | File (src/components/*)           | Description  |
 | ------------- |:-------------:| :-----|
