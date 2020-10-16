@@ -28,6 +28,8 @@ import { FontAwesome } from "@expo/vector-icons";
 //Bottom Sheet
 import UserActions from "../screens/bottomSheets/UserActions";
 import BottomSheetOverlay from "../components/BottomSheetOverlay";
+//Search Location Component
+import SearchLocation from "../components/SearchLocation";
 //Axios
 import Axios from "../utils/axios";
 
@@ -58,18 +60,25 @@ function PinDrop({
   // Reverse Geocode address
   const reverseGeocode = () => {
     // Reverse Geocode coordinates using Google Maps API
-    Axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY`
-    )
-      .then((response) => {
-        const formattedAddress = response.data.results[0].formatted_address;
-        const area = response.data.results[0].address_components[1].short_name;
-        setFormattedAddress(formattedAddress);
-        setArea(area);
-      })
-      .catch((error) => {
-        console.log("Error: " + error);
-      });
+    // ----------- DO NOT REMOVE (commented to avoid unnecessary costs) --------------
+    // Axios.get(
+    //   `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&result_type=street_address|administrative_area_level_1|administrative_area_level_2|administrative_area_level_3&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY`
+    // )
+    //   .then((response) => {
+    //     // Get formatted address from response
+    //     const formattedAddress = response.data.results[0].formatted_address;
+    //     // Get area from address components
+    //     const area = response.data.results[0].address_components.find(
+    //       (component) => component.types.includes("administrative_area_level_2")
+    //     );
+    //     setFormattedAddress(formattedAddress);
+    //     setArea(area.long_name);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    setFormattedAddress("This is an example of address");
+    setArea("Sporting");
     setAddressLoaded(true);
   };
 
@@ -86,7 +95,6 @@ function PinDrop({
     setLongitude(coordinates.coords.longitude);
     setLocationLoaded(true);
     // Reverse Geocode the coordinates to physical address
-    reverseGeocode();
     mapRef.current.animateToRegion(
       {
         longitude: coordinates.coords.longitude,
@@ -109,15 +117,33 @@ function PinDrop({
         }
       }
       getUserLocation();
-    }, [route.params])
+    }, [route.params, user.location])
   );
 
-  // Get user location as soon as screen is loaded
-  useFocusEffect(
-    useCallback(() => {
-      getUserLocation();
-    }, [user.location])
-  );
+  // Handler for search queries
+  const navigateToPlaceID = (placeID) => {
+    // Retreive place lat,lng from Google Maps API
+    Axios.get(
+      `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeID}&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY&fields=geometry`
+    )
+      .then((response) => {
+        const { lat, lng } = response.data.result.geometry.location;
+        setLatitude(lat);
+        setLongitude(lng);
+        // Set loading state
+        setAddressLoaded(false);
+        mapRef.current.animateToRegion(
+          {
+            longitude: lng,
+            latitude: lat,
+            longitudeDelta: 0.005,
+            latitudeDelta: 0.005,
+          },
+          500
+        );
+      })
+      .catch((error) => {});
+  };
 
   // Handler for continue button
   const continueHandler = () => {
@@ -215,10 +241,15 @@ function PinDrop({
             </View>
           </>
         )}
-        <SafeAreaView style={styles.search}>
-          <View style={styles.searchContainer}>
-            <TextInput>Search...</TextInput>
-          </View>
+        {/* Search Locations Input */}
+        <SafeAreaView
+          style={{
+            position: "absolute",
+            width: "100%",
+            zIndex: 999,
+          }}
+        >
+          <SearchLocation navigateToPlaceID={navigateToPlaceID} />
         </SafeAreaView>
         <View style={styles.container}>
           {/* Title */}
@@ -361,14 +392,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     zIndex: 9999,
-  },
-  search: {
-    position: "absolute",
-    width: "100%",
-    zIndex: 999,
-  },
-  searchContainer: {
-    paddingHorizontal: 25,
   },
   title: {
     flex: 1,
