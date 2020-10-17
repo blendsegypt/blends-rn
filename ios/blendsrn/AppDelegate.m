@@ -10,6 +10,7 @@
 #import <EXSplashScreen/EXSplashScreenService.h>
 #import <UMCore/UMModuleRegistryProvider.h>
 #import <GoogleMaps/GoogleMaps.h>
+#import <Firebase.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -42,6 +43,9 @@ static void InitializeFlipper(UIApplication *application) {
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [GMSServices provideAPIKey:@"AIzaSyA68T7sAx0oZOKA8zUlMdl-_QmGh7eibQc"];
+  if ([FIRApp defaultApp] == nil) {
+      [FIRApp configure];
+  }
 #if DEBUG
   InitializeFlipper(application);
 #endif

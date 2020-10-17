@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>396683246336-sbtpne2d8um9f0kv15keb7s165olf9b7.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.396683246336-sbtpne2d8um9f0kv15keb7s165olf9b7</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBGbKv9JCIZzuttCz0AzQC8-xvI9fiFjoY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>396683246336</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>blends.client</string>
+	<key>PROJECT_ID</key>
+	<string>blends-290900</string>
+	<key>STORAGE_BUCKET</key>
+	<string>blends-290900.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:396683246336:ios:f47eee76a84726f4cdd1e5</string>
+	<key>DATABASE_URL</key>
+	<string>https://blends-290900.firebaseio.com</string>
+</dict>
+</plist>
