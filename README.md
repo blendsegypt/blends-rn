@@ -5,7 +5,7 @@
 - <b>Version:</b> ---
 - <b>Status:</b> In Progress
 - <b>Tech Stack:</b> <strike>Expo</strike> Ejected from Expo / React Native / Redux
-- <b>3rd Party Toolkits:</b> Google Maps API / Firebase Analytics / FreshChat (for customer support)
+- <b>3rd Party SDKs:</b> Google Maps API / Firebase Analytics / FreshChat (for customer support)
 ## Components Map
 | Component        | File (src/components/*)           | Description  |
 | ------------- |:-------------:| :-----|
