@@ -14,6 +14,7 @@ import {
 
 function Support({ user }) {
   useEffect(() => {
+    if (!user.phoneNumberConfirmed) return;
     // Setup FreshChat
     const freshchatConfig = new FreshchatConfig(
       "eeded093-e396-4fa5-8302-85223c8725c6",
@@ -46,16 +47,18 @@ function Support({ user }) {
         </View>
       </SafeAreaView>
       <ScrollView style={styles.container}>
-        <Button
-          icon="commenting"
-          textColor="#437FD9"
-          style={{ backgroundColor: "#EBF1FF" }}
-          onPress={() => {
-            showFreshChat();
-          }}
-        >
-          Talk to Support
-        </Button>
+        {user.phoneNumberConfirmed && (
+          <Button
+            icon="commenting"
+            textColor="#437FD9"
+            style={{ backgroundColor: "#EBF1FF" }}
+            onPress={() => {
+              showFreshChat();
+            }}
+          >
+            Talk to Support
+          </Button>
+        )}
         <Button style={{ marginTop: 10 }} secondary icon="heart">
           Rate Blends on Appstore
         </Button>
