@@ -1,9 +1,8 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "web": "expo start --web",
     "eject": "expo eject"
   },
@@ -11,6 +10,7 @@
     "@expo-google-fonts/fira-sans": "^0.1.0",
     "@expo/vector-icons": "^10.0.0",
     "@react-native-community/async-storage": "~1.11.0",
+    "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/picker": "1.6.0",
     "@react-navigation/bottom-tabs": "^5.9.1",
@@ -19,19 +19,24 @@
     "axios": "^0.20.0",
     "expo": "~38.0.8",
     "expo-font": "~8.2.1",
+    "expo-splash-screen": "^0.5.0",
     "expo-status-bar": "^1.0.2",
+    "expo-updates": "~0.2.10",
     "lodash.debounce": "^4.0.8",
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
+    "react-native": "~0.62.2",
+    "react-native-geolocation-service": "^5.0.0",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.2",
     "react-native-maps": "0.27.1",
     "react-native-picker-select": "7.0.0",
     "react-native-reanimated": "~1.9.0",
+    "react-native-safe-area-context": "^3.1.8",
     "react-native-screens": "~2.9.0",
     "react-native-skeleton-content": "^1.0.20",
     "react-native-snap-carousel": "^3.9.1",
+    "react-native-unimodules": "~0.10.1",
     "react-native-web": "~0.11.7",
     "react-redux": "^7.2.1",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
@@ -40,7 +45,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
-    "babel-preset-expo": "~8.1.0"
+    "babel-jest": "~25.2.6",
+    "babel-preset-expo": "~8.1.0",
+    "jest": "~25.2.6",
+    "react-test-renderer": "~16.11.0"
   },
-  "private": true
+  "private": true,
+  "name": "blends-rn",
+  "version": "1.0.0"
 }

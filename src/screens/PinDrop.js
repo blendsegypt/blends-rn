@@ -15,7 +15,7 @@ import Link from "../components/ui/Link";
 import Button from "../components/ui/Button";
 import TextInput from "../components/ui/TextInput";
 //Geolocation
-import * as Location from "expo-location";
+import Geolocation from "@react-native-community/geolocation";
 //Redux
 import { connect } from "react-redux";
 import { addLocation } from "../redux/actions/user.action";
@@ -83,26 +83,30 @@ function PinDrop({
   };
 
   // Detect user's location
-  const getUserLocation = async () => {
+  const getUserLocation = () => {
     if (user.location && route.params == undefined) return;
-    let { status } = await Location.requestPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Please allow Blends to access your Location.");
-    }
-    // Get Coordinates for Google Map View
-    let coordinates = await Location.getCurrentPositionAsync({});
-    setLatitude(coordinates.coords.latitude);
-    setLongitude(coordinates.coords.longitude);
-    setLocationLoaded(true);
-    // Reverse Geocode the coordinates to physical address
-    mapRef.current.animateToRegion(
-      {
-        longitude: coordinates.coords.longitude,
-        latitude: coordinates.coords.latitude,
-        longitudeDelta: 0.005,
-        latitudeDelta: 0.005,
+    Geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+        setLocationLoaded(true);
+        // Reverse Geocode the coordinates to physical address
+        mapRef.current.animateToRegion(
+          {
+            longitude: position.coords.longitude,
+            latitude: position.coords.latitude,
+            longitudeDelta: 0.005,
+            latitudeDelta: 0.005,
+          },
+          500
+        );
       },
-      500
+      (error) => {
+        // See error code charts below.
+        console.log(error.code, error.message);
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
     );
   };
 
