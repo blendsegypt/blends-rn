@@ -101,6 +101,7 @@ PODS:
     - boost-for-react-native
     - DoubleConversion
     - glog
+  - FreshchatSDK (3.7.5)
   - glog (0.3.5)
   - Google-Maps-iOS-Utils (3.4.0):
     - Google-Maps-iOS-Utils/Clustering (= 3.4.0)
@@ -362,6 +363,9 @@ PODS:
     - React
   - RNCPicker (1.6.0):
     - React
+  - RNFreshchatSDK (2.6.4):
+    - FreshchatSDK (= 3.7.5)
+    - React
   - RNGestureHandler (1.6.1):
     - React
   - RNReanimated (1.9.0):
@@ -457,6 +461,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPicker (from `../node_modules/@react-native-community/picker`)"
+  - RNFreshchatSDK (from `../node_modules/react-native-freshchat-sdk`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -487,6 +492,7 @@ SPEC REPOS:
     - Flipper-PeerTalk
     - Flipper-RSocket
     - FlipperKit
+    - FreshchatSDK
     - Google-Maps-iOS-Utils
     - GoogleMaps
     - OpenSSL-Universal
@@ -579,6 +585,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/masked-view"
   RNCPicker:
     :path: "../node_modules/@react-native-community/picker"
+  RNFreshchatSDK:
+    :path: "../node_modules/react-native-freshchat-sdk"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
@@ -641,6 +649,7 @@ SPEC CHECKSUMS:
   Flipper-RSocket: 64e7431a55835eb953b0bf984ef3b90ae9fdddd7
   FlipperKit: 6dc9b8f4ef60d9e5ded7f0264db299c91f18832e
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
+  FreshchatSDK: b3876e9b4b7f0cbd31d77722ac26f518fc7bb6b7
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   Google-Maps-iOS-Utils: 2b4971019b7e9b3c92b4635d218552d9e093df4b
   GoogleMaps: b7f7fc569a9b354a3af0d9729dbec40957b7d41e
@@ -671,6 +680,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: bab63e6fed69ac6122fcd9993209b6854de46d0b
+  RNFreshchatSDK: 6b88f4ab0bc91ec403da51785d81f17cb759f2c0
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
