@@ -64,6 +64,7 @@ export default function LoginSheet({
       <ScrollView
         style={[styles.bottomSheetContainer]}
         contentContainerStyle={{ paddingBottom: 500 }}
+        keyboardShouldPersistTaps="always"
       >
         <View
           style={{
@@ -107,17 +108,21 @@ export default function LoginSheet({
         <TextInput
           keyboardType="numeric"
           maxLength={11}
-          onChangeText={(text) =>
-            setPhoneNumber({ ...phoneNumber, value: text })
-          }
-          onBlur={() => validate(phoneNumber, setPhoneNumber)}
+          onChangeText={(text) => {
+            const newPhoneNumber = { ...phoneNumber, value: text };
+            setPhoneNumber(newPhoneNumber);
+            validate(newPhoneNumber, setPhoneNumber);
+          }}
         >
           Phone Number *
         </TextInput>
         <TextInput
           secureTextEntry
-          onChangeText={(text) => setPassword({ ...password, value: text })}
-          onBlur={() => validate(password, setPassword)}
+          onChangeText={(text) => {
+            const newPassword = { ...password, value: text };
+            setPassword(newPassword);
+            validate(newPassword, setPassword);
+          }}
         >
           Password *
         </TextInput>

@@ -49,7 +49,11 @@ export default function NewAccountSheet({ setSheet, setFacebook }) {
   }, [phoneNumber.errors]);
 
   return (
-    <ScrollView style={styles.bottomSheetContainer} extraScrollHeight={10}>
+    <ScrollView
+      style={styles.bottomSheetContainer}
+      extraScrollHeight={10}
+      keyboardShouldPersistTaps="always"
+    >
       <View
         style={{
           flexDirection: "row",
@@ -88,8 +92,11 @@ export default function NewAccountSheet({ setSheet, setFacebook }) {
         );
       })}
       <TextInput
-        onChangeText={(text) => setPhoneNumber({ ...phoneNumber, value: text })}
-        onBlur={() => validate(phoneNumber, setPhoneNumber)}
+        onChangeText={(text) => {
+          const newPhoneNumber = { ...phoneNumber, value: text };
+          setPhoneNumber({ ...phoneNumber, value: text });
+          validate(newPhoneNumber, setPhoneNumber);
+        }}
         keyboardType="numeric"
         maxLength={11}
       >

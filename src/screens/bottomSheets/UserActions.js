@@ -30,8 +30,8 @@ function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
   const [sheet, setSheet] = useState("StartSheet");
   const [facebook, setFacebook] = useState(false);
   const [userObject, setUserObject] = useState({
-    fullName: "Khalid Khalil",
-    phoneNumber: "01149050646",
+    fullName: "",
+    phoneNumber: "",
   });
 
   // If Login mode
@@ -52,7 +52,7 @@ function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
     setSnap(1);
     return <StartSheet setSheet={setSheet} />;
   } else if (sheet == "LoginSheet") {
-    setSnap(2);
+    setSnap(3);
     return (
       <LoginSheet
         setSheet={setSheet}
@@ -61,7 +61,7 @@ function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
       />
     );
   } else if (sheet == "NewAccountSheet") {
-    setSnap(4);
+    setSnap(5);
     return (
       <NewAccountSheet
         setSheet={setSheet}
@@ -72,7 +72,7 @@ function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
   } else if (sheet == "NewAccountFBSheet") {
     return <NewAccountFBSheet setSheet={setSheet} setFacebook={setFacebook} />;
   } else if (sheet == "OTPSheet") {
-    setSnap(6);
+    setSnap(7);
   }
   return (
     <OTPSheet
@@ -179,12 +179,13 @@ function UserActions({
       snapPoints={[
         0, // Closed
         430, // StartSheet
+        700,
         Dimensions.get("window").height - 320, // LoginSheet
-        Dimensions.get("window").height - 90, // LoginSheet(Keyboard)
+        Dimensions.get("window").height - 30, // LoginSheet(Keyboard)
         Dimensions.get("window").height - 250, // NewAccountSheet
-        850, // NewAccountSheet(Keyboard)
+        900, // NewAccountSheet(Keyboard)
         450, // OTPSheet
-        650, // OTPSheet(Keyboard)
+        750, // OTPSheet(Keyboard)
       ]}
       borderRadius={20}
       renderContent={() => {

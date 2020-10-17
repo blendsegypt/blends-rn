@@ -95,6 +95,7 @@ export default function NewAccountSheet({
     <ScrollView
       style={styles.bottomSheetContainer}
       contentContainerStyle={{ paddingBottom: 350 }}
+      keyboardShouldPersistTaps="always"
     >
       <View
         style={{
@@ -140,7 +141,11 @@ export default function NewAccountSheet({
       })}
       <TextInput
         style={{ marginVertical: 7 }}
-        onChangeText={(text) => setFullName({ ...fullName, value: text })}
+        onChangeText={(text) => {
+          const newFullName = { ...fullName, value: text };
+          setFullName({ ...fullName, value: text });
+          validate(newFullName, setFullName);
+        }}
         onBlur={() => validate(fullName, setFullName)}
         defaultValue={fullName.value}
       >
@@ -148,8 +153,11 @@ export default function NewAccountSheet({
       </TextInput>
       <TextInput
         style={{ marginVertical: 7 }}
-        onChangeText={(text) => setPhoneNumber({ ...phoneNumber, value: text })}
-        onBlur={() => validate(phoneNumber, setPhoneNumber)}
+        onChangeText={(text) => {
+          const newPhoneNumber = { ...phoneNumber, value: text };
+          setPhoneNumber(newPhoneNumber);
+          validate(newPhoneNumber, setPhoneNumber);
+        }}
         keyboardType="numeric"
         defaultValue={phoneNumber.value}
         maxLength={11}
@@ -160,20 +168,25 @@ export default function NewAccountSheet({
         secureTextEntry
         style={{ marginVertical: 7 }}
         onChangeText={(text) => {
-          setPassword({ ...password, value: text });
+          const passwordAfterEdit = { ...password, value: text };
+          setPassword(passwordAfterEdit);
           setPasswordConfirmation({ ...passwordConfirmation, equals: text });
+          validate(passwordAfterEdit, setPassword);
         }}
-        onBlur={() => validate(password, setPassword)}
       >
         Password
       </TextInput>
       <TextInput
         secureTextEntry
         style={{ marginVertical: 7 }}
-        onChangeText={(text) =>
-          setPasswordConfirmation({ ...passwordConfirmation, value: text })
-        }
-        onBlur={() => validate(passwordConfirmation, setPasswordConfirmation)}
+        onChangeText={(text) => {
+          const passwordConfirmAfterEdit = {
+            ...passwordConfirmation,
+            value: text,
+          };
+          setPasswordConfirmation(passwordConfirmAfterEdit);
+          validate(passwordConfirmAfterEdit, setPasswordConfirmation);
+        }}
       >
         Password Confirmation
       </TextInput>

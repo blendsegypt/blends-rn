@@ -43,7 +43,10 @@ export default function OTPSheet({
   }, [OTP]);
 
   return (
-    <ScrollView style={styles.bottomSheetContainer}>
+    <ScrollView
+      style={styles.bottomSheetContainer}
+      keyboardShouldPersistTaps="always"
+    >
       <View
         style={{
           flexDirection: "row",
