@@ -17,8 +17,17 @@ import { FontAwesome } from "@expo/vector-icons";
 import Latte from "../../assets/Latte.png";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content";
+//Redux
+import { connect } from "react-redux";
+//FreshChat Integration
+import {
+  Freshchat,
+  FreshchatConfig,
+  FreshchatUser,
+  FreshchatMessage,
+} from "react-native-freshchat-sdk";
 
-function OrderDetails({ navigation }) {
+function OrderDetails({ navigation, user }) {
   const order = {
     number: 1123,
     status: "Brewing",
@@ -55,11 +64,44 @@ function OrderDetails({ navigation }) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setOrderLoaded(true);
+      const userPropertiesJson = {
+        orderID: order.number,
+      };
+      Freshchat.setUserProperties(userPropertiesJson, (error) => {
+        console.log(error);
+      });
     }, 1000);
+
+    // Setup FreshChat
+    const freshchatConfig = new FreshchatConfig(
+      "eeded093-e396-4fa5-8302-85223c8725c6",
+      "af17ee52-db85-484b-853f-c650fdd023c5"
+    );
+    freshchatConfig.domain = "msdk.eu.freshchat.com";
+    Freshchat.init(freshchatConfig);
+    const freshchatUser = new FreshchatUser();
+    // Split fullName to first name
+    const firstName = user.fullName.split(" ")[0];
+    freshchatUser.firstName = firstName;
+    freshchatUser.phoneCountryCode = "+2";
+    freshchatUser.phone = user.phoneNumber;
+    Freshchat.setUser(freshchatUser, (error) => {
+      console.log(error);
+    });
+
+    // useEffect Cleanup
     return () => {
       clearTimeout(timeout);
     };
   }, []);
+
+  const showFreshChat = () => {
+    const freshchatMessage = new FreshchatMessage();
+    freshchatMessage.message = `I have a question regarding my order #${order.number}`;
+    Freshchat.sendMessage(freshchatMessage);
+    Freshchat.showConversations();
+  };
+
   return (
     <View style={{ flex: 1 }}>
       {/* Header */}
@@ -78,7 +120,10 @@ function OrderDetails({ navigation }) {
           </Text>
         </View>
       </SafeAreaView>
-      <ScrollView style={[styles.container, { paddingTop: 25 }]} contentContainerStyle={{ paddingBottom: 100 }}>
+      <ScrollView
+        style={[styles.container, { paddingTop: 25 }]}
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
         {/* Check if order was loaded */}
         {orderLoaded ? (
           <View style={styles.detailsContainer}>
@@ -150,13 +195,76 @@ function OrderDetails({ navigation }) {
             </View>
           </View>
         ) : (
+          <SkeletonContent
+            containerStyle={{
+              backgroundColor: "#D1D1D1",
+              borderRadius: 20,
+              height: 110,
+              paddingHorizontal: 20,
+              marginHorizontal: 25,
+            }}
+            isLoading={true}
+            animationDirection="horizontalLeft"
+            duration="800"
+            boneColor="#e3e3e3"
+            layout={[
+              {
+                paddingVertical: 20,
+                flexDirection: "row",
+                children: [
+                  {
+                    key: "status",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                  },
+                  {
+                    key: "details",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                    marginLeft: 100,
+                  },
+                ],
+              },
+              {
+                paddingVertical: 5,
+                flexDirection: "row",
+                children: [
+                  {
+                    key: "ordered",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                  },
+                  {
+                    key: "orderNumber",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                    marginLeft: 100,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
+        <View style={{ marginTop: 30, marginHorizontal: 25 }}>
+          <Text style={styles.containerTitle}>Order Receipt</Text>
+          {/* Order Receipt loading / loaded */}
+          {orderLoaded ? (
+            <OrderReceipt
+              cartItems={order.cartItems}
+              cartTotal={order.cartTotal}
+            />
+          ) : (
             <SkeletonContent
               containerStyle={{
+                marginTop: 25,
                 backgroundColor: "#D1D1D1",
                 borderRadius: 20,
-                height: 110,
+                height: 180,
                 paddingHorizontal: 20,
-                marginHorizontal: 25,
               }}
               isLoading={true}
               animationDirection="horizontalLeft"
@@ -166,19 +274,27 @@ function OrderDetails({ navigation }) {
                 {
                   paddingVertical: 20,
                   flexDirection: "row",
+                  alignItems: "center",
                   children: [
                     {
-                      key: "status",
-                      width: 100,
-                      height: 20,
-                      borderRadius: 20,
+                      key: "productImage",
+                      width: 40,
+                      height: 40,
+                      borderRadius: 100,
                     },
                     {
-                      key: "details",
-                      width: 100,
+                      key: "productName",
+                      width: 70,
                       height: 20,
                       borderRadius: 20,
-                      marginLeft: 100,
+                      marginLeft: 15,
+                    },
+                    {
+                      key: "productPrice",
+                      width: 70,
+                      height: 20,
+                      borderRadius: 20,
+                      marginLeft: 120,
                     },
                   ],
                 },
@@ -187,114 +303,43 @@ function OrderDetails({ navigation }) {
                   flexDirection: "row",
                   children: [
                     {
-                      key: "ordered",
+                      key: "subtotal",
                       width: 100,
                       height: 20,
                       borderRadius: 20,
                     },
                     {
-                      key: "orderNumber",
+                      key: "subtotalValue",
+                      width: 70,
+                      height: 20,
+                      borderRadius: 20,
+                      marginLeft: 150,
+                    },
+                  ],
+                },
+                {
+                  paddingVertical: 5,
+                  flexDirection: "row",
+                  marginTop: 20,
+                  children: [
+                    {
+                      key: "total",
                       width: 100,
                       height: 20,
                       borderRadius: 20,
-                      marginLeft: 100,
+                    },
+                    {
+                      key: "totalValue",
+                      width: 70,
+                      height: 20,
+                      borderRadius: 20,
+                      marginLeft: 150,
                     },
                   ],
                 },
               ]}
             />
           )}
-        <View style={{ marginTop: 30, marginHorizontal: 25, }}>
-          <Text style={styles.containerTitle}>Order Receipt</Text>
-          {/* Order Receipt loading / loaded */}
-          {orderLoaded ? (
-            <OrderReceipt
-              cartItems={order.cartItems}
-              cartTotal={order.cartTotal}
-            />
-          ) : (
-              <SkeletonContent
-                containerStyle={{
-                  marginTop: 25,
-                  backgroundColor: "#D1D1D1",
-                  borderRadius: 20,
-                  height: 180,
-                  paddingHorizontal: 20,
-                }}
-                isLoading={true}
-                animationDirection="horizontalLeft"
-                duration="800"
-                boneColor="#e3e3e3"
-                layout={[
-                  {
-                    paddingVertical: 20,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    children: [
-                      {
-                        key: "productImage",
-                        width: 40,
-                        height: 40,
-                        borderRadius: 100,
-                      },
-                      {
-                        key: "productName",
-                        width: 70,
-                        height: 20,
-                        borderRadius: 20,
-                        marginLeft: 15,
-                      },
-                      {
-                        key: "productPrice",
-                        width: 70,
-                        height: 20,
-                        borderRadius: 20,
-                        marginLeft: 120,
-                      },
-                    ],
-                  },
-                  {
-                    paddingVertical: 5,
-                    flexDirection: "row",
-                    children: [
-                      {
-                        key: "subtotal",
-                        width: 100,
-                        height: 20,
-                        borderRadius: 20,
-                      },
-                      {
-                        key: "subtotalValue",
-                        width: 70,
-                        height: 20,
-                        borderRadius: 20,
-                        marginLeft: 150,
-                      },
-                    ],
-                  },
-                  {
-                    paddingVertical: 5,
-                    flexDirection: "row",
-                    marginTop: 20,
-                    children: [
-                      {
-                        key: "total",
-                        width: 100,
-                        height: 20,
-                        borderRadius: 20,
-                      },
-                      {
-                        key: "totalValue",
-                        width: 70,
-                        height: 20,
-                        borderRadius: 20,
-                        marginLeft: 150,
-                      },
-                    ],
-                  },
-                ]}
-              />
-            )}
         </View>
       </ScrollView>
       <View
@@ -304,13 +349,20 @@ function OrderDetails({ navigation }) {
           paddingBottom: 110,
         }}
       >
-        <Button
-          textColor="#437FD9"
-          style={{ backgroundColor: "#EBF1FF" }}
-          icon="commenting"
-        >
-          Problems with your Order?
-        </Button>
+        {orderLoaded ? (
+          <Button
+            textColor="#437FD9"
+            style={{ backgroundColor: "#EBF1FF" }}
+            icon="commenting"
+            onPress={() => showFreshChat()}
+          >
+            Problems with your Order?
+          </Button>
+        ) : (
+          <Button icon="commenting" disabled>
+            Problems with your Order?
+          </Button>
+        )}
       </View>
     </View>
   );
@@ -363,4 +415,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderDetails;
+const mapStateToProps = (state) => ({
+  user: state.userReducer,
+});
+
+export default connect(mapStateToProps, null)(OrderDetails);

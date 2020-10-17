@@ -10,7 +10,6 @@ import {
   Freshchat,
   FreshchatConfig,
   FreshchatUser,
-  ConversationOptions,
 } from "react-native-freshchat-sdk";
 
 function Support({ user }) {
