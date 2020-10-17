@@ -1,10 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, ScrollView, StyleSheet, SafeAreaView } from "react-native";
 //UI Component
 import Text from "../components/ui/Text";
 import Button from "../components/ui/Button";
+//Redux
+import { connect } from "react-redux";
+//FreshChat Integration
+import {
+  Freshchat,
+  FreshchatConfig,
+  FreshchatUser,
+  ConversationOptions,
+} from "react-native-freshchat-sdk";
 
-function Support() {
+function Support({ user }) {
+  useEffect(() => {
+    // Setup FreshChat
+    const freshchatConfig = new FreshchatConfig(
+      "eeded093-e396-4fa5-8302-85223c8725c6",
+      "af17ee52-db85-484b-853f-c650fdd023c5"
+    );
+    freshchatConfig.domain = "msdk.eu.freshchat.com";
+    Freshchat.init(freshchatConfig);
+    const freshchatUser = new FreshchatUser();
+    // Split fullName to first name
+    const firstName = user.fullName.split(" ")[0];
+    freshchatUser.firstName = firstName;
+    freshchatUser.phoneCountryCode = "+2";
+    freshchatUser.phone = user.phoneNumber;
+    Freshchat.setUser(freshchatUser, (error) => {
+      console.log(error);
+    });
+  }, []);
+
+  const showFreshChat = () => {
+    Freshchat.showConversations();
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaView>
@@ -19,12 +51,17 @@ function Support() {
           icon="commenting"
           textColor="#437FD9"
           style={{ backgroundColor: "#EBF1FF" }}
+          onPress={() => {
+            showFreshChat();
+          }}
         >
           Talk to Support
         </Button>
-        <Button style={{ marginTop: 10 }} secondary icon="heart">Rate Blends on Appstore</Button>
+        <Button style={{ marginTop: 10 }} secondary icon="heart">
+          Rate Blends on Appstore
+        </Button>
       </ScrollView>
-    </View >
+    </View>
   );
 }
 
@@ -56,7 +93,11 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 25,
-  }
+  },
 });
 
-export default Support;
+const mapStateToProps = (state) => ({
+  user: state.userReducer,
+});
+
+export default connect(mapStateToProps, null)(Support);

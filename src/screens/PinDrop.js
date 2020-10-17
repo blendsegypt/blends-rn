@@ -13,7 +13,6 @@ import MapView from "react-native-maps";
 import Text from "../components/ui/Text";
 import Link from "../components/ui/Link";
 import Button from "../components/ui/Button";
-import TextInput from "../components/ui/TextInput";
 //Geolocation
 import Geolocation from "@react-native-community/geolocation";
 //Redux
