@@ -127,7 +127,10 @@ function PersonalInformation({
         </View>
       </SafeAreaView>
       {/* Personal Information Form */}
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ paddingBottom: 150 }}
+      >
         {/* Error Messages */}
         {[
           ...fullName.errors,
@@ -153,7 +156,7 @@ function PersonalInformation({
             validate(fullName, setFullName);
           }}
           defaultValue={fullName.value}
-          style={{ marginVertical: 7 }}
+          style={{ marginVertical: 7, marginHorizontal: 25 }}
         >
           Full Name
         </TextInput>
@@ -169,7 +172,7 @@ function PersonalInformation({
           keyboardType="numeric"
           defaultValue={phoneNumber.value}
           maxLength={11}
-          style={{ marginVertical: 7 }}
+          style={{ marginVertical: 7, marginHorizontal: 25 }}
         >
           Phone Number
         </TextInput>
@@ -182,7 +185,7 @@ function PersonalInformation({
             setFormChanged(true);
             validate(email, setEmail);
           }}
-          style={{ marginVertical: 7 }}
+          style={{ marginVertical: 7, marginHorizontal: 25 }}
         >
           Email
         </TextInput>
@@ -197,7 +200,7 @@ function PersonalInformation({
               validated: false,
             });
           }}
-          style={{ marginVertical: 7 }}
+          style={{ marginVertical: 7, marginHorizontal: 25 }}
         >
           Password
         </TextInput>
@@ -211,32 +214,34 @@ function PersonalInformation({
             setFormChanged(true);
             validate(passwordConfirmation, setPasswordConfirmation);
           }}
-          style={{ marginVertical: 7 }}
+          style={{ marginVertical: 7, marginHorizontal: 25 }}
         >
           Password Confirmation
         </TextInput>
         {/* Save Button */}
-        {buttonActive ? (
-          <Button
-            icon="check"
-            style={{ marginTop: 10 }}
-            onPress={() => {
-              const newPersonalInfo = {
-                fullName: fullName.value,
-                phoneNumber: phoneNumber.value,
-                email: email.value,
-              };
-              updatePersonalInfo(newPersonalInfo);
-              navigation.navigate("Account");
-            }}
-          >
-            Save
-          </Button>
-        ) : (
-          <Button disabled icon="check" style={{ marginTop: 10 }}>
-            Save
-          </Button>
-        )}
+        <View style={{ marginHorizontal: 25 }}>
+          {buttonActive ? (
+            <Button
+              icon="check"
+              style={{ marginTop: 10 }}
+              onPress={() => {
+                const newPersonalInfo = {
+                  fullName: fullName.value,
+                  phoneNumber: phoneNumber.value,
+                  email: email.value,
+                };
+                updatePersonalInfo(newPersonalInfo);
+                navigation.navigate("Account");
+              }}
+            >
+              Save
+            </Button>
+          ) : (
+            <Button disabled icon="check" style={{ marginTop: 10 }}>
+              Save
+            </Button>
+          )}
+        </View>
       </ScrollView>
     </View>
   );
@@ -266,7 +271,6 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#fff",
-    paddingHorizontal: 25,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 25,

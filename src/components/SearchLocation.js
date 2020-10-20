@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { View, StyleSheet, TouchableOpacity, Keyboard } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Keyboard,
+  Platform,
+} from "react-native";
 //UI Components
 import TextInput from "./ui/TextInput";
 import Text from "./ui/Text";
@@ -84,6 +90,7 @@ export default function SearchLocation({ navigateToPlaceID }) {
 const styles = StyleSheet.create({
   searchContainer: {
     paddingHorizontal: 25,
+    paddingTop: Platform.OS === "android" ? 30 : 0,
   },
   searchIcon: {
     position: "absolute",

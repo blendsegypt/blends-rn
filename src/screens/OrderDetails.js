@@ -347,6 +347,7 @@ function OrderDetails({ navigation, user }) {
           paddingHorizontal: 25,
           backgroundColor: "#fff",
           paddingBottom: 110,
+          paddingTop: 20,
         }}
       >
         {orderLoaded ? (
@@ -388,7 +389,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 15.65,
-    elevation: 8,
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#fff",

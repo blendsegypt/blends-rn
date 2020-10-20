@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 //UI Components
 import Text from "../../../components/ui/Text";
@@ -17,8 +18,10 @@ import BlendsLogo from "../../../../assets/BlendsLogo.png";
 import { FontAwesome } from "@expo/vector-icons";
 //Field Validation
 import validateField from "../../../utils/validateField";
+//Close Sheet Component
+import CloseSheet from "./utils/CloseSheet";
 
-export default function NewAccountSheet({ setSheet, setFacebook }) {
+export default function NewAccountSheet({ setSheet, setFacebook, closeSheet }) {
   const [buttonActive, setButtonActive] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState({
     text: "Phone Number",
@@ -49,75 +52,79 @@ export default function NewAccountSheet({ setSheet, setFacebook }) {
   }, [phoneNumber.errors]);
 
   return (
-    <ScrollView
-      style={styles.bottomSheetContainer}
-      extraScrollHeight={10}
-      keyboardShouldPersistTaps="always"
-    >
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
+    <>
+      {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
+      <ScrollView
+        style={styles.bottomSheetContainer}
+        extraScrollHeight={10}
+        keyboardShouldPersistTaps="always"
       >
-        <TouchableOpacity
-          onPress={() => {
-            setSheet("StartSheet");
-          }}
-          style={{ padding: 15, paddingLeft: 0 }}
-        >
-          <FontAwesome name="chevron-left" size={22} color="#11203E" />
-        </TouchableOpacity>
-        <Image
-          source={BlendsLogo}
-          style={{ width: 80, height: 62 }}
-          resizeMode="contain"
-        />
-      </View>
-      <Text bold style={styles.title}>
-        Confirm your phone number
-      </Text>
-      <Text regular style={styles.message}>
-        We'll send you an OTP (One Time Password) to confirm your phone number.
-      </Text>
-      {/* Error Messages */}
-      {[...phoneNumber.errors].map((error, index) => {
-        return (
-          <View style={styles.errorMessage} key={index}>
-            <Text regular style={{ color: "#b55b5b" }}>
-              {error.message}
-            </Text>
-          </View>
-        );
-      })}
-      <TextInput
-        onChangeText={(text) => {
-          const newPhoneNumber = { ...phoneNumber, value: text };
-          setPhoneNumber({ ...phoneNumber, value: text });
-          validate(newPhoneNumber, setPhoneNumber);
-        }}
-        keyboardType="numeric"
-        maxLength={11}
-      >
-        Phone Number
-      </TextInput>
-      {buttonActive ? (
-        <Button
-          style={{ marginTop: 10 }}
-          onPress={() => {
-            setFacebook(true);
-            setSheet("OTPSheet");
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          Continue
-        </Button>
-      ) : (
-        <Button style={{ marginTop: 10 }} disabled>
-          Continue
-        </Button>
-      )}
-    </ScrollView>
+          <TouchableOpacity
+            onPress={() => {
+              setSheet("StartSheet");
+            }}
+            style={{ padding: 15, paddingLeft: 0 }}
+          >
+            <FontAwesome name="chevron-left" size={22} color="#11203E" />
+          </TouchableOpacity>
+          <Image
+            source={BlendsLogo}
+            style={{ width: 80, height: 62 }}
+            resizeMode="contain"
+          />
+        </View>
+        <Text bold style={styles.title}>
+          Confirm your phone number
+        </Text>
+        <Text regular style={styles.message}>
+          We'll send you an OTP (One Time Password) to confirm your phone
+          number.
+        </Text>
+        {/* Error Messages */}
+        {[...phoneNumber.errors].map((error, index) => {
+          return (
+            <View style={styles.errorMessage} key={index}>
+              <Text regular style={{ color: "#b55b5b" }}>
+                {error.message}
+              </Text>
+            </View>
+          );
+        })}
+        <TextInput
+          onChangeText={(text) => {
+            const newPhoneNumber = { ...phoneNumber, value: text };
+            setPhoneNumber({ ...phoneNumber, value: text });
+            validate(newPhoneNumber, setPhoneNumber);
+          }}
+          keyboardType="numeric"
+          maxLength={11}
+        >
+          Phone Number
+        </TextInput>
+        {buttonActive ? (
+          <Button
+            style={{ marginTop: 10 }}
+            onPress={() => {
+              setFacebook(true);
+              setSheet("OTPSheet");
+            }}
+          >
+            Continue
+          </Button>
+        ) : (
+          <Button style={{ marginTop: 10 }} disabled>
+            Continue
+          </Button>
+        )}
+      </ScrollView>
+    </>
   );
 }
 
@@ -127,6 +134,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingTop: 50,
     paddingHorizontal: 25,
+    marginTop: Platform.OS === "android" ? 25 : 0,
   },
   title: {
     fontSize: 19,

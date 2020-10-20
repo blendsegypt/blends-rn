@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, ScrollView, Image, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  ScrollView,
+  Image,
+  StyleSheet,
+  Dimensions,
+  Platform,
+} from "react-native";
 //UI Components
 import Text from "../../../components/ui/Text";
 import Button from "../../../components/ui/Button";
@@ -7,6 +14,8 @@ import TextInput from "../../../components/ui/TextInput";
 import Link from "../../../components/ui/Link";
 //Assets
 import BlendsLogo from "../../../../assets/BlendsLogo.png";
+//Close Sheet component (Android only)
+import CloseSheet from "./utils/CloseSheet";
 
 export default function OTPSheet({
   setSheet,
@@ -43,96 +52,99 @@ export default function OTPSheet({
   }, [OTP]);
 
   return (
-    <ScrollView
-      style={styles.bottomSheetContainer}
-      keyboardShouldPersistTaps="always"
-    >
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
+    <>
+      {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
+      <ScrollView
+        style={styles.bottomSheetContainer}
+        keyboardShouldPersistTaps="always"
       >
-        <Image
-          source={BlendsLogo}
-          style={{ width: 80, height: 62 }}
-          resizeMode="contain"
-        />
-        <Link
-          onPress={() => {
-            //clearTimeout(resendTimeout);
-            if (facebook) {
-              setSheet("NewAccountFBSheet");
-            } else {
-              setSheet("NewAccountSheet");
-            }
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          Enter different phone number
-        </Link>
-      </View>
-      <Text bold style={styles.title}>
-        OTP (One Time Password)
-      </Text>
-      <Text regular style={styles.message}>
-        We've sent an OTP to <Text bold>0112323123</Text> If you didn't receive
-        anything on your phone number, please click on Resend
-      </Text>
-      <View style={{ flexDirection: "row", alignContent: "space-between" }}>
-        <TextInput
-          keyboardType="numeric"
-          style={{ flex: 0.5 }}
-          maxLength={4}
-          onChangeText={(text) => {
-            setOTP(text);
-          }}
-        >
-          OTP (XXXX)
-        </TextInput>
-        <View style={styles.resendButton}>
-          {canResend ? (
-            <Button
-              secondary
-              icon="envelope"
-              style={{
-                paddingVertical: 23,
-                marginTop: 7,
-                paddingRight: 15,
-              }}
-              onPress={() => {
-                startResendCounter();
-              }}
-            >
-              Resend
-            </Button>
-          ) : (
-            <Button
-              disabled
-              icon="envelope"
-              style={{ paddingVertical: 23, marginTop: 7, paddingRight: 15 }}
-            >
-              Resend
-            </Button>
-          )}
+          <Image
+            source={BlendsLogo}
+            style={{ width: 80, height: 62 }}
+            resizeMode="contain"
+          />
+          <Link
+            onPress={() => {
+              //clearTimeout(resendTimeout);
+              if (facebook) {
+                setSheet("NewAccountFBSheet");
+              } else {
+                setSheet("NewAccountSheet");
+              }
+            }}
+          >
+            Enter different phone number
+          </Link>
         </View>
-      </View>
-      {buttonActive ? (
-        <Button
-          style={{ marginTop: 20 }}
-          onPress={() => {
-            confirmUser(fullName, phoneNumber);
-            closeSheet();
-          }}
-        >
-          Confirm
-        </Button>
-      ) : (
-        <Button style={{ marginTop: 20 }} disabled>
-          Confirm
-        </Button>
-      )}
-    </ScrollView>
+        <Text bold style={styles.title}>
+          OTP (One Time Password)
+        </Text>
+        <Text regular style={styles.message}>
+          We've sent an OTP to <Text bold>0112323123</Text> If you didn't
+          receive anything on your phone number, please click on Resend
+        </Text>
+        <View style={{ flexDirection: "row", alignContent: "space-between" }}>
+          <TextInput
+            keyboardType="numeric"
+            style={{ flex: 0.5 }}
+            maxLength={4}
+            onChangeText={(text) => {
+              setOTP(text);
+            }}
+          >
+            OTP (XXXX)
+          </TextInput>
+          <View style={styles.resendButton}>
+            {canResend ? (
+              <Button
+                secondary
+                icon="envelope"
+                style={{
+                  paddingVertical: 23,
+                  marginTop: 7,
+                  paddingRight: 15,
+                }}
+                onPress={() => {
+                  startResendCounter();
+                }}
+              >
+                Resend
+              </Button>
+            ) : (
+              <Button
+                disabled
+                icon="envelope"
+                style={{ paddingVertical: 23, marginTop: 7, paddingRight: 15 }}
+              >
+                Resend
+              </Button>
+            )}
+          </View>
+        </View>
+        {buttonActive ? (
+          <Button
+            style={{ marginTop: 20 }}
+            onPress={() => {
+              confirmUser(fullName, phoneNumber);
+              closeSheet();
+            }}
+          >
+            Confirm
+          </Button>
+        ) : (
+          <Button style={{ marginTop: 20 }} disabled>
+            Confirm
+          </Button>
+        )}
+      </ScrollView>
+    </>
   );
 }
 
@@ -142,6 +154,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingTop: 50,
     paddingHorizontal: 25,
+    marginTop: Platform.OS === "android" ? 25 : 0,
   },
   title: {
     fontSize: 19,

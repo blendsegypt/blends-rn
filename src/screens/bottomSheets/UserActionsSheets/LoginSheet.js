@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, ScrollView, Image, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  Platform,
+} from "react-native";
 //UI Components
 import Text from "../../../components/ui/Text";
 import Link from "../../../components/ui/Link";
@@ -9,6 +17,7 @@ import TextInput from "../../../components/ui/TextInput";
 import BlendsLogo from "../../../../assets/BlendsLogo.png";
 //Field Validation
 import validateField from "../../../utils/validateField";
+import CloseSheet from "./utils/CloseSheet";
 
 // Login Sheet
 export default function LoginSheet({
@@ -61,6 +70,7 @@ export default function LoginSheet({
 
   return (
     <>
+      {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
       <ScrollView
         style={[styles.bottomSheetContainer]}
         contentContainerStyle={{ paddingBottom: 500 }}
@@ -140,7 +150,7 @@ export default function LoginSheet({
         style={{
           position: "absolute",
           width: "100%",
-          bottom: 350,
+          bottom: Platform.OS === "android" ? 80 : 350,
           paddingHorizontal: 25,
         }}
       >
@@ -158,6 +168,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingTop: 50,
     paddingHorizontal: 25,
+    marginTop: Platform.OS === "android" ? 25 : 0,
   },
   title: {
     fontSize: 19,

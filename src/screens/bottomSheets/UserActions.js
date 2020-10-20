@@ -6,6 +6,7 @@ import {
   Image,
   Keyboard,
   Dimensions,
+  Platform,
 } from "react-native";
 //UI Components
 import Text from "../../components/ui/Text";
@@ -23,6 +24,8 @@ import LoginSheet from "./UserActionsSheets/LoginSheet";
 import NewAccountSheet from "./UserActionsSheets/NewAccountSheet";
 import NewAccountFBSheet from "./UserActionsSheets/NewAccountFBSheet";
 import OTPSheet from "./UserActionsSheets/OTPSheet";
+//Close Sheet component
+import CloseSheet from "./UserActionsSheets/utils/CloseSheet";
 
 // Phone number entry bottom sheet
 function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
@@ -50,7 +53,7 @@ function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
   // Sheets navigation
   if (sheet == "StartSheet") {
     setSnap(1);
-    return <StartSheet setSheet={setSheet} />;
+    return <StartSheet setSheet={setSheet} closeSheet={closeSheet} />;
   } else if (sheet == "LoginSheet") {
     setSnap(3);
     return (
@@ -67,10 +70,17 @@ function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
         setSheet={setSheet}
         userObject={userObject}
         setUserObject={setUserObject}
+        closeSheet={closeSheet}
       />
     );
   } else if (sheet == "NewAccountFBSheet") {
-    return <NewAccountFBSheet setSheet={setSheet} setFacebook={setFacebook} />;
+    return (
+      <NewAccountFBSheet
+        setSheet={setSheet}
+        setFacebook={setFacebook}
+        closeSheet={closeSheet}
+      />
+    );
   } else if (sheet == "OTPSheet") {
     setSnap(7);
   }
@@ -82,57 +92,61 @@ function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
       confirmUser={confirmUser}
       fullName={userObject.fullName}
       phoneNumber={userObject.phoneNumber}
+      closeSheet={closeSheet}
     />
   );
 }
 
 // Start Sheet
-function StartSheet({ setSheet }) {
+function StartSheet({ setSheet, closeSheet }) {
   return (
-    <ScrollView style={styles.bottomSheetContainer} extraScrollHeight={10}>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Image
-          source={BlendsLogo}
-          style={{ width: 80, height: 62 }}
-          resizeMode="contain"
-        />
-        <Link
-          onPress={() => {
-            setSheet("LoginSheet");
+    <>
+      {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
+      <ScrollView style={styles.bottomSheetContainer} extraScrollHeight={10}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          Already a User?
-        </Link>
-      </View>
-      <Text bold style={styles.title}>
-        Create your Account
-      </Text>
-      <Text regular style={styles.message}>
-        You need to create an account to confirm your order, don't worry it
-        won't take minutes!
-      </Text>
-      <Button
-        style={{ marginTop: 20 }}
-        onPress={() => {
-          setSheet("NewAccountSheet");
-        }}
-      >
-        Continue
-      </Button>
-      <Button
-        style={{ marginTop: 10, backgroundColor: "#3077F2" }}
-        icon="facebook"
-        onPress={() => setSheet("NewAccountFBSheet")}
-      >
-        Signup using Facebook
-      </Button>
-    </ScrollView>
+          <Image
+            source={BlendsLogo}
+            style={{ width: 80, height: 62 }}
+            resizeMode="contain"
+          />
+          <Link
+            onPress={() => {
+              setSheet("LoginSheet");
+            }}
+          >
+            Already a User?
+          </Link>
+        </View>
+        <Text bold style={styles.title}>
+          Create your Account
+        </Text>
+        <Text regular style={styles.message}>
+          You need to create an account to confirm your order, don't worry it
+          won't take minutes!
+        </Text>
+        <Button
+          style={{ marginTop: 20 }}
+          onPress={() => {
+            setSheet("NewAccountSheet");
+          }}
+        >
+          Continue
+        </Button>
+        <Button
+          style={{ marginTop: 10, backgroundColor: "#3077F2" }}
+          icon="facebook"
+          onPress={() => setSheet("NewAccountFBSheet")}
+        >
+          Signup using Facebook
+        </Button>
+      </ScrollView>
+    </>
   );
 }
 
@@ -149,7 +163,7 @@ function UserActions({
     if (showUserActionsSheet) {
       sheetRef.current.snapTo(snap);
     } else {
-      sheetRef.current.snapTo(0);
+      if (Platform.OS === "ios") sheetRef.current.snapTo(0);
     }
   }, [showUserActionsSheet, snap]);
 
@@ -174,39 +188,74 @@ function UserActions({
   };
 
   return (
-    <BottomSheet
-      ref={sheetRef}
-      snapPoints={[
-        0, // Closed
-        430, // StartSheet
-        700,
-        Dimensions.get("window").height - 320, // LoginSheet
-        Dimensions.get("window").height - 30, // LoginSheet(Keyboard)
-        Dimensions.get("window").height - 250, // NewAccountSheet
-        900, // NewAccountSheet(Keyboard)
-        450, // OTPSheet
-        750, // OTPSheet(Keyboard)
-      ]}
-      borderRadius={20}
-      renderContent={() => {
-        return (
-          <SheetsRouter
-            closeSheet={closeSheet}
-            confirmUser={confirmUser}
-            setSnap={setSnap}
-            loginMode={loginMode}
+    <>
+      {Platform.OS === "android" ? (
+        showUserActionsSheet && (
+          <BottomSheet
+            ref={sheetRef}
+            snapPoints={[
+              0, // Closed
+              200, // StartSheet
+              700,
+              Dimensions.get("window").height - 320, // LoginSheet
+              Dimensions.get("window").height - 30, // LoginSheet(Keyboard)
+              Dimensions.get("window").height - 250, // NewAccountSheet
+              900, // NewAccountSheet(Keyboard)
+              450, // OTPSheet
+              750, // OTPSheet(Keyboard)
+            ]}
+            borderRadius={20}
+            renderContent={() => {
+              return (
+                <SheetsRouter
+                  closeSheet={closeSheet}
+                  confirmUser={confirmUser}
+                  setSnap={setSnap}
+                  loginMode={loginMode}
+                />
+              );
+            }}
+            initialSnap={0}
+            enabledGestureInteraction={false}
           />
-        );
-      }}
-      initialSnap={0}
-      enabledGestureInteraction={false}
-    />
+        )
+      ) : (
+        <BottomSheet
+          ref={sheetRef}
+          snapPoints={[
+            0, // Closed
+            200, // StartSheet
+            700,
+            Dimensions.get("window").height - 320, // LoginSheet
+            Dimensions.get("window").height - 30, // LoginSheet(Keyboard)
+            Dimensions.get("window").height - 250, // NewAccountSheet
+            900, // NewAccountSheet(Keyboard)
+            450, // OTPSheet
+            750, // OTPSheet(Keyboard)
+          ]}
+          borderRadius={20}
+          renderContent={() => {
+            return (
+              <SheetsRouter
+                closeSheet={closeSheet}
+                confirmUser={confirmUser}
+                setSnap={setSnap}
+                loginMode={loginMode}
+              />
+            );
+          }}
+          initialSnap={0}
+          enabledGestureInteraction={false}
+        />
+      )}
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   bottomSheetContainer: {
     height: 800,
+    marginTop: Platform.OS === "android" ? 25 : 0,
     backgroundColor: "#fff",
     paddingTop: 50,
     paddingHorizontal: 25,

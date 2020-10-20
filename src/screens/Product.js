@@ -219,11 +219,11 @@ function Product({ navigation, addToCart }) {
             ]}
           />
         ) : (
-            <Image
-              source={productData.image}
-              style={{ width: 230, height: 230 }}
-            />
-          )}
+          <Image
+            source={productData.image}
+            style={{ width: 230, height: 230 }}
+          />
+        )}
       </View>
       {/* Product Title */}
       <View style={styles.productTitle}>
@@ -249,19 +249,19 @@ function Product({ navigation, addToCart }) {
             ]}
           />
         ) : (
-            productData.tags.map((tag, index) => {
-              return (
-                <View
-                  key={index}
-                  style={[styles.tag, { backgroundColor: tag.bgColor }]}
-                >
-                  <Text style={[styles.tagText, { color: "#fff" }]}>
-                    {tag.label}
-                  </Text>
-                </View>
-              );
-            })
-          )}
+          productData.tags.map((tag, index) => {
+            return (
+              <View
+                key={index}
+                style={[styles.tag, { backgroundColor: tag.bgColor }]}
+              >
+                <Text style={[styles.tagText, { color: "#fff" }]}>
+                  {tag.label}
+                </Text>
+              </View>
+            );
+          })
+        )}
       </View>
       {/* Product Description */}
       <View style={{ paddingHorizontal: 25, paddingTop: 5 }}>
@@ -289,12 +289,15 @@ function Product({ navigation, addToCart }) {
             ]}
           />
         ) : (
-            <Text regular style={styles.productDesc}>
-              {productData.desc}
-            </Text>
-          )}
+          <Text regular style={styles.productDesc}>
+            {productData.desc}
+          </Text>
+        )}
       </View>
-      <ScrollView style={styles.customizationSection}>
+      <ScrollView
+        style={styles.customizationSection}
+        contentContainerStyle={{ paddingBottom: 70 }}
+      >
         <Text semiBold style={styles.customizationTitle}>
           Customize your Latte
         </Text>
@@ -324,37 +327,37 @@ function Product({ navigation, addToCart }) {
             ]}
           />
         ) : (
-            productData.customOptions.map((customOption, index) => {
-              return (
-                <View style={styles.customOption} key={index}>
-                  <Text regular style={styles.customOptionText}>
-                    {customOption.label}
-                  </Text>
-                  <View style={{ flex: 0.6 }}>
-                    <Dropdown
-                      items={customOption.options}
-                      onChange={(value) => {
-                        let price;
-                        let textValue;
-                        customOption.options.forEach((option) => {
-                          if (option.value == value) {
-                            price = option.price;
-                            textValue = option.textValue;
-                          }
-                        });
-                        addCustomOption(
-                          customOption.label,
-                          value,
-                          price,
-                          textValue
-                        );
-                      }}
-                    />
-                  </View>
+          productData.customOptions.map((customOption, index) => {
+            return (
+              <View style={styles.customOption} key={index}>
+                <Text regular style={styles.customOptionText}>
+                  {customOption.label}
+                </Text>
+                <View style={{ flex: 0.6 }}>
+                  <Dropdown
+                    items={customOption.options}
+                    onChange={(value) => {
+                      let price;
+                      let textValue;
+                      customOption.options.forEach((option) => {
+                        if (option.value == value) {
+                          price = option.price;
+                          textValue = option.textValue;
+                        }
+                      });
+                      addCustomOption(
+                        customOption.label,
+                        value,
+                        price,
+                        textValue
+                      );
+                    }}
+                  />
                 </View>
-              );
-            })
-          )}
+              </View>
+            );
+          })
+        )}
         {/* Extra Customization Options */}
         {loading == false && (
           <View style={{ marginTop: 20 }}>
@@ -415,10 +418,10 @@ function Product({ navigation, addToCart }) {
             Add to Cart
           </Button>
         ) : (
-            <Button noIcon success>
-              Added to Cart!
-            </Button>
-          )}
+          <Button noIcon success>
+            Added to Cart!
+          </Button>
+        )}
       </View>
     </View>
   );
@@ -427,7 +430,7 @@ function Product({ navigation, addToCart }) {
 const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 25,
-    marginTop: 10,
+    marginTop: Platform.OS == "ios" ? 10 : 30,
     flexDirection: "row",
   },
   productImage: {
@@ -467,7 +470,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 15.65,
-    elevation: 8,
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#fff",
