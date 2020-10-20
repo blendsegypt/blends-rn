@@ -195,7 +195,7 @@ function UserActions({
             ref={sheetRef}
             snapPoints={[
               0, // Closed
-              200, // StartSheet
+              430, // StartSheet
               700,
               Dimensions.get("window").height - 320, // LoginSheet
               Dimensions.get("window").height - 30, // LoginSheet(Keyboard)
@@ -224,7 +224,7 @@ function UserActions({
           ref={sheetRef}
           snapPoints={[
             0, // Closed
-            200, // StartSheet
+            430, // StartSheet
             700,
             Dimensions.get("window").height - 320, // LoginSheet
             Dimensions.get("window").height - 30, // LoginSheet(Keyboard)
