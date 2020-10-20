@@ -87,8 +87,8 @@ function PinDrop({
     Geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);
+        setLatitude(latitude);
+        setLongitude(longitude);
         setLocationLoaded(true);
         // Reverse Geocode the coordinates to physical address
         mapRef.current.animateToRegion(
@@ -197,28 +197,27 @@ function PinDrop({
               onRegionChangeComplete={() => {
                 reverseGeocode();
               }}
+            />
+            <View
+              pointerEvents="none"
+              style={{
+                position: "absolute",
+                top: 0,
+                bottom: 20,
+                left: 0,
+                right: 0,
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "transparent",
+              }}
             >
-              <View
+              <Image
                 pointerEvents="none"
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  bottom: 20,
-                  left: 0,
-                  right: 0,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: "transparent",
-                }}
-              >
-                <Image
-                  pointerEvents="none"
-                  source={PinMarker}
-                  style={{ width: 34, height: 70 }}
-                  resizeMode="contain"
-                />
-              </View>
-            </MapView>
+                source={PinMarker}
+                style={{ width: 34, height: 70 }}
+                resizeMode="contain"
+              />
+            </View>
             <View
               style={{
                 position: "absolute",

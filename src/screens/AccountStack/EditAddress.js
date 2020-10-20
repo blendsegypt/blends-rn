@@ -173,7 +173,7 @@ function EditAddress({
             Address Name (eg. Home / Work) *
           </TextInput>
           <TextInput
-            style={styles.textInput}
+            style={{ marginHorizontal: 25 }}
             onChangeText={(text) => {
               setFormChanged(true);
               setAddressDesc({ ...addressDesc, value: text });
@@ -187,7 +187,10 @@ function EditAddress({
           </TextInput>
           <View style={{ flexDirection: "row" }}>
             <TextInput
-              style={[styles.textInput, { flex: 0.4, marginRight: 10 }]}
+              style={[
+                styles.textInput,
+                { flex: 0.4, marginRight: 10, marginLeft: 25 },
+              ]}
               keyboardType="numeric"
               onChangeText={(text) => {
                 setFormChanged(true);
@@ -198,7 +201,7 @@ function EditAddress({
               Floor
             </TextInput>
             <TextInput
-              style={[styles.textInput, { flex: 0.6 }]}
+              style={[styles.textInput, { flex: 0.6, marginRight: 25 }]}
               onChangeText={(text) => {
                 setFormChanged(true);
                 setApartment({ ...apartment, value: text });
@@ -209,7 +212,7 @@ function EditAddress({
             </TextInput>
           </View>
           <TextInput
-            style={styles.textInput}
+            style={{ marginHorizontal: 25 }}
             onChangeText={(text) => {
               setFormChanged(true);
               setDeliveryNotes({ ...deliveryNotes, value: text });
@@ -218,19 +221,21 @@ function EditAddress({
           >
             Delivery Notes
           </TextInput>
-          {buttonActive ? (
-            <Button
-              style={{ marginTop: 5 }}
-              icon="check"
-              onPress={() => saveAddress()}
-            >
-              Save
-            </Button>
-          ) : (
-            <Button disabled style={{ marginTop: 5 }} icon="check">
-              Save
-            </Button>
-          )}
+          <View style={{ marginHorizontal: 25 }}>
+            {buttonActive ? (
+              <Button
+                style={{ marginTop: 5 }}
+                icon="check"
+                onPress={() => saveAddress()}
+              >
+                Save
+              </Button>
+            ) : (
+              <Button disabled style={{ marginTop: 5 }} icon="check">
+                Save
+              </Button>
+            )}
+          </View>
         </View>
       </ScrollView>
     </KeyboardAwareScrollView>
@@ -261,7 +266,6 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#fff",
-    paddingHorizontal: 25,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 25,

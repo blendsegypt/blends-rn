@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     borderRadius: 20,
     marginTop: 25,
+    marginHorizontal: 25,
   },
   activeAddressTag: {
     backgroundColor: "#C84D49",

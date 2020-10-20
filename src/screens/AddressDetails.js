@@ -117,7 +117,10 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
             },
           ]}
         />
-        <ScrollView style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={{ paddingBottom: 100 }}
+        >
           <Text style={styles.containerTitle}>Address Details</Text>
           <View>
             {/* User Location */}
@@ -235,7 +238,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 15.65,
-    elevation: 8,
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#fff",

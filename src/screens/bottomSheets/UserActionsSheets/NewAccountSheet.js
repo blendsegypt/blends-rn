@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 //UI Components
 import Text from "../../../components/ui/Text";
@@ -17,11 +18,14 @@ import BlendsLogo from "../../../../assets/BlendsLogo.png";
 import { FontAwesome } from "@expo/vector-icons";
 //Field Validation
 import validateField from "../../../utils/validateField";
+//Close Sheet component
+import CloseSheet from "./utils/CloseSheet";
 
 export default function NewAccountSheet({
   setSheet,
   userObject,
   setUserObject,
+  closeSheet,
 }) {
   const [buttonActive, setButtonActive] = useState(false);
   const [fullName, setFullName] = useState({
@@ -92,123 +96,127 @@ export default function NewAccountSheet({
   ]);
 
   return (
-    <ScrollView
-      style={styles.bottomSheetContainer}
-      contentContainerStyle={{ paddingBottom: 350 }}
-      keyboardShouldPersistTaps="always"
-    >
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
+    <>
+      {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
+      <ScrollView
+        style={styles.bottomSheetContainer}
+        contentContainerStyle={{ paddingBottom: 350 }}
+        keyboardShouldPersistTaps="always"
       >
-        <TouchableOpacity
-          onPress={() => {
-            setSheet("StartSheet");
-          }}
-          style={{ padding: 15, paddingLeft: 0 }}
-        >
-          <FontAwesome name="chevron-left" size={22} color="#11203E" />
-        </TouchableOpacity>
-        <Image
-          source={BlendsLogo}
-          style={{ width: 80, height: 62 }}
-          resizeMode="contain"
-        />
-      </View>
-      <Text bold style={styles.title}>
-        New Account
-      </Text>
-      <Text regular style={styles.message}>
-        We'll send you an OTP (One Time Password) to confirm your phone number.
-      </Text>
-      {/* Error Messages */}
-      {[
-        ...fullName.errors,
-        ...phoneNumber.errors,
-        ...password.errors,
-        ...passwordConfirmation.errors,
-      ].map((error, index) => {
-        return (
-          <View style={styles.errorMessage} key={index}>
-            <Text regular style={{ color: "#b55b5b" }}>
-              {error.message}
-            </Text>
-          </View>
-        );
-      })}
-      <TextInput
-        style={{ marginVertical: 7 }}
-        onChangeText={(text) => {
-          const newFullName = { ...fullName, value: text };
-          setFullName({ ...fullName, value: text });
-          validate(newFullName, setFullName);
-        }}
-        onBlur={() => validate(fullName, setFullName)}
-        defaultValue={fullName.value}
-      >
-        Full Name
-      </TextInput>
-      <TextInput
-        style={{ marginVertical: 7 }}
-        onChangeText={(text) => {
-          const newPhoneNumber = { ...phoneNumber, value: text };
-          setPhoneNumber(newPhoneNumber);
-          validate(newPhoneNumber, setPhoneNumber);
-        }}
-        keyboardType="numeric"
-        defaultValue={phoneNumber.value}
-        maxLength={11}
-      >
-        Phone Number
-      </TextInput>
-      <TextInput
-        secureTextEntry
-        style={{ marginVertical: 7 }}
-        onChangeText={(text) => {
-          const passwordAfterEdit = { ...password, value: text };
-          setPassword(passwordAfterEdit);
-          setPasswordConfirmation({ ...passwordConfirmation, equals: text });
-          validate(passwordAfterEdit, setPassword);
-        }}
-      >
-        Password
-      </TextInput>
-      <TextInput
-        secureTextEntry
-        style={{ marginVertical: 7 }}
-        onChangeText={(text) => {
-          const passwordConfirmAfterEdit = {
-            ...passwordConfirmation,
-            value: text,
-          };
-          setPasswordConfirmation(passwordConfirmAfterEdit);
-          validate(passwordConfirmAfterEdit, setPasswordConfirmation);
-        }}
-      >
-        Password Confirmation
-      </TextInput>
-      {buttonActive ? (
-        <Button
-          style={{ marginTop: 10 }}
-          onPress={() => {
-            setUserObject({
-              fullName: fullName.value,
-              phoneNumber: phoneNumber.value,
-            });
-            setSheet("OTPSheet");
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          Continue
-        </Button>
-      ) : (
-        <Button style={{ marginTop: 10 }} disabled>
-          Continue
-        </Button>
-      )}
-    </ScrollView>
+          <TouchableOpacity
+            onPress={() => {
+              setSheet("StartSheet");
+            }}
+            style={{ padding: 15, paddingLeft: 0 }}
+          >
+            <FontAwesome name="chevron-left" size={22} color="#11203E" />
+          </TouchableOpacity>
+          <Image
+            source={BlendsLogo}
+            style={{ width: 80, height: 62 }}
+            resizeMode="contain"
+          />
+        </View>
+        <Text bold style={styles.title}>
+          New Account
+        </Text>
+        <Text regular style={styles.message}>
+          We'll send you an OTP (One Time Password) to confirm your phone
+          number.
+        </Text>
+        {/* Error Messages */}
+        {[
+          ...fullName.errors,
+          ...phoneNumber.errors,
+          ...password.errors,
+          ...passwordConfirmation.errors,
+        ].map((error, index) => {
+          return (
+            <View style={styles.errorMessage} key={index}>
+              <Text regular style={{ color: "#b55b5b" }}>
+                {error.message}
+              </Text>
+            </View>
+          );
+        })}
+        <TextInput
+          style={{ marginVertical: 7 }}
+          onChangeText={(text) => {
+            const newFullName = { ...fullName, value: text };
+            setFullName({ ...fullName, value: text });
+            validate(newFullName, setFullName);
+          }}
+          onBlur={() => validate(fullName, setFullName)}
+          defaultValue={fullName.value}
+        >
+          Full Name
+        </TextInput>
+        <TextInput
+          style={{ marginVertical: 7 }}
+          onChangeText={(text) => {
+            const newPhoneNumber = { ...phoneNumber, value: text };
+            setPhoneNumber(newPhoneNumber);
+            validate(newPhoneNumber, setPhoneNumber);
+          }}
+          keyboardType="numeric"
+          defaultValue={phoneNumber.value}
+          maxLength={11}
+        >
+          Phone Number
+        </TextInput>
+        <TextInput
+          secureTextEntry
+          style={{ marginVertical: 7 }}
+          onChangeText={(text) => {
+            const passwordAfterEdit = { ...password, value: text };
+            setPassword(passwordAfterEdit);
+            setPasswordConfirmation({ ...passwordConfirmation, equals: text });
+            validate(passwordAfterEdit, setPassword);
+          }}
+        >
+          Password
+        </TextInput>
+        <TextInput
+          secureTextEntry
+          style={{ marginVertical: 7 }}
+          onChangeText={(text) => {
+            const passwordConfirmAfterEdit = {
+              ...passwordConfirmation,
+              value: text,
+            };
+            setPasswordConfirmation(passwordConfirmAfterEdit);
+            validate(passwordConfirmAfterEdit, setPasswordConfirmation);
+          }}
+        >
+          Password Confirmation
+        </TextInput>
+        {buttonActive ? (
+          <Button
+            style={{ marginTop: 10 }}
+            onPress={() => {
+              setUserObject({
+                fullName: fullName.value,
+                phoneNumber: phoneNumber.value,
+              });
+              setSheet("OTPSheet");
+            }}
+          >
+            Continue
+          </Button>
+        ) : (
+          <Button style={{ marginTop: 10 }} disabled>
+            Continue
+          </Button>
+        )}
+      </ScrollView>
+    </>
   );
 }
 
@@ -218,6 +226,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingTop: 50,
     paddingHorizontal: 25,
+    marginTop: Platform.OS === "android" ? 25 : 0,
   },
   title: {
     fontSize: 19,

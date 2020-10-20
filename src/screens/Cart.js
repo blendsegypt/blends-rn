@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 //UI Components
 import Text from "../components/ui/Text";
@@ -37,7 +38,13 @@ function Cart({
 
   const closeSheet = () => {
     setShowUserActionsSheet(false);
-    navigation.navigate("AddressDetails");
+    if (phoneNumberConfirmed && !addressConfirmed) {
+      // If phone number is confirmed and there's no address, navigate to Address Details
+      navigation.navigate("AddressDetails");
+    } else if (phoneNumberConfirmed && addressConfirmed) {
+      // If both phone number and address are confirmed, navigate to Review Order screen
+      navigation.navigate("ReviewOrder", { threeStepsCheckout: false });
+    }
   };
 
   const checkout = () => {
@@ -218,7 +225,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 15.65,
-    elevation: 8,
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#fff",
@@ -233,7 +239,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 11,
     borderRadius: 100,
-    marginTop: 20,
+    marginTop: Platform.OS == "ios" ? 20 : 25,
   },
   emptyCartTitle: {
     fontSize: 22,

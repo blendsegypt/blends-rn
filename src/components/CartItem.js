@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 //UI Components
 import Text from "./ui/Text";
 //Icons Font
@@ -25,6 +31,7 @@ function CartItem({
     if (index == selectedOptions.length - 2) {
       selectedOptionsText += " & ";
     } else if (index != selectedOptions.length - 1) {
+      //Refactor here
       selectedOptionsText += ", ";
     }
   });
@@ -34,7 +41,7 @@ function CartItem({
       <Image source={image} style={{ width: 55, height: 55 }} />
       <View style={{ flex: 0.6, paddingLeft: 10 }}>
         {/* Title and Custom requests */}
-        <Text style={{ fontSize: 15 }}>{name}</Text>
+        <Text style={{ fontSize: 15, color: "#11203E" }}>{name}</Text>
         <Text regular style={{ color: "#999999" }}>
           {selectedOptionsText}
         </Text>
@@ -44,7 +51,7 @@ function CartItem({
           <TouchableOpacity
             style={[
               styles.quantityButton,
-              { paddingHorizontal: 9 },
+              { paddingHorizontal: Platform.OS == "ios" ? 9 : 12 },
               quantity > 1 && { backgroundColor: "#8BBE78" },
             ]}
             onPress={() => {
@@ -110,7 +117,7 @@ const styles = StyleSheet.create({
   quantityButton: {
     backgroundColor: "#D7D7D7",
     padding: 1,
-    paddingHorizontal: 8,
+    paddingHorizontal: Platform.OS == "ios" ? 8 : 10,
     borderRadius: 100,
   },
   productQuantity: {

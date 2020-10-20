@@ -37,7 +37,10 @@ function InviteAFriend({ navigation }) {
           </Text>
         </View>
       </SafeAreaView>
-      <ScrollView style={styles.invitation}>
+      <ScrollView
+        style={styles.invitation}
+        contentContainerStyle={{ paddingBottom: 150 }}
+      >
         <Image
           source={InviteAFriendIllustration}
           style={{ width: 272, height: 265, alignSelf: "center" }}
@@ -53,7 +56,20 @@ function InviteAFriend({ navigation }) {
                 <Text style={{ color: "#bababa" }}>1</Text>
               </View>
             </View>
-            <Text style={{ paddingLeft: 10, color: "#11203E", fontSize: 15, flexShrink: 1, }}>Share the code <Text bold style={{ color: "#CE4C4C" }}>REF132</Text> with your friends</Text>
+            <Text
+              style={{
+                paddingLeft: 10,
+                color: "#11203E",
+                fontSize: 15,
+                flexShrink: 1,
+              }}
+            >
+              Share the code{" "}
+              <Text bold style={{ color: "#CE4C4C" }}>
+                REF132
+              </Text>{" "}
+              with your friends
+            </Text>
           </View>
           {/* Step 2 */}
           <View style={styles.step}>
@@ -62,7 +78,14 @@ function InviteAFriend({ navigation }) {
                 <Text style={{ color: "#bababa" }}>2</Text>
               </View>
             </View>
-            <Text style={{ paddingLeft: 10, color: "#11203E", fontSize: 15, flexShrink: 1, }}>
+            <Text
+              style={{
+                paddingLeft: 10,
+                color: "#11203E",
+                fontSize: 15,
+                flexShrink: 1,
+              }}
+            >
               Ask your friends to use the code while creating their account
             </Text>
           </View>
@@ -73,7 +96,14 @@ function InviteAFriend({ navigation }) {
                 <Text style={{ color: "#bababa" }}>3</Text>
               </View>
             </View>
-            <Text style={{ paddingLeft: 10, color: "#11203E", fontSize: 15, flexShrink: 1, }}>
+            <Text
+              style={{
+                paddingLeft: 10,
+                color: "#11203E",
+                fontSize: 15,
+                flexShrink: 1,
+              }}
+            >
               You get 50% discount on your next order upon your friend
               registeration!
             </Text>

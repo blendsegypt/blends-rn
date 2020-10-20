@@ -59,71 +59,73 @@ function Orders({ navigation }) {
                 />
               );
             }
-            return <OrderInProgress {...order} navigation={navigation} key={index} />;
+            return (
+              <OrderInProgress {...order} navigation={navigation} key={index} />
+            );
           })
         ) : (
-            <SkeletonContent
-              containerStyle={{
-                marginTop: 25,
-                backgroundColor: "#D1D1D1",
-                borderRadius: 20,
-                height: 170,
-                paddingHorizontal: 20,
-                marginHorizontal: 25,
-              }}
-              isLoading={true}
-              animationDirection="horizontalLeft"
-              duration="800"
-              boneColor="#e3e3e3"
-              layout={[
-                {
-                  paddingVertical: 20,
-                  flexDirection: "row",
-                  children: [
-                    {
-                      key: "status",
-                      width: 100,
-                      height: 20,
-                      borderRadius: 20,
-                    },
-                    {
-                      key: "details",
-                      width: 100,
-                      height: 20,
-                      borderRadius: 20,
-                      marginLeft: 120,
-                    },
-                  ],
-                },
-                {
-                  paddingVertical: 5,
-                  flexDirection: "row",
-                  children: [
-                    {
-                      key: "ordered",
-                      width: 100,
-                      height: 20,
-                      borderRadius: 20,
-                    },
-                    {
-                      key: "orderNumber",
-                      width: 100,
-                      height: 20,
-                      borderRadius: 20,
-                      marginLeft: 120,
-                    },
-                  ],
-                },
-                {
-                  key: "button",
-                  width: "100%",
-                  height: 50,
-                  borderRadius: 50,
-                  marginTop: 15,
-                },
-              ]}
-            />
-          )}
+          <SkeletonContent
+            containerStyle={{
+              marginTop: 25,
+              backgroundColor: "#D1D1D1",
+              borderRadius: 20,
+              height: 170,
+              paddingHorizontal: 20,
+              marginHorizontal: 25,
+            }}
+            isLoading={true}
+            animationDirection="horizontalLeft"
+            duration="800"
+            boneColor="#e3e3e3"
+            layout={[
+              {
+                paddingVertical: 20,
+                flexDirection: "row",
+                children: [
+                  {
+                    key: "status",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                  },
+                  {
+                    key: "details",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                    marginLeft: 120,
+                  },
+                ],
+              },
+              {
+                paddingVertical: 5,
+                flexDirection: "row",
+                children: [
+                  {
+                    key: "ordered",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                  },
+                  {
+                    key: "orderNumber",
+                    width: 100,
+                    height: 20,
+                    borderRadius: 20,
+                    marginLeft: 120,
+                  },
+                ],
+              },
+              {
+                key: "button",
+                width: "100%",
+                height: 50,
+                borderRadius: 50,
+                marginTop: 15,
+              },
+            ]}
+          />
+        )}
       </ScrollView>
     </View>
   );
@@ -254,10 +256,12 @@ function DeliveredOrder({ number, status, deliveryDate, stars, navigation }) {
             flex: 0.5,
           }}
         >
-          {stars ?
-            <Stars initialStars={stars} /> // Add onChange to send an API request and update order rating
-            :
-            <Stars initialStars={0} /> // Add onChange to send an API request and rate the order
+          {
+            stars ? (
+              <Stars initialStars={stars} /> // Add onChange to send an API request and update order rating
+            ) : (
+              <Stars initialStars={0} />
+            ) // Add onChange to send an API request and rate the order
           }
         </View>
         {/* View Order Details */}
@@ -291,7 +295,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   ordersContainer: {
-    marginVertical: 25,
+    marginTop: 25,
     backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: {

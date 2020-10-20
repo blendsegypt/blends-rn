@@ -1,5 +1,11 @@
 import React from "react";
-import { View, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 //UI Components
 import Text from "../../components/ui/Text";
 import Button from "../../components/ui/Button";
@@ -33,11 +39,19 @@ function SavedAddresses({ navigation, savedAddresses }) {
           </Text>
         </View>
       </SafeAreaView>
-      <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 20 }}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ paddingBottom: 20 }}
+      >
         {/* Saved Addresses */}
         {savedAddresses.map((address, index) => {
           return (
-            <Address key={index} navigation={navigation} address={address} index={index} />
+            <Address
+              key={index}
+              navigation={navigation}
+              address={address}
+              index={index}
+            />
           );
         })}
       </ScrollView>
@@ -82,18 +96,16 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 15.65,
-    elevation: 8,
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#fff",
-    paddingHorizontal: 25,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-  }
+  },
 });
 
 const mapStateToProps = (state) => ({
-  savedAddresses: state.userReducer.savedAddresses
+  savedAddresses: state.userReducer.savedAddresses,
 });
 
 export default connect(mapStateToProps, null)(SavedAddresses);

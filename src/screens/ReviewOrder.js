@@ -150,11 +150,13 @@ function ReviewOrder({
             </View>
           </View>
           {/* Order Receipt */}
-          <OrderReceipt
-            cartItems={cartItems}
-            cartTotal={cartTotal}
-            showPromotionInput
-          />
+          <View style={{ marginHorizontal: 25 }}>
+            <OrderReceipt
+              cartItems={cartItems}
+              cartTotal={cartTotal}
+              showPromotionInput
+            />
+          </View>
         </ScrollView>
         {/* Confirm Button */}
         <View
@@ -201,11 +203,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 15.65,
-    elevation: 8,
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#fff",
-    paddingHorizontal: 25,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 30,
@@ -214,6 +214,7 @@ const styles = StyleSheet.create({
   containerTitle: {
     color: "#C84D49",
     fontSize: 16,
+    paddingHorizontal: 25,
   },
   deliveryDetails: {
     backgroundColor: "#fff",
@@ -227,6 +228,7 @@ const styles = StyleSheet.create({
     elevation: 8,
     borderRadius: 25,
     marginTop: 15,
+    marginHorizontal: 25,
   },
   deliveryOption: {
     flexDirection: "row",
