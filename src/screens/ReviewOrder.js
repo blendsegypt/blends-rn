@@ -5,7 +5,6 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  Image,
 } from "react-native";
 //UI Components
 import Text from "../components/ui/Text";

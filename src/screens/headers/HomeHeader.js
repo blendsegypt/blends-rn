@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 //UI Components
