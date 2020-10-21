@@ -1,3 +1,16 @@
+/*
+ *
+ *  Button.js
+ *  Custom component for Buttons (Based on react-native's TouchableOpacity)
+ *
+ *  @Usage:
+ *  <Button>text</Button> (normal chevron-right button)
+ *  <Button secondary>text</Button> (secondary color scheme background)
+ *  <Button blends>text</Button> (normal button with Blends icon)
+ *  <Button price>text</Button> (button that shows a price from props)
+ *
+ */
+
 import React from "react";
 import {
   View,
@@ -18,7 +31,6 @@ export default function Button(props) {
   const colorScheme = {
     primary: "#C84D49",
     secondary: "#11203E",
-    success: "#7EAD61",
     disabled: "#C0C0C0",
   };
 

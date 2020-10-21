@@ -1,3 +1,22 @@
+/*
+ *
+ *  TextInput.js
+ *  Custom component for Text inputs (based on react-native's TextInput)
+ *
+ *  @Usage:
+ *  <TextInput
+ *    onChangeText={() => fn() }
+ *    onBlur={() => fn() }
+ *    keyboardType={String}
+ *    maxLength={Number}
+ *    defaultValue={String}
+ *    secureTextEntry={Boolean}
+ *  >
+ *    Placeholder
+ *  </TextInput>
+ *
+ */
+
 import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 // Custom font for Text Input fields
