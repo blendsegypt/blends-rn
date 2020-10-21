@@ -3,8 +3,6 @@ import { TouchableOpacity, StyleSheet } from "react-native";
 
 //Animations
 import Animated from "react-native-reanimated";
-
-const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 const AnimatedView = Animated.View;
 
 export default function BottomSheetOverlay({ setShowBottomSheet }) {

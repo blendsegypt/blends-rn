@@ -1,9 +1,16 @@
+/*
+ *
+ *  Link.js
+ *  Custom component for Links (Based on react-native's TouchableOpacity)
+ *
+ *  @Usage:
+ *  <Link>text</Link> (normal link)
+ *  <Link disabled>text</Link> (disabled link)
+ *
+ */
+
 import React from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 //UI Components
 import Text from "./Text";
 

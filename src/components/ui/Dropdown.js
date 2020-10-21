@@ -1,7 +1,18 @@
+/*
+ *
+ *  Dropdown.js
+ *  Custom component for Buttons (Based on react-native-picker-select)
+ *
+ *  @Usage:
+ *  <Dropdown
+ *    items={[]}
+ *    onChange={() => { fn() }}
+ *  >
+ *
+ */
+
 import React from "react";
-import { TouchableOpacity, StyleSheet } from "react-native";
-//UI Components
-import Text from "./Text";
+import { StyleSheet } from "react-native";
 //Icons Font
 import { FontAwesome } from "@expo/vector-icons";
 //RN Picker
