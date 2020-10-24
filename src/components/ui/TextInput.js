@@ -11,6 +11,7 @@
  *    maxLength={Number}
  *    defaultValue={String}
  *    secureTextEntry={Boolean}
+ *    editable={Boolean}
  *  >
  *    Placeholder
  *  </TextInput>
@@ -18,9 +19,10 @@
  */
 
 import React from "react";
-import { TextInput, StyleSheet } from "react-native";
+import { TextInput, StyleSheet, View } from "react-native";
 // Custom font for Text Input fields
 import { useFonts, FiraSans_400Regular } from "@expo-google-fonts/fira-sans";
+import { FontAwesome } from "@expo/vector-icons";
 
 export default function (props) {
   const [fontsLoaded] = useFonts({
@@ -31,21 +33,29 @@ export default function (props) {
   };
 
   return (
-    <TextInput
-      style={[styles.textInput, fontsLoaded ? customFont : {}, props.style]}
-      placeholder={props.children}
-      placeholderTextColor="#BCBCBC"
-      onChangeText={(text) => {
-        if (props.onChangeText) props.onChangeText(text);
-      }}
-      onBlur={() => {
-        if (props.onBlur) props.onBlur();
-      }}
-      keyboardType={props.keyboardType}
-      maxLength={props.maxLength}
-      defaultValue={props.defaultValue}
-      secureTextEntry={props.secureTextEntry}
-    />
+    <>
+      <TextInput
+        style={[styles.textInput, fontsLoaded ? customFont : {}, props.style]}
+        placeholder={props.children}
+        placeholderTextColor="#BCBCBC"
+        onChangeText={(text) => {
+          if (props.onChangeText) props.onChangeText(text);
+        }}
+        onBlur={() => {
+          if (props.onBlur) props.onBlur();
+        }}
+        keyboardType={props.keyboardType}
+        maxLength={props.maxLength}
+        defaultValue={props.defaultValue}
+        secureTextEntry={props.secureTextEntry}
+        editable={props.editable === false ? false : true}
+      />
+      {props.editable === false && (
+        <View style={styles.lock}>
+          <FontAwesome name="lock" size={16} color="#11203E" />
+        </View>
+      )}
+    </>
   );
 }
 
@@ -69,5 +79,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#fff",
     color: "#11203E",
+  },
+  lock: {
+    position: "absolute",
+    right: 17,
+    top: 28,
   },
 });
