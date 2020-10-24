@@ -32,20 +32,22 @@ function EditAddress({
   addAddress,
 }) {
   const { address, newAddress } = route.params;
-  // Address Fields state
-  const [addressName, setAddressName] = useState({
-    text: "Address Name",
+  const [addressNickname, setAddressNickname] = useState({
+    text: "Address Nickname",
     value: "",
     notEmpty: true,
     validated: false,
     errors: [],
   });
-  const [addressDesc, setAddressDesc] = useState({
-    text: "Address Description",
-    value: address.addressDesc,
+  const [street, setStreet] = useState({
+    text: "Street",
+    value: address.street,
     notEmpty: true,
     validated: true,
     errors: [],
+  });
+  const [addressDetails, setAddressDetails] = useState({
+    value: address.addressDetails,
   });
   const [floor, setFloor] = useState({
     value: address.floor,
@@ -70,32 +72,35 @@ function EditAddress({
 
   // Check if there's no errors, activate the continue button
   useEffect(() => {
-    const errorsLength = [...addressName.errors, ...addressDesc.errors].length;
-    const fieldsValidated =
-      addressName.validated && addressDesc.validated && formChanged;
+    const errorsLength = [...street.errors].length;
+    const fieldsValidated = street.validated && formChanged;
 
     if (errorsLength == 0 && fieldsValidated) {
       setButtonActive(true);
     } else {
       setButtonActive(false);
     }
-  }, [addressName.errors, addressDesc.errors, formChanged]);
+  }, [street.validated, formChanged]);
 
   // Save button handler
   const saveAddress = () => {
+    const formattedAddress = `${address.governate} - ${street.value}, ${address.area}`;
     const addressObject = {
-      userLocation: address.userLocation,
-      addressName: address.addressName,
-      addressDesc: addressDesc.value,
+      governate: address.governate,
+      area: address.area,
+      formattedAddress: formattedAddress,
+      addressNickname: address.addressNickname,
+      street: street.value,
+      addressDetails: addressDetails.value,
       floor: floor.value,
       apartment: apartment.value,
       deliveryNotes: deliveryNotes.value,
     };
     if (newAddress) {
-      addressObject.addressName = addressName.value;
+      addressObject.addressNickname = addressNickname.value;
       addAddress(addressObject);
     } else {
-      changeAddress(addressObject.addressName, addressObject);
+      changeAddress(address.addressNickname, addressObject);
     }
     if (newAddress) {
       navigation.reset({
@@ -128,12 +133,12 @@ function EditAddress({
           <Text bold style={styles.screenTitle}>
             {newAddress
               ? "New Address"
-              : `Edit Address (${address.addressName})`}
+              : `Edit Address (${address.addressNickname})`}
           </Text>
           {!newAddress && (
             <TouchableOpacity
               onPress={() => {
-                removeAddress(address.addressName);
+                removeAddress(address.addressNickname);
                 navigation.navigate("SavedAddresses");
               }}
               style={{ flex: 0.5, paddingTop: 22, alignItems: "flex-end" }}
@@ -150,7 +155,7 @@ function EditAddress({
       </SafeAreaView>
       <ScrollView style={styles.container}>
         {/* Error Messages */}
-        {[...addressName.errors, ...addressDesc.errors].map((error, index) => {
+        {[...street.errors].map((error, index) => {
           return (
             <View style={styles.errorMessage} key={index}>
               <Text regular style={{ color: "#b55b5b" }}>
@@ -164,33 +169,59 @@ function EditAddress({
           <TextInput
             style={[styles.textInput, !newAddress ? { display: "none" } : {}]}
             onChangeText={(text) => {
-              setAddressName({ ...addressName, value: text });
+              setAddressNickname({ ...addressNickname, value: text });
             }}
             onBlur={() => {
-              validate(addressName, setAddressName);
+              validate(addressNickname, setAddressNickname);
             }}
           >
             Address Name (eg. Home / Work) *
           </TextInput>
+          <View>
+            <TextInput
+              editable={false}
+              defaultValue={address.governate}
+              style={[styles.textInput, { flex: 0.6 }]}
+            >
+              Governate
+            </TextInput>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ flex: 0.5, marginRight: 10 }}>
+              <TextInput
+                editable={false}
+                defaultValue={address.area}
+                style={[styles.textInput]}
+              >
+                Area
+              </TextInput>
+            </View>
+            <TextInput
+              defaultValue={address.street}
+              style={[styles.textInput, { flex: 0.5 }]}
+              onChangeText={(text) => {
+                setFormChanged(true);
+                setStreet({ ...street, value: text });
+              }}
+              onBlur={() => {
+                validate(street, setStreet);
+              }}
+            >
+              Street
+            </TextInput>
+          </View>
           <TextInput
-            style={{ marginHorizontal: 25 }}
             onChangeText={(text) => {
               setFormChanged(true);
-              setAddressDesc({ ...addressDesc, value: text });
+              setAddressDetails({ ...addressDetails, value: text });
             }}
-            onBlur={() => {
-              validate(addressDesc, setAddressDesc);
-            }}
-            defaultValue={addressDesc.value}
+            defaultValue={addressDetails.value}
           >
-            Address Description *
+            Address Details
           </TextInput>
           <View style={{ flexDirection: "row" }}>
             <TextInput
-              style={[
-                styles.textInput,
-                { flex: 0.4, marginRight: 10, marginLeft: 25 },
-              ]}
+              style={[styles.textInput, { flex: 0.4, marginRight: 10 }]}
               keyboardType="numeric"
               onChangeText={(text) => {
                 setFormChanged(true);
@@ -201,7 +232,7 @@ function EditAddress({
               Floor
             </TextInput>
             <TextInput
-              style={[styles.textInput, { flex: 0.6, marginRight: 25 }]}
+              style={[styles.textInput, { flex: 0.6 }]}
               onChangeText={(text) => {
                 setFormChanged(true);
                 setApartment({ ...apartment, value: text });
@@ -212,7 +243,6 @@ function EditAddress({
             </TextInput>
           </View>
           <TextInput
-            style={{ marginHorizontal: 25 }}
             onChangeText={(text) => {
               setFormChanged(true);
               setDeliveryNotes({ ...deliveryNotes, value: text });
@@ -221,7 +251,7 @@ function EditAddress({
           >
             Delivery Notes
           </TextInput>
-          <View style={{ marginHorizontal: 25 }}>
+          <View>
             {buttonActive ? (
               <Button
                 style={{ marginTop: 5 }}
@@ -269,6 +299,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 25,
+    paddingHorizontal: 25,
   },
   errorMessage: {
     backgroundColor: "#F3E1E1",
@@ -282,11 +313,11 @@ const mapDispatchToProps = (dispatch) => ({
   addAddress: (address) => {
     dispatch(addAddress(address));
   },
-  changeAddress: (addressName, newAddress) => {
-    dispatch(changeAddress(addressName, newAddress));
+  changeAddress: (addressNickname, newAddress) => {
+    dispatch(changeAddress(addressNickname, newAddress));
   },
-  removeAddress: (addressName) => {
-    dispatch(removeAddress(addressName));
+  removeAddress: (addressNickname) => {
+    dispatch(removeAddress(addressNickname));
   },
 });
 

@@ -22,20 +22,43 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 //Form validation
 import validateField from "../utils/validateField";
 
+/*
+
+
+  1- Grab Area from google to a locked field
+  2- new structure:
+    - Address Nickname
+    - Area (locked)
+    - Address Details (optional)
+    - Street (editable) (mandatory)
+    - Building (mandatory)
+    - Floor (optional)
+    - Flat (optional)
+    - delivery notes (optional)
+
+    + formatted street shouldn't include apartment
+    + hide country and governate
+    + restrict search in egypt in more restrictive way
+
+*/
+
 function AddressDetails({ navigation, userLocation, addAddress }) {
-  const [addressName, setAddressName] = useState({
-    text: "Address Name",
+  const [addressNickname, setAddressNickname] = useState({
+    text: "Address Nickname",
     value: "",
     notEmpty: true,
     validated: false,
     errors: [],
   });
-  const [addressDesc, setAddressDesc] = useState({
-    text: "Address Description",
-    value: "",
+  const [street, setStreet] = useState({
+    text: "Street",
+    value: userLocation.street,
     notEmpty: true,
-    validated: false,
+    validated: true,
     errors: [],
+  });
+  const [addressDetails, setAddressDetails] = useState({
+    value: "",
   });
   const [floor, setFloor] = useState({
     value: "",
@@ -59,22 +82,26 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
 
   // Check if there's no errors, activate the continue button
   useEffect(() => {
-    const errorsLength = [...addressName.errors, ...addressDesc.errors].length;
-    const fieldsValidated = addressName.validated && addressDesc.validated;
+    const errorsLength = [...addressNickname.errors, ...street.errors].length;
+    const fieldsValidated = addressNickname.validated && street.validated;
 
     if (errorsLength == 0 && fieldsValidated) {
       setButtonActive(true);
     } else {
       setButtonActive(false);
     }
-  }, [addressName.errors, addressDesc.errors]);
+  }, [addressNickname.errors, street.errors]);
 
   // Review order button handler
   const reviewOrder = () => {
+    const formattedAddress = `${userLocation.governate} - ${street.value}, ${userLocation.area}`;
     const address = {
-      userLocation,
-      addressName: addressName.value,
-      addressDesc: addressDesc.value,
+      governate: userLocation.governate,
+      area: userLocation.area,
+      formattedAddress: formattedAddress,
+      addressNickname: addressNickname.value,
+      street: street.value,
+      addressDetails: addressDetails.value,
       floor: floor.value,
       apartment: apartment.value,
       deliveryNotes: deliveryNotes.value,
@@ -122,21 +149,9 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
           contentContainerStyle={{ paddingBottom: 100 }}
         >
           <Text style={styles.containerTitle}>Address Details</Text>
-          <View>
-            {/* User Location */}
-            <View
-              style={{
-                flexDirection: "row",
-                alignIt: "center",
-                marginVertical: 5,
-              }}
-            >
-              <Text style={styles.location}>
-                {userLocation.formattedAddress}
-              </Text>
-            </View>
+          <View style={{ marginTop: 15 }}>
             {/* Error Messages */}
-            {[...addressName.errors, ...addressDesc.errors].map(
+            {[...addressNickname.errors, ...street.errors].map(
               (error, index) => {
                 return (
                   <View style={styles.errorMessage} key={index}>
@@ -152,24 +167,54 @@ function AddressDetails({ navigation, userLocation, addAddress }) {
               <TextInput
                 style={styles.textInput}
                 onChangeText={(text) => {
-                  setAddressName({ ...addressName, value: text });
+                  setAddressNickname({ ...addressNickname, value: text });
                 }}
                 onBlur={() => {
-                  validate(addressName, setAddressName);
+                  validate(addressNickname, setAddressNickname);
                 }}
+                autoCapitalize="words"
               >
-                Address Name (eg. Home / Work) *
+                Address Nickname (eg. Home/Work) *
               </TextInput>
+              <View>
+                <TextInput
+                  editable={false}
+                  defaultValue={userLocation.governate}
+                  style={[styles.textInput, { flex: 0.6 }]}
+                >
+                  Governate
+                </TextInput>
+              </View>
+              <View style={{ flexDirection: "row" }}>
+                <View style={{ flex: 0.5, marginRight: 10 }}>
+                  <TextInput
+                    editable={false}
+                    defaultValue={userLocation.area}
+                    style={[styles.textInput]}
+                  >
+                    Area
+                  </TextInput>
+                </View>
+                <TextInput
+                  defaultValue={userLocation.street}
+                  style={[styles.textInput, { flex: 0.5 }]}
+                  onChangeText={(text) => {
+                    setStreet({ ...street, value: text });
+                  }}
+                  onBlur={() => {
+                    validate(street, setStreet);
+                  }}
+                >
+                  Street
+                </TextInput>
+              </View>
               <TextInput
                 style={styles.textInput}
                 onChangeText={(text) => {
-                  setAddressDesc({ ...addressDesc, value: text });
-                }}
-                onBlur={() => {
-                  validate(addressDesc, setAddressDesc);
+                  setAddressDetails({ ...addressDetails, value: text });
                 }}
               >
-                Address Description *
+                Address Details
               </TextInput>
               <View style={{ flexDirection: "row" }}>
                 <TextInput

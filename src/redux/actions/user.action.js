@@ -24,20 +24,20 @@ export const addAddress = (address) => ({
   address,
 });
 
-export const removeAddress = (addressName) => ({
+export const removeAddress = (addressNickname) => ({
   type: "REMOVE_ADDRESS",
-  addressName
+  addressNickname,
 });
 
-export const changeAddress = (addressName, newAddress) => ({
+export const changeAddress = (addressNickname, newAddress) => ({
   type: "CHANGE_ADDRESS",
-  addressName,
+  addressNickname,
   newAddress,
 });
 
-export const switchActiveAddress = (addressName) => ({
+export const switchActiveAddress = (addressNickname) => ({
   type: "SWITCH_ACTIVE_ADDRESS",
-  addressName,
+  addressNickname,
 });
 
 export const updatePersonalInfo = (personalInfo) => ({

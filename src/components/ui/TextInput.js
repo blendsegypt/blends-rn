@@ -49,6 +49,7 @@ export default function (props) {
         defaultValue={props.defaultValue}
         secureTextEntry={props.secureTextEntry}
         editable={props.editable === false ? false : true}
+        autoCapitalize={"words"}
       />
       {props.editable === false && (
         <View style={styles.lock}>

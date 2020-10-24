@@ -22,18 +22,18 @@ function Address({
       <TouchableOpacity
         style={[styles.address]}
         onPress={() => {
-          switchActiveAddress(address.addressName);
+          switchActiveAddress(address.addressNickname);
           setChooseAddressShown(false);
         }}
       >
         <View style={{ flex: 0.5, justifyContent: "space-between" }}>
           <View style={{ flexDirection: "row", paddingRight: 15 }}>
-            {/* Address Name */}
+            {/* Address Nickname */}
             <FontAwesome name="map-marker" size={18} color="#11203E" />
             <Text
               style={{ fontSize: 15, paddingHorizontal: 5, color: "#11203E" }}
             >
-              {address.addressName}
+              {address.addressNickname}
             </Text>
           </View>
           {/* Address Active? */}
@@ -48,7 +48,7 @@ function Address({
         <View style={{ flex: 0.5 }}>
           {/* Address Location */}
           <Text style={{ fontSize: 14, lineHeight: 19, color: "#9c9c9c" }}>
-            {address.userLocation.formattedAddress}
+            {address.formattedAddress}
           </Text>
         </View>
       </TouchableOpacity>
@@ -64,12 +64,12 @@ function Address({
     >
       <View style={{ flex: 0.4, justifyContent: "space-between" }}>
         <View style={{ flexDirection: "row", paddingRight: 15 }}>
-          {/* Address Name */}
+          {/* Address Nickname */}
           <FontAwesome name="map-marker" size={18} color="#11203E" />
           <Text
             style={{ fontSize: 15, paddingHorizontal: 5, color: "#11203E" }}
           >
-            {address.addressName}
+            {address.addressNickname}
           </Text>
         </View>
         {/* Address Active? */}
@@ -84,7 +84,7 @@ function Address({
       <View style={{ flex: 0.5 }}>
         {/* Address Location */}
         <Text style={{ fontSize: 14, lineHeight: 19, color: "#9c9c9c" }}>
-          {address.userLocation.formattedAddress}
+          {address.formattedAddress}
         </Text>
       </View>
       {/* Chevron Right */}
@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 9,
     borderRadius: 20,
+    marginTop: 15,
   },
 });
 

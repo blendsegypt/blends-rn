@@ -20,7 +20,7 @@ function HomeHeader({
 }) {
   let location;
   if (user.addressConfirmed) {
-    location = user.savedAddresses[0].addressName;
+    location = user.savedAddresses[0].addressNickname;
   } else if (user.location) {
     location = user.location.area;
   } else {

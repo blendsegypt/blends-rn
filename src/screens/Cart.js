@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
+  Keyboard,
 } from "react-native";
 //UI Components
 import Text from "../components/ui/Text";
@@ -38,6 +39,7 @@ function Cart({
 
   const closeSheet = () => {
     setShowUserActionsSheet(false);
+    Keyboard.dismiss();
     if (phoneNumberConfirmed && !addressConfirmed) {
       // If phone number is confirmed and there's no address, navigate to Address Details
       navigation.navigate("AddressDetails");

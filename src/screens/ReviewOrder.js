@@ -115,7 +115,7 @@ function ReviewOrder({
                 color="#11203E"
               />
               <Text bold style={{ flex: 0.5, fontSize: 15, color: "#11203E" }}>
-                {activeAddress.addressName}
+                {activeAddress.addressNickname}
               </Text>
               <View style={{ flex: 0.37, alignItems: "flex-end" }}>
                 {savedAddresses.length > 1 ? (

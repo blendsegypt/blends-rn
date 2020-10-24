@@ -46,7 +46,7 @@ function PinDrop({
   const [addressLoaded, setAddressLoaded] = useState(false);
   // Location Object
   const [formattedAddress, setFormattedAddress] = useState("");
-  const [area, setArea] = useState("");
+  const [googleMapsAddress, setGoogleMapsAddress] = useState({});
   // Coordinates
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
@@ -60,24 +60,47 @@ function PinDrop({
   const reverseGeocode = () => {
     // Reverse Geocode coordinates using Google Maps API
     // ----------- DO NOT REMOVE (commented to avoid unnecessary costs) --------------
-    // Axios.get(
-    //   `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&result_type=street_address|administrative_area_level_1|administrative_area_level_2|administrative_area_level_3&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY`
-    // )
-    //   .then((response) => {
-    //     // Get formatted address from response
-    //     const formattedAddress = response.data.results[0].formatted_address;
-    //     // Get area from address components
-    //     const area = response.data.results[0].address_components.find(
-    //       (component) => component.types.includes("administrative_area_level_2")
-    //     );
-    //     setFormattedAddress(formattedAddress);
-    //     setArea(area.long_name);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    setFormattedAddress("This is an example of address");
-    setArea("Sporting");
+    Axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&result_type=street_address|administrative_area_level_1|administrative_area_level_2|administrative_area_level_3&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY`
+    )
+      .then((response) => {
+        // Get Governate from address components
+        const governate = response.data.results[0].address_components
+          .find((component) =>
+            component.types.includes("administrative_area_level_1")
+          )
+          .long_name.split(" ")[0];
+        // Get Area from address components
+        const area = response.data.results[0].address_components.find(
+          (component) => component.types.includes("administrative_area_level_2")
+        ).long_name;
+        // Get Street Number from address components
+        const street_number = response.data.results[0].address_components.find(
+          (component) => component.types.includes("street_number")
+        ).long_name;
+        // Get Route from address components
+        const route = response.data.results[0].address_components.find(
+          (component) => component.types.includes("route")
+        ).long_name;
+        // Format Street
+        const street = `${street_number} ${route}`;
+        // Format whole address
+        const formattedAddress = `${governate} - ${street}, ${area}`;
+
+        const googleMapsAddress = {
+          governate,
+          area,
+          street,
+          formattedAddress,
+        };
+        setFormattedAddress(formattedAddress);
+        setGoogleMapsAddress(googleMapsAddress);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    // setFormattedAddress("This is an example of address");
+    // setArea("Sporting");
     setAddressLoaded(true);
   };
 
@@ -145,12 +168,12 @@ function PinDrop({
           500
         );
       })
-      .catch((error) => {});
+      .catch((error) => () => console.log(error));
   };
 
   // Handler for continue button
   const continueHandler = () => {
-    addLocation({ area, formattedAddress });
+    addLocation({ ...googleMapsAddress });
     navigation.navigate("Home");
   };
 
@@ -342,10 +365,10 @@ function PinDrop({
           ) : (
             <Button
               onPress={() => {
-                // Navigate to Edit Address in Account
+                // Navigate to Edit Address in Account (Add address mode)
                 const address = {
-                  userLocation: { area, formattedAddress },
-                  addressDesc: "",
+                  ...googleMapsAddress,
+                  addressDetails: "",
                   floor: "",
                   apartment: "",
                   deliveryNotes: "",

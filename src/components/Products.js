@@ -24,7 +24,11 @@ function Products({ navigation }) {
     },
     {
       id: "3",
-      name: "Others",
+      name: "Snacks",
+    },
+    {
+      id: "4",
+      name: "Merchandise",
     },
   ];
   const products = [
@@ -99,6 +103,7 @@ function Products({ navigation }) {
           keyExtractor={(item) => item.id}
           renderItem={renderCategory}
           horizontal={true}
+          showsHorizontalScrollIndicator={false}
         />
       ) : (
         <SkeletonContent

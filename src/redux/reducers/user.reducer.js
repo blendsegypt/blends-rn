@@ -35,7 +35,7 @@ export default function userReducer(
       newState = { ...state };
       // Find target address and filter it out of addresses array
       newState.savedAddresses = newState.savedAddresses.filter(
-        (address) => address.addressName != action.addressName
+        (address) => address.addressNickname != action.addressNickname
       );
       if (newState.savedAddresses.length == 0)
         newState.addressConfirmed = false;
@@ -44,7 +44,8 @@ export default function userReducer(
       newState = { ...state };
       // Find target address and replace it with new address
       newState.savedAddresses = newState.savedAddresses.map((address) => {
-        if (address.addressName == action.addressName) return action.newAddress;
+        if (address.addressNickname == action.addressNickname)
+          return action.newAddress;
         return address;
       });
       if (newState.savedAddresses.length == 0)
@@ -54,11 +55,11 @@ export default function userReducer(
       newState = { ...state };
       // Find target address and save it
       const newActive = newState.savedAddresses.find(
-        (address) => address.addressName == action.addressName
+        (address) => address.addressNickname == action.addressNickname
       );
       // Find target address and filter it out of addresses array
       newState.savedAddresses = newState.savedAddresses.filter(
-        (address) => address.addressName != action.addressName
+        (address) => address.addressNickname != action.addressNickname
       );
       // Add the new active address in the beginning of the array
       newState.savedAddresses.unshift(newActive);
