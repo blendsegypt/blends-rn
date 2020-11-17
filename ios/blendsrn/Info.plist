@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -48,8 +46,17 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>FiraSans-Bold.ttf</string>
+		<string>FiraSans-Medium.ttf</string>
+		<string>FiraSans-Regular.ttf</string>
+		<string>FiraSans-SemiBold.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>SplashScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -67,12 +74,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>FiraSans-Bold.ttf</string>
-		<string>FiraSans-Medium.ttf</string>
-		<string>FiraSans-Regular.ttf</string>
-		<string>FiraSans-SemiBold.ttf</string>
-	</array>
 </dict>
 </plist>

@@ -32,7 +32,7 @@ export default function decodeAddressComponents(googleMapsResponse) {
   // Format Street
   let street = `${street_number} ${route}`;
   // Format whole address
-  const formattedAddress = `${governate} - ${street}, ${area}`;
+  const formattedAddress = `${governate} - ${street}`;
 
   return {
     governate,

@@ -22,7 +22,11 @@ function HomeHeader({
   if (user.addressConfirmed) {
     location = user.savedAddresses[0].addressNickname;
   } else if (user.location) {
-    location = user.location.area;
+    if (user.location.supported) {
+      location = user.location.area.area_name;
+    } else {
+      location = "Unsupported";
+    }
   } else {
     location = "Not Selected";
   }
@@ -44,7 +48,13 @@ function HomeHeader({
           >
             <FontAwesome name="map-marker" size={24} color="white" />
           </TouchableOpacity>
-          <View style={[styles.tag, styles.locationTag]}>
+          <View
+            style={[
+              styles.tag,
+              styles.locationTag,
+              location === "Unsupported" && styles.warningTag,
+            ]}
+          >
             <Text style={[styles.tagText]}>{location}</Text>
           </View>
         </View>
@@ -88,6 +98,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     padding: 7,
     borderRadius: 50,
+  },
+  warningTag: {
+    backgroundColor: "#d48787",
   },
   tagText: {
     color: "white",

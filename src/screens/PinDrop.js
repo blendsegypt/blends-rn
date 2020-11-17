@@ -49,6 +49,7 @@ function PinDrop({
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [addressLoaded, setAddressLoaded] = useState(false);
   // Location Object
+  const [area, setArea] = useState({});
   const [formattedAddress, setFormattedAddress] = useState("");
   const [googleMapsAddress, setGoogleMapsAddress] = useState({});
   // User Original Coordinates
@@ -59,6 +60,8 @@ function PinDrop({
   const mapRef = useRef();
   // Guest (default) / previous user
   const [existingUser, setExistingUser] = useState(false);
+  // Supported/Unsupported Area
+  const [supportedArea, setSupportedArea] = useState(false);
 
   // Reverse Geocode address
   const reverseGeocode = async () => {
@@ -82,8 +85,8 @@ function PinDrop({
   const animateToUserLocation = async () => {
     try {
       const coordinates = await getUserLocation();
+      // Set original user coordinates
       setUserCoordinates(coordinates);
-      setCoordinates(coordinates);
       setLocationLoaded(true);
     } catch (errors) {
       console.log(errors);
@@ -106,7 +109,21 @@ function PinDrop({
 
   // Reverse geocode new coordinates
   useEffect(() => {
-    //if (locationLoaded) reverseGeocode();
+    if (locationLoaded && mapLoaded) {
+      reverseGeocode();
+      // Get User Area
+      (async () => {
+        const userArea = await getUserArea(coordinates);
+        if (userArea) {
+          // Supported Area
+          setSupportedArea(true);
+          setArea(userArea);
+        } else {
+          setSupportedArea(false);
+          setArea({ area_name: googleMapsAddress.area });
+        }
+      })();
+    }
   }, [coordinates]);
 
   // Handler for search queries
@@ -126,7 +143,16 @@ function PinDrop({
 
   // Handler for continue button
   const continueHandler = () => {
-    addLocation({ ...googleMapsAddress });
+    const location = {
+      ...googleMapsAddress,
+    };
+    if (supportedArea) {
+      location.supported = true;
+      location.area = area;
+    } else {
+      location.supported = false;
+    }
+    addLocation(location);
     navigation.navigate("Home");
   };
 
@@ -148,12 +174,6 @@ function PinDrop({
     );
   };
 
-  // useEffect(() => {
-  //   if (phoneNumberConfirmed) {
-  //     if (user.savedAddresses.length > 0) navigation.navigate("Home");
-  //   }
-  // }, [phoneNumberConfirmed]);
-
   return (
     <>
       {showUserActionsSheet && (
@@ -164,8 +184,15 @@ function PinDrop({
       <View style={styles.outerContainer}>
         {locationLoaded && (
           <MapView
+            followsUserLocation={false}
+            initialRegion={{
+              latitude: userCoordinates[0],
+              longitude: userCoordinates[1],
+              longitudeDelta: 0.005,
+              latitudeDelta: 0.005,
+            }}
             onMapReady={() => {
-              animateToRegion(coordinates);
+              setMapLoaded(true);
             }}
             ref={mapRef}
             provider="google"
@@ -195,6 +222,7 @@ function PinDrop({
             resizeMode="contain"
           />
         </View>
+        {/* Go Back to my Location */}
         <View
           style={{
             position: "absolute",
@@ -247,7 +275,9 @@ function PinDrop({
           {/* Address */}
           <View style={styles.address}>
             {addressLoaded ? (
-              <Text style={styles.addressText}>{formattedAddress}</Text>
+              <Text style={styles.addressText}>
+                {formattedAddress} ({area.area_name})
+              </Text>
             ) : (
               <SkeletonContent
                 containerStyle={{ width: 100, height: 70 }}
@@ -281,8 +311,22 @@ function PinDrop({
             )}
             <View>
               {addressLoaded ? (
-                <View style={styles.supportedTag}>
-                  <Text style={styles.supportedTagText}>Supported</Text>
+                <View
+                  style={[
+                    styles.addressTag,
+                    supportedArea ? styles.supportedTag : styles.unsupportedTag,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.addressTagText,
+                      supportedArea
+                        ? styles.supportedTagText
+                        : styles.unsupportedTagText,
+                    ]}
+                  >
+                    {supportedArea ? "Supported" : "Unsupported"}
+                  </Text>
                 </View>
               ) : (
                 <SkeletonContent
@@ -313,7 +357,7 @@ function PinDrop({
                   continueHandler();
                 }}
               >
-                Continue
+                {supportedArea ? "Continue" : "Continue anyways"}
               </Button>
             ) : (
               <Button disabled>Continue</Button>
@@ -396,16 +440,24 @@ const styles = StyleSheet.create({
     color: "#0E2241",
     flex: 0.95,
   },
-  supportedTag: {
-    backgroundColor: "#DCEFE0",
+  addressTag: {
     padding: 10,
     paddingHorizontal: 15,
     borderRadius: 100,
     marginLeft: 50,
     marginTop: 15,
   },
+  supportedTag: {
+    backgroundColor: "#DCEFE0",
+  },
   supportedTagText: {
     color: "#3F8A4E",
+  },
+  unsupportedTag: {
+    backgroundColor: "#efdcdc",
+  },
+  unsupportedTagText: {
+    color: "#8a3f3f",
   },
   loadingContainer: {
     flex: 1,
