@@ -40,6 +40,7 @@
     "react-native-screens": "~2.9.0",
     "react-native-skeleton-content": "^1.0.20",
     "react-native-snap-carousel": "^3.9.1",
+    "react-native-toast-message": "^1.3.4",
     "react-native-unimodules": "~0.10.1",
     "react-native-web": "~0.11.7",
     "react-redux": "^7.2.1",

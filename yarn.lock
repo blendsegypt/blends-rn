@@ -7592,6 +7592,11 @@ react-native-snap-carousel@^3.9.1:
     prop-types "^15.6.1"
     react-addons-shallow-compare "15.6.2"
 
+react-native-toast-message@^1.3.4:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/react-native-toast-message/-/react-native-toast-message-1.3.4.tgz#19ea1c5d3ad8e9d12f7550c4719a9e0258dca6bd"
+  integrity sha512-83rKaLNC8/JPEPlrONVTurVepIlXKuHnFnxm7mJ58CA3XN4fT6ayRBubs/pd8u980mDFHqo8ysJOSHF3dwPg4g==
+
 react-native-unimodules@~0.10.1:
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/react-native-unimodules/-/react-native-unimodules-0.10.1.tgz#05a5ef248e88589528e7ef925137a345dde96ca4"
