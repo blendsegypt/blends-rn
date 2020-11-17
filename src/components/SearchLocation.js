@@ -27,28 +27,34 @@ function SearchResult({ name, placeID, setSelectedPlaceID }) {
   );
 }
 
-export default function SearchLocation({ navigateToPlaceID }) {
+export default function SearchLocation({ navigateToPlaceID, coordinates }) {
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedPlaceID, setSelectedPlaceID] = useState("");
-  const searchArea = (text) => {
-    if (text == "") {
+  const searchArea = async (text) => {
+    // Empty search query
+    if (text === "") {
       setSearchResults([]);
       return;
     }
-    Axios.get(
-      `https://maps.googleapis.com/maps/api/place/queryautocomplete/json?input=${text}&inputtype=textquery&fields=name,geometry&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY&location=30.82350274,29.58522371&radius=30000`
-    ).then((response) => {
-      const results = response.data.predictions;
-      setSearchResults(results);
+    // Destruct coordinates to apply location bias
+    const [lat, lng] = coordinates;
+    const response = await Axios.get(
+      `https://maps.googleapis.com/maps/api/place/queryautocomplete/json?input=${text}&inputtype=textquery&fields=name,geometry&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY&location=${lat},${lng}&radius=100000`
+    );
+    const results = [...response.data.predictions];
+    // Filter for only inside-Egypt results
+    const egyptResults = results.filter((result) => {
+      return result.terms[result.terms.length - 1].value === "Egypt";
     });
+    setSearchResults(egyptResults);
   };
   // Debounce Search Area to minimize API requests
   const debouncedSearch = useCallback(debounce(searchArea, 1000), [searchText]);
 
-  // Listen to placeID to navigate in MapView
+  //Listen to placeID to navigate in MapView
   useEffect(() => {
-    if (selectedPlaceID != "") {
+    if (selectedPlaceID !== "") {
       navigateToPlaceID(selectedPlaceID);
       setSearchResults([]);
       Keyboard.dismiss();

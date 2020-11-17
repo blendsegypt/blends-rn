@@ -13,8 +13,7 @@ import MapView from "react-native-maps";
 import Text from "../components/ui/Text";
 import Link from "../components/ui/Link";
 import Button from "../components/ui/Button";
-//Geolocation
-import Geolocation from "@react-native-community/geolocation";
+
 //Redux
 import { connect } from "react-redux";
 import { addLocation } from "../redux/actions/user.action";
@@ -30,7 +29,11 @@ import BottomSheetOverlay from "../components/BottomSheetOverlay";
 //Search Location Component
 import SearchLocation from "../components/SearchLocation";
 //Axios
-import Axios from "../utils/axios";
+import Axios from "axios";
+//Helpers
+import decodeAddressComponents from "./helpers/decodeAddressComponents";
+import getUserArea from "./helpers/getUserArea";
+import getUserLocation from "./helpers/getUserLocation";
 
 function PinDrop({
   addLocation,
@@ -42,94 +45,49 @@ function PinDrop({
   // UserActions bottom sheet state
   const [showUserActionsSheet, setShowUserActionsSheet] = useState(false);
   // Loading state
+  const [mapLoaded, setMapLoaded] = useState(false);
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [addressLoaded, setAddressLoaded] = useState(false);
   // Location Object
   const [formattedAddress, setFormattedAddress] = useState("");
   const [googleMapsAddress, setGoogleMapsAddress] = useState({});
-  // Coordinates
-  const [longitude, setLongitude] = useState(0);
-  const [latitude, setLatitude] = useState(0);
-  const [errorMsg, setErrorMsg] = useState(null);
+  // User Original Coordinates
+  const [userCoordinates, setUserCoordinates] = useState([]);
+  // Current Coordinates
+  const [coordinates, setCoordinates] = useState([]);
   // MapView ref
   const mapRef = useRef();
   // Guest (default) / previous user
   const [existingUser, setExistingUser] = useState(false);
 
   // Reverse Geocode address
-  const reverseGeocode = () => {
-    // Reverse Geocode coordinates using Google Maps API
-    // ----------- DO NOT REMOVE (commented to avoid unnecessary costs) --------------
-    Axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&result_type=street_address|administrative_area_level_1|administrative_area_level_2|administrative_area_level_3&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY`
-    )
-      .then((response) => {
-        // Get Governate from address components
-        const governate = response.data.results[0].address_components
-          .find((component) =>
-            component.types.includes("administrative_area_level_1")
-          )
-          .long_name.split(" ")[0];
-        // Get Area from address components
-        const area = response.data.results[0].address_components.find(
-          (component) => component.types.includes("administrative_area_level_2")
-        ).long_name;
-        // Get Street Number from address components
-        const street_number = response.data.results[0].address_components.find(
-          (component) => component.types.includes("street_number")
-        ).long_name;
-        // Get Route from address components
-        const route = response.data.results[0].address_components.find(
-          (component) => component.types.includes("route")
-        ).long_name;
-        // Format Street
-        const street = `${street_number} ${route}`;
-        // Format whole address
-        const formattedAddress = `${governate} - ${street}, ${area}`;
-
-        const googleMapsAddress = {
-          governate,
-          area,
-          street,
-          formattedAddress,
-        };
-        setFormattedAddress(formattedAddress);
-        setGoogleMapsAddress(googleMapsAddress);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    // setFormattedAddress("This is an example of address");
-    // setArea("Sporting");
-    setAddressLoaded(true);
+  const reverseGeocode = async () => {
+    try {
+      // Reverse Geocode coordinates using Google Maps API
+      const [lat, lng] = coordinates;
+      const response = await Axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&result_type=street_address|administrative_area_level_1|administrative_area_level_2|administrative_area_level_3&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY`
+      );
+      if (response.data.results === []) return;
+      const googleMapsAddress = decodeAddressComponents(response);
+      setFormattedAddress(googleMapsAddress.formattedAddress);
+      setGoogleMapsAddress(googleMapsAddress);
+      setAddressLoaded(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Detect user's location
-  const getUserLocation = () => {
-    if (user.location && route.params == undefined) return;
-    Geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setLatitude(latitude);
-        setLongitude(longitude);
-        setLocationLoaded(true);
-        // Reverse Geocode the coordinates to physical address
-        mapRef.current.animateToRegion(
-          {
-            longitude: position.coords.longitude,
-            latitude: position.coords.latitude,
-            longitudeDelta: 0.005,
-            latitudeDelta: 0.005,
-          },
-          500
-        );
-      },
-      (error) => {
-        // See error code charts below.
-        console.log(error.code, error.message);
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-    );
+  const animateToUserLocation = async () => {
+    try {
+      const coordinates = await getUserLocation();
+      setUserCoordinates(coordinates);
+      setCoordinates(coordinates);
+      setLocationLoaded(true);
+    } catch (errors) {
+      console.log(errors);
+    }
   };
 
   // Check if existing user
@@ -142,33 +100,28 @@ function PinDrop({
           setExistingUser(false);
         }
       }
-      getUserLocation();
-    }, [route.params, user.location])
+      animateToUserLocation();
+    }, [])
   );
 
+  // Reverse geocode new coordinates
+  useEffect(() => {
+    //if (locationLoaded) reverseGeocode();
+  }, [coordinates]);
+
   // Handler for search queries
-  const navigateToPlaceID = (placeID) => {
-    // Retreive place lat,lng from Google Maps API
-    Axios.get(
-      `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeID}&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY&fields=geometry`
-    )
-      .then((response) => {
-        const { lat, lng } = response.data.result.geometry.location;
-        setLatitude(lat);
-        setLongitude(lng);
-        // Set loading state
-        setAddressLoaded(false);
-        mapRef.current.animateToRegion(
-          {
-            longitude: lng,
-            latitude: lat,
-            longitudeDelta: 0.005,
-            latitudeDelta: 0.005,
-          },
-          500
-        );
-      })
-      .catch((error) => () => console.log(error));
+  const navigateToPlaceID = async (placeID) => {
+    try {
+      // Retreive place lat,lng from Google Maps API
+      const response = await Axios.get(
+        `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeID}&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY&fields=geometry`
+      );
+      const { lat, lng } = response.data.result.geometry.location;
+      setCoordinates([lat, lng]);
+      animateToRegion([lat, lng]);
+    } catch (errors) {
+      console.log(errors);
+    }
   };
 
   // Handler for continue button
@@ -177,21 +130,29 @@ function PinDrop({
     navigation.navigate("Home");
   };
 
-  // Redirect to Home Screen if location is already chosen
-  useEffect(() => {
-    if (user.location) navigation.navigate("Home");
-  }, []);
-
   // Close UserActions Bottom sheet
   const closeSheet = () => {
     setShowUserActionsSheet(false);
   };
 
-  useEffect(() => {
-    if (phoneNumberConfirmed) {
-      if (user.savedAddresses.length > 0) navigation.navigate("Home");
-    }
-  }, [phoneNumberConfirmed]);
+  const animateToRegion = (coordinates) => {
+    const [lat, lng] = coordinates;
+    mapRef.current.animateToRegion(
+      {
+        latitude: lat,
+        longitude: lng,
+        longitudeDelta: 0.005,
+        latitudeDelta: 0.005,
+      },
+      500
+    );
+  };
+
+  // useEffect(() => {
+  //   if (phoneNumberConfirmed) {
+  //     if (user.savedAddresses.length > 0) navigation.navigate("Home");
+  //   }
+  // }, [phoneNumberConfirmed]);
 
   return (
     <>
@@ -202,70 +163,62 @@ function PinDrop({
       )}
       <View style={styles.outerContainer}>
         {locationLoaded && (
-          <>
-            <MapView
-              ref={mapRef}
-              provider="google"
-              style={styles.map}
-              initialRegion={{
-                longitude,
-                latitude,
-                longitudeDelta: 0.005,
-                latitudeDelta: 0.005,
-              }}
-              onRegionChange={(region) => {
-                setLongitude(region.longitude);
-                setLatitude(region.latitude);
-              }}
-              onRegionChangeComplete={() => {
-                reverseGeocode();
-              }}
-            />
-            <View
-              pointerEvents="none"
-              style={{
-                position: "absolute",
-                top: 0,
-                bottom: 20,
-                left: 0,
-                right: 0,
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "transparent",
-              }}
-            >
-              <Image
-                pointerEvents="none"
-                source={PinMarker}
-                style={{ width: 34, height: 70 }}
-                resizeMode="contain"
-              />
-            </View>
-            <View
-              style={{
-                position: "absolute",
-                top: 130,
-                right: 0,
-                left: 0,
-                alignItems: "center",
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "#0E2241",
-                  padding: 13,
-                  paddingHorizontal: 15,
-                  borderRadius: 50,
-                }}
-                onPress={() => {
-                  getUserLocation();
-                }}
-              >
-                <FontAwesome name="location-arrow" size={23} color="#fff" />
-              </TouchableOpacity>
-            </View>
-          </>
+          <MapView
+            onMapReady={() => {
+              animateToRegion(coordinates);
+            }}
+            ref={mapRef}
+            provider="google"
+            style={styles.map}
+            onRegionChangeComplete={(region) => {
+              setCoordinates([region.latitude, region.longitude]);
+            }}
+          />
         )}
+        <View
+          pointerEvents="none"
+          style={{
+            position: "absolute",
+            top: 0,
+            bottom: 20,
+            left: 0,
+            right: 0,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "transparent",
+          }}
+        >
+          <Image
+            pointerEvents="none"
+            source={PinMarker}
+            style={{ width: 34, height: 70 }}
+            resizeMode="contain"
+          />
+        </View>
+        <View
+          style={{
+            position: "absolute",
+            top: 130,
+            right: 0,
+            left: 0,
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#0E2241",
+              padding: 13,
+              paddingHorizontal: 15,
+              borderRadius: 50,
+            }}
+            onPress={() => {
+              setCoordinates(userCoordinates);
+              animateToRegion(userCoordinates);
+            }}
+          >
+            <FontAwesome name="location-arrow" size={23} color="#fff" />
+          </TouchableOpacity>
+        </View>
         {/* Search Locations Input */}
         <SafeAreaView
           style={{
@@ -274,7 +227,10 @@ function PinDrop({
             zIndex: 999,
           }}
         >
-          <SearchLocation navigateToPlaceID={navigateToPlaceID} />
+          <SearchLocation
+            navigateToPlaceID={navigateToPlaceID}
+            coordinates={coordinates}
+          />
         </SafeAreaView>
         <View style={styles.container}>
           {/* Title */}
