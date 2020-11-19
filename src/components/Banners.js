@@ -41,7 +41,7 @@ function Banners({ navigation }) {
           data={banners}
           renderItem={renderItem}
           sliderWidth={Dimensions.get("window").width}
-          itemWidth={362}
+          itemWidth={360}
         />
       ) : (
         <SkeletonContent

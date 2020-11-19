@@ -1823,6 +1823,16 @@
     pouchdb-collections "^1.0.1"
     tiny-queue "^0.2.1"
 
+"@gorhom/bottom-sheet@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@gorhom/bottom-sheet/-/bottom-sheet-1.4.1.tgz#5a9028ea243b93e0f31044b5aada58fd183f9b23"
+  integrity sha512-j6+z1C4/Hon1bt/lheOfyiXuJfACKszFRUqweRYpqy/nPA5pUAYBIfpUlCxdJSq6Dl2qKYK1VwWYUpKh14s+gQ==
+  dependencies:
+    invariant "^2.2.4"
+    lodash.isequal "^4.5.0"
+    nanoid "^3.1.12"
+    react-native-redash "^14.2.3"
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -7551,7 +7561,7 @@ react-native-reanimated@1.9.0, react-native-reanimated@~1.9.0:
   dependencies:
     fbjs "^1.0.0"
 
-react-native-redash@^14.1.1:
+react-native-redash@^14.1.1, react-native-redash@^14.2.3:
   version "14.2.4"
   resolved "https://registry.yarnpkg.com/react-native-redash/-/react-native-redash-14.2.4.tgz#5dbb4b2f1a7441bb304fe3494b89e0dc9010c8ef"
   integrity sha512-/1R9UxXv3ffKcrbxolqa2B247Cgd3ikyEm2q1VlBng77Es6PAD4LAOXQ83pBavvwNfOsbhF3ebkbMpJcLaVt3Q==

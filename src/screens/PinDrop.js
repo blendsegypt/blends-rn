@@ -387,11 +387,11 @@ function PinDrop({
           )}
         </View>
       </View>
-      <UserActions
+      {/* <UserActions
         showUserActionsSheet={showUserActionsSheet}
         closeSheet={closeSheet}
         loginMode
-      />
+      /> */}
     </>
   );
 }

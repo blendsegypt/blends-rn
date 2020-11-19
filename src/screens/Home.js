@@ -39,6 +39,7 @@ function Home({
       <ScrollView
         style={styles.background}
         contentContainerStyle={{ paddingBottom: 50 }}
+        showsVerticalScrollIndicator={false}
       >
         <View style={styles.whiteContainer}>
           <SafeAreaView>

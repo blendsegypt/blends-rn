@@ -106,11 +106,11 @@ function HomeTabs({ navigation }) {
         <Tab.Screen name="Support" component={Support} />
       </Tab.Navigator>
       {/* Choose Address Bottom Sheet */}
-      <ChooseAddress
+      {/* <ChooseAddress
         chooseAddressShown={chooseAddressShown}
         setChooseAddressShown={setChooseAddressShown}
         navigation={navigation}
-      />
+      /> */}
     </>
   );
 }
