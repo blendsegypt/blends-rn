@@ -27,7 +27,7 @@ function CartItem({
   // Generate the text for product customization description
   let selectedOptionsText = "";
   selectedOptions.forEach((option, index) => {
-    selectedOptionsText += option.textValue;
+    selectedOptionsText += option.value;
     if (index == selectedOptions.length - 2) {
       selectedOptionsText += " & ";
     } else if (index != selectedOptions.length - 1) {
@@ -38,7 +38,7 @@ function CartItem({
   return (
     <View style={styles.itemContainer}>
       {/* Product Image */}
-      <Image source={image} style={{ width: 55, height: 55 }} />
+      <Image source={{ uri: image }} style={{ width: 55, height: 55 }} />
       <View style={{ flex: 0.6, paddingLeft: 10 }}>
         {/* Title and Custom requests */}
         <Text style={{ fontSize: 15, color: "#11203E" }}>{name}</Text>

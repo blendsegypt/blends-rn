@@ -10,56 +10,12 @@ import Latte from "../../assets/Latte.png";
 import PotatoChips from "../../assets/PotatoChips.png";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content";
+import API from "../utils/axios";
 
-function Products({ navigation }) {
+function Products({ navigation, supportedArea }) {
   console.disableYellowBox = true;
-  const categories = [
-    {
-      id: "1",
-      name: "Hot Coffee",
-    },
-    {
-      id: "2",
-      name: "Iced Coffee",
-    },
-    {
-      id: "3",
-      name: "Snacks",
-    },
-    {
-      id: "4",
-      name: "Merchandise",
-    },
-  ];
-  const products = [
-    {
-      id: "1",
-      name: "Espresso",
-      price: "15.00 EGP",
-      image: Espresso,
-      offer: true,
-      newPrice: "11.00 EGP",
-    },
-    {
-      id: "2",
-      name: "Latte",
-      price: "25.00 EGP",
-      image: Latte,
-    },
-    {
-      id: "3",
-      name: "Lay’s Potato Chips Tomatoes Flavor (30g)",
-      price: "11.00 EGP",
-      image: PotatoChips,
-      instantAdd: true,
-    },
-    {
-      id: "4",
-      name: "Latte",
-      price: "25.00 EGP",
-      image: Latte,
-    },
-  ];
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState(1);
   const [categoriesLoaded, setCategoriesLoaded] = useState(false);
   const [productsLoaded, setProductsLoaded] = useState(false);
@@ -84,15 +40,28 @@ function Products({ navigation }) {
     </TouchableOpacity>
   );
 
+  // Initialize component
   useEffect(() => {
-    const fakeLoading = setTimeout(() => {
+    const getCategories = async () => {
+      const categories = await API.get("app/products/categories");
+      setCategories(categories.data.data);
       setCategoriesLoaded(true);
-      setProductsLoaded(true);
-    }, 2000);
-    return () => {
-      clearTimeout(fakeLoading);
     };
+    getCategories();
   }, []);
+
+  // On Category change
+  useEffect(() => {
+    const getProducts = async () => {
+      const products = await API.get(
+        `app/products/categories/${activeCategory}`
+      );
+      setProducts(products.data.data);
+      setProductsLoaded(true);
+    };
+    setProductsLoaded(false);
+    getProducts();
+  }, [activeCategory]);
 
   return (
     <View>
@@ -144,7 +113,13 @@ function Products({ navigation }) {
           keyExtractor={(item) => item.id}
           numColumns="2"
           renderItem={({ item }) => {
-            return <ProductItem {...item} navigation={navigation} />;
+            return (
+              <ProductItem
+                {...item}
+                navigation={navigation}
+                supportedArea={supportedArea}
+              />
+            );
           }}
         />
       ) : (

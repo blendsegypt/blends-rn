@@ -41,8 +41,8 @@ function HomeHeader({
               if (user.addressConfirmed) {
                 setChooseAddressShown(!chooseAddressShown);
               } else {
-                navigation.navigate("PinDrop", { existingUser: false });
-                removeLocation();
+                navigation.navigate("PinDrop");
+                //removeLocation();
               }
             }}
           >

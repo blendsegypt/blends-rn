@@ -22,100 +22,40 @@ import SkeletonContent from "react-native-skeleton-content";
 //Redux
 import { connect } from "react-redux";
 import { addToCart } from "../redux/actions/cart.action";
+//Axios
+import API from "../utils/axios";
 
-function Product({ navigation, addToCart }) {
-  const [loading, setLoading] = useState(false);
-  const [addedToCart, setAddedToCart] = useState(false);
-  const [productData, setProductData] = useState({
-    image: LatteLarge,
-    name: "Latte",
-    desc:
-      "Coffee drink made with espresso, steamed milk and thin layer of foam",
-    price: 25.0,
-    tags: [
-      {
-        bgColor: "#C94D4D",
-        label: "Hot",
-      },
-      {
-        bgColor: "#CACACA",
-        label: "Contains Milk",
-      },
-    ],
-    customOptions: [
-      {
-        label: "Cup Size",
-        options: [
-          {
-            label: "Small (+0 EGP)",
-            price: 0,
-            value: "sm",
-            textValue: "Small",
-          },
-          {
-            label: "Large (+5 EGP)",
-            price: 5,
-            value: "lg",
-            textValue: "Large",
-          },
-        ],
-      },
-      {
-        label: "Milk Type",
-        options: [
-          {
-            label: "Skimmed (+0 EGP)",
-            price: 0,
-            value: "skm",
-            textValue: "Skimmed Milk",
-          },
-          {
-            label: "Full Cream (+0 EGP)",
-            price: 0,
-            value: "fc",
-            textValue: "Full Cream Milk",
-          },
-        ],
-      },
-    ],
-    extraOptions: [
-      {
-        label: "Whipped Cream",
-        options: [
-          {
-            label: "No (+0 EGP)",
-            price: 0,
-            value: false,
-            textValue: "No Whipped Cream",
-          },
-          {
-            label: "Yes (+0 EGP)",
-            price: 0,
-            value: true,
-            textValue: "Whipped Cream",
-          },
-        ],
-      },
-    ],
-  });
+function Product({ navigation, route, addToCart }) {
+  const { product_id } = route.params;
+  const [loading, setLoading] = useState(true);
+  const [productData, setProductData] = useState({});
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [price, setPrice] = useState(productData.price);
+  const [price, setPrice] = useState(0);
 
   // Load Product data from backend API
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  });
+    const loadProduct = async () => {
+      try {
+        const response = await API.get(`app/products/${product_id}`);
+        const product = response.data.data;
+        console.log(product);
+        setProductData(product);
+        setPrice(product.sale_price ? product.sale_price : product.price);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    loadProduct();
+  }, []);
 
   // Product Custom Option handler
-  const addCustomOption = (label, value, price, textValue) => {
+  const addCustomOption = (label, value, price) => {
     let options = [...selectedOptions];
     // Change option if it exists in selectedOptions
     let alreadyExists = false;
     let alreadyExistsIndex = null;
     options.forEach((option, index) => {
-      // return label != option.label;
       if (label == option.label) {
         alreadyExists = true;
         alreadyExistsIndex = index;
@@ -125,7 +65,6 @@ function Product({ navigation, addToCart }) {
       label,
       value,
       price,
-      textValue,
     };
     if (alreadyExists) {
       options[alreadyExistsIndex] = option;
@@ -145,35 +84,36 @@ function Product({ navigation, addToCart }) {
     setPrice(productData.price + amount);
   }, [selectedOptions]);
 
-  // Add default options to selectedOptions array
+  //Add default options to selectedOptions array
   useEffect(() => {
+    if (loading) return;
     // Add default customization options
     const defaultOptions = [];
-    productData.customOptions.forEach((option, index) => {
+    productData.product_custom_options.forEach((custom_option) => {
+      // If option is not mandatory return
+      if (!custom_option.mandatory) return;
       // First option of each customization option is always the default
-      const firstOption = option.options[0];
+      const firstOption = custom_option.custom_options[0];
       const defaultOption = {
-        label: option.label,
+        label: custom_option.label,
+        value: firstOption.label,
         price: firstOption.price,
-        textValue: firstOption.textValue,
-        value: firstOption.value,
       };
       defaultOptions.push(defaultOption);
     });
     setSelectedOptions(defaultOptions);
-  }, []);
+  }, [loading]);
 
   // Add Product to Cart
   const addProductToCart = () => {
     const cartItem = {
-      image: productData.image,
-      name: productData.name,
-      price: productData.price,
-      quantity: 1,
+      price,
       selectedOptions,
+      image: productData.product_image_url,
+      name: productData.name,
+      quantity: 1,
     };
     addToCart(cartItem);
-    setAddedToCart(true);
     setTimeout(() => {
       navigation.navigate("Home");
     }, 500);
@@ -214,13 +154,13 @@ function Product({ navigation, addToCart }) {
                 key: "image",
                 width: 230,
                 height: 230,
-                borderRadius: "150%",
+                borderRadius: 150,
               },
             ]}
           />
         ) : (
           <Image
-            source={productData.image}
+            source={{ uri: productData.product_image_url }}
             style={{ width: 230, height: 230 }}
           />
         )}
@@ -249,11 +189,11 @@ function Product({ navigation, addToCart }) {
             ]}
           />
         ) : (
-          productData.tags.map((tag, index) => {
+          productData.product_tags.map((tag, index) => {
             return (
               <View
                 key={index}
-                style={[styles.tag, { backgroundColor: tag.bgColor }]}
+                style={[styles.tag, { backgroundColor: tag.color }]}
               >
                 <Text style={[styles.tagText, { color: "#fff" }]}>
                   {tag.label}
@@ -290,7 +230,7 @@ function Product({ navigation, addToCart }) {
           />
         ) : (
           <Text regular style={styles.productDesc}>
-            {productData.desc}
+            {productData.description}
           </Text>
         )}
       </View>
@@ -327,77 +267,31 @@ function Product({ navigation, addToCart }) {
             ]}
           />
         ) : (
-          productData.customOptions.map((customOption, index) => {
+          productData.product_custom_options.map((custom_option, index) => {
             return (
               <View style={styles.customOption} key={index}>
                 <Text regular style={styles.customOptionText}>
-                  {customOption.label}
+                  {custom_option.label}
                 </Text>
                 <View style={{ flex: 0.6 }}>
                   <Dropdown
-                    items={customOption.options}
+                    items={custom_option.custom_options}
                     onChange={(value) => {
                       let price;
-                      let textValue;
-                      customOption.options.forEach((option) => {
+                      let option_value;
+                      custom_option.custom_options.forEach((option) => {
                         if (option.value == value) {
                           price = option.price;
-                          textValue = option.textValue;
+                          option_value = option.label;
                         }
                       });
-                      addCustomOption(
-                        customOption.label,
-                        value,
-                        price,
-                        textValue
-                      );
+                      addCustomOption(custom_option.label, option_value, price);
                     }}
                   />
                 </View>
               </View>
             );
           })
-        )}
-        {/* Extra Customization Options */}
-        {loading == false && (
-          <View style={{ marginTop: 20 }}>
-            <Text
-              semiBold
-              style={[styles.customizationTitle, { color: "#BDBDBD" }]}
-            >
-              Extras
-            </Text>
-            {productData.extraOptions.map((customOption, index) => {
-              return (
-                <View style={styles.customOption} key={index}>
-                  <Text regular style={styles.customOptionText}>
-                    {customOption.label}
-                  </Text>
-                  <View style={{ flex: 0.6 }}>
-                    <Dropdown
-                      items={customOption.options}
-                      onChange={(value) => {
-                        let price;
-                        let textValue;
-                        customOption.options.forEach((option) => {
-                          if (option.value == value) {
-                            price = option.price;
-                            textValue = option.textValue;
-                          }
-                        });
-                        addCustomOption(
-                          customOption.label,
-                          value,
-                          price,
-                          textValue
-                        );
-                      }}
-                    />
-                  </View>
-                </View>
-              );
-            })}
-          </View>
         )}
       </ScrollView>
       <View
@@ -408,20 +302,14 @@ function Product({ navigation, addToCart }) {
         }}
       >
         {/* Add to Cart Button */}
-        {!addedToCart ? (
-          <Button
-            price={price.toFixed(2) + " EGP"}
-            onPress={() => {
-              addProductToCart();
-            }}
-          >
-            Add to Cart
-          </Button>
-        ) : (
-          <Button noIcon success>
-            Added to Cart!
-          </Button>
-        )}
+        <Button
+          price={price.toFixed(2) + " EGP"}
+          onPress={() => {
+            addProductToCart();
+          }}
+        >
+          Add to Cart
+        </Button>
       </View>
     </View>
   );

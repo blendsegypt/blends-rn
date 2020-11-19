@@ -200,10 +200,12 @@ function Cart({
           </Button>
         </View>
       </View>
-      <UserActions
-        showUserActionsSheet={showUserActionsSheet}
-        closeSheet={closeSheet}
-      />
+      {showUserActionsSheet && (
+        <UserActions
+          showUserActionsSheet={showUserActionsSheet}
+          closeSheet={closeSheet}
+        />
+      )}
     </>
   );
 }

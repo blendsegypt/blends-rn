@@ -19,11 +19,22 @@ import HomeHeader from "./headers/HomeHeader";
 //Redux
 import { connect } from "react-redux";
 
-function Home({ setChooseAddressShown, navigation, firstName, chooseAddressShown }) {
+function Home({
+  setChooseAddressShown,
+  navigation,
+  firstName,
+  loggedIn,
+  chooseAddressShown,
+  supportedArea,
+}) {
   return (
     <>
       <View style={{ backgroundColor: "#fff" }}>
-        <HomeHeader navigation={navigation} setChooseAddressShown={setChooseAddressShown} chooseAddressShown={chooseAddressShown} />
+        <HomeHeader
+          navigation={navigation}
+          setChooseAddressShown={setChooseAddressShown}
+          chooseAddressShown={chooseAddressShown}
+        />
       </View>
       <ScrollView
         style={styles.background}
@@ -57,16 +68,16 @@ function Home({ setChooseAddressShown, navigation, firstName, chooseAddressShown
             </View>
             {/* Banners Section */}
             <View style={{ marginTop: 15 }}>
-              <Banners />
+              <Banners navigation={navigation} />
             </View>
           </SafeAreaView>
         </View>
         <View style={{ marginTop: 30, paddingBottom: 50 }}>
           {/* Recent Orders */}
-          <RecentOrders navigation={navigation} />
+          {loggedIn && <RecentOrders navigation={navigation} />}
           {/* Products */}
           <View style={{ marginTop: 20, paddingHorizontal: 25 }}>
-            <Products navigation={navigation} />
+            <Products navigation={navigation} supportedArea={supportedArea} />
           </View>
         </View>
       </ScrollView>
@@ -129,14 +140,17 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  if (state.userReducer.phoneNumberConfirmed) {
+  if (state.userReducer.loggedIn) {
     const firstName = state.userReducer.fullName.split(" ")[0];
     return {
       firstName,
+      loggedIn: true,
     };
   }
   return {
-    firstName: "guest",
+    firstName: "Guest",
+    loggedIn: false,
+    supportedArea: state.userReducer.location.supported,
   };
 };
 

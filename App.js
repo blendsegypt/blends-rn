@@ -34,6 +34,8 @@ import tabBarSettings from "./src/tabBarSettings";
 //Bottom Sheets
 import ChooseAddress from "./src/screens/bottomSheets/ChooseAddress";
 import BottomSheetOverlay from "./src/components/BottomSheetOverlay";
+//Toast messages
+import Toast from "react-native-toast-message";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -115,22 +117,25 @@ function HomeTabs({ navigation }) {
 
 function App() {
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="PinDrop" component={PinDrop} />
-            <Stack.Screen name="Home" component={HomeTabs} />
-            <Stack.Screen name="Product" component={Product} />
-            <Stack.Screen name="Cart" component={Cart} />
-            <Stack.Screen name="AddressDetails" component={AddressDetails} />
-            <Stack.Screen name="ReviewOrder" component={ReviewOrder} />
-            <Stack.Screen name="OrderConfirmed" component={OrderConfirmed} />
-          </Stack.Navigator>
-        </NavigationContainer>
-        <StatusBar style="dark" />
-      </PersistGate>
-    </Provider>
+    <>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <NavigationContainer>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="PinDrop" component={PinDrop} />
+              <Stack.Screen name="Home" component={HomeTabs} />
+              <Stack.Screen name="Product" component={Product} />
+              <Stack.Screen name="Cart" component={Cart} />
+              <Stack.Screen name="AddressDetails" component={AddressDetails} />
+              <Stack.Screen name="ReviewOrder" component={ReviewOrder} />
+              <Stack.Screen name="OrderConfirmed" component={OrderConfirmed} />
+            </Stack.Navigator>
+          </NavigationContainer>
+          <StatusBar style="dark" />
+        </PersistGate>
+      </Provider>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
+    </>
   );
 }
 

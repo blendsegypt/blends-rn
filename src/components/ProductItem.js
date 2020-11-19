@@ -3,49 +3,72 @@ import { View, StyleSheet, Image } from "react-native";
 //UI Components
 import Text from "../components/ui/Text";
 import Button from "../components/ui/Button";
+import Toast from "react-native-toast-message";
 
 function ProductItem({
+  id,
   name,
   price,
-  image,
-  instantAdd,
-  offer,
-  newPrice,
+  retail,
+  product_image_url,
+  sale_price,
   navigation,
+  supportedArea,
 }) {
+  const unsupportedHandler = () => {
+    Toast.show({
+      type: "error",
+      topOffset: 50,
+      text1: "Unsupported Location",
+      text2: "Please change your location to add products to the cart.",
+    });
+  };
   return (
     <View style={styles.item}>
       <Image
-        source={image}
+        source={product_image_url ? { uri: product_image_url } : {}}
         style={{ width: 110, height: 110 }}
         resizeMode="contain"
       />
       <Text style={styles.productName}>{name}</Text>
-      {offer ? (
+      {sale_price !== 0 ? (
         <View style={{ flexDirection: "row" }}>
-          <Text style={styles.oldPriceText}>{price}</Text>
+          <Text style={styles.oldPriceText}>{price} EGP</Text>
           <View style={styles.newPrice}>
-            <Text style={styles.newPriceText}>{newPrice}</Text>
+            <Text style={styles.newPriceText}>{sale_price} EGP</Text>
           </View>
         </View>
-      ) : !instantAdd ? (
+      ) : !retail ? (
         <Text style={styles.productPrice} regular>
-          Starts from <Text>{price}</Text>
+          From <Text>{price} EGP</Text>
         </Text>
       ) : (
-        <Text style={styles.productPrice}>{price}</Text>
+        <Text style={styles.productPrice}>{price} EGP</Text>
       )}
-      {!instantAdd ? (
+      {!retail ? (
         <Button
           onPress={() => {
-            navigation.navigate("Product");
+            if (!supportedArea) {
+              unsupportedHandler();
+              return;
+            }
+            navigation.navigate("Product", { product_id: id });
           }}
           style={styles.itemButton}
         >
           Select
         </Button>
       ) : (
-        <Button style={styles.itemButton} icon="plus">
+        <Button
+          onPress={() => {
+            if (!supportedArea) {
+              unsupportedHandler();
+              return;
+            }
+          }}
+          style={styles.itemButton}
+          icon="plus"
+        >
           Add to Cart
         </Button>
       )}

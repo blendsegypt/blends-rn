@@ -1,35 +1,44 @@
 import React, { useState, useEffect } from "react";
-import { Image, Dimensions } from "react-native";
+import { Image, Dimensions, TouchableOpacity } from "react-native";
 // Images Carousel
 import Carousel from "react-native-snap-carousel";
-// Offers image (only for testing, should be called from backend API)
-import CoffeeAmericanoOffer from "../../assets/coffeeAmericanoOffer.png";
-import SignatureLatteOffer from "../../assets/signatureLatteOffer.png";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content";
+import API from "../utils/axios";
 
-function Banners() {
+function Banners({ navigation }) {
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [banners, setBanners] = useState([]);
   useEffect(() => {
-    const fakeLoading = setTimeout(() => {
+    const loadBanners = async () => {
+      const banners = await API.get("app/banners");
+      setBanners(banners.data.data);
       setImagesLoaded(true);
-    }, 2000);
-    return () => {
-      clearTimeout(fakeLoading);
     };
+    loadBanners();
   }, []);
 
-  const entries = [CoffeeAmericanoOffer, SignatureLatteOffer];
   const renderItem = ({ item, index }) => {
     return (
-      <Image key={index} source={item} style={{ width: 360, height: 155 }} />
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => {
+          navigation.navigate("Product", { product_id: item.product_id });
+        }}
+      >
+        <Image
+          key={index}
+          source={{ uri: item.banner_image_url }}
+          style={{ width: 360, height: 155 }}
+        />
+      </TouchableOpacity>
     );
   };
   return (
     <>
       {imagesLoaded ? (
         <Carousel
-          data={entries}
+          data={banners}
           renderItem={renderItem}
           sliderWidth={Dimensions.get("window").width}
           itemWidth={362}
