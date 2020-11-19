@@ -1,31 +1,19 @@
 import React, { useRef, useEffect, useState } from "react";
-import {
-  View,
-  ScrollView,
-  StyleSheet,
-  Image,
-  Keyboard,
-  Dimensions,
-  Platform,
-} from "react-native";
-//UI Components
-import Text from "../../components/ui/Text";
-import Button from "../../components/ui/Button";
-import Link from "../../components/ui/Link";
+import { Platform, View } from "react-native";
 //Bottom Sheet
-import BottomSheet from "reanimated-bottom-sheet";
-//Assets
-import BlendsLogo from "../../../assets/BlendsLogo.png";
+import BottomSheet from "@gorhom/bottom-sheet";
 //Redux
 import { connect } from "react-redux";
 import { confirmUser } from "../../redux/actions/user.action";
 //Sheets
+import StartSheet from "./UserActionsSheets/StartSheet";
 import LoginSheet from "./UserActionsSheets/LoginSheet";
 import NewAccountSheet from "./UserActionsSheets/NewAccountSheet";
 import NewAccountFBSheet from "./UserActionsSheets/NewAccountFBSheet";
 import OTPSheet from "./UserActionsSheets/OTPSheet";
-//Close Sheet component
-import CloseSheet from "./UserActionsSheets/utils/CloseSheet";
+//test
+import Text from "../../components/ui/Text";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 // Phone number entry bottom sheet
 function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
@@ -36,7 +24,6 @@ function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
     fullName: "",
     phoneNumber: "",
   });
-
   // If Login mode
   if (loginMode) {
     setSnap(2);
@@ -49,13 +36,12 @@ function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
       />
     );
   }
-
   // Sheets navigation
   if (sheet == "StartSheet") {
-    setSnap(1);
+    setSnap(0);
     return <StartSheet setSheet={setSheet} closeSheet={closeSheet} />;
   } else if (sheet == "LoginSheet") {
-    setSnap(3);
+    setSnap(2);
     return (
       <LoginSheet
         setSheet={setSheet}
@@ -64,7 +50,7 @@ function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
       />
     );
   } else if (sheet == "NewAccountSheet") {
-    setSnap(5);
+    setSnap(3);
     return (
       <NewAccountSheet
         setSheet={setSheet}
@@ -82,7 +68,7 @@ function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
       />
     );
   } else if (sheet == "OTPSheet") {
-    setSnap(7);
+    setSnap(0);
   }
   return (
     <OTPSheet
@@ -97,59 +83,6 @@ function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
   );
 }
 
-// Start Sheet
-function StartSheet({ setSheet, closeSheet }) {
-  return (
-    <>
-      {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
-      <ScrollView style={styles.bottomSheetContainer} extraScrollHeight={10}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Image
-            source={BlendsLogo}
-            style={{ width: 80, height: 62 }}
-            resizeMode="contain"
-          />
-          <Link
-            onPress={() => {
-              setSheet("LoginSheet");
-            }}
-          >
-            Already a User?
-          </Link>
-        </View>
-        <Text bold style={styles.title}>
-          Create your Account
-        </Text>
-        <Text regular style={styles.message}>
-          You need to create an account to confirm your order, don't worry it
-          won't take minutes!
-        </Text>
-        <Button
-          style={{ marginTop: 20 }}
-          onPress={() => {
-            setSheet("NewAccountSheet");
-          }}
-        >
-          Continue
-        </Button>
-        <Button
-          style={{ marginTop: 10, backgroundColor: "#3077F2" }}
-          icon="facebook"
-          onPress={() => setSheet("NewAccountFBSheet")}
-        >
-          Signup using Facebook
-        </Button>
-      </ScrollView>
-    </>
-  );
-}
-
 function UserActions({
   closeSheet,
   confirmUser,
@@ -160,133 +93,38 @@ function UserActions({
   const [snap, setSnap] = useState(0);
   // Show / Hide based on showUserActionsSheet prop
   useEffect(() => {
-    if (showUserActionsSheet) {
+    if (showUserActionsSheet && Platform.OS === "ios") {
       sheetRef.current.snapTo(snap);
-    } else {
-      if (Platform.OS === "ios") sheetRef.current.snapTo(0);
     }
   }, [showUserActionsSheet, snap]);
 
-  // Scroll bottom sheet up when keyboard is triggered
-  useEffect(() => {
-    Keyboard.addListener("keyboardWillShow", _keyboardWillShow);
-    Keyboard.addListener("keyboardWillHide", _keyboardWillHide);
-    // Cleanup
-    return () => {
-      Keyboard.removeListener("keyboardWillShow", _keyboardWillShow);
-      Keyboard.removeListener("keyboardWillHide", _keyboardWillHide);
-    };
-  });
-
-  // Each bottom sheet snap has an adjacent index that allows for keyboard movement
-  const _keyboardWillShow = () => {
-    if (showUserActionsSheet) sheetRef.current.snapTo(snap + 1);
-  };
-
-  const _keyboardWillHide = () => {
-    if (showUserActionsSheet) sheetRef.current.snapTo(snap);
-  };
-
   return (
-    <>
-      {Platform.OS === "android" ? (
-        showUserActionsSheet && (
-          <BottomSheet
-            ref={sheetRef}
-            snapPoints={[
-              0, // Closed
-              430, // StartSheet
-              700,
-              Dimensions.get("window").height - 320, // LoginSheet
-              Dimensions.get("window").height - 30, // LoginSheet(Keyboard)
-              Dimensions.get("window").height - 250, // NewAccountSheet
-              900, // NewAccountSheet(Keyboard)
-              450, // OTPSheet
-              750, // OTPSheet(Keyboard)
-            ]}
-            borderRadius={20}
-            renderContent={() => {
-              return (
-                <SheetsRouter
-                  closeSheet={closeSheet}
-                  confirmUser={confirmUser}
-                  setSnap={setSnap}
-                  loginMode={loginMode}
-                />
-              );
-            }}
-            initialSnap={0}
-            enabledGestureInteraction={false}
-          />
-        )
-      ) : (
+    <View style={{ zIndex: 9999 }}>
+      {Platform.OS === "ios" ? (
         <BottomSheet
           ref={sheetRef}
-          snapPoints={[
-            0, // Closed
-            430, // StartSheet
-            700,
-            Dimensions.get("window").height - 320, // LoginSheet
-            Dimensions.get("window").height - 30, // LoginSheet(Keyboard)
-            Dimensions.get("window").height - 250, // NewAccountSheet
-            900, // NewAccountSheet(Keyboard)
-            450, // OTPSheet
-            750, // OTPSheet(Keyboard)
-          ]}
-          borderRadius={20}
-          renderContent={() => {
-            return (
-              <SheetsRouter
-                closeSheet={closeSheet}
-                confirmUser={confirmUser}
-                setSnap={setSnap}
-                loginMode={loginMode}
-              />
-            );
-          }}
-          initialSnap={0}
-          enabledGestureInteraction={false}
+          snapPoints={["55%", "65%", "75%", "85%", "95%"]}
+          initialSnapIndex={-1}
+          enabled={false}
+        >
+          <SheetsRouter
+            closeSheet={closeSheet}
+            confirmUser={confirmUser}
+            setSnap={setSnap}
+            loginMode={loginMode}
+          />
+        </BottomSheet>
+      ) : (
+        <SheetsRouter
+          closeSheet={closeSheet}
+          confirmUser={confirmUser}
+          setSnap={setSnap}
+          loginMode={loginMode}
         />
       )}
-    </>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  bottomSheetContainer: {
-    height: 800,
-    marginTop: Platform.OS === "android" ? 25 : 0,
-    backgroundColor: "#fff",
-    paddingTop: 50,
-    paddingHorizontal: 25,
-    zIndex: 99,
-  },
-  title: {
-    fontSize: 19,
-    paddingTop: 25,
-    color: "#11203E",
-  },
-  message: {
-    paddingTop: 7,
-    fontSize: 15,
-    color: "#8A8A8A",
-    lineHeight: 23,
-  },
-  textInputError: {
-    borderWidth: 1,
-    borderColor: "#eda1a1",
-  },
-  resendButton: {
-    flex: 0.5,
-    marginLeft: 15,
-  },
-  errorMessage: {
-    backgroundColor: "#F3E1E1",
-    padding: 15,
-    marginVertical: 10,
-    borderRadius: 20,
-  },
-});
 
 const mapDispatchToProps = (dispatch) => ({
   confirmUser: (fullName, phoneNumber) => {

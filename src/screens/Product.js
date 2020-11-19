@@ -15,8 +15,6 @@ import Dropdown from "../components/ui/Dropdown";
 import { FontAwesome } from "@expo/vector-icons";
 //Components
 import CartIcon from "../components/CartIcon";
-//Assets (for testing purposes)
-import LatteLarge from "../../assets/LatteLarge.png";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content";
 //Redux
@@ -38,7 +36,6 @@ function Product({ navigation, route, addToCart }) {
       try {
         const response = await API.get(`app/products/${product_id}`);
         const product = response.data.data;
-        console.log(product);
         setProductData(product);
         setPrice(product.sale_price ? product.sale_price : product.price);
         setLoading(false);
@@ -237,9 +234,10 @@ function Product({ navigation, route, addToCart }) {
       <ScrollView
         style={styles.customizationSection}
         contentContainerStyle={{ paddingBottom: 70 }}
+        showsVerticalScrollIndicator={false}
       >
         <Text semiBold style={styles.customizationTitle}>
-          Customize your Latte
+          Customize your {productData.name}
         </Text>
         {/* Customization Options */}
         {loading ? (

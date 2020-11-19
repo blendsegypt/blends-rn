@@ -145,19 +145,13 @@ export default function LoginSheet({
             Continue
           </Button>
         )}
-      </ScrollView>
-      <View
-        style={{
-          position: "absolute",
-          width: "100%",
-          bottom: Platform.OS === "android" ? 80 : 350,
-          paddingHorizontal: 25,
-        }}
-      >
-        <Button style={{ backgroundColor: "#3077F2" }} icon="facebook">
+        <Button
+          style={{ backgroundColor: "#3077F2", marginTop: 10 }}
+          icon="facebook"
+        >
           Sign in using Facebook
         </Button>
-      </View>
+      </ScrollView>
     </>
   );
 }
