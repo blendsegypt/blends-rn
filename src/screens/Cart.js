@@ -31,7 +31,7 @@ function Cart({
   cartItems,
   cartTotal,
   cartCount,
-  phoneNumberConfirmed,
+  loggedIn,
   addressConfirmed,
 }) {
   // Show / hide phone confirmation bottom sheet
@@ -40,20 +40,20 @@ function Cart({
   const closeSheet = () => {
     setShowUserActionsSheet(false);
     Keyboard.dismiss();
-    if (phoneNumberConfirmed && !addressConfirmed) {
+    if (loggedIn && !addressConfirmed) {
       // If phone number is confirmed and there's no address, navigate to Address Details
       navigation.navigate("AddressDetails");
-    } else if (phoneNumberConfirmed && addressConfirmed) {
+    } else if (loggedIn && addressConfirmed) {
       // If both phone number and address are confirmed, navigate to Review Order screen
       navigation.navigate("ReviewOrder", { threeStepsCheckout: false });
     }
   };
 
   const checkout = () => {
-    if (phoneNumberConfirmed && !addressConfirmed) {
+    if (loggedIn && !addressConfirmed) {
       // If phone number is confirmed and there's no address, navigate to Address Details
       navigation.navigate("AddressDetails");
-    } else if (phoneNumberConfirmed && addressConfirmed) {
+    } else if (loggedIn && addressConfirmed) {
       // If both phone number and address are confirmed, navigate to Review Order screen
       navigation.navigate("ReviewOrder", { threeStepsCheckout: false });
     } else {
@@ -133,7 +133,11 @@ function Cart({
               onPress={() => {
                 navigation.goBack();
               }}
-              style={{ flex: 0.5, paddingTop: 25 }}
+              style={{
+                flex: 0.5,
+                paddingVertical: 25,
+                paddingLeft: 10,
+              }}
             >
               <FontAwesome name="chevron-left" size={22} color="#11203E" />
             </TouchableOpacity>
@@ -261,12 +265,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   const { cartItems, cartTotal, cartCount } = getCartItems(state);
-  const { phoneNumberConfirmed, addressConfirmed } = state.userReducer;
+  const { loggedIn, addressConfirmed } = state.userReducer;
   return {
     cartItems,
     cartTotal,
     cartCount,
-    phoneNumberConfirmed,
+    loggedIn,
     addressConfirmed,
   };
 };

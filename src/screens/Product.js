@@ -217,7 +217,7 @@ function Product({ navigation, route, addToCart }) {
                 borderRadius: 20,
               },
               {
-                key: "desc",
+                key: "desc2",
                 width: "25%",
                 height: 15,
                 borderRadius: 20,

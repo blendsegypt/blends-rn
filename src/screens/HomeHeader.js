@@ -2,14 +2,14 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 //UI Components
-import Text from "../../components/ui/Text";
+import Text from "../components/ui/Text";
 //Icons Font
 import { FontAwesome } from "@expo/vector-icons";
 //Redux
 import { connect } from "react-redux";
-import { removeLocation } from "../../redux/actions/user.action";
+import { removeLocation } from "../redux/actions/user.action";
 //Components
-import CartIcon from "../../components/CartIcon";
+import CartIcon from "../components/CartIcon";
 
 function HomeHeader({
   user,

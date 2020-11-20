@@ -15,7 +15,7 @@ import Banners from "../components/Banners";
 import RecentOrders from "../components/RecentOrders";
 import Products from "../components/Products";
 //Headers
-import HomeHeader from "./headers/HomeHeader";
+import HomeHeader from "./HomeHeader";
 //Redux
 import { connect } from "react-redux";
 
@@ -142,9 +142,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   if (state.userReducer.loggedIn) {
-    const firstName = state.userReducer.fullName.split(" ")[0];
     return {
-      firstName,
+      firstName: state.userReducer.firstName,
       loggedIn: true,
     };
   }
