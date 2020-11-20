@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 //Redux
 import { store, persistor } from "./src/redux/store";
 import { Provider } from "react-redux";
@@ -30,7 +30,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 //Tab Bar settings
-import tabBarSettings from "./src/tabBarSettings";
+import tabBarSettings from "./src/utils/tabBarSettings";
 //Bottom Sheets
 import ChooseAddress from "./src/screens/bottomSheets/ChooseAddress";
 import BottomSheetOverlay from "./src/components/BottomSheetOverlay";
