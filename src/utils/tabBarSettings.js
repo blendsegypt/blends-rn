@@ -6,8 +6,8 @@
 import React from "react";
 import { Image } from "react-native";
 //Assets
-import BlendsIcon from "../assets/BlendsIcon.png";
-import BlendsIconGray from "../assets/BlendsIconGray.png";
+import BlendsIcon from "../../assets/BlendsIcon.png";
+import BlendsIconGray from "../../assets/BlendsIconGray.png";
 //Icons Font
 import { FontAwesome } from "@expo/vector-icons";
 
