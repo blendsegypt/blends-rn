@@ -8,7 +8,7 @@ const persistConfig = {
   key: "root",
   storage: AsyncStorage,
   whitelist: [],
-  blacklist: ["userReducer", "itemsReducer", "cartReducer"],
+  blacklist: ["userReducer", "cartReducer"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

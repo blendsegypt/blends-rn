@@ -13,10 +13,14 @@ export const removeLocation = () => ({
   type: "REMOVE_LOCATION",
 });
 
-export const confirmUser = (fullName, phoneNumber) => ({
-  type: "CONFIRM_USER",
-  fullName,
-  phoneNumber,
+export const setUser = (user) => ({
+  type: "SET_USER",
+  user,
+});
+
+export const setAddresses = (addresses) => ({
+  type: "SET_ADDRESSES",
+  addresses,
 });
 
 export const addAddress = (address) => ({

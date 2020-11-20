@@ -1,12 +1,21 @@
 /*
  *
  *  User Reducer
- *  @note => savedAddresses[0] is the active address
+ *  @note => addresses[0] is the active address
  *
  */
 
 export default function userReducer(
-  state = { phoneNumberConfirmed: false, savedAddresses: [] },
+  // Initial User Reducer state
+  state = {
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    wallet: null,
+    referralCode: "",
+    loggedIn: false,
+    addresses: [],
+  },
   action
 ) {
   let newState;
@@ -20,49 +29,54 @@ export default function userReducer(
       newState = { ...state };
       delete newState.location;
       return newState;
-    case "CONFIRM_USER":
+    case "SET_USER":
       newState = { ...state };
-      newState.phoneNumber = action.phoneNumber;
-      newState.fullName = action.fullName;
-      newState.phoneNumberConfirmed = true;
+      newState.loggedIn = true;
+      newState.firstName = action.user.first_name;
+      newState.lastName = action.user.last_name;
+      newState.phoneNumber = action.user.phone_number;
+      newState.referralCode = action.user.referral_code;
+      newState.wallet = action.user.wallet;
+      return newState;
+    case "SET_ADDRESSES":
+      newState = { ...state };
+      newState.addresses = action.addresses;
       return newState;
     case "ADD_ADDRESS":
       newState = { ...state };
       newState.addressConfirmed = true;
-      newState.savedAddresses.unshift(action.address);
+      newState.addresses.unshift(action.address);
       return newState;
     case "REMOVE_ADDRESS":
       newState = { ...state };
       // Find target address and filter it out of addresses array
-      newState.savedAddresses = newState.savedAddresses.filter(
+      newState.addresses = newState.addresses.filter(
         (address) => address.addressNickname != action.addressNickname
       );
-      if (newState.savedAddresses.length == 0)
-        newState.addressConfirmed = false;
+      if (newState.addresses.length == 0) newState.addressConfirmed = false;
       return newState;
     case "CHANGE_ADDRESS":
       newState = { ...state };
       // Find target address and replace it with new address
-      newState.savedAddresses = newState.savedAddresses.map((address) => {
+      newState.addresses = newState.addresses.map((address) => {
         if (address.addressNickname == action.addressNickname)
           return action.newAddress;
         return address;
       });
-      if (newState.savedAddresses.length == 0)
-        newState.addressConfirmed = false;
+      if (newState.addresses.length == 0) newState.addressConfirmed = false;
       return newState;
     case "SWITCH_ACTIVE_ADDRESS":
       newState = { ...state };
       // Find target address and save it
-      const newActive = newState.savedAddresses.find(
+      const newActive = newState.addresses.find(
         (address) => address.addressNickname == action.addressNickname
       );
       // Find target address and filter it out of addresses array
-      newState.savedAddresses = newState.savedAddresses.filter(
+      newState.addresses = newState.addresses.filter(
         (address) => address.addressNickname != action.addressNickname
       );
       // Add the new active address in the beginning of the array
-      newState.savedAddresses.unshift(newActive);
+      newState.addresses.unshift(newActive);
       return newState;
     case "UPDATE_PERSONAL_INFO":
       newState = { ...state, ...action.personalInfo };
