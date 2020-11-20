@@ -4,10 +4,6 @@ import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import Text from "./ui/Text";
 //Components
 import ProductItem from "../components/ProductItem";
-//Images (for testing purposes)
-import Espresso from "../../assets/Espresso.png";
-import Latte from "../../assets/Latte.png";
-import PotatoChips from "../../assets/PotatoChips.png";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content";
 import API from "../utils/axios";
@@ -110,7 +106,7 @@ function Products({ navigation, supportedArea }) {
         <FlatList
           style={{ flex: 1 }}
           data={products}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => String(item.id)}
           numColumns="2"
           renderItem={({ item }) => {
             return (
