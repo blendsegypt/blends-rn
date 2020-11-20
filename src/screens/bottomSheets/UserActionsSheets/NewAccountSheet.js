@@ -20,41 +20,46 @@ import { FontAwesome } from "@expo/vector-icons";
 import validateField from "../../../utils/validateField";
 //Close Sheet component
 import CloseSheet from "./utils/CloseSheet";
+// Redux
+import { setUser } from "../../../redux/actions/user.action";
+import { connect } from "react-redux";
+// Toast message
+import Toast from "react-native-toast-message";
+// Axios
+import API from "../../../utils/axios";
 
-export default function NewAccountSheet({
-  setSheet,
-  userObject,
-  setUserObject,
-  closeSheet,
-}) {
+function NewAccountSheet({ setSheet, userObject, closeSheet, setUser }) {
   const [buttonActive, setButtonActive] = useState(false);
-  const [fullName, setFullName] = useState({
-    text: "Full Name",
-    value: userObject.fullName,
-    validated: Boolean(userObject.fullName),
+  const [firstName, setFirstName] = useState({
+    text: "First Name",
+    value: "",
+    validated: false,
     notEmpty: true,
     regex: /^[a-zA-Z\s]*$/,
-    regexErrorMessage: "Full Name can only contain characters and spaces",
+    regexErrorMessage: "First name can only contain letters.",
     errors: [],
   });
-  const [phoneNumber, setPhoneNumber] = useState({
-    text: "Phone Number",
-    value: userObject.phoneNumber,
-    minLength: 11,
-    validated: Boolean(userObject.phoneNumber),
+  const [lastName, setLastName] = useState({
+    text: "Last Name",
+    value: "",
+    validated: "",
+    notEmpty: true,
+    regex: /^[a-zA-Z\s]*$/,
+    regexErrorMessage: "Last Name can only contain letters.",
     errors: [],
   });
   const [password, setPassword] = useState({
     text: "Password",
     value: "",
-    notEmpty: true,
     validated: false,
+    regex: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/,
+    regexErrorMessage:
+      "Password must be 8 characters or longer, contains atleast a letter and a number.",
     errors: [],
   });
   const [passwordConfirmation, setPasswordConfirmation] = useState({
     text: "Password Confirmation",
     value: "",
-    notEmpty: true,
     equality: true,
     equals: "",
     validated: false,
@@ -72,14 +77,14 @@ export default function NewAccountSheet({
   // Check if there's no errors, activate the continue button
   useEffect(() => {
     const errorsLength = [
-      ...fullName.errors,
-      ...phoneNumber.errors,
+      ...firstName.errors,
+      ...lastName.errors,
       ...password.errors,
       ...passwordConfirmation.errors,
     ].length;
     const fieldsValidated =
-      fullName.validated &&
-      phoneNumber.validated &&
+      firstName.validated &&
+      lastName.validated &&
       password.validated &&
       passwordConfirmation.validated;
 
@@ -89,11 +94,35 @@ export default function NewAccountSheet({
       setButtonActive(false);
     }
   }, [
-    fullName.errors,
-    phoneNumber.errors,
+    firstName.errors,
+    lastName.errors,
     password.errors,
     passwordConfirmation.errors,
   ]);
+
+  const handleSubmit = async () => {
+    try {
+      const user = {
+        first_name: firstName.value,
+        last_name: lastName.value,
+        phone_number: userObject.phoneNumber,
+        password: password.value,
+        platform: "ios",
+      };
+      const response = await API.post("app/register/finish", user);
+      const createdUser = response.data.data;
+      setUser(createdUser);
+      closeSheet();
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: "error",
+        topOffset: 50,
+        text1: "Error Occured",
+        text2: "Something wrong happened on our side! Please try again.",
+      });
+    }
+  };
 
   return (
     <>
@@ -125,16 +154,15 @@ export default function NewAccountSheet({
           />
         </View>
         <Text bold style={styles.title}>
-          New Account
+          Almost there!
         </Text>
         <Text regular style={styles.message}>
-          We'll send you an OTP (One Time Password) to confirm your phone
-          number.
+          Complete the following fields and your account will be ready to go.
         </Text>
         {/* Error Messages */}
         {[
-          ...fullName.errors,
-          ...phoneNumber.errors,
+          ...firstName.errors,
+          ...lastName.errors,
           ...password.errors,
           ...passwordConfirmation.errors,
         ].map((error, index) => {
@@ -146,31 +174,43 @@ export default function NewAccountSheet({
             </View>
           );
         })}
-        <TextInput
-          style={{ marginVertical: 7 }}
-          onChangeText={(text) => {
-            const newFullName = { ...fullName, value: text };
-            setFullName({ ...fullName, value: text });
-            validate(newFullName, setFullName);
-          }}
-          onBlur={() => validate(fullName, setFullName)}
-          defaultValue={fullName.value}
-        >
-          Full Name
-        </TextInput>
-        <TextInput
-          style={{ marginVertical: 7 }}
-          onChangeText={(text) => {
-            const newPhoneNumber = { ...phoneNumber, value: text };
-            setPhoneNumber(newPhoneNumber);
-            validate(newPhoneNumber, setPhoneNumber);
-          }}
-          keyboardType="numeric"
-          defaultValue={phoneNumber.value}
-          maxLength={11}
-        >
-          Phone Number
-        </TextInput>
+        <View style={{ display: "flex", flexDirection: "row", marginTop: 7 }}>
+          <TextInput
+            style={{ marginVertical: 7, flex: 0.5, marginRight: 5 }}
+            onChangeText={(text) => {
+              const newFirstName = { ...firstName, value: text };
+              setFirstName({ ...firstName, value: text });
+              validate(newFirstName, setFirstName);
+            }}
+            onBlur={() => validate(firstName, setFirstName)}
+            defaultValue={firstName.value}
+          >
+            First Name
+          </TextInput>
+          <TextInput
+            style={{ marginVertical: 7, flex: 0.5, marginLeft: 5 }}
+            onChangeText={(text) => {
+              const newLastName = { ...lastName, value: text };
+              setLastName({ ...lastName, value: text });
+              validate(newLastName, setLastName);
+            }}
+            onBlur={() => validate(lastName, setLastName)}
+            defaultValue={lastName.value}
+          >
+            Last Name
+          </TextInput>
+        </View>
+        <View>
+          <TextInput
+            style={{ marginVertical: 7 }}
+            keyboardType="numeric"
+            editable={false}
+            defaultValue={userObject.phoneNumber}
+            maxLength={11}
+          >
+            Phone Number
+          </TextInput>
+        </View>
         <TextInput
           secureTextEntry
           style={{ marginVertical: 7 }}
@@ -201,11 +241,7 @@ export default function NewAccountSheet({
           <Button
             style={{ marginTop: 10 }}
             onPress={() => {
-              setUserObject({
-                fullName: fullName.value,
-                phoneNumber: phoneNumber.value,
-              });
-              setSheet("OTPSheet");
+              handleSubmit();
             }}
           >
             Continue
@@ -242,7 +278,13 @@ const styles = StyleSheet.create({
   errorMessage: {
     backgroundColor: "#F3E1E1",
     padding: 15,
-    marginVertical: 10,
+    marginVertical: 5,
     borderRadius: 20,
   },
 });
+
+const mapDispatchToProps = (dispatch) => ({
+  setUser: (user) => dispatch(setUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(NewAccountSheet);

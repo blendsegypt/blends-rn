@@ -15,7 +15,7 @@ export default function StartSheet({ setSheet, closeSheet }) {
       {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
       <ScrollView
         style={styles.bottomSheetContainer}
-        contentContainerStyle={{ paddingBottom: 500 }}
+        contentContainerStyle={{ paddingBottom: 300 }}
       >
         <View
           style={{
@@ -47,7 +47,7 @@ export default function StartSheet({ setSheet, closeSheet }) {
         <Button
           style={{ marginTop: 20 }}
           onPress={() => {
-            setSheet("NewAccountSheet");
+            setSheet("PhoneNumberSheet");
           }}
         >
           Continue
@@ -55,7 +55,7 @@ export default function StartSheet({ setSheet, closeSheet }) {
         <Button
           style={{ marginTop: 10, backgroundColor: "#3077F2" }}
           icon="facebook"
-          onPress={() => setSheet("NewAccountFBSheet")}
+          onPress={() => setSheet("PhoneNumberSheet")}
         >
           Signup using Facebook
         </Button>

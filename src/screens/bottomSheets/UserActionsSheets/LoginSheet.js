@@ -18,6 +18,8 @@ import BlendsLogo from "../../../../assets/BlendsLogo.png";
 //Field Validation
 import validateField from "../../../utils/validateField";
 import CloseSheet from "./utils/CloseSheet";
+import API from "../../../utils/axios";
+import Toast from "react-native-toast-message";
 
 // Login Sheet
 export default function LoginSheet({
@@ -62,10 +64,34 @@ export default function LoginSheet({
     }
   }, [phoneNumber.errors, password.errors]);
 
-  // Login handler ---------------------------------- To be replaced by real login
-  const loginHandler = () => {
-    confirmUser("Ahmed Login", phoneNumber.value);
-    closeSheet();
+  // Login handler
+  const loginHandler = async () => {
+    try {
+      const response = await API.post("app/auth/login", {
+        phone_number: phoneNumber.value,
+        password: password.value,
+      });
+      //console.log(response);
+    } catch (error) {
+      console.log(error.config._retry);
+      if (error.response) {
+        if (error.response.data.error === "INVALID_CREDENTIALS") {
+          Toast.show({
+            type: "error",
+            topOffset: 50,
+            text1: "Invalid Phone number / Password",
+            text2: "Please try again",
+          });
+          return;
+        }
+      }
+      Toast.show({
+        type: "error",
+        topOffset: 50,
+        text1: "Error Occured",
+        text2: "Something wrong happened on our side! Please try again.",
+      });
+    }
   };
 
   return (
@@ -73,7 +99,7 @@ export default function LoginSheet({
       {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
       <ScrollView
         style={[styles.bottomSheetContainer]}
-        contentContainerStyle={{ paddingBottom: 500 }}
+        contentContainerStyle={{ paddingBottom: 300 }}
         keyboardShouldPersistTaps="always"
       >
         <View

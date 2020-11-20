@@ -15,13 +15,14 @@ import Link from "../../../components/ui/Link";
 //Assets
 import BlendsLogo from "../../../../assets/BlendsLogo.png";
 //Close Sheet component (Android only)
+import Toast from "react-native-toast-message";
 import CloseSheet from "./utils/CloseSheet";
+import API from "../../../utils/axios";
 
 export default function OTPSheet({
   setSheet,
   facebook,
   closeSheet,
-  confirmUser,
   fullName,
   phoneNumber,
 }) {
@@ -36,6 +37,9 @@ export default function OTPSheet({
       setCanResend(true);
     }, 10000);
     setResendTimeout(timeout);
+    return () => {
+      clearTimeout(resendTimeout);
+    };
   }, []);
 
   // Make button active when OTP is fully entered
@@ -50,6 +54,23 @@ export default function OTPSheet({
       clearTimeout(resendTimeout);
     };
   }, [OTP]);
+
+  const handleSubmit = async () => {
+    try {
+      await API.post("app/register/verify/otp", {
+        phone_number: phoneNumber,
+        OTP: OTP,
+      });
+      setSheet("NewAccountSheet");
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        topOffset: 50,
+        text1: "Wrong OTP!",
+        text2: "It seems like you have a typo there!",
+      });
+    }
+  };
 
   return (
     <>
@@ -72,12 +93,7 @@ export default function OTPSheet({
           />
           <Link
             onPress={() => {
-              //clearTimeout(resendTimeout);
-              if (facebook) {
-                setSheet("NewAccountFBSheet");
-              } else {
-                setSheet("NewAccountSheet");
-              }
+              setSheet("PhoneNumberSheet");
             }}
           >
             Enter different phone number
@@ -132,8 +148,7 @@ export default function OTPSheet({
           <Button
             style={{ marginTop: 20 }}
             onPress={() => {
-              confirmUser(fullName, phoneNumber);
-              closeSheet();
+              handleSubmit();
             }}
           >
             Confirm

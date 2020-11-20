@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 //UI Components
 import Text from "../../../components/ui/Text";
@@ -19,9 +20,16 @@ import { FontAwesome } from "@expo/vector-icons";
 //Field Validation
 import validateField from "../../../utils/validateField";
 //Close Sheet Component
+import Toast from "react-native-toast-message";
 import CloseSheet from "./utils/CloseSheet";
+import API from "../../../utils/axios";
 
-export default function NewAccountSheet({ setSheet, setFacebook, closeSheet }) {
+export default function PhoneNumberSheet({
+  setSheet,
+  setFacebook,
+  closeSheet,
+  setUserObject,
+}) {
   const [buttonActive, setButtonActive] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState({
     text: "Phone Number",
@@ -51,13 +59,44 @@ export default function NewAccountSheet({ setSheet, setFacebook, closeSheet }) {
     }
   }, [phoneNumber.errors]);
 
+  const handleSubmit = async () => {
+    try {
+      await API.post("app/register/verify/phone", {
+        phone_number: phoneNumber.value,
+      });
+      setUserObject({ phoneNumber: phoneNumber.value });
+      setSheet("OTPSheet");
+    } catch (error) {
+      console.log(error.response);
+      if (
+        error.response ||
+        error.response.data.errors[0] === "PHONE_NUMBER_EXISTS"
+      ) {
+        Toast.show({
+          type: "error",
+          topOffset: 60,
+          text1: "Phone Number already exists!",
+          text2: "Please choose a different phone number to continue",
+        });
+        return;
+      }
+      Toast.show({
+        type: "error",
+        topOffset: 50,
+        text1: "Error Occured!",
+        text2: "Sorry about that! could you please try again?",
+      });
+    }
+  };
+
   return (
     <>
       {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
-      <ScrollView
+      <KeyboardAvoidingView
         style={styles.bottomSheetContainer}
         extraScrollHeight={10}
         keyboardShouldPersistTaps="always"
+        behavior="height"
       >
         <View
           style={{
@@ -112,8 +151,7 @@ export default function NewAccountSheet({ setSheet, setFacebook, closeSheet }) {
           <Button
             style={{ marginTop: 10 }}
             onPress={() => {
-              setFacebook(true);
-              setSheet("OTPSheet");
+              handleSubmit();
             }}
           >
             Continue
@@ -123,7 +161,7 @@ export default function NewAccountSheet({ setSheet, setFacebook, closeSheet }) {
             Continue
           </Button>
         )}
-      </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 }
