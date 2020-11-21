@@ -65,7 +65,7 @@ function Products({ navigation, supportedArea }) {
       {categoriesLoaded ? (
         <FlatList
           data={categories}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => String(item.id)}
           renderItem={renderCategory}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
