@@ -19,8 +19,8 @@ function HomeHeader({
   chooseAddressShown,
 }) {
   let location;
-  if (user.addressConfirmed) {
-    location = user.savedAddresses[0].addressNickname;
+  if (user.addresses.length > 0) {
+    location = user.addresses[0].nickname;
   } else if (user.location) {
     if (user.location.supported) {
       location = user.location.area.area_name;
