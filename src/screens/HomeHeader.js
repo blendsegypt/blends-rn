@@ -7,13 +7,11 @@ import Text from "../components/ui/Text";
 import { FontAwesome } from "@expo/vector-icons";
 //Redux
 import { connect } from "react-redux";
-import { removeLocation } from "../redux/actions/user.action";
 //Components
 import CartIcon from "../components/CartIcon";
 
 function HomeHeader({
   user,
-  removeLocation,
   navigation,
   setChooseAddressShown,
   chooseAddressShown,
@@ -122,10 +120,5 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   user: state.userReducer,
 });
-const mapDispatchToProps = (dispatch) => ({
-  removeLocation: () => {
-    dispatch(removeLocation());
-  },
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeHeader);
+export default connect(mapStateToProps, null)(HomeHeader);
