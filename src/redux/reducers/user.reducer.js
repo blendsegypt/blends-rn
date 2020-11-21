@@ -32,7 +32,8 @@ export default function userReducer(
     case "SET_USER":
       newState = { ...state };
       newState.loggedIn = true;
-      newState.firstName = action.user.first_name;
+      (newState.id = action.user.id),
+        (newState.firstName = action.user.first_name);
       newState.lastName = action.user.last_name;
       newState.phoneNumber = action.user.phone_number;
       newState.referralCode = action.user.referral_code;
