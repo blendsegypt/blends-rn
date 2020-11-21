@@ -20,14 +20,12 @@ import validateField from "../../../utils/validateField";
 import CloseSheet from "./utils/CloseSheet";
 import API from "../../../utils/axios";
 import Toast from "react-native-toast-message";
+//Redux
+import { connect } from "react-redux";
+import { login } from "../../../redux/actions/auth.action";
 
 // Login Sheet
-export default function LoginSheet({
-  setSheet,
-  closeSheet,
-  confirmUser,
-  loginMode,
-}) {
+function LoginSheet({ setSheet, closeSheet, login, loginMode }) {
   const [buttonActive, setButtonActive] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState({
     text: "Phone Number",
@@ -71,9 +69,17 @@ export default function LoginSheet({
         phone_number: phoneNumber.value,
         password: password.value,
       });
-      //console.log(response);
+      // Extract user object and addresses array
+      const user = Object.assign({}, response.data.data);
+      const addresses = user.addresses;
+      delete user.addresses;
+      // Extract access/refresh tokens
+      const accessToken = response.headers["access-token"];
+      const refreshToken = response.headers["refresh-token"];
+      login(user, accessToken, refreshToken, addresses);
+      closeSheet();
     } catch (error) {
-      console.log(error.config._retry);
+      console.log(error);
       if (error.response) {
         if (error.response.data.error === "INVALID_CREDENTIALS") {
           Toast.show({
@@ -208,3 +214,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
 });
+
+const mapDispatchToProps = (dispatch) => ({
+  login: (user, accessToken, refreshToken, addresses) => {
+    dispatch(login(user, accessToken, refreshToken, addresses));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(LoginSheet);
