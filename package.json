@@ -20,6 +20,7 @@
     "@react-navigation/native": "^5.7.5",
     "@react-navigation/stack": "^5.9.2",
     "axios": "^0.20.0",
+    "axios-auth-refresh": "^3.0.0",
     "expo": "~38.0.8",
     "expo-font": "~8.2.1",
     "expo-splash-screen": "^0.5.0",
