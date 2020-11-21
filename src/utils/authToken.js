@@ -8,18 +8,36 @@
 
 import Keychain from "react-native-keychain";
 
-// key can be either "refreshToken" / "accessToken"
-export const setToken = (key, value) => {
-  Keychain.setGenericPassword(key, value, { service: key });
+export const setAccessToken = (value) => {
+  Keychain.setGenericPassword("access-token", value, {
+    service: "access-token",
+  });
 };
 
-export const getToken = async (key) => {
-  const value = await Keychain.getGenericPassword(key);
+export const setRefreshToken = (value) => {
+  Keychain.setGenericPassword("refresh-token", value, {
+    service: "refresh-token",
+  });
+};
+
+export const getAccessToken = async () => {
+  const value = await Keychain.getGenericPassword("access-token");
   if (value) {
     return value.password;
   }
 };
 
-export const removeToken = (key) => {
-  Keychain.resetGenericPassword({ service: key });
+export const getRefreshToken = async () => {
+  const value = await Keychain.getGenericPassword("refresh-token");
+  if (value) {
+    return value.password;
+  }
+};
+
+export const removeAccessToken = () => {
+  Keychain.resetGenericPassword({ service: "access-token" });
+};
+
+export const removeRefreshToken = () => {
+  Keychain.resetGenericPassword({ service: "refresh-token" });
 };

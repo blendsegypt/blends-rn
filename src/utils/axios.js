@@ -4,7 +4,12 @@
  *
  */
 
-import { getToken, setToken } from "../utils/authToken";
+import {
+  getAccessToken,
+  setAccessToken,
+  getRefreshToken,
+  setRefreshToken,
+} from "../utils/authToken";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 
 import Axios from "axios";
@@ -19,16 +24,16 @@ const axiosRefreshTokenInstance = Axios.create({
 
 const refreshToken = async () => {
   try {
-    const refreshToken = await getToken("refresh-token");
-    const accessToken = await getToken("access-token");
+    const refreshToken = await getRefreshToken();
+    const accessToken = await getAccessToken();
     const res = await axiosRefreshTokenInstance.post("app/auth/refresh", {
       accessToken,
       refreshToken,
     });
     const newAccessToken = res.headers["access-token"];
     const newRefreshToken = res.headers["refresh-token"];
-    setToken("access-token", newAccessToken);
-    setToken("refresh-token", newRefreshToken);
+    setAccessToken(newAccessToken);
+    setRefreshToken(newRefreshToken);
 
     return newAccessToken;
   } catch (error) {
@@ -57,7 +62,7 @@ const AuthInterceptor = () => {
       // Access token request patcher
       interceptor = axios.interceptors.request.use(
         async (config) => {
-          const accessToken = await getToken("access-token");
+          const accessToken = await getAccessToken();
           config.headers = {
             Authorization: `Bearer ${accessToken}`,
             Accept: "application/json",
