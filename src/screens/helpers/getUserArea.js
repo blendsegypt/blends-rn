@@ -26,7 +26,7 @@ const loadAreas = async () => {
 };
 
 // Memoize Areas array to avoid unneceassry API requests
-const areasMemoized = memoize(loadAreas, { promise: true });
+const areasMemoized = memoize(loadAreas, {promise: true});
 
 export default async function getUserArea(coordinates) {
   const areas = await areasMemoized();

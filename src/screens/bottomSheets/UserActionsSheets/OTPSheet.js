@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import {
   View,
   ScrollView,
@@ -77,25 +77,22 @@ export default function OTPSheet({
       {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
       <ScrollView
         style={styles.bottomSheetContainer}
-        keyboardShouldPersistTaps="always"
-      >
+        keyboardShouldPersistTaps="always">
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-          }}
-        >
+          }}>
           <Image
             source={BlendsLogo}
-            style={{ width: 80, height: 62 }}
+            style={{width: 80, height: 62}}
             resizeMode="contain"
           />
           <Link
             onPress={() => {
               setSheet("PhoneNumberSheet");
-            }}
-          >
+            }}>
             Enter different phone number
           </Link>
         </View>
@@ -106,15 +103,14 @@ export default function OTPSheet({
           We've sent an OTP to <Text bold>0112323123</Text> If you didn't
           receive anything on your phone number, please click on Resend
         </Text>
-        <View style={{ flexDirection: "row", alignContent: "space-between" }}>
+        <View style={{flexDirection: "row", alignContent: "space-between"}}>
           <TextInput
             keyboardType="numeric"
-            style={{ flex: 0.5 }}
+            style={{flex: 0.5}}
             maxLength={4}
             onChangeText={(text) => {
               setOTP(text);
-            }}
-          >
+            }}>
             OTP (XXXX)
           </TextInput>
           <View style={styles.resendButton}>
@@ -129,16 +125,14 @@ export default function OTPSheet({
                 }}
                 onPress={() => {
                   startResendCounter();
-                }}
-              >
+                }}>
                 Resend
               </Button>
             ) : (
               <Button
                 disabled
                 icon="envelope"
-                style={{ paddingVertical: 23, marginTop: 7, paddingRight: 15 }}
-              >
+                style={{paddingVertical: 23, marginTop: 7, paddingRight: 15}}>
                 Resend
               </Button>
             )}
@@ -146,15 +140,14 @@ export default function OTPSheet({
         </View>
         {buttonActive ? (
           <Button
-            style={{ marginTop: 20 }}
+            style={{marginTop: 20}}
             onPress={() => {
               handleSubmit();
-            }}
-          >
+            }}>
             Confirm
           </Button>
         ) : (
-          <Button style={{ marginTop: 20 }} disabled>
+          <Button style={{marginTop: 20}} disabled>
             Confirm
           </Button>
         )}

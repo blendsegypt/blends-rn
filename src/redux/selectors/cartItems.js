@@ -1,4 +1,4 @@
-import { createSelector } from "reselect";
+import {createSelector} from "reselect";
 
 // Extract cart items from Redux store
 const cartItems = (state) => state.cartReducer;

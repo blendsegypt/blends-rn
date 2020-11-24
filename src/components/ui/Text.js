@@ -11,7 +11,7 @@
  *
  */
 import React from "react";
-import { Text } from "react-native";
+import {Text} from "react-native";
 
 export default function (props) {
   // Determine font weight
@@ -21,7 +21,7 @@ export default function (props) {
   if (props.bold) fontFamily = "FiraSans-Bold";
 
   return (
-    <Text style={[props.style, { fontFamily: fontFamily }]}>
+    <Text style={[props.style, {fontFamily: fontFamily}]}>
       {props.children}
     </Text>
   );

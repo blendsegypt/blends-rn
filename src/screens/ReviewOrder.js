@@ -1,30 +1,30 @@
-import React, {useState} from 'react';
+import React, {useState} from "react";
 import {
   View,
   ScrollView,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-} from 'react-native';
+} from "react-native";
 //UI Components
-import Text from '../components/ui/Text';
-import Button from '../components/ui/Button';
-import Link from '../components/ui/Link';
-import TextInput from '../components/ui/TextInput';
+import Text from "../components/ui/Text";
+import Button from "../components/ui/Button";
+import Link from "../components/ui/Link";
+import TextInput from "../components/ui/TextInput";
 //Components
-import CheckoutProgress from '../components/CheckoutProgress';
-import OrderReceipt from '../components/OrderReceipt';
+import CheckoutProgress from "../components/CheckoutProgress";
+import OrderReceipt from "../components/OrderReceipt";
 //Bottom Sheets
-import ChooseAddress from '../screens/bottomSheets/ChooseAddress';
+import ChooseAddress from "../screens/bottomSheets/ChooseAddress";
 //Icons Font
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faMapMarkerAlt, faChevronLeft} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faMapMarkerAlt, faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 //import {FontAwesome5} from '@expo/vector-icons';
 //Redux
-import {connect} from 'react-redux';
-import {getCartItems} from '../redux/selectors/cartItems';
+import {connect} from "react-redux";
+import {getCartItems} from "../redux/selectors/cartItems";
 //Keyboard Aware ScrollView
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 function ReviewOrder({
   route,
@@ -52,7 +52,7 @@ function ReviewOrder({
           <View style={styles.header}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Cart');
+                navigation.navigate("Cart");
               }}
               style={{flex: 0.5, paddingTop: 25}}>
               <FontAwesomeIcon icon={faChevronLeft} size={22} color="#11203E" />
@@ -67,15 +67,15 @@ function ReviewOrder({
           <CheckoutProgress
             steps={[
               {
-                label: 'Cart',
+                label: "Cart",
                 active: true,
               },
               {
-                label: 'Address Details',
+                label: "Address Details",
                 active: true,
               },
               {
-                label: 'Review',
+                label: "Review",
                 active: true,
               },
             ]}
@@ -84,11 +84,11 @@ function ReviewOrder({
           <CheckoutProgress
             steps={[
               {
-                label: 'Cart',
+                label: "Cart",
                 active: true,
               },
               {
-                label: 'Review',
+                label: "Review",
                 active: true,
               },
             ]}
@@ -103,7 +103,7 @@ function ReviewOrder({
             <View
               style={[
                 styles.deliveryOption,
-                {borderBottomWidth: 1, borderBottomColor: '#EFEFEF'},
+                {borderBottomWidth: 1, borderBottomColor: "#EFEFEF"},
               ]}>
               <FontAwesomeIcon
                 style={{flex: 0.13}}
@@ -111,10 +111,10 @@ function ReviewOrder({
                 size={27}
                 color="#11203E"
               />
-              <Text bold style={{flex: 0.5, fontSize: 15, color: '#11203E'}}>
+              <Text bold style={{flex: 0.5, fontSize: 15, color: "#11203E"}}>
                 {activeAddress.addressNickname}
               </Text>
-              <View style={{flex: 0.37, alignItems: 'flex-end'}}>
+              <View style={{flex: 0.37, alignItems: "flex-end"}}>
                 {savedAddresses.length > 1 ? (
                   <Link
                     onPress={() => {
@@ -134,10 +134,10 @@ function ReviewOrder({
                 size={23}
                 color="#11203E"
               /> */}
-              <Text bold style={{flex: 0.5, fontSize: 15, color: '#11203E'}}>
+              <Text bold style={{flex: 0.5, fontSize: 15, color: "#11203E"}}>
                 Cash on Delivery
               </Text>
-              <View style={{flex: 0.37, alignItems: 'flex-end'}}>
+              <View style={{flex: 0.37, alignItems: "flex-end"}}>
                 <Link disabled style={{flex: 0.04}}>
                   Change
                 </Link>
@@ -157,12 +157,12 @@ function ReviewOrder({
         <View
           style={{
             paddingHorizontal: 25,
-            backgroundColor: '#fff',
+            backgroundColor: "#fff",
             paddingVertical: 25,
           }}>
           <Button
             onPress={() => {
-              navigation.navigate('OrderConfirmed');
+              navigation.navigate("OrderConfirmed");
             }}>
             Confirm Order
           </Button>
@@ -181,37 +181,37 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 25,
     marginTop: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   screenTitle: {
     fontSize: 25,
     paddingTop: 20,
   },
   container: {
-    backgroundColor: '#fff',
-    shadowColor: '#000',
+    backgroundColor: "#fff",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.1,
     shadowRadius: 15.65,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 30,
     flex: 1,
   },
   containerTitle: {
-    color: '#C84D49',
+    color: "#C84D49",
     fontSize: 16,
     paddingHorizontal: 25,
   },
   deliveryDetails: {
-    backgroundColor: '#fff',
-    shadowColor: '#000',
+    backgroundColor: "#fff",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -224,16 +224,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
   },
   deliveryOption: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingVertical: 18,
     paddingHorizontal: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   overlay: {
-    backgroundColor: 'black',
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
+    backgroundColor: "black",
+    width: "100%",
+    height: "100%",
+    position: "absolute",
     opacity: 0.8,
     zIndex: 99,
   },

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from "react";
 import {
   View,
   ScrollView,
@@ -7,62 +7,62 @@ import {
   Dimensions,
   TouchableOpacity,
   Platform,
-} from 'react-native';
+} from "react-native";
 //UI Components
-import Text from '../../../components/ui/Text';
-import Button from '../../../components/ui/Button';
-import TextInput from '../../../components/ui/TextInput';
+import Text from "../../../components/ui/Text";
+import Button from "../../../components/ui/Button";
+import TextInput from "../../../components/ui/TextInput";
 //Assets
-import BlendsLogo from '../../../../assets/BlendsLogo.png';
+import BlendsLogo from "../../../../assets/BlendsLogo.png";
 //Icons Font
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChevronLeft} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 //Field Validation
-import validateField from '../../../utils/validateField';
+import validateField from "../../../utils/validateField";
 //Close Sheet component
-import CloseSheet from './utils/CloseSheet';
+import CloseSheet from "./utils/CloseSheet";
 // Redux
-import {login} from '../../../redux/actions/auth.action';
-import {connect} from 'react-redux';
+import {login} from "../../../redux/actions/auth.action";
+import {connect} from "react-redux";
 // Toast message
-import Toast from 'react-native-toast-message';
+import Toast from "react-native-toast-message";
 // Axios
-import API from '../../../utils/axios';
+import API from "../../../utils/axios";
 
 function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
   const [buttonActive, setButtonActive] = useState(false);
   const [firstName, setFirstName] = useState({
-    text: 'First Name',
-    value: '',
+    text: "First Name",
+    value: "",
     validated: false,
     notEmpty: true,
     regex: /^[a-zA-Z\s]*$/,
-    regexErrorMessage: 'First name can only contain letters.',
+    regexErrorMessage: "First name can only contain letters.",
     errors: [],
   });
   const [lastName, setLastName] = useState({
-    text: 'Last Name',
-    value: '',
-    validated: '',
+    text: "Last Name",
+    value: "",
+    validated: "",
     notEmpty: true,
     regex: /^[a-zA-Z\s]*$/,
-    regexErrorMessage: 'Last Name can only contain letters.',
+    regexErrorMessage: "Last Name can only contain letters.",
     errors: [],
   });
   const [password, setPassword] = useState({
-    text: 'Password',
-    value: '',
+    text: "Password",
+    value: "",
     validated: false,
     regex: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/,
     regexErrorMessage:
-      'Password must be 8 characters or longer, contains atleast a letter and a number.',
+      "Password must be 8 characters or longer, contains atleast a letter and a number.",
     errors: [],
   });
   const [passwordConfirmation, setPasswordConfirmation] = useState({
-    text: 'Password Confirmation',
-    value: '',
+    text: "Password Confirmation",
+    value: "",
     equality: true,
-    equals: '',
+    equals: "",
     validated: false,
     errors: [],
   });
@@ -108,43 +108,43 @@ function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
         last_name: lastName.value,
         phone_number: userObject.phoneNumber,
         password: password.value,
-        platform: 'ios',
+        platform: "ios",
       };
-      const response = await API.post('app/register/finish', user);
+      const response = await API.post("app/register/finish", user);
       // Extract user object
       const newUser = Object.assign({}, response.data.data);
       delete newUser.addresses;
       // Extract access/refresh tokens
-      const accessToken = response.headers['access-token'];
-      const refreshToken = response.headers['refresh-token'];
+      const accessToken = response.headers["access-token"];
+      const refreshToken = response.headers["refresh-token"];
       login(newUser, accessToken, refreshToken, []);
       closeSheet();
     } catch (error) {
       Toast.show({
-        type: 'error',
+        type: "error",
         topOffset: 50,
-        text1: 'Error Occured',
-        text2: 'Something wrong happened on our side! Please try again.',
+        text1: "Error Occured",
+        text2: "Something wrong happened on our side! Please try again.",
       });
     }
   };
 
   return (
     <>
-      {Platform.OS === 'android' && <CloseSheet closeSheet={closeSheet} />}
+      {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
       <ScrollView
         style={styles.bottomSheetContainer}
         contentContainerStyle={{paddingBottom: 350}}
         keyboardShouldPersistTaps="always">
         <View
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}>
           <TouchableOpacity
             onPress={() => {
-              setSheet('StartSheet');
+              setSheet("StartSheet");
             }}
             style={{padding: 15, paddingLeft: 0}}>
             <FontAwesomeIcon icon={faChevronLeft} size={22} color="#11203E" />
@@ -170,13 +170,13 @@ function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
         ].map((error, index) => {
           return (
             <View style={styles.errorMessage} key={index}>
-              <Text regular style={{color: '#b55b5b'}}>
+              <Text regular style={{color: "#b55b5b"}}>
                 {error.message}
               </Text>
             </View>
           );
         })}
-        <View style={{display: 'flex', flexDirection: 'row', marginTop: 7}}>
+        <View style={{display: "flex", flexDirection: "row", marginTop: 7}}>
           <TextInput
             style={{marginVertical: 7, flex: 0.5, marginRight: 5}}
             onChangeText={(text) => {
@@ -254,25 +254,25 @@ function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
 
 const styles = StyleSheet.create({
   bottomSheetContainer: {
-    height: Dimensions.get('window').height,
-    backgroundColor: '#fff',
+    height: Dimensions.get("window").height,
+    backgroundColor: "#fff",
     paddingTop: 50,
     paddingHorizontal: 25,
-    marginTop: Platform.OS === 'android' ? 25 : 0,
+    marginTop: Platform.OS === "android" ? 25 : 0,
   },
   title: {
     fontSize: 19,
     paddingTop: 25,
-    color: '#11203E',
+    color: "#11203E",
   },
   message: {
     paddingTop: 7,
     fontSize: 15,
-    color: '#8A8A8A',
+    color: "#8A8A8A",
     lineHeight: 23,
   },
   errorMessage: {
-    backgroundColor: '#F3E1E1',
+    backgroundColor: "#F3E1E1",
     padding: 15,
     marginVertical: 5,
     borderRadius: 20,

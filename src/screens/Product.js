@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from "react";
 import {
   SafeAreaView,
   View,
@@ -6,24 +6,24 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-} from 'react-native';
+} from "react-native";
 //UI Components
-import Text from '../components/ui/Text';
-import Button from '../components/ui/Button';
-import Dropdown from '../components/ui/Dropdown';
-import Toast from 'react-native-toast-message';
+import Text from "../components/ui/Text";
+import Button from "../components/ui/Button";
+import Dropdown from "../components/ui/Dropdown";
+import Toast from "react-native-toast-message";
 //Icons Font
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChevronLeft} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 //Components
-import CartIcon from '../components/CartIcon';
+import CartIcon from "../components/CartIcon";
 // Loading Skeleton
-import SkeletonContent from 'react-native-skeleton-content-nonexpo';
+import SkeletonContent from "react-native-skeleton-content-nonexpo";
 //Redux
-import {connect} from 'react-redux';
-import {addToCart} from '../redux/actions/cart.action';
+import {connect} from "react-redux";
+import {addToCart} from "../redux/actions/cart.action";
 //Axios
-import API from '../utils/axios';
+import API from "../utils/axios";
 
 function Product({navigation, route, addToCart}) {
   const {product_id} = route.params;
@@ -43,10 +43,10 @@ function Product({navigation, route, addToCart}) {
         setLoading(false);
       } catch (error) {
         Toast.show({
-          type: 'error',
+          type: "error",
           topOffset: 50,
-          text1: 'An Error Occured',
-          text2: 'Something wrong happened on our side! Please try again.',
+          text1: "An Error Occured",
+          text2: "Something wrong happened on our side! Please try again.",
         });
       }
     };
@@ -119,7 +119,7 @@ function Product({navigation, route, addToCart}) {
     };
     addToCart(cartItem);
     setTimeout(() => {
-      navigation.navigate('Home');
+      navigation.navigate("Home");
     }, 500);
   };
 
@@ -130,7 +130,7 @@ function Product({navigation, route, addToCart}) {
         <View style={styles.header}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Home');
+              navigation.navigate("Home");
             }}
             style={{flex: 0.5, paddingTop: 25}}>
             <FontAwesomeIcon
@@ -154,7 +154,7 @@ function Product({navigation, route, addToCart}) {
             boneColor="#D1D1D1"
             layout={[
               {
-                key: 'image',
+                key: "image",
                 width: 230,
                 height: 230,
                 borderRadius: 150,
@@ -165,7 +165,7 @@ function Product({navigation, route, addToCart}) {
           <Image
             source={{
               uri: productData.product_image_url,
-              cache: 'force-cache',
+              cache: "force-cache",
             }}
             style={{width: 230, height: 230}}
           />
@@ -186,7 +186,7 @@ function Product({navigation, route, addToCart}) {
             boneColor="#D1D1D1"
             layout={[
               {
-                key: 'tag',
+                key: "tag",
                 width: 60,
                 height: 25,
                 borderRadius: 20,
@@ -200,7 +200,7 @@ function Product({navigation, route, addToCart}) {
               <View
                 key={index}
                 style={[styles.tag, {backgroundColor: tag.color}]}>
-                <Text style={[styles.tagText, {color: '#fff'}]}>
+                <Text style={[styles.tagText, {color: "#fff"}]}>
                   {tag.label}
                 </Text>
               </View>
@@ -219,14 +219,14 @@ function Product({navigation, route, addToCart}) {
             boneColor="#D1D1D1"
             layout={[
               {
-                key: 'desc',
-                width: '100%',
+                key: "desc",
+                width: "100%",
                 height: 15,
                 borderRadius: 20,
               },
               {
-                key: 'desc2',
-                width: '25%',
+                key: "desc2",
+                width: "25%",
                 height: 15,
                 borderRadius: 20,
                 marginTop: 10,
@@ -249,21 +249,21 @@ function Product({navigation, route, addToCart}) {
         {/* Customization Options */}
         {loading ? (
           <SkeletonContent
-            containerStyle={{flexDirection: 'row', marginTop: 15}}
+            containerStyle={{flexDirection: "row", marginTop: 15}}
             isLoading={true}
             animationDirection="horizontalLeft"
             duration="800"
             boneColor="#D1D1D1"
             layout={[
               {
-                key: 'optionLabel',
+                key: "optionLabel",
                 width: 110,
                 height: 25,
                 borderRadius: 20,
                 marginTop: 15,
               },
               {
-                key: 'optionDropdown',
+                key: "optionDropdown",
                 width: 220,
                 height: 57,
                 borderRadius: 50,
@@ -302,12 +302,12 @@ function Product({navigation, route, addToCart}) {
       <View
         style={{
           paddingHorizontal: 25,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
           paddingBottom: 25,
         }}>
         {/* Add to Cart Button */}
         <Button
-          price={price.toFixed(2) + ' EGP'}
+          price={price.toFixed(2) + " EGP"}
           onPress={() => {
             addProductToCart();
           }}>
@@ -321,22 +321,22 @@ function Product({navigation, route, addToCart}) {
 const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 25,
-    marginTop: Platform.OS == 'ios' ? 10 : 30,
-    flexDirection: 'row',
+    marginTop: Platform.OS == "ios" ? 10 : 30,
+    flexDirection: "row",
   },
   productImage: {
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   productTitle: {
     paddingHorizontal: 25,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   titleText: {
     fontSize: 22,
-    color: '#11203E',
+    color: "#11203E",
   },
   tag: {
-    backgroundColor: '#E7E7E7',
+    backgroundColor: "#E7E7E7",
     padding: 6,
     paddingHorizontal: 9,
     marginLeft: 8,
@@ -344,38 +344,38 @@ const styles = StyleSheet.create({
   },
   tagText: {
     fontSize: 13,
-    color: '#A5A5A5',
+    color: "#A5A5A5",
   },
   productDesc: {
     fontSize: 16,
-    color: '#8B8B8B',
+    color: "#8B8B8B",
     lineHeight: 24,
   },
   customizationSection: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     marginTop: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.1,
     shadowRadius: 15.65,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: "#fff",
     paddingHorizontal: 25,
     paddingTop: 30,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
   customizationTitle: {
-    color: '#C84D49',
+    color: "#C84D49",
     fontSize: 17,
   },
   customOption: {
     marginTop: 15,
-    flexDirection: 'row',
+    flexDirection: "row",
     flex: 1,
   },
   customOptionText: {

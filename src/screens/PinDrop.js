@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useCallback, useEffect, useRef} from 'react';
+import React, {useState, useCallback, useEffect, useRef} from "react";
 import {
   View,
   StyleSheet,
@@ -7,35 +7,35 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
-} from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
-import MapView from 'react-native-maps';
+} from "react-native";
+import {useFocusEffect} from "@react-navigation/native";
+import MapView from "react-native-maps";
 //UI Components
-import Text from '../components/ui/Text';
-import Link from '../components/ui/Link';
-import Button from '../components/ui/Button';
-import Toast from 'react-native-toast-message';
+import Text from "../components/ui/Text";
+import Link from "../components/ui/Link";
+import Button from "../components/ui/Button";
+import Toast from "react-native-toast-message";
 //Redux
-import {connect} from 'react-redux';
-import {addLocation} from '../redux/actions/user.action';
+import {connect} from "react-redux";
+import {addLocation} from "../redux/actions/user.action";
 // Loading Skeleton
-import SkeletonContent from 'react-native-skeleton-content-nonexpo';
+import SkeletonContent from "react-native-skeleton-content-nonexpo";
 // Custom Marker
-import PinMarker from '../../assets/mapMarker.png';
+import PinMarker from "../../assets/mapMarker.png";
 // Font Icons
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faLocationArrow} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faLocationArrow} from "@fortawesome/free-solid-svg-icons";
 //Bottom Sheet
-import UserActions from '../screens/bottomSheets/UserActions';
-import BottomSheetOverlay from '../components/BottomSheetOverlay';
+import UserActions from "../screens/bottomSheets/UserActions";
+import BottomSheetOverlay from "../components/BottomSheetOverlay";
 //Search Location Component
-import SearchLocation from '../components/SearchLocation';
+import SearchLocation from "../components/SearchLocation";
 //Axios
-import Axios from 'axios';
+import Axios from "axios";
 //Helpers
-import decodeAddressComponents from './helpers/decodeAddressComponents';
-import getUserArea from './helpers/getUserArea';
-import getUserLocation from './helpers/getUserLocation';
+import decodeAddressComponents from "./helpers/decodeAddressComponents";
+import getUserArea from "./helpers/getUserArea";
+import getUserLocation from "./helpers/getUserLocation";
 
 function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
   // UserActions bottom sheet state
@@ -46,7 +46,7 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
   const [addressLoaded, setAddressLoaded] = useState(false);
   // Location Object
   const [area, setArea] = useState({});
-  const [formattedAddress, setFormattedAddress] = useState('');
+  const [formattedAddress, setFormattedAddress] = useState("");
   const [googleMapsAddress, setGoogleMapsAddress] = useState({});
   // User Original Coordinates
   const [userCoordinates, setUserCoordinates] = useState([]);
@@ -74,10 +74,10 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
       setAddressLoaded(true);
     } catch (error) {
       Toast.show({
-        type: 'error',
+        type: "error",
         topOffset: 50,
-        text1: 'An Error Occured',
-        text2: 'Something wrong happened on our side! Please try again.',
+        text1: "An Error Occured",
+        text2: "Something wrong happened on our side! Please try again.",
       });
     }
   };
@@ -91,10 +91,10 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
       setLocationLoaded(true);
     } catch (errors) {
       Toast.show({
-        type: 'error',
+        type: "error",
         topOffset: 50,
-        text1: 'An Error Occured',
-        text2: 'Something wrong happened on our side! Please try again.',
+        text1: "An Error Occured",
+        text2: "Something wrong happened on our side! Please try again.",
       });
     }
   };
@@ -144,10 +144,10 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
       animateToRegion([lat, lng]);
     } catch (errors) {
       Toast.show({
-        type: 'error',
+        type: "error",
         topOffset: 50,
-        text1: 'An Error Occured',
-        text2: 'Something wrong happened on our side! Please try again.',
+        text1: "An Error Occured",
+        text2: "Something wrong happened on our side! Please try again.",
       });
     }
   };
@@ -164,14 +164,14 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
       location.supported = false;
     }
     addLocation(location);
-    navigation.navigate('Home');
+    navigation.navigate("Home");
   };
 
   // Close UserActions Bottom sheet
   const closeSheet = () => {
     setShowUserActionsSheet(false);
     if (loggedIn && addresses.length > 0) {
-      navigation.navigate('Home');
+      navigation.navigate("Home");
     }
   };
 
@@ -219,14 +219,14 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
         <View
           pointerEvents="none"
           style={{
-            position: 'absolute',
+            position: "absolute",
             top: 0,
             bottom: 20,
             left: 0,
             right: 0,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'transparent',
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "transparent",
           }}>
           <Image
             pointerEvents="none"
@@ -238,15 +238,15 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
         {/* Go Back to my Location */}
         <View
           style={{
-            position: 'absolute',
+            position: "absolute",
             top: 130,
             right: 0,
             left: 0,
-            alignItems: 'center',
+            alignItems: "center",
           }}>
           <TouchableOpacity
             style={{
-              backgroundColor: '#0E2241',
+              backgroundColor: "#0E2241",
               padding: 13,
               paddingHorizontal: 15,
               borderRadius: 50,
@@ -261,8 +261,8 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
         {/* Search Locations Input */}
         <SafeAreaView
           style={{
-            position: 'absolute',
-            width: '100%',
+            position: "absolute",
+            width: "100%",
             zIndex: 999,
           }}>
           <SearchLocation
@@ -297,20 +297,20 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
                 boneColor="#D1D1D1"
                 layout={[
                   {
-                    key: 'address1',
+                    key: "address1",
                     width: 130,
                     height: 20,
                     borderRadius: 10,
                   },
                   {
-                    key: 'address2',
+                    key: "address2",
                     width: 100,
                     height: 20,
                     borderRadius: 10,
                     marginTop: 5,
                   },
                   {
-                    key: 'address3',
+                    key: "address3",
                     width: 150,
                     height: 20,
                     borderRadius: 10,
@@ -333,7 +333,7 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
                         ? styles.supportedTagText
                         : styles.unsupportedTagText,
                     ]}>
-                    {supportedArea ? 'Supported' : 'Unsupported'}
+                    {supportedArea ? "Supported" : "Unsupported"}
                   </Text>
                 </View>
               ) : (
@@ -345,7 +345,7 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
                   boneColor="#D1D1D1"
                   layout={[
                     {
-                      key: 'tag',
+                      key: "tag",
                       width: 100,
                       height: 25,
                       borderRadius: 10,
@@ -364,7 +364,7 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
                 onPress={() => {
                   continueHandler();
                 }}>
-                {supportedArea ? 'Continue' : 'Continue anyways'}
+                {supportedArea ? "Continue" : "Continue anyways"}
               </Button>
             ) : (
               <Button disabled>Continue</Button>
@@ -375,15 +375,15 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
                 // Navigate to Edit Address in Account (Add address mode)
                 const address = {
                   ...googleMapsAddress,
-                  addressDetails: '',
-                  floor: '',
-                  apartment: '',
-                  deliveryNotes: '',
+                  addressDetails: "",
+                  floor: "",
+                  apartment: "",
+                  deliveryNotes: "",
                 };
-                navigation.navigate('Home', {
-                  screen: 'Account',
+                navigation.navigate("Home", {
+                  screen: "Account",
                   params: {
-                    screen: 'EditAddress',
+                    screen: "EditAddress",
                     params: {address, newAddress: true},
                   },
                 });
@@ -406,46 +406,46 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
 
 const styles = StyleSheet.create({
   outerContainer: {
-    backgroundColor: '#f5f5f5',
-    height: '100%',
+    backgroundColor: "#f5f5f5",
+    height: "100%",
   },
   map: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
     zIndex: -1,
   },
   container: {
-    backgroundColor: 'white',
-    position: 'absolute',
+    backgroundColor: "white",
+    position: "absolute",
     paddingHorizontal: 25,
     paddingVertical: 40,
     paddingBottom: 40,
     bottom: 0,
-    width: '100%',
+    width: "100%",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     zIndex: 9999,
   },
   title: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   titleText: {
-    color: '#C84D49',
+    color: "#C84D49",
     fontSize: 18,
     flex: 0.95,
   },
   address: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingVertical: 15,
     paddingHorizontal: 10,
-    alignContent: 'space-between',
+    alignContent: "space-between",
   },
   addressText: {
     fontSize: 16,
     lineHeight: 25,
-    color: '#0E2241',
+    color: "#0E2241",
     flex: 0.95,
   },
   addressTag: {
@@ -456,36 +456,36 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   supportedTag: {
-    backgroundColor: '#DCEFE0',
+    backgroundColor: "#DCEFE0",
   },
   supportedTagText: {
-    color: '#3F8A4E',
+    color: "#3F8A4E",
   },
   unsupportedTag: {
-    backgroundColor: '#efdcdc',
+    backgroundColor: "#efdcdc",
   },
   unsupportedTagText: {
-    color: '#8a3f3f',
+    color: "#8a3f3f",
   },
   loadingContainer: {
     flex: 1,
-    width: '100%',
-    backgroundColor: 'red',
+    width: "100%",
+    backgroundColor: "red",
   },
   loadingBar: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
     width: 130,
     height: 17,
     marginTop: 5,
     flex: 1,
   },
   loadingArea: {
-    flexDirection: 'column',
+    flexDirection: "column",
     marginBottom: 10,
     flex: 0.95,
   },
   loadingTag: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
     width: 110,
     height: 30,
     marginTop: 20,
@@ -493,10 +493,10 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   overlay: {
-    backgroundColor: 'black',
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
+    backgroundColor: "black",
+    width: "100%",
+    height: "100%",
+    position: "absolute",
     opacity: 0.8,
     zIndex: 99,
   },

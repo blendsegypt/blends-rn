@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, {useRef, useEffect, useState} from "react";
 import {
   SafeAreaView,
   View,
@@ -15,11 +15,11 @@ import BottomSheet from "reanimated-bottom-sheet";
 //Components
 import Address from "../../components/Address";
 //Redux
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 //Close Sheet Component
 import CloseSheet from "./UserActionsSheets/utils/CloseSheet";
 
-function Sheet({ savedAddresses, setChooseAddressShown, navigation }) {
+function Sheet({savedAddresses, setChooseAddressShown, navigation}) {
   const closeSheet = () => {
     setChooseAddressShown(false);
   };
@@ -28,24 +28,21 @@ function Sheet({ savedAddresses, setChooseAddressShown, navigation }) {
       {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
       <ScrollView
         style={styles.bottomSheetContainer}
-        contentContainerStyle={{ paddingBottom: 400 }}
-      >
+        contentContainerStyle={{paddingBottom: 400}}>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-          }}
-        >
-          <Text style={{ color: "#11203E", fontSize: 17, paddingLeft: 25 }}>
+          }}>
+          <Text style={{color: "#11203E", fontSize: 17, paddingLeft: 25}}>
             Choose Delivery Address
           </Text>
           <Link
             onPress={() => {
-              navigation.navigate("PinDrop", { existingUser: true });
+              navigation.navigate("PinDrop", {existingUser: true});
             }}
-            style={{ marginRight: 25 }}
-          >
+            style={{marginRight: 25}}>
             Add new Address
           </Link>
         </View>

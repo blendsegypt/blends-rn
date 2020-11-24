@@ -1,58 +1,58 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from "react";
 import {
   View,
   ScrollView,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-} from 'react-native';
+} from "react-native";
 //UI Components
-import Text from '../components/ui/Text';
-import Button from '../components/ui/Button';
+import Text from "../components/ui/Text";
+import Button from "../components/ui/Button";
 //Components
-import OrderReceipt from '../components/OrderReceipt';
+import OrderReceipt from "../components/OrderReceipt";
 //Icons Fonts
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChevronLeft, faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faChevronLeft, faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
 //Assets (for testing)
-import Latte from '../../assets/Latte.png';
+import Latte from "../../assets/Latte.png";
 // Loading Skeleton
-import SkeletonContent from 'react-native-skeleton-content-nonexpo';
+import SkeletonContent from "react-native-skeleton-content-nonexpo";
 //Redux
-import {connect} from 'react-redux';
+import {connect} from "react-redux";
 //FreshChat Integration
 import {
   Freshchat,
   FreshchatConfig,
   FreshchatUser,
   FreshchatMessage,
-} from 'react-native-freshchat-sdk';
+} from "react-native-freshchat-sdk";
 
 function OrderDetails({navigation, user}) {
   const order = {
     number: 1123,
-    status: 'Brewing',
-    estimatedDelivery: '09:32 AM',
-    ordered: 'Today',
-    deliveryAddress: 'Home',
+    status: "Brewing",
+    estimatedDelivery: "09:32 AM",
+    ordered: "Today",
+    deliveryAddress: "Home",
     cartItems: [
       {
         image: Latte,
-        name: 'Latte',
+        name: "Latte",
         price: 25,
         quantity: 1,
         selectedOptions: [
           {
-            label: 'Cup Size',
+            label: "Cup Size",
             price: 0,
-            textValue: 'Small',
-            value: 'sm',
+            textValue: "Small",
+            value: "sm",
           },
           {
-            label: 'Milk Type',
+            label: "Milk Type",
             price: 0,
-            textValue: 'Skimmed Milk',
-            value: 'skm',
+            textValue: "Skimmed Milk",
+            value: "skm",
           },
         ],
       },
@@ -75,16 +75,16 @@ function OrderDetails({navigation, user}) {
 
     // Setup FreshChat
     const freshchatConfig = new FreshchatConfig(
-      'eeded093-e396-4fa5-8302-85223c8725c6',
-      'af17ee52-db85-484b-853f-c650fdd023c5',
+      "eeded093-e396-4fa5-8302-85223c8725c6",
+      "af17ee52-db85-484b-853f-c650fdd023c5",
     );
-    freshchatConfig.domain = 'msdk.eu.freshchat.com';
+    freshchatConfig.domain = "msdk.eu.freshchat.com";
     Freshchat.init(freshchatConfig);
     const freshchatUser = new FreshchatUser();
     // Split fullName to first name
-    const firstName = user.fullName.split(' ')[0];
+    const firstName = user.fullName.split(" ")[0];
     freshchatUser.firstName = firstName;
-    freshchatUser.phoneCountryCode = '+2';
+    freshchatUser.phoneCountryCode = "+2";
     freshchatUser.phone = user.phoneNumber;
     Freshchat.setUser(freshchatUser, (error) => {
       console.log(error);
@@ -110,7 +110,7 @@ function OrderDetails({navigation, user}) {
         <View style={styles.header}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Orders');
+              navigation.navigate("Orders");
             }}
             style={{flex: 0.5, paddingTop: 25}}>
             <FontAwesomeIcon icon={faChevronLeft} size={22} color="#11203E" />
@@ -129,14 +129,14 @@ function OrderDetails({navigation, user}) {
             {/* Status & Order time */}
             <View
               style={{
-                flexDirection: 'row',
+                flexDirection: "row",
                 paddingHorizontal: 25,
                 paddingVertical: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: '#EEEEEE',
+                borderBottomColor: "#EEEEEE",
               }}>
               <View style={{flex: 0.7}}>
-                <Text style={{color: '#B9B9B9'}}>Order Status</Text>
+                <Text style={{color: "#B9B9B9"}}>Order Status</Text>
                 <Text semiBold>{order.status}</Text>
               </View>
               <View
@@ -144,10 +144,10 @@ function OrderDetails({navigation, user}) {
                   flex: 0.3,
                 }}>
                 <View>
-                  <Text style={{color: '#B9B9B9', textAlign: 'left'}}>
+                  <Text style={{color: "#B9B9B9", textAlign: "left"}}>
                     Ordered
                   </Text>
-                  <Text semiBold style={{textAlign: 'left'}}>
+                  <Text semiBold style={{textAlign: "left"}}>
                     {order.ordered}
                   </Text>
                 </View>
@@ -156,13 +156,13 @@ function OrderDetails({navigation, user}) {
             {/* Expected Delivery & Order Number */}
             <View
               style={{
-                flexDirection: 'row',
+                flexDirection: "row",
                 paddingHorizontal: 25,
                 paddingVertical: 20,
               }}>
               <View style={{flex: 0.7}}>
-                <Text style={{color: '#B9B9B9'}}>Delivery Address</Text>
-                <View style={{flexDirection: 'row'}}>
+                <Text style={{color: "#B9B9B9"}}>Delivery Address</Text>
+                <View style={{flexDirection: "row"}}>
                   <FontAwesomeIcon
                     icon={faMapMarkerAlt}
                     size={15}
@@ -179,10 +179,10 @@ function OrderDetails({navigation, user}) {
                   flex: 0.3,
                 }}>
                 <View>
-                  <Text style={{color: '#B9B9B9', textAlign: 'left'}}>
+                  <Text style={{color: "#B9B9B9", textAlign: "left"}}>
                     Order Number
                   </Text>
-                  <Text semiBold style={{textAlign: 'left'}}>
+                  <Text semiBold style={{textAlign: "left"}}>
                     #{order.number}
                   </Text>
                 </View>
@@ -192,7 +192,7 @@ function OrderDetails({navigation, user}) {
         ) : (
           <SkeletonContent
             containerStyle={{
-              backgroundColor: '#D1D1D1',
+              backgroundColor: "#D1D1D1",
               borderRadius: 20,
               height: 110,
               paddingHorizontal: 20,
@@ -205,16 +205,16 @@ function OrderDetails({navigation, user}) {
             layout={[
               {
                 paddingVertical: 20,
-                flexDirection: 'row',
+                flexDirection: "row",
                 children: [
                   {
-                    key: 'status',
+                    key: "status",
                     width: 100,
                     height: 20,
                     borderRadius: 20,
                   },
                   {
-                    key: 'details',
+                    key: "details",
                     width: 100,
                     height: 20,
                     borderRadius: 20,
@@ -224,16 +224,16 @@ function OrderDetails({navigation, user}) {
               },
               {
                 paddingVertical: 5,
-                flexDirection: 'row',
+                flexDirection: "row",
                 children: [
                   {
-                    key: 'ordered',
+                    key: "ordered",
                     width: 100,
                     height: 20,
                     borderRadius: 20,
                   },
                   {
-                    key: 'orderNumber',
+                    key: "orderNumber",
                     width: 100,
                     height: 20,
                     borderRadius: 20,
@@ -256,7 +256,7 @@ function OrderDetails({navigation, user}) {
             <SkeletonContent
               containerStyle={{
                 marginTop: 25,
-                backgroundColor: '#D1D1D1',
+                backgroundColor: "#D1D1D1",
                 borderRadius: 20,
                 height: 180,
                 paddingHorizontal: 20,
@@ -268,24 +268,24 @@ function OrderDetails({navigation, user}) {
               layout={[
                 {
                   paddingVertical: 20,
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  flexDirection: "row",
+                  alignItems: "center",
                   children: [
                     {
-                      key: 'productImage',
+                      key: "productImage",
                       width: 40,
                       height: 40,
                       borderRadius: 100,
                     },
                     {
-                      key: 'productName',
+                      key: "productName",
                       width: 70,
                       height: 20,
                       borderRadius: 20,
                       marginLeft: 15,
                     },
                     {
-                      key: 'productPrice',
+                      key: "productPrice",
                       width: 70,
                       height: 20,
                       borderRadius: 20,
@@ -295,16 +295,16 @@ function OrderDetails({navigation, user}) {
                 },
                 {
                   paddingVertical: 5,
-                  flexDirection: 'row',
+                  flexDirection: "row",
                   children: [
                     {
-                      key: 'subtotal',
+                      key: "subtotal",
                       width: 100,
                       height: 20,
                       borderRadius: 20,
                     },
                     {
-                      key: 'subtotalValue',
+                      key: "subtotalValue",
                       width: 70,
                       height: 20,
                       borderRadius: 20,
@@ -314,17 +314,17 @@ function OrderDetails({navigation, user}) {
                 },
                 {
                   paddingVertical: 5,
-                  flexDirection: 'row',
+                  flexDirection: "row",
                   marginTop: 20,
                   children: [
                     {
-                      key: 'total',
+                      key: "total",
                       width: 100,
                       height: 20,
                       borderRadius: 20,
                     },
                     {
-                      key: 'totalValue',
+                      key: "totalValue",
                       width: 70,
                       height: 20,
                       borderRadius: 20,
@@ -340,14 +340,14 @@ function OrderDetails({navigation, user}) {
       <View
         style={{
           paddingHorizontal: 25,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
           paddingBottom: 110,
           paddingTop: 20,
         }}>
         {orderLoaded ? (
           <Button
             textColor="#437FD9"
-            style={{backgroundColor: '#EBF1FF'}}
+            style={{backgroundColor: "#EBF1FF"}}
             icon="commenting"
             onPress={() => showFreshChat()}>
             Problems with your Order?
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 25,
     marginTop: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   screenTitle: {
     fontSize: 25,
@@ -374,27 +374,27 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 25,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
+    backgroundColor: "#fff",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.1,
     shadowRadius: 15.65,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
   containerTitle: {
-    color: '#C84D49',
+    color: "#C84D49",
     fontSize: 16,
   },
   detailsContainer: {
-    backgroundColor: '#fff',
-    shadowColor: '#000',
+    backgroundColor: "#fff",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,

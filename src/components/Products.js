@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect} from "react";
+import {View, StyleSheet, FlatList, TouchableOpacity} from "react-native";
 //UI Components
-import Text from './ui/Text';
+import Text from "./ui/Text";
 //Components
-import ProductItem from '../components/ProductItem';
+import ProductItem from "../components/ProductItem";
 // Loading Skeleton
-import SkeletonContent from 'react-native-skeleton-content-nonexpo';
-import API from '../utils/axios';
+import SkeletonContent from "react-native-skeleton-content-nonexpo";
+import API from "../utils/axios";
 
 function Products({navigation, supportedArea}) {
   console.disableYellowBox = true;
@@ -26,7 +26,7 @@ function Products({navigation, supportedArea}) {
         semiBold
         style={[
           styles.category,
-          activeCategory == item.id ? {color: '#11203E'} : {},
+          activeCategory == item.id ? {color: "#11203E"} : {},
           index == 0 ? {marginLeft: 0} : {},
         ]}>
         {item.name}
@@ -37,7 +37,7 @@ function Products({navigation, supportedArea}) {
   // Initialize component
   useEffect(() => {
     const getCategories = async () => {
-      const categories = await API.get('app/products/categories');
+      const categories = await API.get("app/products/categories");
       setCategories(categories.data.data);
       setCategoriesLoaded(true);
     };
@@ -70,27 +70,27 @@ function Products({navigation, supportedArea}) {
         />
       ) : (
         <SkeletonContent
-          containerStyle={{flexDirection: 'row'}}
+          containerStyle={{flexDirection: "row"}}
           isLoading={true}
           animationDirection="horizontalLeft"
           duration="800"
           boneColor="#D1D1D1"
           layout={[
             {
-              key: 'category1',
+              key: "category1",
               width: 90,
               height: 24,
               borderRadius: 10,
             },
             {
-              key: 'category2',
+              key: "category2",
               width: 100,
               marginLeft: 10,
               height: 24,
               borderRadius: 10,
             },
             {
-              key: 'category3',
+              key: "category3",
               width: 70,
               marginLeft: 10,
               height: 24,
@@ -120,8 +120,8 @@ function Products({navigation, supportedArea}) {
         <SkeletonContent
           containerStyle={{
             flex: 1,
-            flexDirection: 'row',
-            backgroundColor: '#FCFBFB',
+            flexDirection: "row",
+            backgroundColor: "#FCFBFB",
             width: 160,
             height: 230,
             marginTop: 25,
@@ -135,7 +135,7 @@ function Products({navigation, supportedArea}) {
             {
               children: [
                 {
-                  key: 'image',
+                  key: "image",
                   width: 90,
                   height: 90,
                   borderRadius: 150,
@@ -143,21 +143,21 @@ function Products({navigation, supportedArea}) {
                   marginTop: 10,
                 },
                 {
-                  key: 'title',
+                  key: "title",
                   width: 60,
                   height: 20,
                   marginLeft: 10,
                   marginTop: 10,
                 },
                 {
-                  key: 'price',
+                  key: "price",
                   width: 100,
                   height: 20,
                   marginLeft: 10,
                   marginTop: 10,
                 },
                 {
-                  key: 'button',
+                  key: "button",
                   width: 140,
                   height: 40,
                   marginLeft: 10,
@@ -169,7 +169,7 @@ function Products({navigation, supportedArea}) {
               marginLeft: 30,
               children: [
                 {
-                  key: 'image',
+                  key: "image",
                   width: 90,
                   height: 90,
                   borderRadius: 150,
@@ -177,21 +177,21 @@ function Products({navigation, supportedArea}) {
                   marginTop: 10,
                 },
                 {
-                  key: 'title',
+                  key: "title",
                   width: 60,
                   height: 20,
                   marginLeft: 10,
                   marginTop: 10,
                 },
                 {
-                  key: 'price',
+                  key: "price",
                   width: 100,
                   height: 20,
                   marginLeft: 10,
                   marginTop: 10,
                 },
                 {
-                  key: 'button',
+                  key: "button",
                   width: 140,
                   height: 40,
                   marginLeft: 10,
@@ -208,7 +208,7 @@ function Products({navigation, supportedArea}) {
 
 const styles = StyleSheet.create({
   category: {
-    color: '#D8D8D8',
+    color: "#D8D8D8",
     fontSize: 19,
     marginLeft: 15,
   },

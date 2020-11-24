@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from "react";
 import {
   View,
   ScrollView,
@@ -8,22 +8,22 @@ import {
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
-} from 'react-native';
+} from "react-native";
 //UI Components
-import Text from '../../../components/ui/Text';
-import Button from '../../../components/ui/Button';
-import TextInput from '../../../components/ui/TextInput';
+import Text from "../../../components/ui/Text";
+import Button from "../../../components/ui/Button";
+import TextInput from "../../../components/ui/TextInput";
 //Assets
-import BlendsLogo from '../../../../assets/BlendsLogo.png';
+import BlendsLogo from "../../../../assets/BlendsLogo.png";
 //Icons Font
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChevronLeft} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 //Field Validation
-import validateField from '../../../utils/validateField';
+import validateField from "../../../utils/validateField";
 //Close Sheet Component
-import Toast from 'react-native-toast-message';
-import CloseSheet from './utils/CloseSheet';
-import API from '../../../utils/axios';
+import Toast from "react-native-toast-message";
+import CloseSheet from "./utils/CloseSheet";
+import API from "../../../utils/axios";
 
 export default function PhoneNumberSheet({
   setSheet,
@@ -33,8 +33,8 @@ export default function PhoneNumberSheet({
 }) {
   const [buttonActive, setButtonActive] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState({
-    text: 'Phone Number',
-    value: '',
+    text: "Phone Number",
+    value: "",
     minLength: 11,
     validated: false,
     errors: [],
@@ -62,36 +62,36 @@ export default function PhoneNumberSheet({
 
   const handleSubmit = async () => {
     try {
-      await API.post('app/register/verify/phone', {
+      await API.post("app/register/verify/phone", {
         phone_number: phoneNumber.value,
       });
       setUserObject({phoneNumber: phoneNumber.value});
-      setSheet('OTPSheet');
+      setSheet("OTPSheet");
     } catch (error) {
       if (
         error.response ||
-        error.response.data.errors[0] === 'PHONE_NUMBER_EXISTS'
+        error.response.data.errors[0] === "PHONE_NUMBER_EXISTS"
       ) {
         Toast.show({
-          type: 'error',
+          type: "error",
           topOffset: 70,
-          text1: 'Phone Number already exists!',
-          text2: 'Please choose a different phone number to continue',
+          text1: "Phone Number already exists!",
+          text2: "Please choose a different phone number to continue",
         });
         return;
       }
       Toast.show({
-        type: 'error',
+        type: "error",
         topOffset: 70,
-        text1: 'An Error Occured!',
-        text2: 'Sorry about that. Could you please try again?',
+        text1: "An Error Occured!",
+        text2: "Sorry about that. Could you please try again?",
       });
     }
   };
 
   return (
     <>
-      {Platform.OS === 'android' && <CloseSheet closeSheet={closeSheet} />}
+      {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
       <KeyboardAvoidingView
         style={styles.bottomSheetContainer}
         extraScrollHeight={10}
@@ -99,13 +99,13 @@ export default function PhoneNumberSheet({
         behavior="height">
         <View
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}>
           <TouchableOpacity
             onPress={() => {
-              setSheet('StartSheet');
+              setSheet("StartSheet");
             }}
             style={{padding: 15, paddingLeft: 0}}>
             <FontAwesomeIcon icon={faChevronLeft} size={22} color="#11203E" />
@@ -127,7 +127,7 @@ export default function PhoneNumberSheet({
         {[...phoneNumber.errors].map((error, index) => {
           return (
             <View style={styles.errorMessage} key={index}>
-              <Text regular style={{color: '#b55b5b'}}>
+              <Text regular style={{color: "#b55b5b"}}>
                 {error.message}
               </Text>
             </View>
@@ -163,25 +163,25 @@ export default function PhoneNumberSheet({
 
 const styles = StyleSheet.create({
   bottomSheetContainer: {
-    height: Dimensions.get('window').height,
-    backgroundColor: '#fff',
+    height: Dimensions.get("window").height,
+    backgroundColor: "#fff",
     paddingTop: 50,
     paddingHorizontal: 25,
-    marginTop: Platform.OS === 'android' ? 25 : 0,
+    marginTop: Platform.OS === "android" ? 25 : 0,
   },
   title: {
     fontSize: 19,
     paddingTop: 25,
-    color: '#11203E',
+    color: "#11203E",
   },
   message: {
     paddingTop: 7,
     fontSize: 15,
-    color: '#8A8A8A',
+    color: "#8A8A8A",
     lineHeight: 23,
   },
   errorMessage: {
-    backgroundColor: '#F3E1E1',
+    backgroundColor: "#F3E1E1",
     padding: 15,
     marginVertical: 10,
     borderRadius: 20,

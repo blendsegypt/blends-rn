@@ -1,23 +1,23 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from "react";
 import {
   ScrollView,
   View,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-} from 'react-native';
+} from "react-native";
 //UI Components
-import Text from '../../components/ui/Text';
-import TextInput from '../../components/ui/TextInput';
-import Button from '../../components/ui/Button';
+import Text from "../../components/ui/Text";
+import TextInput from "../../components/ui/TextInput";
+import Button from "../../components/ui/Button";
 //Icons Font
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChevronLeft} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 //Redux
-import {connect} from 'react-redux';
-import {updatePersonalInfo} from '../../redux/actions/user.action';
+import {connect} from "react-redux";
+import {updatePersonalInfo} from "../../redux/actions/user.action";
 //Form Field Validation
-import validateField from '../../utils/validateField';
+import validateField from "../../utils/validateField";
 
 function PersonalInformation({
   navigation,
@@ -30,24 +30,24 @@ function PersonalInformation({
 
   // Personal Fields
   const [fullName, setFullName] = useState({
-    text: 'Full Name',
+    text: "Full Name",
     value: fullNameRedux,
     notEmpty: true,
     validated: true,
     errors: [],
   });
   const [phoneNumber, setPhoneNumber] = useState({
-    text: 'Phone Number',
+    text: "Phone Number",
     value: phoneNumberRedux,
     notEmpty: true,
     validated: true,
     regex: /^\d+$/,
-    regexErrorMessage: 'Phone Number can only contain numbers',
+    regexErrorMessage: "Phone Number can only contain numbers",
     errors: [],
   });
   const [email, setEmail] = useState({
-    text: 'Email',
-    value: '',
+    text: "Email",
+    value: "",
     validated: true,
     notEmpty: true,
     regex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -55,15 +55,15 @@ function PersonalInformation({
     errors: [],
   });
   const [password, setPassword] = useState({
-    text: 'Password',
-    value: '',
+    text: "Password",
+    value: "",
     validated: true,
   });
   const [passwordConfirmation, setPasswordConfirmation] = useState({
-    text: 'Password Confirmation',
-    value: '',
+    text: "Password Confirmation",
+    value: "",
     equality: true,
-    equals: '',
+    equals: "",
     validated: true,
     errors: [],
   });
@@ -111,7 +111,7 @@ function PersonalInformation({
         <View style={styles.header}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Account');
+              navigation.navigate("Account");
             }}
             style={{flex: 0.5, paddingTop: 25}}>
             <FontAwesomeIcon
@@ -139,7 +139,7 @@ function PersonalInformation({
         ].map((error, index) => {
           return (
             <View style={styles.errorMessage} key={index}>
-              <Text regular style={{color: '#b55b5b'}}>
+              <Text regular style={{color: "#b55b5b"}}>
                 {error.message}
               </Text>
             </View>
@@ -225,7 +225,7 @@ function PersonalInformation({
                   email: email.value,
                 };
                 updatePersonalInfo(newPersonalInfo);
-                navigation.navigate('Account');
+                navigation.navigate("Account");
               }}>
               Save
             </Button>
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 25,
     marginTop: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   screenTitle: {
     fontSize: 25,
@@ -252,8 +252,8 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 25,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
+    backgroundColor: "#fff",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -261,15 +261,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 15.65,
     elevation: 8,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 25,
   },
   errorMessage: {
-    backgroundColor: '#F3E1E1',
+    backgroundColor: "#F3E1E1",
     padding: 15,
     marginBottom: 10,
     borderRadius: 20,

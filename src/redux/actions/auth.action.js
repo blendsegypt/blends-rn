@@ -5,9 +5,9 @@
   @logout => used for logout
 
 */
-import { setUser, setAddresses } from "../actions/user.action";
-import { setAccessToken, setRefreshToken } from "../../utils/authToken";
-import { authInterceptor } from "../../utils/axios";
+import {setUser, setAddresses} from "../actions/user.action";
+import {setAccessToken, setRefreshToken} from "../../utils/authToken";
+import {authInterceptor} from "../../utils/axios";
 
 export const login = (user, accessToken, refreshToken, addresses = []) => {
   return (dispatch) => {

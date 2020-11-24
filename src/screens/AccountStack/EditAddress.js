@@ -1,29 +1,29 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from "react";
 import {
   SafeAreaView,
   StyleSheet,
   View,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
+} from "react-native";
 //UI Components
-import Text from '../../components/ui/Text';
-import TextInput from '../../components/ui/TextInput';
-import Button from '../../components/ui/Button';
+import Text from "../../components/ui/Text";
+import TextInput from "../../components/ui/TextInput";
+import Button from "../../components/ui/Button";
 //Icons Font
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChevronLeft, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faChevronLeft, faTrash} from "@fortawesome/free-solid-svg-icons";
 //Keyboard Aware ScrollView
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 //Form validation
-import validateField from '../../utils/validateField';
+import validateField from "../../utils/validateField";
 //Redux
-import {connect} from 'react-redux';
+import {connect} from "react-redux";
 import {
   addAddress,
   changeAddress,
   removeAddress,
-} from '../../redux/actions/user.action';
+} from "../../redux/actions/user.action";
 
 function EditAddress({
   navigation,
@@ -34,14 +34,14 @@ function EditAddress({
 }) {
   const {address, newAddress} = route.params;
   const [addressNickname, setAddressNickname] = useState({
-    text: 'Address Nickname',
-    value: '',
+    text: "Address Nickname",
+    value: "",
     notEmpty: true,
     validated: false,
     errors: [],
   });
   const [street, setStreet] = useState({
-    text: 'Street',
+    text: "Street",
     value: address.street,
     notEmpty: true,
     validated: true,
@@ -106,10 +106,10 @@ function EditAddress({
     if (newAddress) {
       navigation.reset({
         index: 0,
-        routes: [{name: 'Account'}, {name: 'SavedAddresses'}],
+        routes: [{name: "Account"}, {name: "SavedAddresses"}],
       });
     } else {
-      navigation.navigate('SavedAddresses');
+      navigation.navigate("SavedAddresses");
     }
   };
 
@@ -120,7 +120,7 @@ function EditAddress({
         <View style={styles.header}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('SavedAddresses');
+              navigation.navigate("SavedAddresses");
             }}
             style={{flex: 0.5, paddingTop: 25}}>
             <FontAwesomeIcon
@@ -132,16 +132,16 @@ function EditAddress({
           </TouchableOpacity>
           <Text bold style={styles.screenTitle}>
             {newAddress
-              ? 'New Address'
+              ? "New Address"
               : `Edit Address (${address.addressNickname})`}
           </Text>
           {!newAddress && (
             <TouchableOpacity
               onPress={() => {
                 removeAddress(address.addressNickname);
-                navigation.navigate('SavedAddresses');
+                navigation.navigate("SavedAddresses");
               }}
-              style={{flex: 0.5, paddingTop: 22, alignItems: 'flex-end'}}>
+              style={{flex: 0.5, paddingTop: 22, alignItems: "flex-end"}}>
               <FontAwesome
                 style={styles.headerChevron}
                 icon={faTrash}
@@ -157,7 +157,7 @@ function EditAddress({
         {[...street.errors].map((error, index) => {
           return (
             <View style={styles.errorMessage} key={index}>
-              <Text regular style={{color: '#b55b5b'}}>
+              <Text regular style={{color: "#b55b5b"}}>
                 {error.message}
               </Text>
             </View>
@@ -166,7 +166,7 @@ function EditAddress({
         {/* Address Data Form */}
         <View>
           <TextInput
-            style={[styles.textInput, !newAddress ? {display: 'none'} : {}]}
+            style={[styles.textInput, !newAddress ? {display: "none"} : {}]}
             onChangeText={(text) => {
               setAddressNickname({...addressNickname, value: text});
             }}
@@ -183,7 +183,7 @@ function EditAddress({
               Governate
             </TextInput>
           </View>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: "row"}}>
             <View style={{flex: 0.5, marginRight: 10}}>
               <TextInput
                 editable={false}
@@ -213,7 +213,7 @@ function EditAddress({
             defaultValue={addressDetails.value}>
             Address Details
           </TextInput>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: "row"}}>
             <TextInput
               style={[styles.textInput, {flex: 0.4, marginRight: 10}]}
               keyboardType="numeric"
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 25,
     marginTop: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   screenTitle: {
     fontSize: 25,
@@ -274,8 +274,8 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 25,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
+    backgroundColor: "#fff",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -283,16 +283,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 15.65,
     elevation: 8,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 25,
     paddingHorizontal: 25,
   },
   errorMessage: {
-    backgroundColor: '#F3E1E1',
+    backgroundColor: "#F3E1E1",
     padding: 15,
     marginBottom: 10,
     borderRadius: 20,

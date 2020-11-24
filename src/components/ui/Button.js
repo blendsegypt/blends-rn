@@ -1,3 +1,4 @@
+/* eslint-disable curly */
 /*
  *
  *  Button.js
@@ -11,21 +12,21 @@
  *
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from "react";
 import {
   View,
   StyleSheet,
   Image,
   TouchableWithoutFeedback,
   TouchableOpacity,
-} from 'react-native';
+} from "react-native";
 //UI Components
-import Text from './Text';
+import Text from "./Text";
 //Icons Font
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChevronRight} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faChevronRight} from "@fortawesome/free-solid-svg-icons";
 //Blends Icon (for blend icon-based buttons)
-import BlendsIconWhite from '../../../assets/BlendsIconWhite.png';
+import BlendsIconWhite from "../../../assets/BlendsIconWhite.png";
 
 export default function Button(props) {
   // Timeout to prevent user from spamming buttons
@@ -34,9 +35,9 @@ export default function Button(props) {
 
   // Blends color scheme
   const colorScheme = {
-    primary: '#C84D49',
-    secondary: '#11203E',
-    disabled: '#C0C0C0',
+    primary: "#C84D49",
+    secondary: "#11203E",
+    disabled: "#C0C0C0",
   };
 
   // Determine button background color
@@ -45,11 +46,11 @@ export default function Button(props) {
   if (props.success) buttonBG = colorScheme.success;
 
   // Determine button text color
-  let buttonTextColor = '#fff';
+  let buttonTextColor = "#fff";
   if (props.textColor) buttonTextColor = props.textColor;
 
   // Determine button icon
-  let buttonIcon = 'chevron-right'; // Default
+  let buttonIcon = "chevron-right"; // Default
   if (props.icon) buttonIcon = props.icon;
 
   const _onPress = () => {
@@ -62,6 +63,7 @@ export default function Button(props) {
 
   useEffect(() => {
     return () => {
+      setButtonDisabledTemp(false);
       clearTimeout(pressTimeout);
     };
   });
@@ -72,18 +74,18 @@ export default function Button(props) {
     symbol = (
       <View
         style={{
-          position: 'absolute',
+          position: "absolute",
           right: 0,
           top: 0,
           bottom: 0,
           top: 0,
-          alignSelf: 'center',
-          justifyContent: 'center',
+          alignSelf: "center",
+          justifyContent: "center",
           marginRight: 15,
         }}>
         <View
           style={{
-            backgroundColor: '#11203E',
+            backgroundColor: "#11203E",
             padding: 8,
             paddingHorizontal: 12,
             borderRadius: 20,
@@ -96,7 +98,7 @@ export default function Button(props) {
     );
   } else if (props.blends) {
     symbol = (
-      <View style={{justifyContent: 'center'}}>
+      <View style={{justifyContent: "center"}}>
         <Image source={BlendsIconWhite} style={{width: 22, height: 17}} />
       </View>
     );
@@ -104,7 +106,7 @@ export default function Button(props) {
     symbol = <></>;
   } else {
     symbol = (
-      <View style={{justifyContent: 'center'}}>
+      <View style={{justifyContent: "center"}}>
         <FontAwesomeIcon
           style={styles.icon}
           icon={faChevronRight}
@@ -131,7 +133,7 @@ export default function Button(props) {
           <Text
             style={[
               styles.text,
-              {color: buttonTextColor, alignSelf: 'center'},
+              {color: buttonTextColor, alignSelf: "center"},
             ]}>
             {props.children}
           </Text>
@@ -153,7 +155,7 @@ export default function Button(props) {
         _onPress();
       }}>
       <Text
-        style={[styles.text, {color: buttonTextColor, alignSelf: 'center'}]}>
+        style={[styles.text, {color: buttonTextColor, alignSelf: "center"}]}>
         {props.children}
       </Text>
       {symbol}
@@ -165,21 +167,21 @@ const styles = StyleSheet.create({
   button: {
     paddingLeft: 25,
     borderRadius: 50,
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingVertical: 27,
   },
   text: {
-    color: 'white',
+    color: "white",
     fontSize: 15,
     flex: 0.93,
   },
   icon: {
     paddingTop: 3,
-    alignSelf: 'center',
+    alignSelf: "center",
     fontSize: 15,
   },
   price: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
   },
 });

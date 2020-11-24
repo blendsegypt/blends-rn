@@ -1,19 +1,19 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   StyleSheet,
   Image,
   TouchableOpacity,
   Platform,
-} from 'react-native';
+} from "react-native";
 //UI Components
-import Text from './ui/Text';
+import Text from "./ui/Text";
 //Icons Font
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faTrash} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
 //Redux
-import {connect} from 'react-redux';
-import {removeFromCart, changeQuantity} from '../redux/actions/cart.action';
+import {connect} from "react-redux";
+import {removeFromCart, changeQuantity} from "../redux/actions/cart.action";
 
 function CartItem({
   id,
@@ -26,14 +26,14 @@ function CartItem({
   changeQuantity,
 }) {
   // Generate the text for product customization description
-  let selectedOptionsText = '';
+  let selectedOptionsText = "";
   selectedOptions.forEach((option, index) => {
     selectedOptionsText += option.value;
     if (index == selectedOptions.length - 2) {
-      selectedOptionsText += ' & ';
+      selectedOptionsText += " & ";
     } else if (index != selectedOptions.length - 1) {
       //Refactor here
-      selectedOptionsText += ', ';
+      selectedOptionsText += ", ";
     }
   });
   return (
@@ -42,8 +42,8 @@ function CartItem({
       <Image source={{uri: image}} style={{width: 55, height: 55}} />
       <View style={{flex: 0.6, paddingLeft: 10}}>
         {/* Title and Custom requests */}
-        <Text style={{fontSize: 15, color: '#11203E'}}>{name}</Text>
-        <Text regular style={{color: '#999999'}}>
+        <Text style={{fontSize: 15, color: "#11203E"}}>{name}</Text>
+        <Text regular style={{color: "#999999"}}>
           {selectedOptionsText}
         </Text>
         {/* Increase / Decrease quantity */}
@@ -52,8 +52,8 @@ function CartItem({
           <TouchableOpacity
             style={[
               styles.quantityButton,
-              {paddingHorizontal: Platform.OS == 'ios' ? 9 : 12},
-              quantity > 1 && {backgroundColor: '#8BBE78'},
+              {paddingHorizontal: Platform.OS == "ios" ? 9 : 12},
+              quantity > 1 && {backgroundColor: "#8BBE78"},
             ]}
             onPress={() => {
               if (quantity > 1) {
@@ -61,18 +61,18 @@ function CartItem({
                 changeQuantity(id, newQuantity);
               }
             }}>
-            <Text style={{color: '#fff', fontSize: 20}}>-</Text>
+            <Text style={{color: "#fff", fontSize: 20}}>-</Text>
           </TouchableOpacity>
           {/* Quantity */}
           <Text style={styles.productQuantity}>{quantity}</Text>
           {/* Increase Quantity */}
           <TouchableOpacity
-            style={[styles.quantityButton, {backgroundColor: '#8BBE78'}]}
+            style={[styles.quantityButton, {backgroundColor: "#8BBE78"}]}
             onPress={() => {
               const newQuantity = quantity + 1;
               changeQuantity(id, newQuantity);
             }}>
-            <Text style={{color: '#fff', fontSize: 20}}>+</Text>
+            <Text style={{color: "#fff", fontSize: 20}}>+</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -84,7 +84,7 @@ function CartItem({
       </View>
       {/* Remove from Cart */}
       <View style={{flex: 0.1}}>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: "row"}}>
           <TouchableOpacity
             style={styles.deleteContainer}
             onPress={() => {
@@ -100,22 +100,22 @@ function CartItem({
 
 const styles = StyleSheet.create({
   itemContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 30,
   },
   price: {
-    color: '#11203E',
+    color: "#11203E",
     fontSize: 15,
     paddingTop: 15,
   },
   changeQuantity: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 5,
   },
   quantityButton: {
-    backgroundColor: '#D7D7D7',
+    backgroundColor: "#D7D7D7",
     padding: 1,
-    paddingHorizontal: Platform.OS == 'ios' ? 8 : 10,
+    paddingHorizontal: Platform.OS == "ios" ? 8 : 10,
     borderRadius: 100,
   },
   productQuantity: {
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     paddingTop: 3,
   },
   deleteContainer: {
-    backgroundColor: '#D86C6C',
+    backgroundColor: "#D86C6C",
     padding: 7,
     marginTop: 8,
     paddingHorizontal: 9,

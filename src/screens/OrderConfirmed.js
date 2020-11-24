@@ -1,27 +1,27 @@
-import React, { useEffect } from "react";
-import { View, StyleSheet, Image, SafeAreaView } from "react-native";
+import React, {useEffect} from "react";
+import {View, StyleSheet, Image, SafeAreaView} from "react-native";
 //UI Components
 import Text from "../components/ui/Text";
 import Button from "../components/ui/Button";
 //Assets
 import OrderConfirmedIllustration from "../../assets/OrderConfirmedIllustration.png";
 //Redux
-import { connect } from "react-redux";
-import { resetCart } from "../redux/actions/cart.action";
+import {connect} from "react-redux";
+import {resetCart} from "../redux/actions/cart.action";
 
-function OrderConfirmed({ navigation, resetCart }) {
+function OrderConfirmed({navigation, resetCart}) {
   //Reset the cart
   useEffect(() => {
     resetCart();
   }, []);
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flex: 1, backgroundColor: "#fff" }}>
+    <View style={{flex: 1}}>
+      <View style={{flex: 1, backgroundColor: "#fff"}}>
         <SafeAreaView>
-          <View style={{ alignItems: "center", marginTop: 100 }}>
+          <View style={{alignItems: "center", marginTop: 100}}>
             <Image
               source={OrderConfirmedIllustration}
-              style={{ width: 305, height: 264 }}
+              style={{width: 305, height: 264}}
             />
             <Text semiBold style={styles.title}>
               Order Confirmed!
@@ -38,23 +38,20 @@ function OrderConfirmed({ navigation, resetCart }) {
           paddingHorizontal: 25,
           backgroundColor: "#fff",
           paddingBottom: 25,
-        }}
-      >
+        }}>
         <Button
           secondary
-          style={{ marginBottom: 10 }}
+          style={{marginBottom: 10}}
           onPress={() => {
             navigation.navigate("Orders");
-          }}
-        >
+          }}>
           Track your Order
         </Button>
         <Button
           blends
           onPress={() => {
             navigation.navigate("Home");
-          }}
-        >
+          }}>
           Return to Store
         </Button>
       </View>

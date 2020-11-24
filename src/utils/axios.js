@@ -57,7 +57,7 @@ const AuthInterceptor = () => {
         },
         {
           pauseInstanceWhileRefreshing: true,
-        }
+        },
       );
       // Access token request patcher
       interceptor = axios.interceptors.request.use(
@@ -72,7 +72,7 @@ const AuthInterceptor = () => {
         },
         (error) => {
           return Promise.reject(error);
-        }
+        },
       );
     },
     // Deactivates authentication interceptor

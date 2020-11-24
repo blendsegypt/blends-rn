@@ -1,39 +1,39 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState, useCallback} from "react";
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   Keyboard,
   Platform,
-} from 'react-native';
+} from "react-native";
 //UI Components
-import TextInput from './ui/TextInput';
-import Text from './ui/Text';
+import TextInput from "./ui/TextInput";
+import Text from "./ui/Text";
 //Icons Font
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faSearch} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faSearch} from "@fortawesome/free-solid-svg-icons";
 //Axios
-import Axios from '../utils/axios';
+import Axios from "../utils/axios";
 //Lodash debounce
-import debounce from 'lodash.debounce';
+import debounce from "lodash.debounce";
 
 function SearchResult({name, placeID, setSelectedPlaceID}) {
   return (
     <TouchableOpacity
       style={styles.searchResult}
       onPress={() => setSelectedPlaceID(placeID)}>
-      <Text style={{color: '#11203E'}}>{name}</Text>
+      <Text style={{color: "#11203E"}}>{name}</Text>
     </TouchableOpacity>
   );
 }
 
 export default function SearchLocation({navigateToPlaceID, coordinates}) {
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [selectedPlaceID, setSelectedPlaceID] = useState('');
+  const [selectedPlaceID, setSelectedPlaceID] = useState("");
   const searchArea = async (text) => {
     // Empty search query
-    if (text === '') {
+    if (text === "") {
       setSearchResults([]);
       return;
     }
@@ -45,7 +45,7 @@ export default function SearchLocation({navigateToPlaceID, coordinates}) {
     const results = [...response.data.predictions];
     // Filter for only inside-Egypt results
     const egyptResults = results.filter((result) => {
-      return result.terms[result.terms.length - 1].value === 'Egypt';
+      return result.terms[result.terms.length - 1].value === "Egypt";
     });
     setSearchResults(egyptResults);
   };
@@ -54,7 +54,7 @@ export default function SearchLocation({navigateToPlaceID, coordinates}) {
 
   //Listen to placeID to navigate in MapView
   useEffect(() => {
-    if (selectedPlaceID !== '') {
+    if (selectedPlaceID !== "") {
       navigateToPlaceID(selectedPlaceID);
       setSearchResults([]);
       Keyboard.dismiss();
@@ -95,22 +95,22 @@ export default function SearchLocation({navigateToPlaceID, coordinates}) {
 const styles = StyleSheet.create({
   searchContainer: {
     paddingHorizontal: 25,
-    paddingTop: Platform.OS === 'android' ? 30 : 0,
+    paddingTop: Platform.OS === "android" ? 30 : 0,
   },
   searchIcon: {
-    position: 'absolute',
+    position: "absolute",
     left: 43,
     zIndex: 99,
     top: 31,
   },
   resultsContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 20,
   },
   searchResult: {
     paddingVertical: 20,
     paddingLeft: 15,
-    borderBottomColor: '#f6f6f6',
+    borderBottomColor: "#f6f6f6",
     borderBottomWidth: 1,
   },
 });

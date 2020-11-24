@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { TouchableOpacity, StyleSheet } from "react-native";
+import React, {useState, useEffect} from "react";
+import {TouchableOpacity, StyleSheet} from "react-native";
 
 //Animations
 import Animated from "react-native-reanimated";
 const AnimatedView = Animated.View;
 
-export default function BottomSheetOverlay({ setShowBottomSheet }) {
+export default function BottomSheetOverlay({setShowBottomSheet}) {
   const [opacity, setOpacity] = useState(0.01);
   const [hide, setHide] = useState(false);
   // Increase opacity every 5ms
@@ -39,13 +39,11 @@ export default function BottomSheetOverlay({ setShowBottomSheet }) {
           {
             opacity: opacity,
           },
-        ]}
-      ></AnimatedView>
+        ]}></AnimatedView>
       <TouchableOpacity
-        style={[styles.overlay, { opacity: 0.01 }]}
+        style={[styles.overlay, {opacity: 0.01}]}
         onPress={() => setHide(true)}
-        activeOpacity={0.01}
-      ></TouchableOpacity>
+        activeOpacity={0.01}></TouchableOpacity>
     </>
   );
 }

@@ -1,21 +1,21 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-} from 'react-native';
+} from "react-native";
 //UI Components
-import Text from '../../components/ui/Text';
-import Button from '../../components/ui/Button';
+import Text from "../../components/ui/Text";
+import Button from "../../components/ui/Button";
 //Components
-import Address from '../../components/Address';
+import Address from "../../components/Address";
 //Icons Font
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChevronLeft} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 //Redux
-import {connect} from 'react-redux';
+import {connect} from "react-redux";
 
 function SavedAddresses({navigation, savedAddresses}) {
   return (
@@ -24,7 +24,7 @@ function SavedAddresses({navigation, savedAddresses}) {
         <View style={styles.header}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Account');
+              navigation.navigate("Account");
             }}
             style={{flex: 0.5, paddingTop: 25}}>
             <FontAwesomeIcon
@@ -57,14 +57,14 @@ function SavedAddresses({navigation, savedAddresses}) {
       <View
         style={{
           paddingHorizontal: 25,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
           paddingBottom: 110,
           paddingTop: 10,
         }}>
         <Button
           icon="map-marker"
           onPress={() => {
-            navigation.navigate('PinDrop', {existingUser: true});
+            navigation.navigate("PinDrop", {existingUser: true});
           }}>
           Add New Address
         </Button>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 25,
     marginTop: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   screenTitle: {
     fontSize: 25,
@@ -85,17 +85,17 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 25,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
+    backgroundColor: "#fff",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.1,
     shadowRadius: 15.65,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },

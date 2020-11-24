@@ -1,15 +1,15 @@
-import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import React from "react";
+import {View, StyleSheet} from "react-native";
+import {TouchableOpacity} from "react-native-gesture-handler";
 //UI Components
-import Text from '../components/ui/Text';
+import Text from "../components/ui/Text";
 //Icons Font
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
 //Redux
-import {connect} from 'react-redux';
+import {connect} from "react-redux";
 //Components
-import CartIcon from '../components/CartIcon';
+import CartIcon from "../components/CartIcon";
 
 function HomeHeader({
   user,
@@ -24,10 +24,10 @@ function HomeHeader({
     if (user.location.supported) {
       location = user.location.area.area_name;
     } else {
-      location = 'Unsupported';
+      location = "Unsupported";
     }
   } else {
-    location = 'Not Selected';
+    location = "Not Selected";
   }
   return (
     <>
@@ -40,17 +40,22 @@ function HomeHeader({
               if (user.addressConfirmed) {
                 setChooseAddressShown(!chooseAddressShown);
               } else {
-                navigation.navigate('PinDrop');
+                navigation.navigate("PinDrop");
                 //removeLocation();
               }
             }}>
-            <FontAwesomeIcon icon={faMapMarkerAlt} size={24} color="white" />
+            <FontAwesomeIcon
+              icon={faMapMarkerAlt}
+              size={22}
+              color="white"
+              style={styles.buttonIcon}
+            />
           </TouchableOpacity>
           <View
             style={[
               styles.tag,
               styles.locationTag,
-              location === 'Unsupported' && styles.warningTag,
+              location === "Unsupported" && styles.warningTag,
             ]}>
             <Text style={[styles.tagText]}>{location}</Text>
           </View>
@@ -63,8 +68,7 @@ function HomeHeader({
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: 'row',
-    marginTop: 10,
+    flexDirection: "row",
     paddingHorizontal: 25,
     marginTop: 50,
     paddingBottom: 10,
@@ -73,42 +77,46 @@ const styles = StyleSheet.create({
     flex: 0.5,
   },
   iconicButton: {
-    paddingVertical: 18,
-    paddingHorizontal: 24,
+    //paddingVertical: 18,
+    //paddingHorizontal: 24,
+    justifyContent: "center",
     borderRadius: 50,
     width: 62,
     height: 62,
     marginTop: 10,
   },
+  buttonIcon: {
+    alignSelf: "center",
+  },
   locationButton: {
-    backgroundColor: '#11203E',
+    backgroundColor: "#11203E",
   },
   cartButton: {
-    backgroundColor: '#C84D49',
+    backgroundColor: "#C84D49",
     paddingVertical: 19,
     paddingHorizontal: 20,
-    marginLeft: 'auto',
+    marginLeft: "auto",
     marginRight: 5,
   },
   tag: {
-    backgroundColor: 'red',
-    position: 'absolute',
+    backgroundColor: "red",
+    position: "absolute",
     padding: 7,
     borderRadius: 50,
   },
   warningTag: {
-    backgroundColor: '#d48787',
+    backgroundColor: "#d48787",
   },
   tagText: {
-    color: 'white',
+    color: "white",
     fontSize: 13,
   },
   locationTag: {
-    backgroundColor: '#C84D49',
+    backgroundColor: "#C84D49",
     marginLeft: 40,
   },
   cartTag: {
-    backgroundColor: '#11203E',
+    backgroundColor: "#11203E",
     paddingHorizontal: 10,
     paddingVertical: 6,
     top: 0,

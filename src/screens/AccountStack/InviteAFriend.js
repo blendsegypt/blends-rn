@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   SafeAreaView,
@@ -6,14 +6,14 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-} from 'react-native';
+} from "react-native";
 //UI Components
-import Text from '../../components/ui/Text';
+import Text from "../../components/ui/Text";
 //Icons Font
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChevronLeft} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 //Assets
-import InviteAFriendIllustration from '../../../assets/InviteAFriendIllustration.png';
+import InviteAFriendIllustration from "../../../assets/InviteAFriendIllustration.png";
 
 function InviteAFriend({navigation}) {
   return (
@@ -22,7 +22,7 @@ function InviteAFriend({navigation}) {
         <View style={styles.header}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Account');
+              navigation.navigate("Account");
             }}
             style={{flex: 0.5, paddingTop: 25}}>
             <FontAwesomeIcon
@@ -42,7 +42,7 @@ function InviteAFriend({navigation}) {
         contentContainerStyle={{paddingBottom: 150}}>
         <Image
           source={InviteAFriendIllustration}
-          style={{width: 272, height: 265, alignSelf: 'center'}}
+          style={{width: 272, height: 265, alignSelf: "center"}}
         />
         <Text style={styles.invitationMessage} bold>
           Invite your friends and get a 50% discount on your next order!
@@ -52,20 +52,20 @@ function InviteAFriend({navigation}) {
           <View style={styles.step}>
             <View>
               <View style={styles.stepCircle}>
-                <Text style={{color: '#bababa'}}>1</Text>
+                <Text style={{color: "#bababa"}}>1</Text>
               </View>
             </View>
             <Text
               style={{
                 paddingLeft: 10,
-                color: '#11203E',
+                color: "#11203E",
                 fontSize: 15,
                 flexShrink: 1,
               }}>
-              Share the code{' '}
-              <Text bold style={{color: '#CE4C4C'}}>
+              Share the code{" "}
+              <Text bold style={{color: "#CE4C4C"}}>
                 REF132
-              </Text>{' '}
+              </Text>{" "}
               with your friends
             </Text>
           </View>
@@ -73,13 +73,13 @@ function InviteAFriend({navigation}) {
           <View style={styles.step}>
             <View>
               <View style={styles.stepCircle}>
-                <Text style={{color: '#bababa'}}>2</Text>
+                <Text style={{color: "#bababa"}}>2</Text>
               </View>
             </View>
             <Text
               style={{
                 paddingLeft: 10,
-                color: '#11203E',
+                color: "#11203E",
                 fontSize: 15,
                 flexShrink: 1,
               }}>
@@ -90,13 +90,13 @@ function InviteAFriend({navigation}) {
           <View style={styles.step}>
             <View>
               <View style={styles.stepCircle}>
-                <Text style={{color: '#bababa'}}>3</Text>
+                <Text style={{color: "#bababa"}}>3</Text>
               </View>
             </View>
             <Text
               style={{
                 paddingLeft: 10,
-                color: '#11203E',
+                color: "#11203E",
                 fontSize: 15,
                 flexShrink: 1,
               }}>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 25,
     marginTop: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   screenTitle: {
     fontSize: 25,
@@ -125,22 +125,22 @@ const styles = StyleSheet.create({
   },
   invitationMessage: {
     paddingHorizontal: 30,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 20,
     marginTop: 20,
     lineHeight: 25,
-    color: '#C84D49',
+    color: "#C84D49",
   },
   steps: {
     paddingHorizontal: 45,
   },
   step: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 25,
-    alignItems: 'center',
+    alignItems: "center",
   },
   stepCircle: {
-    backgroundColor: '#FCFCFC',
+    backgroundColor: "#FCFCFC",
     padding: 20,
     paddingHorizontal: 25,
     borderRadius: 100,

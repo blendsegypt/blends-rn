@@ -1,10 +1,10 @@
-import React, { useRef, useEffect, useState } from "react";
-import { Platform, View, Keyboard } from "react-native";
+import React, {useRef, useEffect, useState} from "react";
+import {Platform, View, Keyboard} from "react-native";
 //Bottom Sheet
 import BottomSheet from "@gorhom/bottom-sheet";
 //Redux
-import { connect } from "react-redux";
-import { confirmUser } from "../../redux/actions/user.action";
+import {connect} from "react-redux";
+import {confirmUser} from "../../redux/actions/user.action";
 //Sheets
 import StartSheet from "./UserActionsSheets/StartSheet";
 import LoginSheet from "./UserActionsSheets/LoginSheet";
@@ -13,7 +13,7 @@ import PhoneNumberSheet from "./UserActionsSheets/PhoneNumberSheet";
 import OTPSheet from "./UserActionsSheets/OTPSheet";
 
 // Phone number entry bottom sheet
-function SheetsRouter({ closeSheet, confirmUser, setSnap, loginMode }) {
+function SheetsRouter({closeSheet, confirmUser, setSnap, loginMode}) {
   // Sheet to be shown
   const [sheet, setSheet] = useState("StartSheet");
   const [facebook, setFacebook] = useState(false);
@@ -121,14 +121,13 @@ function UserActions({
   // Don't use BottomSheet component at all for Android, since it doesn't register
   // presses from TouchableOpacity on the body of the BottomSheet
   return (
-    <View style={{ zIndex: 9999 }}>
+    <View style={{zIndex: 9999}}>
       {Platform.OS === "ios" ? (
         <BottomSheet
           ref={sheetRef}
           snapPoints={["55%", "65%", "75%", "85%", "95%"]}
           initialSnapIndex={-1}
-          enabled={false}
-        >
+          enabled={false}>
           <SheetsRouter
             closeSheet={closeSheet}
             confirmUser={confirmUser}

@@ -10,7 +10,7 @@
  */
 
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import {StyleSheet, TouchableOpacity} from "react-native";
 //UI Components
 import Text from "./Text";
 
@@ -19,7 +19,7 @@ export default function Link(props) {
   if (props.disabled) {
     return (
       <TouchableOpacity>
-        <Text style={[styles.text, props.style, { color: "#C0C0C0" }]}>
+        <Text style={[styles.text, props.style, {color: "#C0C0C0"}]}>
           {props.children}
         </Text>
       </TouchableOpacity>
@@ -29,8 +29,7 @@ export default function Link(props) {
     <TouchableOpacity
       onPress={() => {
         if (props.onPress) props.onPress();
-      }}
-    >
+      }}>
       <Text style={[styles.text, props.style]}>{props.children}</Text>
     </TouchableOpacity>
   );

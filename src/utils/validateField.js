@@ -37,7 +37,7 @@ export default validateField = (field) => {
     errors = errors.filter((error) => error.type != "regex");
     if (!field.regex.test(value)) {
       // Add regex error
-      errors.push({ type: "regex", message: field.regexErrorMessage });
+      errors.push({type: "regex", message: field.regexErrorMessage});
     }
   }
   // Check if there's a minimum length
@@ -64,5 +64,5 @@ export default validateField = (field) => {
       });
     }
   }
-  return { ...field, errors, validated: true };
+  return {...field, errors, validated: true};
 };

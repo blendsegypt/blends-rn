@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import {
   View,
   ScrollView,
@@ -21,11 +21,11 @@ import CloseSheet from "./utils/CloseSheet";
 import API from "../../../utils/axios";
 import Toast from "react-native-toast-message";
 //Redux
-import { connect } from "react-redux";
-import { login } from "../../../redux/actions/auth.action";
+import {connect} from "react-redux";
+import {login} from "../../../redux/actions/auth.action";
 
 // Login Sheet
-function LoginSheet({ setSheet, closeSheet, login, loginMode }) {
+function LoginSheet({setSheet, closeSheet, login, loginMode}) {
   const [buttonActive, setButtonActive] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState({
     text: "Phone Number",
@@ -110,27 +110,24 @@ function LoginSheet({ setSheet, closeSheet, login, loginMode }) {
       {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
       <ScrollView
         style={[styles.bottomSheetContainer]}
-        contentContainerStyle={{ paddingBottom: 300 }}
-        keyboardShouldPersistTaps="always"
-      >
+        contentContainerStyle={{paddingBottom: 300}}
+        keyboardShouldPersistTaps="always">
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-          }}
-        >
+          }}>
           <Image
             source={BlendsLogo}
-            style={{ width: 80, height: 62 }}
+            style={{width: 80, height: 62}}
             resizeMode="contain"
           />
           {!loginMode && (
             <Link
               onPress={() => {
                 setSheet("StartSheet");
-              }}
-            >
+              }}>
               Create a new Account
             </Link>
           )}
@@ -146,7 +143,7 @@ function LoginSheet({ setSheet, closeSheet, login, loginMode }) {
         {[...phoneNumber.errors, ...password.errors].map((error, index) => {
           return (
             <View style={styles.errorMessage} key={index}>
-              <Text regular style={{ color: "#b55b5b" }}>
+              <Text regular style={{color: "#b55b5b"}}>
                 {error.message}
               </Text>
             </View>
@@ -156,36 +153,33 @@ function LoginSheet({ setSheet, closeSheet, login, loginMode }) {
           keyboardType="numeric"
           maxLength={11}
           onChangeText={(text) => {
-            const newPhoneNumber = { ...phoneNumber, value: text };
+            const newPhoneNumber = {...phoneNumber, value: text};
             setPhoneNumber(newPhoneNumber);
             validate(newPhoneNumber, setPhoneNumber);
-          }}
-        >
+          }}>
           Phone Number *
         </TextInput>
         <TextInput
           secureTextEntry
           onChangeText={(text) => {
-            const newPassword = { ...password, value: text };
+            const newPassword = {...password, value: text};
             setPassword(newPassword);
             validate(newPassword, setPassword);
-          }}
-        >
+          }}>
           Password *
         </TextInput>
         {buttonActive ? (
-          <Button style={{ marginTop: 10 }} onPress={() => loginHandler()}>
+          <Button style={{marginTop: 10}} onPress={() => loginHandler()}>
             Continue
           </Button>
         ) : (
-          <Button style={{ marginTop: 10 }} disabled>
+          <Button style={{marginTop: 10}} disabled>
             Continue
           </Button>
         )}
         <Button
-          style={{ backgroundColor: "#3077F2", marginTop: 10 }}
-          icon="facebook"
-        >
+          style={{backgroundColor: "#3077F2", marginTop: 10}}
+          icon="facebook">
           Sign in using Facebook
         </Button>
       </ScrollView>

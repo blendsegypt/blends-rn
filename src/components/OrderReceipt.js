@@ -1,10 +1,10 @@
 import React from "react";
-import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import {View, Image, StyleSheet, TouchableOpacity} from "react-native";
 //UI Components
 import Text from "./ui/Text";
 import TextInput from "./ui/TextInput";
 
-function OrderReceipt({ cartItems, cartTotal, showPromotionInput }) {
+function OrderReceipt({cartItems, cartTotal, showPromotionInput}) {
   return (
     <View style={styles.deliveryDetails}>
       {cartItems.map((item, index) => {
@@ -23,24 +23,23 @@ function OrderReceipt({ cartItems, cartTotal, showPromotionInput }) {
           <View key={index} style={styles.itemContainer}>
             <Image
               source={item.image}
-              style={{ width: 45, height: 43, flex: 0.2 }}
+              style={{width: 45, height: 43, flex: 0.2}}
               resizeMode="contain"
             />
-            <View style={{ flex: 0.53 }}>
+            <View style={{flex: 0.53}}>
               <Text>{item.name}</Text>
-              <Text regular style={{ color: "#999999" }}>
+              <Text regular style={{color: "#999999"}}>
                 {selectedOptionsText}
               </Text>
             </View>
             <View>
               <View style={styles.quantity}>
-                <Text style={{ color: "#fff" }}>{item.quantity}</Text>
+                <Text style={{color: "#fff"}}>{item.quantity}</Text>
               </View>
             </View>
             <Text
               bold
-              style={{ flex: 0.27, textAlign: "right", color: "#11203E" }}
-            >
+              style={{flex: 0.27, textAlign: "right", color: "#11203E"}}>
               {item.price.toFixed(2)} EGP
             </Text>
           </View>
@@ -49,8 +48,8 @@ function OrderReceipt({ cartItems, cartTotal, showPromotionInput }) {
       {/* Subtotal & Delivery Charges */}
       <View style={styles.subtotal}>
         {/* Subtotal */}
-        <View style={{ flexDirection: "row", paddingVertical: 15 }}>
-          <Text style={{ fontSize: 14, flex: 0.76, color: "#11203E" }} semiBold>
+        <View style={{flexDirection: "row", paddingVertical: 15}}>
+          <Text style={{fontSize: 14, flex: 0.76, color: "#11203E"}} semiBold>
             Subtotal
           </Text>
           <Text
@@ -60,14 +59,13 @@ function OrderReceipt({ cartItems, cartTotal, showPromotionInput }) {
               flex: 0.24,
               textAlign: "right",
             }}
-            semiBold
-          >
+            semiBold>
             {cartTotal} EGP
           </Text>
         </View>
         {/* Delivery Charges */}
-        <View style={{ flexDirection: "row", paddingVertical: 15 }}>
-          <Text style={{ fontSize: 14, flex: 0.8, color: "#9C9C9C" }} semiBold>
+        <View style={{flexDirection: "row", paddingVertical: 15}}>
+          <Text style={{fontSize: 14, flex: 0.8, color: "#9C9C9C"}} semiBold>
             Delivery Charges
           </Text>
           <Text
@@ -77,8 +75,7 @@ function OrderReceipt({ cartItems, cartTotal, showPromotionInput }) {
               flex: 0.2,
               textAlign: "right",
             }}
-            semiBold
-          >
+            semiBold>
             5.00 EGP
           </Text>
         </View>
@@ -93,8 +90,7 @@ function OrderReceipt({ cartItems, cartTotal, showPromotionInput }) {
               fontSize: 14,
               flex: 0.7,
               zIndex: 1,
-            }}
-          >
+            }}>
             Promotion Code (optional)
           </TextInput>
           <TouchableOpacity
@@ -105,18 +101,17 @@ function OrderReceipt({ cartItems, cartTotal, showPromotionInput }) {
               paddingHorizontal: 22,
               paddingVertical: 20,
               zIndex: 99,
-            }}
-          >
-            <Text style={{ color: "#437FD9" }}>Apply</Text>
+            }}>
+            <Text style={{color: "#437FD9"}}>Apply</Text>
           </TouchableOpacity>
         </View>
       )}
       {/* Total */}
       <View style={styles.total}>
-        <Text bold style={{ color: "#fff", flex: 0.75 }}>
+        <Text bold style={{color: "#fff", flex: 0.75}}>
           Total
         </Text>
-        <Text bold style={{ color: "#fff", flex: 0.25, textAlign: "right" }}>
+        <Text bold style={{color: "#fff", flex: 0.25, textAlign: "right"}}>
           {(Number(cartTotal) + 5).toFixed(2)} EGP
         </Text>
       </View>

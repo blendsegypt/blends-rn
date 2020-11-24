@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import { View, ScrollView, StyleSheet, SafeAreaView } from "react-native";
+import React, {useEffect} from "react";
+import {View, ScrollView, StyleSheet, SafeAreaView} from "react-native";
 //UI Component
 import Text from "../components/ui/Text";
 import Button from "../components/ui/Button";
 //Redux
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 //FreshChat Integration
 import {
   Freshchat,
@@ -12,13 +12,13 @@ import {
   FreshchatUser,
 } from "react-native-freshchat-sdk";
 
-function Support({ user }) {
+function Support({user}) {
   useEffect(() => {
     if (!user.phoneNumberConfirmed) return;
     // Setup FreshChat
     const freshchatConfig = new FreshchatConfig(
       "eeded093-e396-4fa5-8302-85223c8725c6",
-      "af17ee52-db85-484b-853f-c650fdd023c5"
+      "af17ee52-db85-484b-853f-c650fdd023c5",
     );
     freshchatConfig.domain = "msdk.eu.freshchat.com";
     Freshchat.init(freshchatConfig);
@@ -38,9 +38,9 @@ function Support({ user }) {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <SafeAreaView>
-        <View style={[styles.header, { justifyContent: "center" }]}>
+        <View style={[styles.header, {justifyContent: "center"}]}>
           <Text bold style={styles.screenTitle}>
             Support
           </Text>
@@ -51,15 +51,14 @@ function Support({ user }) {
           <Button
             icon="commenting"
             textColor="#437FD9"
-            style={{ backgroundColor: "#EBF1FF" }}
+            style={{backgroundColor: "#EBF1FF"}}
             onPress={() => {
               showFreshChat();
-            }}
-          >
+            }}>
             Talk to Support
           </Button>
         )}
-        <Button style={{ marginTop: 10 }} secondary icon="heart">
+        <Button style={{marginTop: 10}} secondary icon="heart">
           Rate Blends on Appstore
         </Button>
       </ScrollView>

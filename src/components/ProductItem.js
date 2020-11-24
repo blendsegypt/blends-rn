@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import {View, StyleSheet, Image} from "react-native";
 //UI Components
 import Text from "../components/ui/Text";
 import Button from "../components/ui/Button";
@@ -28,15 +28,15 @@ function ProductItem({
       <Image
         source={
           product_image_url
-            ? { uri: product_image_url, cache: "force-cache" }
+            ? {uri: product_image_url, cache: "force-cache"}
             : {}
         }
-        style={{ width: 110, height: 110 }}
+        style={{width: 110, height: 110}}
         resizeMode="contain"
       />
       <Text style={styles.productName}>{name}</Text>
       {sale_price !== 0 ? (
-        <View style={{ flexDirection: "row" }}>
+        <View style={{flexDirection: "row"}}>
           <Text style={styles.oldPriceText}>{price} EGP</Text>
           <View style={styles.newPrice}>
             <Text style={styles.newPriceText}>{sale_price} EGP</Text>
@@ -56,10 +56,9 @@ function ProductItem({
               unsupportedHandler();
               return;
             }
-            navigation.navigate("Product", { product_id: id });
+            navigation.navigate("Product", {product_id: id});
           }}
-          style={styles.itemButton}
-        >
+          style={styles.itemButton}>
           Select
         </Button>
       ) : (
@@ -71,8 +70,7 @@ function ProductItem({
             }
           }}
           style={styles.itemButton}
-          icon="plus"
-        >
+          icon="plus">
           Add to Cart
         </Button>
       )}

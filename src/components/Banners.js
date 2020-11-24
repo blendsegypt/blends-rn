@@ -1,17 +1,17 @@
-import React, {useState, useEffect} from 'react';
-import {Image, Dimensions, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect} from "react";
+import {Image, Dimensions, TouchableOpacity} from "react-native";
 // Images Carousel
-import Carousel from 'react-native-snap-carousel';
+import Carousel from "react-native-snap-carousel";
 // Loading Skeleton
-import SkeletonContent from 'react-native-skeleton-content-nonexpo';
-import API from '../utils/axios';
+import SkeletonContent from "react-native-skeleton-content-nonexpo";
+import API from "../utils/axios";
 
 function Banners({navigation}) {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [banners, setBanners] = useState([]);
   useEffect(() => {
     const loadBanners = async () => {
-      const banners = await API.get('app/banners');
+      const banners = await API.get("app/banners");
       setBanners(banners.data.data);
       setImagesLoaded(true);
     };
@@ -23,11 +23,11 @@ function Banners({navigation}) {
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
-          navigation.navigate('Product', {product_id: item.product_id});
+          navigation.navigate("Product", {product_id: item.product_id});
         }}>
         <Image
           key={index}
-          source={{uri: item.banner_image_url, cache: 'force-cache'}}
+          source={{uri: item.banner_image_url, cache: "force-cache"}}
           style={{width: 360, height: 155}}
         />
       </TouchableOpacity>
@@ -39,7 +39,7 @@ function Banners({navigation}) {
         <Carousel
           data={banners}
           renderItem={renderItem}
-          sliderWidth={Dimensions.get('window').width}
+          sliderWidth={Dimensions.get("window").width}
           itemWidth={360}
         />
       ) : (
@@ -51,7 +51,7 @@ function Banners({navigation}) {
           boneColor="#D1D1D1"
           layout={[
             {
-              key: 'banner',
+              key: "banner",
               width: 325,
               height: 140,
               borderRadius: 10,

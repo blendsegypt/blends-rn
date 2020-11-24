@@ -1,17 +1,17 @@
-import React, {useState, useEffect} from 'react';
-import {View, ScrollView, StyleSheet, SafeAreaView} from 'react-native';
+import React, {useState, useEffect} from "react";
+import {View, ScrollView, StyleSheet, SafeAreaView} from "react-native";
 //UI Components
-import Text from '../components/ui/Text';
-import Button from '../components/ui/Button';
-import Link from '../components/ui/Link';
-import Stars from '../components/ui/Stars';
+import Text from "../components/ui/Text";
+import Button from "../components/ui/Button";
+import Link from "../components/ui/Link";
+import Stars from "../components/ui/Stars";
 //Icons Fonts
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faCalendar} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faCalendar} from "@fortawesome/free-solid-svg-icons";
 //import {MaterialCommunityIcons} from '@expo/vector-icons';
 //import {Fontisto} from '@expo/vector-icons';
 // Loading Skeleton
-import SkeletonContent from 'react-native-skeleton-content-nonexpo';
+import SkeletonContent from "react-native-skeleton-content-nonexpo";
 
 function Orders({navigation}) {
   const [ordersLoaded, setOrdersLoaded] = useState(false);
@@ -27,21 +27,21 @@ function Orders({navigation}) {
   const orders = [
     {
       number: 1123,
-      status: 'Brewing',
-      estimatedDelivery: '09:32 AM',
-      ordered: 'Today',
+      status: "Brewing",
+      estimatedDelivery: "09:32 AM",
+      ordered: "Today",
     },
     {
       number: 1322,
-      status: 'Delivered',
-      deliveryDate: '23/8/2020',
+      status: "Delivered",
+      deliveryDate: "23/8/2020",
       stars: 4,
     },
   ];
   return (
     <View style={{flex: 1}}>
       <SafeAreaView>
-        <View style={[styles.header, {justifyContent: 'center'}]}>
+        <View style={[styles.header, {justifyContent: "center"}]}>
           <Text bold style={styles.screenTitle}>
             Orders
           </Text>
@@ -51,7 +51,7 @@ function Orders({navigation}) {
         {/* Orders loading / loaded */}
         {ordersLoaded ? (
           orders.map((order, index) => {
-            if (order.status == 'Delivered') {
+            if (order.status == "Delivered") {
               return (
                 <DeliveredOrder
                   {...order}
@@ -68,7 +68,7 @@ function Orders({navigation}) {
           <SkeletonContent
             containerStyle={{
               marginTop: 25,
-              backgroundColor: '#D1D1D1',
+              backgroundColor: "#D1D1D1",
               borderRadius: 20,
               height: 170,
               paddingHorizontal: 20,
@@ -81,16 +81,16 @@ function Orders({navigation}) {
             layout={[
               {
                 paddingVertical: 20,
-                flexDirection: 'row',
+                flexDirection: "row",
                 children: [
                   {
-                    key: 'status',
+                    key: "status",
                     width: 100,
                     height: 20,
                     borderRadius: 20,
                   },
                   {
-                    key: 'details',
+                    key: "details",
                     width: 100,
                     height: 20,
                     borderRadius: 20,
@@ -100,16 +100,16 @@ function Orders({navigation}) {
               },
               {
                 paddingVertical: 5,
-                flexDirection: 'row',
+                flexDirection: "row",
                 children: [
                   {
-                    key: 'ordered',
+                    key: "ordered",
                     width: 100,
                     height: 20,
                     borderRadius: 20,
                   },
                   {
-                    key: 'orderNumber',
+                    key: "orderNumber",
                     width: 100,
                     height: 20,
                     borderRadius: 20,
@@ -118,8 +118,8 @@ function Orders({navigation}) {
                 ],
               },
               {
-                key: 'button',
-                width: '100%',
+                key: "button",
+                width: "100%",
                 height: 50,
                 borderRadius: 50,
                 marginTop: 15,
@@ -144,25 +144,25 @@ function OrderInProgress({
       {/* Order Status Bar */}
       <View style={styles.statusBar}>
         {/* Order Status */}
-        <View style={{flexDirection: 'row', flex: 0.5}}>
+        <View style={{flexDirection: "row", flex: 0.5}}>
           {/* <MaterialCommunityIcons
             name="coffee-outline"
             size={20}
             color="#fff"
           /> */}
-          <Text bold style={{color: '#fff', fontSize: 15, paddingLeft: 5}}>
+          <Text bold style={{color: "#fff", fontSize: 15, paddingLeft: 5}}>
             {status}
           </Text>
         </View>
         {/* Estimated Delivery */}
         <View
           style={{
-            flexDirection: 'row',
+            flexDirection: "row",
             flex: 0.5,
-            justifyContent: 'flex-end',
+            justifyContent: "flex-end",
           }}>
           {/* <Fontisto name="motorcycle" size={19} color="#fff" /> */}
-          <Text style={{color: '#fff', fontSize: 15, paddingLeft: 5}}>
+          <Text style={{color: "#fff", fontSize: 15, paddingLeft: 5}}>
             Approx. {estimatedDelivery}
           </Text>
         </View>
@@ -171,21 +171,21 @@ function OrderInProgress({
       <View>
         <View
           style={{
-            flexDirection: 'row',
+            flexDirection: "row",
             paddingHorizontal: 22,
             paddingTop: 20,
             paddingBottom: 5,
           }}>
-          <Text regular style={{flex: 0.5, fontSize: 15, color: '#888888'}}>
+          <Text regular style={{flex: 0.5, fontSize: 15, color: "#888888"}}>
             Ordered <Text bold>{ordered}</Text>
           </Text>
           <Text
             regular
             style={{
               flex: 0.5,
-              textAlign: 'right',
+              textAlign: "right",
               fontSize: 15,
-              color: '#888888',
+              color: "#888888",
             }}>
             Order Number <Text bold>#{number}</Text>
           </Text>
@@ -193,7 +193,7 @@ function OrderInProgress({
         <Button
           style={styles.orderDetailsButton}
           onPress={() => {
-            navigation.navigate('OrderDetails');
+            navigation.navigate("OrderDetails");
           }}>
           View Order Details
         </Button>
@@ -210,28 +210,28 @@ function DeliveredOrder({number, status, deliveryDate, stars, navigation}) {
         style={[
           styles.statusBar,
           {
-            backgroundColor: '#fff',
+            backgroundColor: "#fff",
             paddingVertical: 25,
-            borderBottomColor: '#F0F0F0',
+            borderBottomColor: "#F0F0F0",
             borderBottomWidth: 1,
           },
         ]}>
         {/* Order Status */}
-        <View style={{flexDirection: 'row', flex: 0.5}}>
+        <View style={{flexDirection: "row", flex: 0.5}}>
           {/* <MaterialCommunityIcons name="check" size={20} color="#8DAA68" /> */}
-          <Text bold style={{color: '#8DAA68', fontSize: 15, paddingLeft: 5}}>
+          <Text bold style={{color: "#8DAA68", fontSize: 15, paddingLeft: 5}}>
             {status}
           </Text>
         </View>
         {/* Estimated Delivery */}
         <View
           style={{
-            flexDirection: 'row',
+            flexDirection: "row",
             flex: 0.5,
-            justifyContent: 'flex-end',
+            justifyContent: "flex-end",
           }}>
           <FontAwesomeIcon icon={faCalendar} size={17} color="#DBDBDB" />
-          <Text style={{color: '#DBDBDB', fontSize: 15, paddingLeft: 5}}>
+          <Text style={{color: "#DBDBDB", fontSize: 15, paddingLeft: 5}}>
             {deliveryDate}
           </Text>
         </View>
@@ -239,14 +239,14 @@ function DeliveredOrder({number, status, deliveryDate, stars, navigation}) {
       {/* Order Data Area */}
       <View
         style={{
-          flexDirection: 'row',
-          alignItems: 'center',
+          flexDirection: "row",
+          alignItems: "center",
           padding: 20,
         }}>
         {/* Order Rating */}
         <View
           style={{
-            flexDirection: 'row',
+            flexDirection: "row",
             flex: 0.5,
           }}>
           {
@@ -263,10 +263,10 @@ function DeliveredOrder({number, status, deliveryDate, stars, navigation}) {
             regular
             style={{
               flex: 0.5,
-              textAlign: 'right',
+              textAlign: "right",
             }}
             onPress={() => {
-              navigation.navigate('OrderDetails');
+              navigation.navigate("OrderDetails");
             }}>
             View Order Details
           </Link>
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 25,
     marginTop: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   screenTitle: {
     fontSize: 25,
@@ -288,8 +288,8 @@ const styles = StyleSheet.create({
   },
   ordersContainer: {
     marginTop: 25,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
+    backgroundColor: "#fff",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -297,16 +297,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 15.65,
     elevation: 8,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 10,
   },
   orderContainer: {
-    backgroundColor: '#fff',
-    shadowColor: '#000',
+    backgroundColor: "#fff",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -319,8 +319,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
   },
   statusBar: {
-    flexDirection: 'row',
-    backgroundColor: '#11203E',
+    flexDirection: "row",
+    backgroundColor: "#11203E",
     padding: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

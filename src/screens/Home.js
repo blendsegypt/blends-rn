@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  ScrollView,
-  View,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-} from "react-native";
+import {ScrollView, View, StyleSheet, SafeAreaView, Image} from "react-native";
 //UI Components
 import Text from "../components/ui/Text";
 //Assets
@@ -17,7 +11,7 @@ import Products from "../components/Products";
 //Headers
 import HomeHeader from "./HomeHeader";
 //Redux
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 
 function Home({
   setChooseAddressShown,
@@ -29,7 +23,7 @@ function Home({
 }) {
   return (
     <>
-      <View style={{ backgroundColor: "#fff" }}>
+      <View style={{backgroundColor: "#fff"}}>
         <HomeHeader
           navigation={navigation}
           setChooseAddressShown={setChooseAddressShown}
@@ -38,9 +32,8 @@ function Home({
       </View>
       <ScrollView
         style={styles.background}
-        contentContainerStyle={{ paddingBottom: 50 }}
-        showsVerticalScrollIndicator={false}
-      >
+        contentContainerStyle={{paddingBottom: 50}}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.whiteContainer}>
           <SafeAreaView>
             <View>
@@ -51,9 +44,8 @@ function Home({
                   Good Morning,
                 </Text>
                 <Text
-                  style={[styles.goodMorningText, { paddingLeft: 3 }]}
-                  semiBold
-                >
+                  style={[styles.goodMorningText, {paddingLeft: 3}]}
+                  semiBold>
                   {firstName}!
                 </Text>
               </View>
@@ -68,16 +60,16 @@ function Home({
               </View>
             </View>
             {/* Banners Section */}
-            <View style={{ marginTop: 15 }}>
+            <View style={{marginTop: 15}}>
               <Banners navigation={navigation} />
             </View>
           </SafeAreaView>
         </View>
-        <View style={{ marginTop: 30, paddingBottom: 50 }}>
+        <View style={{marginTop: 30, paddingBottom: 50}}>
           {/* Recent Orders */}
           {loggedIn && <RecentOrders navigation={navigation} />}
           {/* Products */}
-          <View style={{ marginTop: 20, paddingHorizontal: 25 }}>
+          <View style={{marginTop: 20, paddingHorizontal: 25}}>
             <Products navigation={navigation} supportedArea={supportedArea} />
           </View>
         </View>

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ScrollView, Image, StyleSheet, Platform } from "react-native";
+import {View, ScrollView, Image, StyleSheet, Platform} from "react-native";
 //UI Components
 import Text from "../../../components/ui/Text";
 import Link from "../../../components/ui/Link";
@@ -9,31 +9,28 @@ import BlendsLogo from "../../../../assets/BlendsLogo.png";
 //Field Validation
 import CloseSheet from "./utils/CloseSheet";
 
-export default function StartSheet({ setSheet, closeSheet }) {
+export default function StartSheet({setSheet, closeSheet}) {
   return (
     <>
       {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
       <ScrollView
         style={styles.bottomSheetContainer}
-        contentContainerStyle={{ paddingBottom: 300 }}
-      >
+        contentContainerStyle={{paddingBottom: 300}}>
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-          }}
-        >
+          }}>
           <Image
             source={BlendsLogo}
-            style={{ width: 80, height: 62 }}
+            style={{width: 80, height: 62}}
             resizeMode="contain"
           />
           <Link
             onPress={() => {
               setSheet("LoginSheet");
-            }}
-          >
+            }}>
             Already a User?
           </Link>
         </View>
@@ -45,18 +42,16 @@ export default function StartSheet({ setSheet, closeSheet }) {
           worry it won't take minutes!
         </Text>
         <Button
-          style={{ marginTop: 20 }}
+          style={{marginTop: 20}}
           onPress={() => {
             setSheet("PhoneNumberSheet");
-          }}
-        >
+          }}>
           Continue
         </Button>
         <Button
-          style={{ marginTop: 10, backgroundColor: "#3077F2" }}
+          style={{marginTop: 10, backgroundColor: "#3077F2"}}
           icon="facebook"
-          onPress={() => setSheet("PhoneNumberSheet")}
-        >
+          onPress={() => setSheet("PhoneNumberSheet")}>
           Signup using Facebook
         </Button>
       </ScrollView>

@@ -1,9 +1,9 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import {View, StyleSheet} from "react-native";
 // UI Components
 import Text from "./ui/Text";
 
-function CheckoutProgress({ steps }) {
+function CheckoutProgress({steps}) {
   // Padding array used to add proper padding for either 2 / 3 steps progress bar
   const twoStepsPadding = [10, 90];
   const threeStepsPadding = [10, 55, 50];
@@ -12,10 +12,9 @@ function CheckoutProgress({ steps }) {
       style={{
         paddingHorizontal: 25,
         marginVertical: 30,
-      }}
-    >
+      }}>
       {/* Progress Bar */}
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+      <View style={{flexDirection: "row", justifyContent: "center"}}>
         {steps.map((step, index) => {
           const lastIndex = steps.length - 1;
           return (
@@ -23,18 +22,14 @@ function CheckoutProgress({ steps }) {
               <View
                 style={[
                   styles.circle,
-                  step.active ? { backgroundColor: "#64AB84" } : {},
-                ]}
-              ></View>
+                  step.active ? {backgroundColor: "#64AB84"} : {},
+                ]}></View>
               {index != lastIndex && (
                 <View
                   style={[
                     styles.bar,
-                    steps[index + 1].active
-                      ? { backgroundColor: "#64AB84" }
-                      : {},
-                  ]}
-                ></View>
+                    steps[index + 1].active ? {backgroundColor: "#64AB84"} : {},
+                  ]}></View>
               )}
             </React.Fragment>
           );
@@ -46,8 +41,7 @@ function CheckoutProgress({ steps }) {
           flexDirection: "row",
           justifyContent: "center",
           paddingTop: 5,
-        }}
-      >
+        }}>
         {steps.map((step, index) => {
           return (
             <View key={index}>
@@ -59,8 +53,7 @@ function CheckoutProgress({ steps }) {
                     steps.length == 2
                       ? twoStepsPadding[index]
                       : threeStepsPadding[index],
-                }}
-              >
+                }}>
                 {step.label}
               </Text>
             </View>

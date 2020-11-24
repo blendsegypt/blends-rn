@@ -1,27 +1,27 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from "react";
 import {
   SafeAreaView,
   View,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
+} from "react-native";
 //UI Components
-import Text from '../components/ui/Text';
-import TextInput from '../components/ui/TextInput';
-import Button from '../components/ui/Button';
+import Text from "../components/ui/Text";
+import TextInput from "../components/ui/TextInput";
+import Button from "../components/ui/Button";
 //Icons Font
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChevronRight} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faChevronRight} from "@fortawesome/free-solid-svg-icons";
 //Components
-import CheckoutProgress from '../components/CheckoutProgress';
+import CheckoutProgress from "../components/CheckoutProgress";
 //Redux
-import {connect} from 'react-redux';
-import {addAddress} from '../redux/actions/user.action';
+import {connect} from "react-redux";
+import {addAddress} from "../redux/actions/user.action";
 //Keyboard Aware ScrollView
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 //Form validation
-import validateField from '../utils/validateField';
+import validateField from "../utils/validateField";
 
 /*
 
@@ -45,30 +45,30 @@ import validateField from '../utils/validateField';
 
 function AddressDetails({navigation, userLocation, addAddress}) {
   const [addressNickname, setAddressNickname] = useState({
-    text: 'Address Nickname',
-    value: '',
+    text: "Address Nickname",
+    value: "",
     notEmpty: true,
     validated: false,
     errors: [],
   });
   const [street, setStreet] = useState({
-    text: 'Street',
+    text: "Street",
     value: userLocation.street,
     notEmpty: true,
     validated: true,
     errors: [],
   });
   const [addressDetails, setAddressDetails] = useState({
-    value: '',
+    value: "",
   });
   const [floor, setFloor] = useState({
-    value: '',
+    value: "",
   });
   const [apartment, setApartment] = useState({
-    value: '',
+    value: "",
   });
   const [deliveryNotes, setDeliveryNotes] = useState({
-    value: '',
+    value: "",
   });
   // Review Order button state
   const [buttonActive, setButtonActive] = useState(false);
@@ -108,7 +108,7 @@ function AddressDetails({navigation, userLocation, addAddress}) {
       deliveryNotes: deliveryNotes.value,
     };
     addAddress(address);
-    navigation.navigate('ReviewOrder', {threeStepsCheckout: true});
+    navigation.navigate("ReviewOrder", {threeStepsCheckout: true});
   };
 
   return (
@@ -118,7 +118,7 @@ function AddressDetails({navigation, userLocation, addAddress}) {
           <View style={styles.header}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Cart');
+                navigation.navigate("Cart");
               }}
               style={{flex: 0.5, paddingTop: 25}}>
               <FontAwesomeIcon
@@ -135,15 +135,15 @@ function AddressDetails({navigation, userLocation, addAddress}) {
         <CheckoutProgress
           steps={[
             {
-              label: 'Cart',
+              label: "Cart",
               active: true,
             },
             {
-              label: 'Address Details',
+              label: "Address Details",
               active: true,
             },
             {
-              label: 'Confirm',
+              label: "Confirm",
               active: false,
             },
           ]}
@@ -158,7 +158,7 @@ function AddressDetails({navigation, userLocation, addAddress}) {
               (error, index) => {
                 return (
                   <View style={styles.errorMessage} key={index}>
-                    <Text regular style={{color: '#b55b5b'}}>
+                    <Text regular style={{color: "#b55b5b"}}>
                       {error.message}
                     </Text>
                   </View>
@@ -186,7 +186,7 @@ function AddressDetails({navigation, userLocation, addAddress}) {
                   Governate
                 </TextInput>
               </View>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: "row"}}>
                 <View style={{flex: 0.5, marginRight: 10}}>
                   <TextInput
                     editable={false}
@@ -214,7 +214,7 @@ function AddressDetails({navigation, userLocation, addAddress}) {
                 }}>
                 Address Details
               </TextInput>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: "row"}}>
                 <TextInput
                   style={[styles.textInput, {flex: 0.4, marginRight: 10}]}
                   keyboardType="numeric"
@@ -244,7 +244,7 @@ function AddressDetails({navigation, userLocation, addAddress}) {
         <View
           style={{
             paddingHorizontal: 25,
-            backgroundColor: '#fff',
+            backgroundColor: "#fff",
             paddingBottom: 25,
           }}>
           {buttonActive ? (
@@ -262,31 +262,31 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 25,
     marginTop: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   screenTitle: {
     fontSize: 25,
     paddingTop: 20,
   },
   container: {
-    backgroundColor: '#fff',
-    shadowColor: '#000',
+    backgroundColor: "#fff",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.1,
     shadowRadius: 15.65,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: "#fff",
     paddingHorizontal: 25,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 30,
   },
   containerTitle: {
-    color: '#C84D49',
+    color: "#C84D49",
     fontSize: 16,
   },
   location: {
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     marginVertical: 7,
   },
   errorMessage: {
-    backgroundColor: '#F3E1E1',
+    backgroundColor: "#F3E1E1",
     padding: 15,
     marginBottom: 10,
     borderRadius: 20,
