@@ -1,113 +1,173 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+//import { StatusBar } from "expo-status-bar";
+import React, {useState} from 'react';
+import {StyleSheet, StatusBar} from 'react-native';
+//Redux
+import {store, persistor} from './src/redux/store';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+//Screens
+// -- Tab Screens
+import Home from './src/screens/Home';
+import Orders from './src/screens/Orders';
+import Support from './src/screens/Support';
+// -- Home Stack navigation screens
+import PinDrop from './src/screens/PinDrop';
+import Product from './src/screens/Product';
+import Cart from './src/screens/Cart';
+import AddressDetails from './src/screens/AddressDetails';
+import ReviewOrder from './src/screens/ReviewOrder';
+import OrderConfirmed from './src/screens/OrderConfirmed';
+// -- Orders Stack navigation screens
+import OrderDetails from './src/screens/OrderDetails';
+// -- Account Stack navigation screens
+import Account from './src/screens/Account';
+import PersonalInformation from './src/screens/AccountStack/PersonalInformation';
+import SavedAddresses from './src/screens/AccountStack/SavedAdresses';
+import InviteAFriend from './src/screens/AccountStack/InviteAFriend';
+import EditAddress from './src/screens/AccountStack/EditAddress';
+//Tab Navigation
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
+//Tab Bar settings
+import tabBarSettings from './src/utils/tabBarSettings';
+//Bottom Sheets
+import ChooseAddress from './src/screens/bottomSheets/ChooseAddress';
+import BottomSheetOverlay from './src/components/BottomSheetOverlay';
+//Toast messages
+import Toast from 'react-native-toast-message';
+import toastConfig from './src/utils/toastConfig';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+const StackOrders = createStackNavigator();
+const StackAccount = createStackNavigator();
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+// Orders Stack screens
+function OrdersStack() {
+  return (
+    <StackOrders.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Orders" component={Orders} />
+      <Stack.Screen name="OrderDetails" component={OrderDetails} />
+    </StackOrders.Navigator>
+  );
+}
 
-const App: () => React$Node = () => {
+function AccountStack() {
+  return (
+    <StackAccount.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Account" component={Account} />
+      <Stack.Screen
+        name="PersonalInformation"
+        component={PersonalInformation}
+      />
+      <Stack.Screen name="SavedAddresses" component={SavedAddresses} />
+      <Stack.Screen name="EditAddress" component={EditAddress} />
+      <Stack.Screen name="InviteAFriend" component={InviteAFriend} />
+    </StackAccount.Navigator>
+  );
+}
+
+// Home Tabs screens
+function HomeTabs({navigation}) {
+  /*
+   *
+   *  (note) Bottom sheet was placed here to snap above the tab bar
+   *
+   */
+  const [chooseAddressShown, setChooseAddressShown] = useState(false);
+
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
+      {/* Bottom Sheet Overlay */}
+      {chooseAddressShown && (
+        <BottomSheetOverlay
+          setShowBottomSheet={(state) => setChooseAddressShown(state)}
+        />
+      )}
+      <Tab.Navigator
+        tabBarOptions={{
+          style: styles.tabBar,
+          activeTintColor: '#C84D49',
+          showLabel: false,
+        }}
+        screenOptions={tabBarSettings}>
+        <Tab.Screen name="Home">
+          {(props) => (
+            <Home
+              {...props}
+              setChooseAddressShown={setChooseAddressShown}
+              chooseAddressShown={chooseAddressShown}
+            />
           )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+        </Tab.Screen>
+        <Tab.Screen name="Orders" component={OrdersStack} />
+        <Tab.Screen name="Account" component={AccountStack} />
+        <Tab.Screen name="Support" component={Support} />
+      </Tab.Navigator>
+      {/* Choose Address Bottom Sheet */}
+      {/* <ChooseAddress
+        chooseAddressShown={chooseAddressShown}
+        setChooseAddressShown={setChooseAddressShown}
+        navigation={navigation}
+      /> */}
     </>
   );
-};
+}
+
+function App() {
+  return (
+    <>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <NavigationContainer>
+            <Stack.Navigator screenOptions={{headerShown: false}}>
+              <Stack.Screen name="PinDrop" component={PinDrop} />
+              <Stack.Screen name="Home" component={HomeTabs} />
+              <Stack.Screen name="Product" component={Product} />
+              <Stack.Screen name="Cart" component={Cart} />
+              <Stack.Screen name="AddressDetails" component={AddressDetails} />
+              <Stack.Screen name="ReviewOrder" component={ReviewOrder} />
+              <Stack.Screen name="OrderConfirmed" component={OrderConfirmed} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </PersistGate>
+      </Provider>
+      <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)} />
+      <StatusBar barStyle="dark-content" />
+    </>
+  );
+}
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
+  tabBar: {
     position: 'absolute',
-    right: 0,
+    backgroundColor: '#fff',
+    marginBottom: 20,
+    marginHorizontal: 15,
+    borderRadius: 50,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 15.65,
+    elevation: 8,
+    borderStyle: 'solid',
+    borderWidth: 0,
+    borderColor: '#fff',
+    paddingBottom: 0,
+    borderTopWidth: 0,
+    minHeight: 70,
   },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  overlay: {
+    backgroundColor: 'black',
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    opacity: 0.8,
+    zIndex: 99,
   },
 });
 

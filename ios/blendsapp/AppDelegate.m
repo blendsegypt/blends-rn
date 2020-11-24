@@ -3,6 +3,12 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <GoogleMaps/GoogleMaps.h>
+#import <Firebase.h>
+
+#import <GoogleMaps/GoogleMaps.h>
+#import <Firebase.h>
+
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -23,10 +29,20 @@ static void InitializeFlipper(UIApplication *application) {
 }
 #endif
 
+@interface AppDelegate () <RCTBridgeDelegate>
+
+@property (nonatomic, strong) NSDictionary *launchOptions;
+
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:@"AIzaSyA68T7sAx0oZOKA8zUlMdl-_QmGh7eibQc"];
+  if ([FIRApp defaultApp] == nil) {
+      [FIRApp configure];
+  }
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
@@ -48,8 +64,8 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
-#if DEBUG
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+#ifdef DEBUG
+  return [NSURL URLWithString:@"http://192.168.1.102:8081/index.bundle?platform=ios&dev=true"];
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
