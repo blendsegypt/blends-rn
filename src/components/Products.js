@@ -102,7 +102,10 @@ function Products({navigation, supportedArea}) {
       {/* Products */}
       {productsLoaded ? (
         <FlatList
-          style={{flex: 1}}
+          contentContainerStyle={{
+            flex: 1,
+            marginTop: 15,
+          }}
           data={products}
           keyExtractor={(item) => String(item.id)}
           numColumns="2"

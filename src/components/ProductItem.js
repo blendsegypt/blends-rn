@@ -35,54 +35,61 @@ function ProductItem({
         style={{width: 110, height: 110}}
         resizeMode="contain"
       />
-      <Text style={styles.productName}>{name}</Text>
-      {sale_price !== 0 ? (
-        <View style={{flexDirection: "row"}}>
-          <Text style={styles.oldPriceText}>{price} EGP</Text>
-          <View style={styles.newPrice}>
-            <Text style={styles.newPriceText}>{sale_price} EGP</Text>
+      <View>
+        <Text style={styles.productName}>{name}</Text>
+        {sale_price !== 0 ? (
+          <View style={{flexDirection: "row"}}>
+            <Text style={styles.oldPriceText}>{price} EGP</Text>
+            <View style={styles.newPrice}>
+              <Text style={styles.newPriceText}>{sale_price} EGP</Text>
+            </View>
           </View>
-        </View>
-      ) : !retail ? (
-        <Text style={styles.productPrice} regular>
-          From <Text>{price} EGP</Text>
-        </Text>
-      ) : (
-        <Text style={styles.productPrice}>{price} EGP</Text>
-      )}
-      {!retail ? (
-        <Button
-          onPress={() => {
-            if (!supportedArea) {
-              unsupportedHandler();
-              return;
-            }
-            navigation.navigate("Product", {product_id: id});
-          }}
-          style={styles.itemButton}>
-          Select
-        </Button>
-      ) : (
-        <Button
-          onPress={() => {
-            if (!supportedArea) {
-              unsupportedHandler();
-              return;
-            }
-          }}
-          style={styles.itemButton}
-          icon="plus">
-          Add to Cart
-        </Button>
-      )}
+        ) : !retail ? (
+          <Text style={styles.productPrice} regular>
+            From <Text>{price} EGP</Text>
+          </Text>
+        ) : (
+          <Text style={styles.productPrice}>{price} EGP</Text>
+        )}
+      </View>
+      <View style={styles.buttonContainer}>
+        {!retail ? (
+          <Button
+            onPress={() => {
+              if (!supportedArea) {
+                unsupportedHandler();
+                return;
+              }
+              navigation.navigate("Product", {product_id: id});
+            }}
+            style={styles.itemButton}>
+            Select
+          </Button>
+        ) : (
+          <Button
+            onPress={() => {
+              if (!supportedArea) {
+                unsupportedHandler();
+                return;
+              }
+            }}
+            style={styles.itemButton}
+            icon="plus">
+            Add to Cart
+          </Button>
+        )}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   item: {
-    width: "50%",
-    marginTop: 25,
+    marginTop: 5,
+    flexDirection: "column",
+    flex: 0.5,
+    marginRight: 10,
+    justifyContent: "space-between",
   },
   productName: {
     color: "#11203E",
@@ -95,8 +102,6 @@ const styles = StyleSheet.create({
   itemButton: {
     marginTop: 10,
     paddingVertical: 19,
-    width: "93%",
-    shadowOpacity: 0.0,
     paddingRight: 10,
   },
   oldPriceText: {
