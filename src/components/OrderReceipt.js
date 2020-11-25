@@ -54,6 +54,11 @@ function OrderReceipt({
       setPromocode("");
     }
   };
+  const removePromo = () => {
+    setPromoApplied(false);
+    setOrderAfterPromo(null);
+    setPromocode("");
+  };
   return (
     <View style={styles.deliveryDetails}>
       {cartItems.map((item, index) => {
@@ -163,6 +168,9 @@ function OrderReceipt({
             <Text style={{flex: 0.5, color: "white", textAlign: "right"}}>
               {promocode}
             </Text>
+            <TouchableOpacity style={styles.removePromo} onPress={removePromo}>
+              <Text style={{color: "white"}}>x</Text>
+            </TouchableOpacity>
           </View>
         ) : (
           <View>
@@ -252,6 +260,13 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 25,
     flexDirection: "row",
     paddingVertical: 20,
+  },
+  removePromo: {
+    marginLeft: 10,
+    backgroundColor: "#277549",
+    padding: 2,
+    paddingHorizontal: 7,
+    borderRadius: 50,
   },
 });
 
