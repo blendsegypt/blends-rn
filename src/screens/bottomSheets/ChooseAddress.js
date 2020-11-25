@@ -1,17 +1,10 @@
 import React, {useRef, useEffect, useState} from "react";
-import {
-  SafeAreaView,
-  View,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-  Platform,
-} from "react-native";
+import {View, StyleSheet, ScrollView, Dimensions, Platform} from "react-native";
 //UI Components
 import Text from "../../components/ui/Text";
 import Link from "../../components/ui/Link";
 //Bottom Sheet
-import BottomSheet from "reanimated-bottom-sheet";
+import BottomSheet from "@gorhom/bottom-sheet";
 //Components
 import Address from "../../components/Address";
 //Redux
@@ -19,7 +12,10 @@ import {connect} from "react-redux";
 //Close Sheet Component
 import CloseSheet from "./UserActionsSheets/utils/CloseSheet";
 
-function Sheet({savedAddresses, setChooseAddressShown, navigation}) {
+function Sheet({addresses, setChooseAddressShown, navigation, setSnap}) {
+  useEffect(() => {
+    setSnap(1);
+  }, []);
   const closeSheet = () => {
     setChooseAddressShown(false);
   };
@@ -46,7 +42,7 @@ function Sheet({savedAddresses, setChooseAddressShown, navigation}) {
             Add new Address
           </Link>
         </View>
-        {savedAddresses.map((address, index) => {
+        {addresses.map((address, index) => {
           return (
             <Address
               key={index}
@@ -64,74 +60,48 @@ function Sheet({savedAddresses, setChooseAddressShown, navigation}) {
 
 function ChooseAddress({
   chooseAddressShown,
-  savedAddresses,
+  addresses,
   setChooseAddressShown,
   navigation,
 }) {
-  if (!savedAddresses) return <View></View>;
   // Sheet ref
   const sheetRef = useRef(null);
-  // Snap bottom sheet based on props
+  const [snap, setSnap] = useState(0);
   useEffect(() => {
-    if (chooseAddressShown) {
-      sheetRef.current.snapTo(0);
-    } else {
-      if (Platform.OS === "ios") sheetRef.current.snapTo(2);
+    // Snap bottom sheet based on props
+    if (chooseAddressShown && Platform.OS === "ios" && sheetRef.current) {
+      sheetRef.current.snapTo(snap);
     }
-  }, [chooseAddressShown]);
+  }, [chooseAddressShown, snap]);
+
+  //if (!addresses) return <View></View>;
   return (
-    <>
-      {Platform.OS === "android" ? (
-        chooseAddressShown && (
-          <BottomSheet
-            ref={sheetRef}
-            enabledContentTapInteraction={false}
-            initialSnap={2}
-            snapPoints={Platform.OS == "ios" ? [450, 300, 0] : [1000, 300, 0]}
-            borderRadius={10}
-            renderContent={() => {
-              return (
-                <Sheet
-                  savedAddresses={savedAddresses}
-                  setChooseAddressShown={setChooseAddressShown}
-                  navigation={navigation}
-                />
-              );
-            }}
-          />
-        )
-      ) : (
-        <BottomSheet
-          ref={sheetRef}
-          initialSnap={2}
-          snapPoints={Platform.OS == "ios" ? [450, 300, 0] : [1000, 300, 0]}
-          borderRadius={10}
-          renderContent={() => {
-            return (
-              <Sheet
-                savedAddresses={savedAddresses}
-                setChooseAddressShown={setChooseAddressShown}
-                navigation={navigation}
-              />
-            );
-          }}
+    <View style={{zIndex: 9999}}>
+      <BottomSheet
+        ref={sheetRef}
+        initialSnapIndex={-1}
+        snapPoints={[0, "50%"]}
+        enabled={false}>
+        <Sheet
+          setSnap={setSnap}
+          addresses={addresses}
+          setChooseAddressShown={setChooseAddressShown}
+          navigation={navigation}
         />
-      )}
-    </>
+      </BottomSheet>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   bottomSheetContainer: {
-    marginTop: 25,
-    height: Platform.OS === "ios" ? 750 : Dimensions.get("window").height,
     paddingTop: Platform.OS === "ios" ? 50 : 80,
     backgroundColor: "#fff",
   },
 });
 
 const mapStateToProps = (state) => ({
-  savedAddresses: state.userReducer.savedAddresses,
+  addresses: state.userReducer.addresses,
 });
 
 export default connect(mapStateToProps, null)(ChooseAddress);

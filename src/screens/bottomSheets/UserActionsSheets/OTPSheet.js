@@ -66,6 +66,7 @@ export default function OTPSheet({
       Toast.show({
         type: "error",
         topOffset: 70,
+        visibilityTime: 2000,
         text1: "Wrong OTP!",
         text2: "Please make sure you entered the right OTP",
       });

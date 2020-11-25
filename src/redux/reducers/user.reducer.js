@@ -32,8 +32,8 @@ export default function userReducer(
     case "SET_USER":
       newState = {...state};
       newState.loggedIn = true;
-      (newState.id = action.user.id),
-        (newState.firstName = action.user.first_name);
+      newState.id = action.user.id;
+      newState.firstName = action.user.first_name;
       newState.lastName = action.user.last_name;
       newState.phoneNumber = action.user.phone_number;
       newState.referralCode = action.user.referral_code;
@@ -42,6 +42,7 @@ export default function userReducer(
     case "SET_ADDRESSES":
       newState = {...state};
       newState.addresses = action.addresses;
+      newState.addressConfirmed = true;
       return newState;
     case "ADD_ADDRESS":
       newState = {...state};
@@ -52,29 +53,29 @@ export default function userReducer(
       newState = {...state};
       // Find target address and filter it out of addresses array
       newState.addresses = newState.addresses.filter(
-        (address) => address.addressNickname != action.addressNickname,
+        (address) => address.addressNickname !== action.addressNickname,
       );
-      if (newState.addresses.length == 0) newState.addressConfirmed = false;
+      if (newState.addresses.length === 0) newState.addressConfirmed = false;
       return newState;
     case "CHANGE_ADDRESS":
       newState = {...state};
       // Find target address and replace it with new address
       newState.addresses = newState.addresses.map((address) => {
-        if (address.addressNickname == action.addressNickname)
+        if (address.addressNickname === action.addressNickname)
           return action.newAddress;
         return address;
       });
-      if (newState.addresses.length == 0) newState.addressConfirmed = false;
+      if (newState.addresses.length === 0) newState.addressConfirmed = false;
       return newState;
     case "SWITCH_ACTIVE_ADDRESS":
       newState = {...state};
       // Find target address and save it
       const newActive = newState.addresses.find(
-        (address) => address.addressNickname == action.addressNickname,
+        (address) => address.addressNickname === action.addressNickname,
       );
       // Find target address and filter it out of addresses array
       newState.addresses = newState.addresses.filter(
-        (address) => address.addressNickname != action.addressNickname,
+        (address) => address.addressNickname !== action.addressNickname,
       );
       // Add the new active address in the beginning of the array
       newState.addresses.unshift(newActive);

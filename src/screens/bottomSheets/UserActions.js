@@ -2,9 +2,6 @@ import React, {useRef, useEffect, useState} from "react";
 import {Platform, View, Keyboard} from "react-native";
 //Bottom Sheet
 import BottomSheet from "@gorhom/bottom-sheet";
-//Redux
-import {connect} from "react-redux";
-import {confirmUser} from "../../redux/actions/user.action";
 //Sheets
 import StartSheet from "./UserActionsSheets/StartSheet";
 import LoginSheet from "./UserActionsSheets/LoginSheet";
@@ -13,7 +10,7 @@ import PhoneNumberSheet from "./UserActionsSheets/PhoneNumberSheet";
 import OTPSheet from "./UserActionsSheets/OTPSheet";
 
 // Phone number entry bottom sheet
-function SheetsRouter({closeSheet, confirmUser, setSnap, loginMode}) {
+function SheetsRouter({closeSheet, setSnap, loginMode}) {
   // Sheet to be shown
   const [sheet, setSheet] = useState("StartSheet");
   const [facebook, setFacebook] = useState(false);
@@ -25,30 +22,17 @@ function SheetsRouter({closeSheet, confirmUser, setSnap, loginMode}) {
   // If Login mode
   if (loginMode) {
     setSnap(2);
-    return (
-      <LoginSheet
-        setSheet={setSheet}
-        closeSheet={closeSheet}
-        confirmUser={confirmUser}
-        loginMode
-      />
-    );
+    return <LoginSheet setSheet={setSheet} closeSheet={closeSheet} loginMode />;
   }
   // Sheets navigation
-  if (sheet == "StartSheet") {
+  if (sheet === "StartSheet") {
     setSnap(0);
     return <StartSheet setSheet={setSheet} closeSheet={closeSheet} />;
-  } else if (sheet == "LoginSheet") {
+  } else if (sheet === "LoginSheet") {
     //setSnap(2);
     setSnap(3);
-    return (
-      <LoginSheet
-        setSheet={setSheet}
-        closeSheet={closeSheet}
-        confirmUser={confirmUser}
-      />
-    );
-  } else if (sheet == "NewAccountSheet") {
+    return <LoginSheet setSheet={setSheet} closeSheet={closeSheet} />;
+  } else if (sheet === "NewAccountSheet") {
     setSnap(3);
     return (
       <NewAccountSheet
@@ -58,7 +42,7 @@ function SheetsRouter({closeSheet, confirmUser, setSnap, loginMode}) {
         closeSheet={closeSheet}
       />
     );
-  } else if (sheet == "PhoneNumberSheet") {
+  } else if (sheet === "PhoneNumberSheet") {
     return (
       <PhoneNumberSheet
         setSheet={setSheet}
@@ -67,7 +51,7 @@ function SheetsRouter({closeSheet, confirmUser, setSnap, loginMode}) {
         setUserObject={setUserObject}
       />
     );
-  } else if (sheet == "OTPSheet") {
+  } else if (sheet === "OTPSheet") {
     setSnap(0);
   }
   return (
@@ -75,20 +59,13 @@ function SheetsRouter({closeSheet, confirmUser, setSnap, loginMode}) {
       setSheet={setSheet}
       facebook={facebook}
       closeSheet={closeSheet}
-      confirmUser={confirmUser}
       fullName={userObject.fullName}
       phoneNumber={userObject.phoneNumber}
-      closeSheet={closeSheet}
     />
   );
 }
 
-function UserActions({
-  closeSheet,
-  confirmUser,
-  showUserActionsSheet,
-  loginMode,
-}) {
+function UserActions({closeSheet, showUserActionsSheet, loginMode}) {
   const sheetRef = useRef(null);
   const [snap, setSnap] = useState(0);
   // Show / Hide based on showUserActionsSheet prop
@@ -130,7 +107,6 @@ function UserActions({
           enabled={false}>
           <SheetsRouter
             closeSheet={closeSheet}
-            confirmUser={confirmUser}
             setSnap={setSnap}
             loginMode={loginMode}
           />
@@ -138,7 +114,6 @@ function UserActions({
       ) : (
         <SheetsRouter
           closeSheet={closeSheet}
-          confirmUser={confirmUser}
           setSnap={setSnap}
           loginMode={loginMode}
         />
@@ -147,10 +122,4 @@ function UserActions({
   );
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  confirmUser: (fullName, phoneNumber) => {
-    dispatch(confirmUser(fullName, phoneNumber));
-  },
-});
-
-export default connect(null, mapDispatchToProps)(UserActions);
+export default UserActions;

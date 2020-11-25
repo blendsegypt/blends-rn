@@ -11,10 +11,11 @@ function OrderReceipt({cartItems, cartTotal, showPromotionInput}) {
         // Generate the text for product customization description
         let selectedOptionsText = "";
         item.selectedOptions.forEach((option, index) => {
-          selectedOptionsText += option.textValue;
-          if (index == item.selectedOptions.length - 2) {
+          selectedOptionsText += option.value;
+          if (index === item.selectedOptions.length - 2) {
             selectedOptionsText += " & ";
-          } else if (index != item.selectedOptions.length - 1) {
+          } else if (index !== item.selectedOptions.length - 1) {
+            //Refactor here
             selectedOptionsText += ", ";
           }
         });
@@ -22,7 +23,7 @@ function OrderReceipt({cartItems, cartTotal, showPromotionInput}) {
           // Cart Items
           <View key={index} style={styles.itemContainer}>
             <Image
-              source={item.image}
+              source={{uri: item.image}}
               style={{width: 45, height: 43, flex: 0.2}}
               resizeMode="contain"
             />

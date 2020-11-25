@@ -1,42 +1,42 @@
 //import { StatusBar } from "expo-status-bar";
-import React, {useState} from 'react';
-import {StyleSheet, StatusBar} from 'react-native';
+import React, {useState} from "react";
+import {StyleSheet, StatusBar} from "react-native";
 //Redux
-import {store, persistor} from './src/redux/store';
-import {Provider} from 'react-redux';
-import {PersistGate} from 'redux-persist/integration/react';
+import {store, persistor} from "./src/redux/store";
+import {Provider} from "react-redux";
+import {PersistGate} from "redux-persist/integration/react";
 //Screens
 // -- Tab Screens
-import Home from './src/screens/Home';
-import Orders from './src/screens/Orders';
-import Support from './src/screens/Support';
+import Home from "./src/screens/Home";
+import Orders from "./src/screens/Orders";
+import Support from "./src/screens/Support";
 // -- Home Stack navigation screens
-import PinDrop from './src/screens/PinDrop';
-import Product from './src/screens/Product';
-import Cart from './src/screens/Cart';
-import AddressDetails from './src/screens/AddressDetails';
-import ReviewOrder from './src/screens/ReviewOrder';
-import OrderConfirmed from './src/screens/OrderConfirmed';
+import PinDrop from "./src/screens/PinDrop";
+import Product from "./src/screens/Product";
+import Cart from "./src/screens/Cart";
+import AddressDetails from "./src/screens/AddressDetails";
+import ReviewOrder from "./src/screens/ReviewOrder";
+import OrderConfirmed from "./src/screens/OrderConfirmed";
 // -- Orders Stack navigation screens
-import OrderDetails from './src/screens/OrderDetails';
+import OrderDetails from "./src/screens/OrderDetails";
 // -- Account Stack navigation screens
-import Account from './src/screens/Account';
-import PersonalInformation from './src/screens/AccountStack/PersonalInformation';
-import SavedAddresses from './src/screens/AccountStack/SavedAdresses';
-import InviteAFriend from './src/screens/AccountStack/InviteAFriend';
-import EditAddress from './src/screens/AccountStack/EditAddress';
+import Account from "./src/screens/Account";
+import PersonalInformation from "./src/screens/AccountStack/PersonalInformation";
+import SavedAddresses from "./src/screens/AccountStack/SavedAdresses";
+import InviteAFriend from "./src/screens/AccountStack/InviteAFriend";
+import EditAddress from "./src/screens/AccountStack/EditAddress";
 //Tab Navigation
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createStackNavigator} from '@react-navigation/stack';
+import {NavigationContainer} from "@react-navigation/native";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {createStackNavigator} from "@react-navigation/stack";
 //Tab Bar settings
-import tabBarSettings from './src/utils/tabBarSettings';
+import tabBarSettings from "./src/utils/tabBarSettings";
 //Bottom Sheets
-import ChooseAddress from './src/screens/bottomSheets/ChooseAddress';
-import BottomSheetOverlay from './src/components/BottomSheetOverlay';
+import ChooseAddress from "./src/screens/bottomSheets/ChooseAddress";
+import BottomSheetOverlay from "./src/components/BottomSheetOverlay";
 //Toast messages
-import Toast from 'react-native-toast-message';
-import toastConfig from './src/utils/toastConfig';
+import Toast from "react-native-toast-message";
+import toastConfig from "./src/utils/toastConfig";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -88,7 +88,7 @@ function HomeTabs({navigation}) {
       <Tab.Navigator
         tabBarOptions={{
           style: styles.tabBar,
-          activeTintColor: '#C84D49',
+          activeTintColor: "#C84D49",
           showLabel: false,
         }}
         screenOptions={tabBarSettings}>
@@ -106,11 +106,13 @@ function HomeTabs({navigation}) {
         <Tab.Screen name="Support" component={Support} />
       </Tab.Navigator>
       {/* Choose Address Bottom Sheet */}
-      {/* <ChooseAddress
-        chooseAddressShown={chooseAddressShown}
-        setChooseAddressShown={setChooseAddressShown}
-        navigation={navigation}
-      /> */}
+      {chooseAddressShown && (
+        <ChooseAddress
+          chooseAddressShown={chooseAddressShown}
+          setChooseAddressShown={setChooseAddressShown}
+          navigation={navigation}
+        />
+      )}
     </>
   );
 }
@@ -141,12 +143,12 @@ function App() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    position: 'absolute',
-    backgroundColor: '#fff',
+    position: "absolute",
+    backgroundColor: "#fff",
     marginBottom: 20,
     marginHorizontal: 15,
     borderRadius: 50,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -154,18 +156,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 15.65,
     elevation: 8,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderWidth: 0,
-    borderColor: '#fff',
+    borderColor: "#fff",
     paddingBottom: 0,
     borderTopWidth: 0,
     minHeight: 70,
   },
   overlay: {
-    backgroundColor: 'black',
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
+    backgroundColor: "black",
+    width: "100%",
+    height: "100%",
+    position: "absolute",
     opacity: 0.8,
     zIndex: 99,
   },

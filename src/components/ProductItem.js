@@ -19,6 +19,7 @@ function ProductItem({
     Toast.show({
       type: "error",
       topOffset: 50,
+      visibilityTime: 2000,
       text1: "Unsupported Location",
       text2: "Please change your location to add products to the cart.",
     });

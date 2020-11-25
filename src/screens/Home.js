@@ -20,6 +20,7 @@ function Home({
   loggedIn,
   chooseAddressShown,
   supportedArea,
+  addresses,
 }) {
   return (
     <>
@@ -70,7 +71,10 @@ function Home({
           {loggedIn && <RecentOrders navigation={navigation} />}
           {/* Products */}
           <View style={{marginTop: 20, paddingHorizontal: 25}}>
-            <Products navigation={navigation} supportedArea={supportedArea} />
+            <Products
+              navigation={navigation}
+              supportedArea={supportedArea || addresses.length > 1}
+            />
           </View>
         </View>
       </ScrollView>
@@ -137,12 +141,15 @@ const mapStateToProps = (state) => {
     return {
       firstName: state.userReducer.firstName,
       loggedIn: true,
+      supportedArea: state.userReducer.location.supported,
+      addresses: state.userReducer.addresses,
     };
   }
   return {
     firstName: "Guest",
     loggedIn: false,
     supportedArea: state.userReducer.location.supported,
+    addresses: [],
   };
 };
 

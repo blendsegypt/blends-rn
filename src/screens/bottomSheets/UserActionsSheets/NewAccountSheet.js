@@ -123,6 +123,7 @@ function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
       Toast.show({
         type: "error",
         topOffset: 50,
+        visibilityTime: 2000,
         text1: "Error Occured",
         text2: "Something wrong happened on our side! Please try again.",
       });

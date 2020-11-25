@@ -24,7 +24,7 @@ import {
 import UserActions from "./bottomSheets/UserActions";
 import BottomSheetOverlay from "../components/BottomSheetOverlay";
 
-function Account({navigation, fullName, phoneNumberConfirmed}) {
+function Account({navigation, firstName, lastName, loggedIn, wallet}) {
   const [showUserActionsSheet, setShowUserActionsSheet] = useState(false);
 
   const closeSheet = () => {
@@ -38,7 +38,7 @@ function Account({navigation, fullName, phoneNumberConfirmed}) {
   // Check if user is logged in when focusing the Account screen
   useFocusEffect(
     useCallback(() => {
-      if (!phoneNumberConfirmed) {
+      if (!loggedIn) {
         // Hide tab bar
         navigation.dangerouslyGetParent().setOptions({tabBarVisible: false});
         // fix for bottom sheet, add setShowUserActionsSheet in async queue
@@ -50,7 +50,7 @@ function Account({navigation, fullName, phoneNumberConfirmed}) {
         navigation.dangerouslyGetParent().setOptions({tabBarVisible: true});
         setShowUserActionsSheet(false);
       }
-    }, [phoneNumberConfirmed]),
+    }, [loggedIn]),
   );
 
   return (
@@ -73,22 +73,22 @@ function Account({navigation, fullName, phoneNumberConfirmed}) {
               style={{flexDirection: "row", flex: 0.5, alignItems: "center"}}>
               <FontAwesomeIcon icon={faUser} size={17} color="#C84D49" />
               <Text style={{color: "#C84D49", fontSize: 17, paddingLeft: 8}}>
-                {phoneNumberConfirmed ? fullName : "Guest"}
+                {loggedIn ? firstName + " " + lastName : "Guest"}
               </Text>
             </View>
             {/* If guest then no balance */}
             <View style={{flex: 0.5}}>
-              {phoneNumberConfirmed && (
+              {loggedIn && (
                 <Text
                   regular
                   style={{color: "#C84D49", fontSize: 17, textAlign: "right"}}>
-                  Balance: <Text bold>0 EGP</Text>
+                  Balance: <Text bold>{wallet} EGP</Text>
                 </Text>
               )}
             </View>
           </View>
           {/* Settings List (only users) */}
-          {phoneNumberConfirmed && (
+          {loggedIn && (
             <>
               <View style={styles.settingsContainer}>
                 {/* Personal Information */}
@@ -171,10 +171,12 @@ function Account({navigation, fullName, phoneNumberConfirmed}) {
           )}
         </ScrollView>
       </View>
-      <UserActions
-        showUserActionsSheet={showUserActionsSheet}
-        closeSheet={closeSheet}
-      />
+      {showUserActionsSheet && (
+        <UserActions
+          showUserActionsSheet={showUserActionsSheet}
+          closeSheet={closeSheet}
+        />
+      )}
     </>
   );
 }
@@ -251,8 +253,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  phoneNumberConfirmed: state.userReducer.phoneNumberConfirmed,
-  fullName: state.userReducer.fullName,
+  loggedIn: state.userReducer.loggedIn,
+  firstName: state.userReducer.firstName,
+  lastName: state.userReducer.lastName,
+  wallet: state.userReducer.wallet,
 });
 
 export default connect(mapStateToProps, null)(Account);

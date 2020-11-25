@@ -75,6 +75,7 @@ export default function PhoneNumberSheet({
         Toast.show({
           type: "error",
           topOffset: 70,
+          visibilityTime: 2000,
           text1: "Phone Number already exists!",
           text2: "Please choose a different phone number to continue",
         });
@@ -83,6 +84,7 @@ export default function PhoneNumberSheet({
       Toast.show({
         type: "error",
         topOffset: 70,
+        visibilityTime: 2000,
         text1: "An Error Occured!",
         text2: "Sorry about that. Could you please try again?",
       });

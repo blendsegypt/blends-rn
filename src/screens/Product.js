@@ -45,6 +45,7 @@ function Product({navigation, route, addToCart}) {
         Toast.show({
           type: "error",
           topOffset: 50,
+          visibilityTime: 2000,
           text1: "An Error Occured",
           text2: "Something wrong happened on our side! Please try again.",
         });

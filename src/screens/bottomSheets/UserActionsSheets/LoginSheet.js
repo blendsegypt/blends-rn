@@ -79,6 +79,7 @@ function LoginSheet({setSheet, closeSheet, login, loginMode}) {
       login(user, accessToken, refreshToken, addresses);
       Toast.show({
         type: "success",
+        visibilityTime: 2000,
         topOffset: 50,
         text1: `Hello, ${user.first_name}.`,
         text2: "It's time for some fresh coffee!",
@@ -86,9 +87,11 @@ function LoginSheet({setSheet, closeSheet, login, loginMode}) {
       closeSheet();
     } catch (error) {
       if (error.response) {
+        console.log(error.response.config.data);
         if (error.response.data.error === "INVALID_CREDENTIALS") {
           Toast.show({
             type: "error",
+            visibilityTime: 2000,
             topOffset: 70,
             text1: "Invalid Phone number / Password",
             text2: "Please try again",
@@ -98,6 +101,7 @@ function LoginSheet({setSheet, closeSheet, login, loginMode}) {
       }
       Toast.show({
         type: "error",
+        visibilityTime: 2000,
         topOffset: 50,
         text1: "An Error Occured",
         text2: "Something wrong happened on our side! Please try again.",

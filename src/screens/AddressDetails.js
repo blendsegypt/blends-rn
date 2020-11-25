@@ -12,7 +12,7 @@ import TextInput from "../components/ui/TextInput";
 import Button from "../components/ui/Button";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faChevronRight} from "@fortawesome/free-solid-svg-icons";
+import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 //Components
 import CheckoutProgress from "../components/CheckoutProgress";
 //Redux
@@ -121,11 +121,7 @@ function AddressDetails({navigation, userLocation, addAddress}) {
                 navigation.navigate("Cart");
               }}
               style={{flex: 0.5, paddingTop: 25}}>
-              <FontAwesomeIcon
-                icon={faChevronRight}
-                size={22}
-                color="#11203E"
-              />
+              <FontAwesomeIcon icon={faChevronLeft} size={22} color="#11203E" />
             </TouchableOpacity>
             <Text bold style={styles.screenTitle}>
               Address Details

@@ -75,6 +75,7 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
     } catch (error) {
       Toast.show({
         type: "error",
+        visibilityTime: 2000,
         topOffset: 50,
         text1: "An Error Occured",
         text2: "Something wrong happened on our side! Please try again.",
@@ -93,6 +94,7 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
       Toast.show({
         type: "error",
         topOffset: 50,
+        visibilityTime: 2000,
         text1: "An Error Occured",
         text2: "Something wrong happened on our side! Please try again.",
       });
@@ -146,6 +148,7 @@ function PinDrop({addLocation, navigation, route, loggedIn, addresses}) {
       Toast.show({
         type: "error",
         topOffset: 50,
+        visibilityTime: 2000,
         text1: "An Error Occured",
         text2: "Something wrong happened on our side! Please try again.",
       });

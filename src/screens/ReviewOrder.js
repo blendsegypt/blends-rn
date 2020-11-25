@@ -18,7 +18,11 @@ import OrderReceipt from "../components/OrderReceipt";
 import ChooseAddress from "../screens/bottomSheets/ChooseAddress";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faMapMarkerAlt, faChevronLeft} from "@fortawesome/free-solid-svg-icons";
+import {
+  faMapMarkerAlt,
+  faChevronLeft,
+  faDollarSign,
+} from "@fortawesome/free-solid-svg-icons";
 //import {FontAwesome5} from '@expo/vector-icons';
 //Redux
 import {connect} from "react-redux";
@@ -32,7 +36,7 @@ function ReviewOrder({
   activeAddress,
   cartItems,
   cartTotal,
-  savedAddresses,
+  addresses,
 }) {
   const {threeStepsCheckout} = route.params;
   const [chooseAddressShown, setChooseAddressShown] = useState(false);
@@ -97,7 +101,7 @@ function ReviewOrder({
         <ScrollView
           style={styles.container}
           contentContainerStyle={{paddingBottom: 50}}>
-          <Text style={styles.containerTitle}>Order Details</Text>
+          <Text style={styles.containerTitle}>Delivery Details</Text>
           {/* Address / Payment Method */}
           <View style={styles.deliveryDetails}>
             <View
@@ -106,16 +110,20 @@ function ReviewOrder({
                 {borderBottomWidth: 1, borderBottomColor: "#EFEFEF"},
               ]}>
               <FontAwesomeIcon
-                style={{flex: 0.13}}
+                style={{flex: 0.1, marginRight: 8}}
                 icon={faMapMarkerAlt}
-                size={27}
+                size={20}
                 color="#11203E"
               />
-              <Text bold style={{flex: 0.5, fontSize: 15, color: "#11203E"}}>
-                {activeAddress.addressNickname}
+              <Text bold style={{flex: 0.7, fontSize: 15, color: "#11203E"}}>
+                {activeAddress.nickname}
               </Text>
-              <View style={{flex: 0.37, alignItems: "flex-end"}}>
-                {savedAddresses.length > 1 ? (
+              <View
+                style={{
+                  flex: 0.3,
+                  alignItems: "flex-end",
+                }}>
+                {addresses.length > 1 ? (
                   <Link
                     onPress={() => {
                       setChooseAddressShown(true);
@@ -128,16 +136,16 @@ function ReviewOrder({
               </View>
             </View>
             <View style={[styles.deliveryOption, {paddingBottom: 10}]}>
-              {/* <FontAwesome5
-                style={{flex: 0.13}}
-                name="hand-holding-usd"
-                size={23}
+              <FontAwesomeIcon
+                style={{flex: 0.5, marginRight: 5}}
+                icon={faDollarSign}
+                size={20}
                 color="#11203E"
-              /> */}
-              <Text bold style={{flex: 0.5, fontSize: 15, color: "#11203E"}}>
+              />
+              <Text bold style={{flex: 0.7, fontSize: 15, color: "#11203E"}}>
                 Cash on Delivery
               </Text>
-              <View style={{flex: 0.37, alignItems: "flex-end"}}>
+              <View style={{flex: 0.3, alignItems: "flex-end"}}>
                 <Link disabled style={{flex: 0.04}}>
                   Change
                 </Link>
@@ -145,6 +153,9 @@ function ReviewOrder({
             </View>
           </View>
           {/* Order Receipt */}
+          <Text style={[styles.containerTitle, {marginTop: 20}]}>
+            Order Receipt
+          </Text>
           <View style={{marginHorizontal: 25}}>
             <OrderReceipt
               cartItems={cartItems}
@@ -242,8 +253,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   const {cartItems, cartTotal} = getCartItems(state);
   return {
-    activeAddress: state.userReducer.savedAddresses[0],
-    savedAddresses: state.userReducer.savedAddresses,
+    activeAddress: state.userReducer.addresses[0],
+    addresses: state.userReducer.addresses,
     cartItems,
     cartTotal,
   };

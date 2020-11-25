@@ -35,7 +35,7 @@ function Address({
             <FontAwesomeIcon icon={faMapMarkerAlt} size={18} color="#11203E" />
             <Text
               style={{fontSize: 15, paddingHorizontal: 5, color: "#11203E"}}>
-              {address.addressNickname}
+              {address.nickname}
             </Text>
           </View>
           {/* Address Active? */}
@@ -50,7 +50,7 @@ function Address({
         <View style={{flex: 0.5}}>
           {/* Address Location */}
           <Text style={{fontSize: 14, lineHeight: 19, color: "#9c9c9c"}}>
-            {address.formattedAddress}
+            {address.governate} - {address.street}
           </Text>
         </View>
       </TouchableOpacity>
