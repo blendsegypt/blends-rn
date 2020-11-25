@@ -112,6 +112,7 @@ function Product({navigation, route, addToCart}) {
   // Add Product to Cart
   const addProductToCart = () => {
     const cartItem = {
+      product_id: productData.id,
       price,
       selectedOptions,
       image: productData.product_image_url,

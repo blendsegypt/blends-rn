@@ -23,28 +23,8 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 //Form validation
 import validateField from "../utils/validateField";
 
-/*
-
-
-  1- Grab Area from google to a locked field
-  2- new structure:
-    - Address Nickname
-    - Area (locked)
-    - Address Details (optional)
-    - Street (editable) (mandatory)
-    - Building (mandatory)
-    - Floor (optional)
-    - Flat (optional)
-    - delivery notes (optional)
-
-    + formatted street shouldn't include apartment
-    + hide country and governate
-    + restrict search in egypt in more restrictive way
-
-*/
-
-function AddressDetails({navigation, userLocation, addAddress}) {
-  const [addressNickname, setAddressNickname] = useState({
+function AddressDetails({navigation, location, addAddress}) {
+  const [nickname, setNickname] = useState({
     text: "Address Nickname",
     value: "",
     notEmpty: true,
@@ -53,7 +33,7 @@ function AddressDetails({navigation, userLocation, addAddress}) {
   });
   const [street, setStreet] = useState({
     text: "Street",
-    value: userLocation.street,
+    value: location.street,
     notEmpty: true,
     validated: true,
     errors: [],
@@ -83,24 +63,23 @@ function AddressDetails({navigation, userLocation, addAddress}) {
 
   // Check if there's no errors, activate the continue button
   useEffect(() => {
-    const errorsLength = [...addressNickname.errors, ...street.errors].length;
-    const fieldsValidated = addressNickname.validated && street.validated;
+    const errorsLength = [...nickname.errors, ...street.errors].length;
+    const fieldsValidated = nickname.validated && street.validated;
 
     if (errorsLength == 0 && fieldsValidated) {
       setButtonActive(true);
     } else {
       setButtonActive(false);
     }
-  }, [addressNickname.errors, street.errors]);
+  }, [nickname.errors, nickname.validated, street.errors, street.validated]);
 
   // Review order button handler
   const reviewOrder = () => {
-    const formattedAddress = `${userLocation.governate} - ${street.value}, ${userLocation.area}`;
+    const formattedAddress = `${location.governate} - ${street.value}, ${location.area}`;
     const address = {
-      governate: userLocation.governate,
-      area: userLocation.area,
-      formattedAddress: formattedAddress,
-      addressNickname: addressNickname.value,
+      governate: location.governate,
+      area: location.area,
+      nickname: nickname.value,
       street: street.value,
       addressDetails: addressDetails.value,
       floor: floor.value,
@@ -150,26 +129,24 @@ function AddressDetails({navigation, userLocation, addAddress}) {
           <Text style={styles.containerTitle}>Address Details</Text>
           <View style={{marginTop: 15}}>
             {/* Error Messages */}
-            {[...addressNickname.errors, ...street.errors].map(
-              (error, index) => {
-                return (
-                  <View style={styles.errorMessage} key={index}>
-                    <Text regular style={{color: "#b55b5b"}}>
-                      {error.message}
-                    </Text>
-                  </View>
-                );
-              },
-            )}
+            {[...nickname.errors, ...street.errors].map((error, index) => {
+              return (
+                <View style={styles.errorMessage} key={index}>
+                  <Text regular style={{color: "#b55b5b"}}>
+                    {error.message}
+                  </Text>
+                </View>
+              );
+            })}
             {/* Address Form */}
             <View>
               <TextInput
                 style={styles.textInput}
                 onChangeText={(text) => {
-                  setAddressNickname({...addressNickname, value: text});
+                  setNickname({...nickname, value: text});
                 }}
                 onBlur={() => {
-                  validate(addressNickname, setAddressNickname);
+                  validate(nickname, setNickname);
                 }}
                 autoCapitalize="words">
                 Address Nickname (eg. Home/Work) *
@@ -177,7 +154,7 @@ function AddressDetails({navigation, userLocation, addAddress}) {
               <View>
                 <TextInput
                   editable={false}
-                  defaultValue={userLocation.governate}
+                  defaultValue={location.governate}
                   style={[styles.textInput, {flex: 0.6}]}>
                   Governate
                 </TextInput>
@@ -186,13 +163,13 @@ function AddressDetails({navigation, userLocation, addAddress}) {
                 <View style={{flex: 0.5, marginRight: 10}}>
                   <TextInput
                     editable={false}
-                    defaultValue={userLocation.area}
+                    defaultValue={location.area.area_name}
                     style={[styles.textInput]}>
                     Area
                   </TextInput>
                 </View>
                 <TextInput
-                  defaultValue={userLocation.street}
+                  defaultValue={location.street}
                   style={[styles.textInput, {flex: 0.5}]}
                   onChangeText={(text) => {
                     setStreet({...street, value: text});
@@ -303,7 +280,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  userLocation: state.userReducer.location,
+  location: state.userReducer.location,
 });
 
 const mapDispatchToProps = (dispatch) => ({

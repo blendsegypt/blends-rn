@@ -10,7 +10,6 @@ import {
 import Text from "../components/ui/Text";
 import Button from "../components/ui/Button";
 import Link from "../components/ui/Link";
-import TextInput from "../components/ui/TextInput";
 //Components
 import CheckoutProgress from "../components/CheckoutProgress";
 import OrderReceipt from "../components/OrderReceipt";
@@ -135,7 +134,7 @@ function ReviewOrder({
                 )}
               </View>
             </View>
-            <View style={[styles.deliveryOption, {paddingBottom: 10}]}>
+            <View style={[styles.deliveryOption, {paddingBottom: 5}]}>
               <FontAwesomeIcon
                 style={{flex: 0.5, marginRight: 5}}
                 icon={faDollarSign}
@@ -179,11 +178,13 @@ function ReviewOrder({
           </Button>
         </View>
       </View>
-      <ChooseAddress
-        chooseAddressShown={chooseAddressShown}
-        setChooseAddressShown={setChooseAddressShown}
-        navigation={navigation}
-      />
+      {chooseAddressShown && (
+        <ChooseAddress
+          chooseAddressShown={chooseAddressShown}
+          setChooseAddressShown={setChooseAddressShown}
+          navigation={navigation}
+        />
+      )}
     </KeyboardAwareScrollView>
   );
 }

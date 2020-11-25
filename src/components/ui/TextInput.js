@@ -42,11 +42,11 @@ export default function (props) {
         defaultValue={props.defaultValue}
         secureTextEntry={props.secureTextEntry}
         editable={props.editable === false ? false : true}
-        autoCapitalize={"words"}
+        value={props.value6t5}
       />
       {props.editable === false && (
         <View style={styles.lock}>
-          <FontAwesomeIcon icon={faLock} size={16} color="#11203E" />
+          <FontAwesomeIcon icon={faLock} size={14} color="#11203E" />
         </View>
       )}
     </>

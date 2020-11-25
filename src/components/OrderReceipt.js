@@ -1,10 +1,59 @@
-import React from "react";
+import React, {useState} from "react";
 import {View, Image, StyleSheet, TouchableOpacity} from "react-native";
 //UI Components
 import Text from "./ui/Text";
 import TextInput from "./ui/TextInput";
+//API
+import API from "../utils/axios";
+//Redux
+import Toast from "react-native-toast-message";
+import {connect} from "react-redux";
 
-function OrderReceipt({cartItems, cartTotal, showPromotionInput}) {
+function OrderReceipt({
+  cartItems,
+  cartTotal,
+  showPromotionInput,
+  userID,
+  branchID,
+  addressID,
+}) {
+  const [promocode, setPromocode] = useState("");
+  const [promoApplied, setPromoApplied] = useState(false);
+  const [orderAfterPromo, setOrderAfterPromo] = useState(null);
+  const applyPromocode = async () => {
+    // If no promocode is entered
+    if (promocode === "") return;
+    const order = {
+      branch_id: branchID,
+      user_id: userID,
+      delivery_address_id: addressID,
+      sub_total: Number(cartTotal),
+      total: Number(cartTotal) + 5,
+      delivery_charges: 5,
+      promo_code: promocode,
+    };
+    order.OrderItems = cartItems.map((item) => {
+      return {
+        product_id: item.product_id,
+        quantity: item.quantity,
+        options: item.selectedOptions,
+      };
+    });
+    try {
+      const response = await API.post("app/apply-promo-code", order);
+      setOrderAfterPromo(response.data.order);
+      setPromoApplied(true);
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        visibilityTime: 2000,
+        topOffset: 70,
+        text1: "Error!",
+        text2: error.response.data.message,
+      });
+      setPromocode("");
+    }
+  };
   return (
     <View style={styles.deliveryDetails}>
       {cartItems.map((item, index) => {
@@ -50,70 +99,108 @@ function OrderReceipt({cartItems, cartTotal, showPromotionInput}) {
       <View style={styles.subtotal}>
         {/* Subtotal */}
         <View style={{flexDirection: "row", paddingVertical: 15}}>
-          <Text style={{fontSize: 14, flex: 0.76, color: "#11203E"}} semiBold>
+          <Text style={{fontSize: 14, flex: 0.6, color: "#11203E"}} semiBold>
             Subtotal
           </Text>
           <Text
             style={{
               fontSize: 14,
               color: "#11203E",
-              flex: 0.24,
+              flex: 0.4,
               textAlign: "right",
             }}
             semiBold>
-            {cartTotal} EGP
+            {!promoApplied ? (
+              `${cartTotal} EGP`
+            ) : (
+              <Text>
+                {cartTotal - orderAfterPromo.sub_total > 0
+                  ? `(-${
+                      cartTotal - orderAfterPromo.sub_total
+                    } EGP) ${orderAfterPromo.sub_total.toFixed(2)} EGP`
+                  : `${cartTotal} EGP`}
+              </Text>
+            )}
           </Text>
         </View>
         {/* Delivery Charges */}
         <View style={{flexDirection: "row", paddingVertical: 15}}>
-          <Text style={{fontSize: 14, flex: 0.8, color: "#9C9C9C"}} semiBold>
+          <Text style={{fontSize: 14, flex: 0.6, color: "#9C9C9C"}} semiBold>
             Delivery Charges
           </Text>
           <Text
             style={{
               fontSize: 14,
               color: "#9C9C9C",
-              flex: 0.2,
+              flex: 0.4,
               textAlign: "right",
             }}
             semiBold>
-            5.00 EGP
+            {!promoApplied ? (
+              `5 EGP`
+            ) : (
+              <Text>
+                {5 - orderAfterPromo.delivery_charges > 0
+                  ? `(-${5 - orderAfterPromo.delivery_charges} EGP) ${
+                      orderAfterPromo.delivery_charges
+                    } EGP`
+                  : `${5} EGP`}
+              </Text>
+            )}
           </Text>
         </View>
       </View>
       {/* Promotion Input Field */}
-      {showPromotionInput && (
-        <View>
-          <TextInput
+      {showPromotionInput &&
+        (promoApplied ? (
+          <View
             style={{
-              borderRadius: 0,
-              marginVertical: 0,
-              fontSize: 14,
-              flex: 0.7,
-              zIndex: 1,
+              backgroundColor: "#41cc7d",
+              padding: 20,
+              flexDirection: "row",
             }}>
-            Promotion Code (optional)
-          </TextInput>
-          <TouchableOpacity
-            style={{
-              position: "absolute",
-              right: 0,
-              top: 0,
-              paddingHorizontal: 22,
-              paddingVertical: 20,
-              zIndex: 99,
-            }}>
-            <Text style={{color: "#437FD9"}}>Apply</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+            <Text style={{flex: 0.5, color: "white"}}>Promocode Applied!</Text>
+            <Text style={{flex: 0.5, color: "white", textAlign: "right"}}>
+              {promocode}
+            </Text>
+          </View>
+        ) : (
+          <View>
+            <TextInput
+              value={promocode}
+              style={{
+                borderRadius: 0,
+                marginVertical: 0,
+                fontSize: 14,
+                flex: 0.7,
+                zIndex: 1,
+              }}
+              onChangeText={(code) => setPromocode(code)}>
+              Promotion Code (optional)
+            </TextInput>
+            <TouchableOpacity
+              onPress={applyPromocode}
+              style={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+                paddingHorizontal: 22,
+                paddingVertical: 20,
+                zIndex: 99,
+              }}>
+              <Text style={{color: "#437FD9"}}>Apply</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
       {/* Total */}
       <View style={styles.total}>
-        <Text bold style={{color: "#fff", flex: 0.75}}>
+        <Text bold style={{color: "#fff", flex: 0.6}}>
           Total
         </Text>
-        <Text bold style={{color: "#fff", flex: 0.25, textAlign: "right"}}>
-          {(Number(cartTotal) + 5).toFixed(2)} EGP
+        <Text bold style={{color: "#fff", flex: 0.4, textAlign: "right"}}>
+          {!promoApplied
+            ? `${(Number(cartTotal) + 5).toFixed(2)} EGP`
+            : `${orderAfterPromo.total.toFixed(2)} EGP`}
         </Text>
       </View>
     </View>
@@ -168,4 +255,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderReceipt;
+const mapStateToProps = (state) => ({
+  userID: state.userReducer.id,
+  branchID: state.userReducer.addresses[0].Area.Branches[0].id,
+  addressID: state.userReducer.addresses[0].id,
+});
+
+export default connect(mapStateToProps, null)(OrderReceipt);
