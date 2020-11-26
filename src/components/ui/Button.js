@@ -109,7 +109,7 @@ export default function Button(props) {
       <View style={{justifyContent: "center"}}>
         <FontAwesomeIcon
           style={styles.icon}
-          icon={faChevronRight}
+          icon={props.icon || faChevronRight}
           size={12}
           color={buttonTextColor}
         />

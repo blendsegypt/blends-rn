@@ -137,7 +137,7 @@ function Cart({
               }}
               style={{
                 flex: 0.5,
-                paddingVertical: 25,
+                paddingTop: 25,
                 paddingLeft: 10,
               }}>
               <FontAwesomeIcon icon={faChevronLeft} size={22} color="#11203E" />

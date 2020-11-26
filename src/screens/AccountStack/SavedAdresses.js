@@ -13,11 +13,11 @@ import Button from "../../components/ui/Button";
 import Address from "../../components/Address";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
+import {faChevronLeft, faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
 //Redux
 import {connect} from "react-redux";
 
-function SavedAddresses({navigation, savedAddresses}) {
+function SavedAddresses({navigation, addresses}) {
   return (
     <View style={{flex: 1}}>
       <SafeAreaView>
@@ -43,7 +43,7 @@ function SavedAddresses({navigation, savedAddresses}) {
         style={styles.container}
         contentContainerStyle={{paddingBottom: 20}}>
         {/* Saved Addresses */}
-        {savedAddresses.map((address, index) => {
+        {addresses.map((address, index) => {
           return (
             <Address
               key={index}
@@ -62,7 +62,7 @@ function SavedAddresses({navigation, savedAddresses}) {
           paddingTop: 10,
         }}>
         <Button
-          icon="map-marker"
+          icon={faMapMarkerAlt}
           onPress={() => {
             navigation.navigate("PinDrop", {existingUser: true});
           }}>
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  savedAddresses: state.userReducer.savedAddresses,
+  addresses: state.userReducer.addresses,
 });
 
 export default connect(mapStateToProps, null)(SavedAddresses);

@@ -4,6 +4,11 @@ import {View, StyleSheet, Image} from "react-native";
 import Text from "../components/ui/Text";
 import Button from "../components/ui/Button";
 import Toast from "react-native-toast-message";
+//Redux
+import {connect} from "react-redux";
+import {addToCart} from "../redux/actions/cart.action";
+//Icons Font
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
 
 function ProductItem({
   id,
@@ -14,6 +19,7 @@ function ProductItem({
   sale_price,
   navigation,
   supportedArea,
+  addToCart,
 }) {
   const unsupportedHandler = () => {
     Toast.show({
@@ -72,9 +78,18 @@ function ProductItem({
                 unsupportedHandler();
                 return;
               }
+              const cartItem = {
+                name,
+                product_id: id,
+                price: sale_price === 0 ? price : sale_price,
+                selectedOptions: [],
+                image: product_image_url,
+                quantity: 1,
+              };
+              addToCart(cartItem);
             }}
             style={styles.itemButton}
-            icon="plus">
+            icon={faPlus}>
             Add to Cart
           </Button>
         )}
@@ -123,4 +138,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductItem;
+const mapDispatchToProps = (dispatch) => ({
+  addToCart: (item) => dispatch(addToCart(item)),
+});
+
+export default connect(null, mapDispatchToProps)(ProductItem);

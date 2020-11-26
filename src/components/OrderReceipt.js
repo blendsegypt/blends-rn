@@ -16,6 +16,7 @@ function OrderReceipt({
   userID,
   branchID,
   addressID,
+  setOrderPromo,
 }) {
   const [promocode, setPromocode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
@@ -43,6 +44,7 @@ function OrderReceipt({
       const response = await API.post("app/apply-promo-code", order);
       setOrderAfterPromo(response.data.order);
       setPromoApplied(true);
+      setOrderPromo(promocode);
     } catch (error) {
       Toast.show({
         type: "error",
@@ -58,6 +60,7 @@ function OrderReceipt({
     setPromoApplied(false);
     setOrderAfterPromo(null);
     setPromocode("");
+    setOrderPromo("");
   };
   return (
     <View style={styles.deliveryDetails}>
@@ -142,14 +145,14 @@ function OrderReceipt({
             }}
             semiBold>
             {!promoApplied ? (
-              `5 EGP`
+              `5.00 EGP`
             ) : (
               <Text>
                 {5 - orderAfterPromo.delivery_charges > 0
                   ? `(-${5 - orderAfterPromo.delivery_charges} EGP) ${
                       orderAfterPromo.delivery_charges
                     } EGP`
-                  : `${5} EGP`}
+                  : `${(5).toFixed(2)} EGP`}
               </Text>
             )}
           </Text>

@@ -96,13 +96,13 @@ function UserActions({closeSheet, showUserActionsSheet, loginMode}) {
   };
 
   // Don't use BottomSheet component at all for Android, since it doesn't register
-  // presses from TouchableOpacity on the body of the BottomSheet
+  // presses from TouchableOpacity components on the body of the BottomSheet
   return (
     <View style={{zIndex: 9999}}>
       {Platform.OS === "ios" ? (
         <BottomSheet
           ref={sheetRef}
-          snapPoints={["55%", "65%", "75%", "85%", "95%"]}
+          snapPoints={["55%", "65%", "75%", "90%", "95%"]}
           initialSnapIndex={-1}
           enabled={false}>
           <SheetsRouter

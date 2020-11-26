@@ -82,11 +82,14 @@ function Product({navigation, route, addToCart}) {
   // Refresh Price based on selected options
   useEffect(() => {
     // Calculate Total price (with customization)
+    let basePrice =
+      productData.sale_price === 0 ? productData.price : productData.sale_price;
     let amount = 0;
+
     selectedOptions.forEach((option) => {
       amount += option.price;
     });
-    setPrice(productData.price + amount);
+    setPrice(basePrice + amount);
   }, [selectedOptions]);
 
   //Add default options to selectedOptions array
@@ -282,7 +285,12 @@ function Product({navigation, route, addToCart}) {
                 </Text>
                 <View style={{flex: 0.6}}>
                   <Dropdown
-                    items={custom_option.custom_options}
+                    items={custom_option.custom_options.map((option) => {
+                      return {
+                        ...option,
+                        inputLabel: option.label + " +" + option.price + " EGP",
+                      };
+                    })}
                     onChange={(value) => {
                       let price;
                       let option_value;

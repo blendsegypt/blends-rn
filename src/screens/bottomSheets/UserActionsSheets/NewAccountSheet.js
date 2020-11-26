@@ -66,6 +66,10 @@ function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
     validated: false,
     errors: [],
   });
+  const [referralCode, setReferralCode] = useState({
+    text: "Referral Code",
+    value: "",
+  });
 
   // Validate fields using validate.js from utils folder
   const validate = (field, fieldSetter) => {
@@ -96,9 +100,13 @@ function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
     }
   }, [
     firstName.errors,
+    firstName.validated,
     lastName.errors,
+    lastName.validated,
     password.errors,
+    password.validated,
     passwordConfirmation.errors,
+    passwordConfirmation.validated,
   ]);
 
   const handleSubmit = async () => {
@@ -110,6 +118,9 @@ function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
         password: password.value,
         platform: "ios",
       };
+      if (referralCode.value !== "") {
+        user.referring_user_code = referralCode.value;
+      }
       const response = await API.post("app/register/finish", user);
       // Extract user object
       const newUser = Object.assign({}, response.data.data);
@@ -234,6 +245,13 @@ function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
             validate(passwordConfirmAfterEdit, setPasswordConfirmation);
           }}>
           Password Confirmation
+        </TextInput>
+        <TextInput
+          style={{marginVertical: 7}}
+          onChangeText={(text) => {
+            setReferralCode({...referralCode, value: text});
+          }}>
+          Referral Code (optional)
         </TextInput>
         {buttonActive ? (
           <Button

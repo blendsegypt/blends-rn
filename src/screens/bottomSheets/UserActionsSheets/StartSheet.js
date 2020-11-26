@@ -8,6 +8,7 @@ import Button from "../../../components/ui/Button";
 import BlendsLogo from "../../../../assets/BlendsLogo.png";
 //Field Validation
 import CloseSheet from "./utils/CloseSheet";
+import {faFacebookF} from "@fortawesome/free-brands-svg-icons";
 
 export default function StartSheet({setSheet, closeSheet}) {
   return (
@@ -50,7 +51,7 @@ export default function StartSheet({setSheet, closeSheet}) {
         </Button>
         <Button
           style={{marginTop: 10, backgroundColor: "#3077F2"}}
-          icon="facebook"
+          icon={faFacebookF}
           onPress={() => setSheet("PhoneNumberSheet")}>
           Signup using Facebook
         </Button>

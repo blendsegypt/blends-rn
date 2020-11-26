@@ -19,6 +19,7 @@ import {
   faChevronRight,
   faMapMarkerAlt,
   faGift,
+  faPowerOff,
 } from "@fortawesome/free-solid-svg-icons";
 //Bottom Sheets
 import UserActions from "./bottomSheets/UserActions";
@@ -103,15 +104,20 @@ function Account({navigation, firstName, lastName, loggedIn, wallet}) {
                     color="#11203E"
                     style={{flex: 0.07}}
                   />
-                  <Text style={{fontSize: 16, paddingLeft: 10, flex: 0.83}}>
+                  <Text style={{fontSize: 16, paddingLeft: 10, flex: 0.95}}>
                     Personal Information
                   </Text>
-                  <FontAwesomeIcon
-                    icon={faChevronRight}
-                    size={17}
-                    color="#B7B7B7"
-                    style={{flex: 0.1, textAlign: "right"}}
-                  />
+                  <View style={{flex: 0.05}}>
+                    <FontAwesomeIcon
+                      icon={faChevronRight}
+                      size={17}
+                      color="#B7B7B7"
+                      style={{
+                        alignSelf: "flex-end",
+                        textAlign: "right",
+                      }}
+                    />
+                  </View>
                 </TouchableOpacity>
                 {/* Saved Addresses */}
                 <TouchableOpacity
@@ -125,15 +131,20 @@ function Account({navigation, firstName, lastName, loggedIn, wallet}) {
                     color="#11203E"
                     style={{flex: 0.07}}
                   />
-                  <Text style={{fontSize: 16, paddingLeft: 10, flex: 0.83}}>
+                  <Text style={{fontSize: 16, paddingLeft: 10, flex: 0.95}}>
                     Saved Addresses
                   </Text>
-                  <FontAwesomeIcon
-                    icon={faChevronRight}
-                    size={17}
-                    color="#B7B7B7"
-                    style={{flex: 0.1, textAlign: "right"}}
-                  />
+                  <View style={{flex: 0.05}}>
+                    <FontAwesomeIcon
+                      icon={faChevronRight}
+                      size={17}
+                      color="#B7B7B7"
+                      style={{
+                        alignSelf: "flex-end",
+                        textAlign: "right",
+                      }}
+                    />
+                  </View>
                 </TouchableOpacity>
                 {/* Invite a friend */}
                 <TouchableOpacity
@@ -147,15 +158,20 @@ function Account({navigation, firstName, lastName, loggedIn, wallet}) {
                     color="#11203E"
                     style={{flex: 0.07}}
                   />
-                  <Text style={{fontSize: 16, paddingLeft: 10, flex: 0.83}}>
+                  <Text style={{fontSize: 16, paddingLeft: 10, flex: 0.95}}>
                     Invite a friend
                   </Text>
-                  <FontAwesomeIcon
-                    icon={faChevronRight}
-                    size={17}
-                    color="#B7B7B7"
-                    style={{flex: 0.1, textAlign: "right"}}
-                  />
+                  <View style={{flex: 0.05}}>
+                    <FontAwesomeIcon
+                      icon={faChevronRight}
+                      size={17}
+                      color="#B7B7B7"
+                      style={{
+                        alignSelf: "flex-end",
+                        textAlign: "right",
+                      }}
+                    />
+                  </View>
                 </TouchableOpacity>
               </View>
               <Button
@@ -164,7 +180,7 @@ function Account({navigation, firstName, lastName, loggedIn, wallet}) {
                   backgroundColor: "#A46B6B",
                   marginHorizontal: 25,
                 }}
-                icon="power-off">
+                icon={faPowerOff}>
                 Logout
               </Button>
             </>

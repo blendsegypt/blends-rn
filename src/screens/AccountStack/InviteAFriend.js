@@ -14,8 +14,22 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 //Assets
 import InviteAFriendIllustration from "../../../assets/InviteAFriendIllustration.png";
+//Redux
+import {connect} from "react-redux";
+//Toast messages
+import Toast from "react-native-toast-message";
 
-function InviteAFriend({navigation}) {
+function InviteAFriend({navigation, referralCode}) {
+  const copyCodeToClipboard = () => {
+    //use clipboard package to copy
+    Toast.show({
+      type: "success",
+      topOffset: 50,
+      visibilityTime: 2000,
+      text1: "Copied to Clipboard!",
+      text2: "Your referral code is now saved in your clipboard",
+    });
+  };
   return (
     <View style={{flex: 1}}>
       <SafeAreaView>
@@ -45,7 +59,7 @@ function InviteAFriend({navigation}) {
           style={{width: 272, height: 265, alignSelf: "center"}}
         />
         <Text style={styles.invitationMessage} bold>
-          Invite your friends and get a 50% discount on your next order!
+          Invite your friends and get 20 EGP to use in Blends!
         </Text>
         <View style={styles.steps}>
           {/* Step 1 */}
@@ -55,19 +69,14 @@ function InviteAFriend({navigation}) {
                 <Text style={{color: "#bababa"}}>1</Text>
               </View>
             </View>
-            <Text
-              style={{
-                paddingLeft: 10,
-                color: "#11203E",
-                fontSize: 15,
-                flexShrink: 1,
-              }}>
-              Share the code{" "}
-              <Text bold style={{color: "#CE4C4C"}}>
-                REF132
-              </Text>{" "}
-              with your friends
-            </Text>
+            <TouchableOpacity
+              style={{paddingLeft: 10, flexShrink: 1}}
+              onPress={copyCodeToClipboard}>
+              <Text>
+                Click here to copy your code{" "}
+                <Text style={{color: "#CE4C4C"}}>{referralCode}</Text>
+              </Text>
+            </TouchableOpacity>
           </View>
           {/* Step 2 */}
           <View style={styles.step}>
@@ -100,8 +109,8 @@ function InviteAFriend({navigation}) {
                 fontSize: 15,
                 flexShrink: 1,
               }}>
-              You get 50% discount on your next order upon your friend
-              registeration!
+              Both of you get instant credit in your wallet that you can use in
+              Blends!
             </Text>
           </View>
         </View>
@@ -147,4 +156,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InviteAFriend;
+const mapStateToProps = (state) => ({
+  referralCode: state.userReducer.referralCode,
+});
+
+export default connect(mapStateToProps, null)(InviteAFriend);

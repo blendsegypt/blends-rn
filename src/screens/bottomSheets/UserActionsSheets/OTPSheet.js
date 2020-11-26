@@ -18,6 +18,7 @@ import BlendsLogo from "../../../../assets/BlendsLogo.png";
 import Toast from "react-native-toast-message";
 import CloseSheet from "./utils/CloseSheet";
 import API from "../../../utils/axios";
+import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
 
 export default function OTPSheet({
   setSheet,
@@ -118,7 +119,7 @@ export default function OTPSheet({
             {canResend ? (
               <Button
                 secondary
-                icon="envelope"
+                icon={faEnvelope}
                 style={{
                   paddingVertical: 23,
                   marginTop: 7,
@@ -132,7 +133,7 @@ export default function OTPSheet({
             ) : (
               <Button
                 disabled
-                icon="envelope"
+                icon={faEnvelope}
                 style={{paddingVertical: 23, marginTop: 7, paddingRight: 15}}>
                 Resend
               </Button>

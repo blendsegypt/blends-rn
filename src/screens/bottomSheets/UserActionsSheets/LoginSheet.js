@@ -3,7 +3,6 @@ import {
   View,
   ScrollView,
   Image,
-  TouchableOpacity,
   StyleSheet,
   Dimensions,
   Platform,
@@ -23,6 +22,7 @@ import Toast from "react-native-toast-message";
 //Redux
 import {connect} from "react-redux";
 import {login} from "../../../redux/actions/auth.action";
+import {faFacebookF} from "@fortawesome/free-brands-svg-icons";
 
 // Login Sheet
 function LoginSheet({setSheet, closeSheet, login, loginMode}) {
@@ -183,7 +183,7 @@ function LoginSheet({setSheet, closeSheet, login, loginMode}) {
         )}
         <Button
           style={{backgroundColor: "#3077F2", marginTop: 10}}
-          icon="facebook">
+          icon={faFacebookF}>
           Sign in using Facebook
         </Button>
       </ScrollView>

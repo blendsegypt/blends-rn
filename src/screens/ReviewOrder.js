@@ -22,12 +22,15 @@ import {
   faChevronLeft,
   faDollarSign,
 } from "@fortawesome/free-solid-svg-icons";
-//import {FontAwesome5} from '@expo/vector-icons';
 //Redux
 import {connect} from "react-redux";
 import {getCartItems} from "../redux/selectors/cartItems";
 //Keyboard Aware ScrollView
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+//Toast messages
+import Toast from "react-native-toast-message";
+//Axios API instance
+import API from "../utils/axios";
 
 function ReviewOrder({
   route,
@@ -36,9 +39,48 @@ function ReviewOrder({
   cartItems,
   cartTotal,
   addresses,
+  branchID,
+  addressID,
+  userID,
 }) {
   const {threeStepsCheckout} = route.params;
   const [chooseAddressShown, setChooseAddressShown] = useState(false);
+  const [orderPromo, setOrderPromo] = useState("");
+
+  const handleSubmit = async () => {
+    const order = {
+      branch_id: branchID,
+      user_id: userID,
+      delivery_address_id: addressID,
+      sub_total: Number(cartTotal),
+      total: Number(cartTotal) + 5,
+      delivery_charges: 5,
+    };
+    order.OrderItems = cartItems.map((item) => {
+      return {
+        product_id: item.product_id,
+        quantity: item.quantity,
+        options: JSON.stringify(item.selectedOptions),
+      };
+    });
+    if (orderPromo !== "") {
+      order.promo_code = orderPromo;
+    }
+    console.log(order);
+    try {
+      await API.post("app/orders", order);
+      navigation.navigate("OrderConfirmed");
+    } catch (error) {
+      console.log(error.response);
+      Toast.show({
+        type: "error",
+        visibilityTime: 2000,
+        topOffset: 70,
+        text1: "Error!",
+        text2: "An Error Occured! Please try again latter.",
+      });
+    }
+  };
   return (
     <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
       {/* Bottom Sheet Overlay */}
@@ -160,6 +202,7 @@ function ReviewOrder({
               cartItems={cartItems}
               cartTotal={cartTotal}
               showPromotionInput
+              setOrderPromo={setOrderPromo}
             />
           </View>
         </ScrollView>
@@ -170,12 +213,7 @@ function ReviewOrder({
             backgroundColor: "#fff",
             paddingVertical: 25,
           }}>
-          <Button
-            onPress={() => {
-              navigation.navigate("OrderConfirmed");
-            }}>
-            Confirm Order
-          </Button>
+          <Button onPress={handleSubmit}>Confirm Order</Button>
         </View>
       </View>
       {chooseAddressShown && (
@@ -254,6 +292,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   const {cartItems, cartTotal} = getCartItems(state);
   return {
+    userID: state.userReducer.id,
+    branchID: state.userReducer.addresses[0].Area.Branches[0].id,
+    addressID: state.userReducer.addresses[0].id,
     activeAddress: state.userReducer.addresses[0],
     addresses: state.userReducer.addresses,
     cartItems,

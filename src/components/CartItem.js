@@ -39,13 +39,19 @@ function CartItem({
   return (
     <View style={styles.itemContainer}>
       {/* Product Image */}
-      <Image source={{uri: image}} style={{width: 55, height: 55}} />
+      <Image
+        source={{uri: image}}
+        style={{width: 55, height: 55}}
+        resizeMode="contain"
+      />
       <View style={{flex: 0.6, paddingLeft: 10}}>
         {/* Title and Custom requests */}
         <Text style={{fontSize: 15, color: "#11203E"}}>{name}</Text>
-        <Text regular style={{color: "#999999"}}>
-          {selectedOptionsText}
-        </Text>
+        {selectedOptionsText !== "" && (
+          <Text regular style={{color: "#999999"}}>
+            {selectedOptionsText}
+          </Text>
+        )}
         {/* Increase / Decrease quantity */}
         <View style={styles.changeQuantity}>
           {/* Decrease Quantity */}
