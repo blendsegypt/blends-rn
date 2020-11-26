@@ -14,13 +14,13 @@ export const login = (user, accessToken, refreshToken, addresses = []) => {
     // Save user access token & refresh token
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
+    // Activate Axios authentication interceptor
+    authInterceptor.activate();
     // Dispatch Redux actions to save user data
     dispatch(setUser(user));
     if (addresses.length > 0) {
       dispatch(setAddresses(addresses));
     }
-    // Activate Axios authentication interceptor
-    authInterceptor.activate();
   };
 };
 

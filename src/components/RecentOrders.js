@@ -8,57 +8,69 @@ import {
 } from "react-native";
 //UI Components
 import Text from "./ui/Text";
-//Item Image (Only for testing purposes)
-import Espresso from "../../assets/Espresso.png";
-import Latte from "../../assets/Latte.png";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faChevronRight} from "@fortawesome/free-solid-svg-icons";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
+//Axios instance
+import API from "../utils/axios";
+//Toast messages
+import Toast from "react-native-toast-message";
 
 function RecentOrders({navigation}) {
   const [itemsLoaded, setItemsLoaded] = useState(false);
+  const [ordersItems, setOrdersItems] = useState([]);
 
   useEffect(() => {
-    const fakeLoading = setTimeout(() => {
-      setItemsLoaded(true);
-    }, 1500);
-    return () => {
-      clearTimeout(fakeLoading);
-    };
-  }, []);
+    const getRecentOrders = async () => {
+      try {
+        const recentOrders = await API.get("app/orders/recent");
+        const orders = recentOrders.data.data;
+        const recentOrderItems = [];
+        orders.forEach((order) => {
+          order.OrderItems.forEach((orderItem) => {
+            //check if product is already pushed
+            const check = recentOrderItems.find(
+              (item) => item.id === orderItem.Product.id,
+            );
+            if (check) return;
 
-  const recentOrders = [
-    {
-      id: "1",
-      name: "Espresso",
-      price: "15.00 EGP",
-      image: Espresso,
-    },
-    {
-      id: "2",
-      name: "Latte",
-      price: "25.00 EGP",
-      image: Latte,
-    },
-  ];
+            recentOrderItems.push({
+              ...orderItem.Product,
+            });
+          });
+        });
+        setOrdersItems(recentOrderItems);
+        setItemsLoaded(true);
+      } catch (error) {
+        Toast.show({
+          type: "error",
+          topOffset: 50,
+          visibilityTime: 2000,
+          text1: "An Error Occured",
+          text2: "Something wrong happened while retrieving recent orders!",
+        });
+      }
+    };
+    getRecentOrders();
+  }, []);
 
   // Render single item
   const renderItem = ({item, index}) => (
     <TouchableOpacity
       style={[styles.recentOrder, index == 0 ? {marginLeft: 0} : {}]}
       onPress={() => {
-        navigation.navigate("Product");
+        navigation.navigate("Product", {product_id: item.id});
       }}>
       <Image
-        source={item.image}
+        source={{uri: item.product_image_url}}
         style={{width: 55, height: 55, alignSelf: "center", marginTop: 5}}
+        resizeMode="contain"
       />
       <View style={styles.itemData}>
-        <Text style={styles.itemName}>{item.name}</Text>
-        <Text style={styles.itemPrice} regular>
-          {item.price}
+        <Text bold style={styles.itemName}>
+          {item.name}
         </Text>
       </View>
       <FontAwesomeIcon
@@ -77,8 +89,8 @@ function RecentOrders({navigation}) {
       <View>
         {itemsLoaded ? (
           <FlatList
-            data={recentOrders}
-            keyExtractor={(item) => item.id}
+            data={ordersItems}
+            keyExtractor={(item) => String(item.id)}
             renderItem={renderItem}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -145,7 +157,7 @@ const styles = StyleSheet.create({
   recentOrder: {
     backgroundColor: "#dae3f5",
     marginTop: 15,
-    padding: 15,
+    padding: 10,
     paddingVertical: 10,
     flexDirection: "row",
     borderRadius: 20,
@@ -153,6 +165,8 @@ const styles = StyleSheet.create({
   },
   itemName: {
     color: "#4B5F8B",
+    paddingRight: 15,
+    maxWidth: 150,
   },
   itemPrice: {
     color: "#A3B2D3",
@@ -162,7 +176,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   itemChevron: {
-    paddingLeft: 15,
     alignSelf: "center",
   },
 });
