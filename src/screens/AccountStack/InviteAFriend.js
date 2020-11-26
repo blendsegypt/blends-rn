@@ -18,10 +18,12 @@ import InviteAFriendIllustration from "../../../assets/InviteAFriendIllustration
 import {connect} from "react-redux";
 //Toast messages
 import Toast from "react-native-toast-message";
+//Clipboard
+import Clipboard from "@react-native-community/clipboard";
 
 function InviteAFriend({navigation, referralCode}) {
   const copyCodeToClipboard = () => {
-    //use clipboard package to copy
+    Clipboard.setString(referralCode);
     Toast.show({
       type: "success",
       topOffset: 50,
@@ -92,7 +94,7 @@ function InviteAFriend({navigation, referralCode}) {
                 fontSize: 15,
                 flexShrink: 1,
               }}>
-              Ask your friends to use the code while creating their account
+              Ask your friends to use your code while creating their account
             </Text>
           </View>
           {/* Step 3 */}
