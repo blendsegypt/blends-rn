@@ -6,6 +6,7 @@
 
 */
 import {setUser, setAddresses, logoutUser} from "../actions/user.action";
+import {resetCart} from "../actions/cart.action";
 import {
   setAccessToken,
   setRefreshToken,
@@ -38,5 +39,6 @@ export const logout = () => {
     authInterceptor.deactivate();
     // Dispatch Redux actions to remove user data
     dispatch(logoutUser());
+    dispatch(resetCart());
   };
 };

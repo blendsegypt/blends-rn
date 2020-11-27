@@ -22,6 +22,17 @@ function Home({
   supportedArea,
   addresses,
 }) {
+  const currentTime = () => {
+    const timeNow = new Date();
+    const hours = timeNow.getHours();
+    if (hours < 12) {
+      return "Morning";
+    } else if (hours < 18) {
+      return "Afternoon";
+    } else {
+      return "Evening";
+    }
+  };
   return (
     <>
       <View style={{backgroundColor: "#fff"}}>
@@ -42,7 +53,7 @@ function Home({
               <View style={styles.goodMorning}>
                 <Image source={Sun} />
                 <Text style={styles.goodMorningText} regular>
-                  Good Morning,
+                  Good {currentTime()},
                 </Text>
                 <Text
                   style={[styles.goodMorningText, {paddingLeft: 3}]}

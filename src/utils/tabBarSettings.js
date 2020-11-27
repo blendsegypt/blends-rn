@@ -16,10 +16,10 @@ export default ({route}) => ({
   tabBarIcon: ({focused}) => {
     if (route.name == "Home") {
       if (focused) {
-        return <Image source={BlendsIcon} style={{width: 22, height: 17}} />;
+        return <Image source={BlendsIcon} style={{width: 24, height: 19}} />;
       } else {
         return (
-          <Image source={BlendsIconGray} style={{width: 22, height: 17}} />
+          <Image source={BlendsIconGray} style={{width: 24, height: 19}} />
         );
       }
     } else if (route.name == "Orders") {
