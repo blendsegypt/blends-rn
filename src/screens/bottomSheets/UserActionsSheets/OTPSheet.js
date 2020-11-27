@@ -41,7 +41,7 @@ export default function OTPSheet({
     return () => {
       clearTimeout(resendTimeout);
     };
-  }, []);
+  }, [canResend]);
 
   // Make button active when OTP is fully entered
   useEffect(() => {
@@ -55,6 +55,32 @@ export default function OTPSheet({
       clearTimeout(resendTimeout);
     };
   }, [OTP]);
+
+  // Resend OTP
+  const resendOTP = async () => {
+    try {
+      await API.post("app/register/resend/OTP", {
+        phone_number: phoneNumber,
+      });
+      Toast.show({
+        type: "success",
+        topOffset: 70,
+        visibilityTime: 2000,
+        text1: "OTP Resent!",
+        text2: "A new OTP has been sent to your mobile phone number",
+      });
+      clearTimeout(resendTimeout);
+      setCanResend(false);
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        topOffset: 70,
+        visibilityTime: 2000,
+        text1: "An Error Occured",
+        text2: "Sorry about that. Could you please try again?",
+      });
+    }
+  };
 
   const handleSubmit = async () => {
     try {
@@ -125,9 +151,7 @@ export default function OTPSheet({
                   marginTop: 7,
                   paddingRight: 15,
                 }}
-                onPress={() => {
-                  startResendCounter();
-                }}>
+                onPress={resendOTP}>
                 Resend
               </Button>
             ) : (
