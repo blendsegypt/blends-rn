@@ -8,8 +8,6 @@ import Stars from "../components/ui/Stars";
 //Icons Fonts
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCalendar} from "@fortawesome/free-solid-svg-icons";
-//import {MaterialCommunityIcons} from '@expo/vector-icons';
-//import {Fontisto} from '@expo/vector-icons';
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
 
