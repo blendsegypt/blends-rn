@@ -8,100 +8,54 @@ import {
 } from "react-native";
 //UI Components
 import Text from "../components/ui/Text";
-import Button from "../components/ui/Button";
 //Components
 import OrderReceipt from "../components/OrderReceipt";
 //Icons Fonts
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faChevronLeft, faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
-//Assets (for testing)
-import Latte from "../../assets/Latte.png";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
-//Redux
-import {connect} from "react-redux";
-//FreshChat Integration
-import {
-  Freshchat,
-  FreshchatConfig,
-  FreshchatUser,
-  FreshchatMessage,
-} from "react-native-freshchat-sdk";
+//Axios instance
+import API from "../utils/axios";
+//MomentJS
+import Moment from "moment";
 
-function OrderDetails({navigation, user}) {
-  const order = {
-    number: 1123,
-    status: "Brewing",
-    estimatedDelivery: "09:32 AM",
-    ordered: "Today",
-    deliveryAddress: "Home",
-    cartItems: [
-      {
-        image: Latte,
-        name: "Latte",
-        price: 25,
-        quantity: 1,
-        selectedOptions: [
-          {
-            label: "Cup Size",
-            price: 0,
-            textValue: "Small",
-            value: "sm",
-          },
-          {
-            label: "Milk Type",
-            price: 0,
-            textValue: "Skimmed Milk",
-            value: "skm",
-          },
-        ],
-      },
-    ],
-    cartTotal: 24.99,
-    orderTotal: 29.99,
-  };
+function OrderDetails({navigation, route}) {
   const [orderLoaded, setOrderLoaded] = useState(false);
-  //Fake loading (will be changed latter to send an API request)
+  const [order, setOrder] = useState(null);
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setOrderLoaded(true);
-      const userPropertiesJson = {
-        orderID: order.number,
-      };
-      Freshchat.setUserProperties(userPropertiesJson, (error) => {
-        console.log(error);
-      });
-    }, 1000);
-
-    // Setup FreshChat
-    const freshchatConfig = new FreshchatConfig(
-      "eeded093-e396-4fa5-8302-85223c8725c6",
-      "af17ee52-db85-484b-853f-c650fdd023c5",
-    );
-    freshchatConfig.domain = "msdk.eu.freshchat.com";
-    Freshchat.init(freshchatConfig);
-    const freshchatUser = new FreshchatUser();
-    // Split fullName to first name
-    const firstName = user.fullName.split(" ")[0];
-    freshchatUser.firstName = firstName;
-    freshchatUser.phoneCountryCode = "+2";
-    freshchatUser.phone = user.phoneNumber;
-    Freshchat.setUser(freshchatUser, (error) => {
-      console.log(error);
-    });
-
-    // useEffect Cleanup
-    return () => {
-      clearTimeout(timeout);
+    const {orderId} = route.params;
+    const getOrder = async () => {
+      try {
+        const response = await API.get(`app/orders/order/${orderId}`);
+        const order = Object.assign({}, response.data.data);
+        // Calculate order dates and time
+        if (order.order_status !== "Delivered") {
+          const createdAt = Moment(order.createdAt);
+          // convert createdAt to readable format
+          order.createdAt = createdAt.startOf("minute").fromNow();
+          // calculate estimated delivery (createdAt + 30 minutes) in case its not delivered
+          const estimatedDelivery = createdAt.clone().add(30, "m").calendar();
+          order.estimatedDelivery = estimatedDelivery;
+        } else {
+          //calculate delivery date
+          order.deliveryDate = Moment(order.delivered_at).calendar();
+        }
+        // Format order
+        order.OrderItems.forEach((item) => {
+          item.name = item.Product.name;
+          item.image = item.Product.product_image_url;
+          item.selectedOptions = JSON.parse(item.options);
+        });
+        console.log(response.data.data);
+        setOrder(order);
+        setOrderLoaded(true);
+      } catch (error) {
+        console.log("error: " + error);
+      }
     };
+    getOrder();
   }, []);
-
-  const showFreshChat = () => {
-    const freshchatMessage = new FreshchatMessage();
-    freshchatMessage.message = `I have a question regarding my order #${order.number}`;
-    Freshchat.sendMessage(freshchatMessage);
-    Freshchat.showConversations();
-  };
 
   return (
     <View style={{flex: 1}}>
@@ -110,7 +64,7 @@ function OrderDetails({navigation, user}) {
         <View style={styles.header}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Orders");
+              navigation.navigate("Orders", {refresh: false});
             }}
             style={{flex: 0.5, paddingTop: 25}}>
             <FontAwesomeIcon icon={faChevronLeft} size={22} color="#11203E" />
@@ -122,7 +76,7 @@ function OrderDetails({navigation, user}) {
       </SafeAreaView>
       <ScrollView
         style={[styles.container, {paddingTop: 25}]}
-        contentContainerStyle={{paddingBottom: 100}}>
+        contentContainerStyle={{paddingBottom: 150}}>
         {/* Check if order was loaded */}
         {orderLoaded ? (
           <View style={styles.detailsContainer}>
@@ -137,7 +91,7 @@ function OrderDetails({navigation, user}) {
               }}>
               <View style={{flex: 0.7}}>
                 <Text style={{color: "#B9B9B9"}}>Order Status</Text>
-                <Text semiBold>{order.status}</Text>
+                <Text semiBold>{order.order_status}</Text>
               </View>
               <View
                 style={{
@@ -148,7 +102,7 @@ function OrderDetails({navigation, user}) {
                     Ordered
                   </Text>
                   <Text semiBold style={{textAlign: "left"}}>
-                    {order.ordered}
+                    {order.createdAt}
                   </Text>
                 </View>
               </View>
@@ -159,6 +113,8 @@ function OrderDetails({navigation, user}) {
                 flexDirection: "row",
                 paddingHorizontal: 25,
                 paddingVertical: 20,
+                borderBottomWidth: order.PromoCode ? 1 : 0,
+                borderBottomColor: "#EEEEEE",
               }}>
               <View style={{flex: 0.7}}>
                 <Text style={{color: "#B9B9B9"}}>Delivery Address</Text>
@@ -170,7 +126,7 @@ function OrderDetails({navigation, user}) {
                     style={{paddingTop: 1}}
                   />
                   <Text semiBold style={{paddingLeft: 4}}>
-                    {order.deliveryAddress}
+                    {order.Address.nickname}
                   </Text>
                 </View>
               </View>
@@ -183,11 +139,34 @@ function OrderDetails({navigation, user}) {
                     Order Number
                   </Text>
                   <Text semiBold style={{textAlign: "left"}}>
-                    #{order.number}
+                    #{order.id}
                   </Text>
                 </View>
               </View>
             </View>
+            {/* Promocode */}
+            {order.PromoCode && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  paddingHorizontal: 25,
+                  justifyContent: "center",
+                  paddingVertical: 20,
+                }}>
+                <View>
+                  <Text style={{color: "#B9B9B9", textAlign: "center"}}>
+                    Promocode
+                  </Text>
+                  <View style={{flexDirection: "row"}}>
+                    <Text
+                      semiBold
+                      style={{paddingLeft: 4, textAlign: "center"}}>
+                      {order.PromoCode.code}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            )}
           </View>
         ) : (
           <SkeletonContent
@@ -249,8 +228,11 @@ function OrderDetails({navigation, user}) {
           {/* Order Receipt loading / loaded */}
           {orderLoaded ? (
             <OrderReceipt
-              cartItems={order.cartItems}
-              cartTotal={order.cartTotal}
+              cartItems={order.OrderItems}
+              cartTotal={order.sub_total}
+              total={order.total}
+              deliveryCharges={order.delivery_charges}
+              appliedPromocode={order.PromoCode}
             />
           ) : (
             <SkeletonContent
@@ -337,27 +319,6 @@ function OrderDetails({navigation, user}) {
           )}
         </View>
       </ScrollView>
-      <View
-        style={{
-          paddingHorizontal: 25,
-          backgroundColor: "#fff",
-          paddingBottom: 110,
-          paddingTop: 20,
-        }}>
-        {orderLoaded ? (
-          <Button
-            textColor="#437FD9"
-            style={{backgroundColor: "#EBF1FF"}}
-            icon="commenting"
-            onPress={() => showFreshChat()}>
-            Problems with your Order?
-          </Button>
-        ) : (
-          <Button icon="commenting" disabled>
-            Problems with your Order?
-          </Button>
-        )}
-      </View>
     </View>
   );
 }
@@ -408,8 +369,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => ({
-  user: state.userReducer,
-});
-
-export default connect(mapStateToProps, null)(OrderDetails);
+export default OrderDetails;

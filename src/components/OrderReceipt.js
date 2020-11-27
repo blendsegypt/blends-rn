@@ -17,6 +17,9 @@ function OrderReceipt({
   branchID,
   addressID,
   setOrderPromo,
+  total,
+  deliveryCharges,
+  appliedPromocode,
 }) {
   const [promocode, setPromocode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
@@ -136,26 +139,39 @@ function OrderReceipt({
           <Text style={{fontSize: 14, flex: 0.6, color: "#9C9C9C"}} semiBold>
             Delivery Charges
           </Text>
-          <Text
-            style={{
-              fontSize: 14,
-              color: "#9C9C9C",
-              flex: 0.4,
-              textAlign: "right",
-            }}
-            semiBold>
-            {!promoApplied ? (
-              `5.00 EGP`
-            ) : (
-              <Text>
-                {5 - orderAfterPromo.delivery_charges > 0
-                  ? `(-${5 - orderAfterPromo.delivery_charges} EGP) ${
-                      orderAfterPromo.delivery_charges
-                    } EGP`
-                  : `${(5).toFixed(2)} EGP`}
-              </Text>
-            )}
-          </Text>
+          {deliveryCharges === undefined ? (
+            <Text
+              style={{
+                fontSize: 14,
+                color: "#9C9C9C",
+                flex: 0.4,
+                textAlign: "right",
+              }}
+              semiBold>
+              {!promoApplied ? (
+                `5.00 EGP`
+              ) : (
+                <Text>
+                  {5 - orderAfterPromo.delivery_charges > 0
+                    ? `(-${5 - orderAfterPromo.delivery_charges} EGP) ${
+                        orderAfterPromo.delivery_charges
+                      } EGP`
+                    : `${(5).toFixed(2)} EGP`}
+                </Text>
+              )}
+            </Text>
+          ) : (
+            <Text
+              style={{
+                fontSize: 14,
+                color: "#9C9C9C",
+                flex: 0.4,
+                textAlign: "right",
+              }}
+              semiBold>
+              {deliveryCharges.toFixed(2)} EGP
+            </Text>
+          )}
         </View>
       </View>
       {/* Promotion Input Field */}
@@ -208,11 +224,17 @@ function OrderReceipt({
         <Text bold style={{color: "#fff", flex: 0.6}}>
           Total
         </Text>
-        <Text bold style={{color: "#fff", flex: 0.4, textAlign: "right"}}>
-          {!promoApplied
-            ? `${(Number(cartTotal) + 5).toFixed(2)} EGP`
-            : `${orderAfterPromo.total.toFixed(2)} EGP`}
-        </Text>
+        {!total ? (
+          <Text bold style={{color: "#fff", flex: 0.4, textAlign: "right"}}>
+            {!promoApplied
+              ? `${(Number(cartTotal) + 5).toFixed(2)} EGP`
+              : `${orderAfterPromo.total.toFixed(2)} EGP`}
+          </Text>
+        ) : (
+          <Text bold style={{color: "#fff", flex: 0.4, textAlign: "right"}}>
+            {total.toFixed(2)} EGP
+          </Text>
+        )}
       </View>
     </View>
   );

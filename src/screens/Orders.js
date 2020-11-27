@@ -1,5 +1,12 @@
-import React, {useState, useEffect} from "react";
-import {View, ScrollView, StyleSheet, SafeAreaView} from "react-native";
+import React, {useState, useEffect, useCallback} from "react";
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  SafeAreaView,
+  RefreshControl,
+} from "react-native";
+import {useFocusEffect} from "@react-navigation/native";
 //UI Components
 import Text from "../components/ui/Text";
 import Button from "../components/ui/Button";
@@ -7,35 +14,58 @@ import Link from "../components/ui/Link";
 import Stars from "../components/ui/Stars";
 //Icons Fonts
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faCalendar} from "@fortawesome/free-solid-svg-icons";
-// Loading Skeleton
+import {faCalendar, faCheck} from "@fortawesome/free-solid-svg-icons";
+//Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
+//Axios instance
+import API from "../utils/axios";
+//Moment (date/time manipulation)
+import Moment from "moment";
 
-function Orders({navigation}) {
+function Orders({navigation, route}) {
   const [ordersLoaded, setOrdersLoaded] = useState(false);
-  //Fake loading (will be changed latter to send an API request)
-  useEffect(() => {
-    const timeout = setTimeout(() => {
+  const [refreshing, setRefreshing] = useState(false);
+  const [orders, setOrders] = useState([]);
+  // Get user orders from backend API
+  const getUserOrders = async () => {
+    try {
+      const response = await API.get("app/orders");
+      const orders = [...response.data.data];
+      // Calculate order dates and time
+      orders.forEach((order) => {
+        if (order.order_status !== "Delivered") {
+          const createdAt = Moment(order.createdAt);
+          // convert createdAt to readable format
+          order.createdAt = createdAt.startOf("minute").fromNow();
+          // calculate estimated delivery (createdAt + 30 minutes) in case its not delivered
+          const estimatedDelivery = createdAt.clone().add(30, "m").calendar();
+          order.estimatedDelivery = estimatedDelivery;
+        } else {
+          //calculate delivery date
+          order.deliveryDate = Moment(order.delivered_at).calendar();
+        }
+      });
+      setOrders(orders);
       setOrdersLoaded(true);
-    }, 1000);
-    return () => {
-      clearTimeout(timeout);
-    };
+    } catch (error) {
+      console.log("error: " + error);
+    }
+  };
+  // Refresh orders
+  const refreshOrders = async () => {
+    //setRefreshing(true);
+    await getUserOrders();
+    //setRefreshing(false);
+  };
+  useEffect(() => {
+    getUserOrders();
   }, []);
-  const orders = [
-    {
-      number: 1123,
-      status: "Brewing",
-      estimatedDelivery: "09:32 AM",
-      ordered: "Today",
-    },
-    {
-      number: 1322,
-      status: "Delivered",
-      deliveryDate: "23/8/2020",
-      stars: 4,
-    },
-  ];
+  // Refresh orders on focus
+  useFocusEffect(
+    useCallback(() => {
+      refreshOrders();
+    }, []),
+  );
   return (
     <View style={{flex: 1}}>
       <SafeAreaView>
@@ -45,11 +75,16 @@ function Orders({navigation}) {
           </Text>
         </View>
       </SafeAreaView>
-      <ScrollView style={styles.ordersContainer}>
+      <ScrollView
+        style={styles.ordersContainer}
+        contentContainerStyle={{paddingBottom: 150}}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={refreshOrders} />
+        }>
         {/* Orders loading / loaded */}
         {ordersLoaded ? (
           orders.map((order, index) => {
-            if (order.status == "Delivered") {
+            if (order.order_status === "Delivered") {
               return (
                 <DeliveredOrder
                   {...order}
@@ -131,10 +166,10 @@ function Orders({navigation}) {
 }
 
 function OrderInProgress({
-  number,
-  status,
+  id,
+  order_status,
   estimatedDelivery,
-  ordered,
+  createdAt,
   navigation,
 }) {
   return (
@@ -148,9 +183,12 @@ function OrderInProgress({
             size={20}
             color="#fff"
           /> */}
-          <Text bold style={{color: "#fff", fontSize: 15, paddingLeft: 5}}>
-            {status}
-          </Text>
+          <View style={{flexDirection: "column"}}>
+            <Text style={{color: "#3b578f", fontSize: 15}}>Order Status</Text>
+            <Text bold style={{color: "#fff", fontSize: 15}}>
+              {order_status}
+            </Text>
+          </View>
         </View>
         {/* Estimated Delivery */}
         <View
@@ -160,9 +198,12 @@ function OrderInProgress({
             justifyContent: "flex-end",
           }}>
           {/* <Fontisto name="motorcycle" size={19} color="#fff" /> */}
-          <Text style={{color: "#fff", fontSize: 15, paddingLeft: 5}}>
-            Approx. {estimatedDelivery}
-          </Text>
+          <View style={{flexDirection: "column"}}>
+            <Text style={{color: "#3b578f", fontSize: 15}}>Should Arrive:</Text>
+            <Text bold style={{color: "#fff", fontSize: 15}}>
+              {estimatedDelivery}
+            </Text>
+          </View>
         </View>
       </View>
       {/* Order Data Area */}
@@ -170,12 +211,12 @@ function OrderInProgress({
         <View
           style={{
             flexDirection: "row",
-            paddingHorizontal: 22,
+            paddingHorizontal: 30,
             paddingTop: 20,
-            paddingBottom: 5,
+            paddingBottom: 10,
           }}>
           <Text regular style={{flex: 0.5, fontSize: 15, color: "#888888"}}>
-            Ordered <Text bold>{ordered}</Text>
+            Ordered <Text bold>{createdAt}</Text>
           </Text>
           <Text
             regular
@@ -185,13 +226,13 @@ function OrderInProgress({
               fontSize: 15,
               color: "#888888",
             }}>
-            Order Number <Text bold>#{number}</Text>
+            Order Number <Text bold>#{id}</Text>
           </Text>
         </View>
         <Button
           style={styles.orderDetailsButton}
           onPress={() => {
-            navigation.navigate("OrderDetails");
+            navigation.navigate("OrderDetails", {orderId: id});
           }}>
           View Order Details
         </Button>
@@ -200,7 +241,7 @@ function OrderInProgress({
   );
 }
 
-function DeliveredOrder({number, status, deliveryDate, stars, navigation}) {
+function DeliveredOrder({id, order_status, deliveryDate, stars, navigation}) {
   return (
     <View style={styles.orderContainer}>
       {/* Order Status Bar */}
@@ -217,8 +258,9 @@ function DeliveredOrder({number, status, deliveryDate, stars, navigation}) {
         {/* Order Status */}
         <View style={{flexDirection: "row", flex: 0.5}}>
           {/* <MaterialCommunityIcons name="check" size={20} color="#8DAA68" /> */}
+          <FontAwesomeIcon icon={faCheck} size={17} color="#8DAA68" />
           <Text bold style={{color: "#8DAA68", fontSize: 15, paddingLeft: 5}}>
-            {status}
+            {order_status}
           </Text>
         </View>
         {/* Estimated Delivery */}
@@ -242,7 +284,7 @@ function DeliveredOrder({number, status, deliveryDate, stars, navigation}) {
           padding: 20,
         }}>
         {/* Order Rating */}
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             flex: 0.5,
@@ -254,7 +296,7 @@ function DeliveredOrder({number, status, deliveryDate, stars, navigation}) {
               <Stars initialStars={0} />
             ) // Add onChange to send an API request and rate the order
           }
-        </View>
+        </View> */}
         {/* View Order Details */}
         <View style={{flex: 0.5}}>
           <Link
@@ -264,7 +306,7 @@ function DeliveredOrder({number, status, deliveryDate, stars, navigation}) {
               textAlign: "right",
             }}
             onPress={() => {
-              navigation.navigate("OrderDetails");
+              navigation.navigate("OrderDetails", {orderId: id});
             }}>
             View Order Details
           </Link>
@@ -319,7 +361,7 @@ const styles = StyleSheet.create({
   statusBar: {
     flexDirection: "row",
     backgroundColor: "#11203E",
-    padding: 20,
+    padding: 30,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },

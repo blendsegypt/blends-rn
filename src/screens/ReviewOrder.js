@@ -66,7 +66,6 @@ function ReviewOrder({
     if (orderPromo !== "") {
       order.promo_code = orderPromo;
     }
-    console.log(order);
     try {
       await API.post("app/orders", order);
       navigation.navigate("OrderConfirmed");
