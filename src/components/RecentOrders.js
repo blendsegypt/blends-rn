@@ -10,15 +10,18 @@ import {
 import Text from "./ui/Text";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faChevronRight} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
 //Axios instance
 import API from "../utils/axios";
 //Toast messages
 import Toast from "react-native-toast-message";
+//Redux
+import {connect} from "react-redux";
+import {addToCart} from "../redux/actions/cart.action";
 
-function RecentOrders({navigation}) {
+function RecentOrders({navigation, addToCart}) {
   const [itemsLoaded, setItemsLoaded] = useState(false);
   const [ordersItems, setOrdersItems] = useState([]);
 
@@ -61,6 +64,18 @@ function RecentOrders({navigation}) {
     <TouchableOpacity
       style={[styles.recentOrder, index == 0 ? {marginLeft: 0} : {}]}
       onPress={() => {
+        if (item.retail) {
+          const cartItem = {
+            name: item.name,
+            product_id: item.id,
+            price: item.sale_price === 0 ? item.price : item.sale_price,
+            selectedOptions: [],
+            image: item.product_image_url,
+            quantity: 1,
+          };
+          addToCart(cartItem);
+          return;
+        }
         navigation.navigate("Product", {product_id: item.id});
       }}>
       <Image
@@ -73,12 +88,21 @@ function RecentOrders({navigation}) {
           {item.name}
         </Text>
       </View>
-      <FontAwesomeIcon
-        style={styles.itemChevron}
-        icon={faChevronRight}
-        size={14}
-        color="#BCCAE9"
-      />
+      {item.retail ? (
+        <FontAwesomeIcon
+          style={styles.itemChevron}
+          icon={faPlus}
+          size={14}
+          color="#BCCAE9"
+        />
+      ) : (
+        <FontAwesomeIcon
+          style={styles.itemChevron}
+          icon={faChevronRight}
+          size={14}
+          color="#BCCAE9"
+        />
+      )}
     </TouchableOpacity>
   );
   return (
@@ -180,4 +204,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RecentOrders;
+const mapDispatchToProps = (dispatch) => ({
+  addToCart: (item) => dispatch(addToCart(item)),
+});
+
+export default connect(null, mapDispatchToProps)(RecentOrders);

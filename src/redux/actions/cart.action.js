@@ -4,10 +4,21 @@
  *
  */
 
-export const addToCart = (item) => ({
-  type: "ADD_TO_CART",
-  item,
-});
+import Toast from "react-native-toast-message";
+
+export const addToCart = (item) => {
+  Toast.show({
+    type: "success",
+    topOffset: 50,
+    visibilityTime: 1000,
+    text1: "Added to Cart!",
+    text2: `${item.name} has been added to cart.`,
+  });
+  return {
+    type: "ADD_TO_CART",
+    item,
+  };
+};
 
 export const changeQuantity = (itemID, newQuantity) => ({
   type: "CHANGE_QUANTITY",
