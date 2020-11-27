@@ -23,7 +23,7 @@ function App() {
 
     */
     const {loggedIn, addresses, location} = store.getState().userReducer;
-    if (!location && addresses.length === 0) {
+    if (Object.keys(location).length === 0 && addresses.length === 0) {
       setInitialRouteName("PinDrop");
     }
 
