@@ -10,8 +10,11 @@ import {useFocusEffect} from "@react-navigation/native";
 //UI Components
 import Text from "../components/ui/Text";
 import Button from "../components/ui/Button";
+//Toast Messages
+import Toast from "react-native-toast-message";
 //Redux
 import {connect} from "react-redux";
+import {logout} from "../redux/actions/auth.action";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {
@@ -24,8 +27,10 @@ import {
 //Bottom Sheets
 import UserActions from "./bottomSheets/UserActions";
 import BottomSheetOverlay from "../components/BottomSheetOverlay";
+//axios instance
+import API from "../utils/axios";
 
-function Account({navigation, firstName, lastName, loggedIn, wallet}) {
+function Account({navigation, firstName, lastName, loggedIn, wallet, logout}) {
   const [showUserActionsSheet, setShowUserActionsSheet] = useState(false);
 
   const closeSheet = () => {
@@ -54,6 +59,22 @@ function Account({navigation, firstName, lastName, loggedIn, wallet}) {
     }, [loggedIn]),
   );
 
+  // Logout user
+  const handleLogout = async () => {
+    try {
+      await API.post("app/auth/logout", {});
+      logout();
+      navigation.navigate("PinDrop");
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        topOffset: 50,
+        visibilityTime: 2000,
+        text1: "An Error Occured",
+        text2: "Something wrong happened on our side! Please try again.",
+      });
+    }
+  };
   return (
     <>
       {showUserActionsSheet && (
@@ -180,6 +201,7 @@ function Account({navigation, firstName, lastName, loggedIn, wallet}) {
                   backgroundColor: "#A46B6B",
                   marginHorizontal: 25,
                 }}
+                onPress={handleLogout}
                 icon={faPowerOff}>
                 Logout
               </Button>
@@ -275,4 +297,8 @@ const mapStateToProps = (state) => ({
   wallet: state.userReducer.wallet,
 });
 
-export default connect(mapStateToProps, null)(Account);
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(logout()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Account);

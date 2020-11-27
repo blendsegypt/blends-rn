@@ -48,3 +48,7 @@ export const updatePersonalInfo = (personalInfo) => ({
   type: "UPDATE_PERSONAL_INFO",
   personalInfo,
 });
+
+export const logoutUser = () => ({
+  type: "LOGOUT_USER",
+});

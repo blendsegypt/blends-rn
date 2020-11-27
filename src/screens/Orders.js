@@ -21,13 +21,19 @@ import SkeletonContent from "react-native-skeleton-content-nonexpo";
 import API from "../utils/axios";
 //Moment (date/time manipulation)
 import Moment from "moment";
+//Redux
+import {connect} from "react-redux";
 
-function Orders({navigation, route}) {
+function Orders({navigation, loggedIn}) {
   const [ordersLoaded, setOrdersLoaded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [orders, setOrders] = useState([]);
   // Get user orders from backend API
   const getUserOrders = async () => {
+    if (!loggedIn) {
+      setOrdersLoaded(true);
+      return;
+    }
     try {
       const response = await API.get("app/orders");
       const orders = [...response.data.data];
@@ -371,4 +377,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Orders;
+const mapStateToProps = (state) => ({
+  loggedIn: state.userReducer.loggedIn,
+});
+
+export default connect(mapStateToProps, null)(Orders);

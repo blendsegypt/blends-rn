@@ -11,6 +11,8 @@ import {
   FreshchatConfig,
   FreshchatUser,
 } from "react-native-freshchat-sdk";
+// FontAwesome icons
+import {faComment, faHeart} from "@fortawesome/free-solid-svg-icons";
 
 function Support({user}) {
   useEffect(() => {
@@ -47,9 +49,9 @@ function Support({user}) {
         </View>
       </SafeAreaView>
       <ScrollView style={styles.container}>
-        {user.phoneNumberConfirmed && (
+        {user.loggedIn && (
           <Button
-            icon="commenting"
+            icon={faComment}
             textColor="#437FD9"
             style={{backgroundColor: "#EBF1FF"}}
             onPress={() => {
@@ -58,7 +60,7 @@ function Support({user}) {
             Talk to Support
           </Button>
         )}
-        <Button style={{marginTop: 10}} secondary icon="heart">
+        <Button style={{marginTop: 10}} secondary icon={faHeart}>
           Rate Blends on Appstore
         </Button>
       </ScrollView>

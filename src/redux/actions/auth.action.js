@@ -5,8 +5,13 @@
   @logout => used for logout
 
 */
-import {setUser, setAddresses} from "../actions/user.action";
-import {setAccessToken, setRefreshToken} from "../../utils/authToken";
+import {setUser, setAddresses, logoutUser} from "../actions/user.action";
+import {
+  setAccessToken,
+  setRefreshToken,
+  removeAccessToken,
+  removeRefreshToken,
+} from "../../utils/authToken";
 import {authInterceptor} from "../../utils/axios";
 
 export const login = (user, accessToken, refreshToken, addresses = []) => {
@@ -24,4 +29,14 @@ export const login = (user, accessToken, refreshToken, addresses = []) => {
   };
 };
 
-export const logout = () => {};
+export const logout = () => {
+  return (dispatch) => {
+    // Remove access/refresh tokens from keychain
+    removeAccessToken();
+    removeRefreshToken();
+    // Deactivate Axios authentication interceptor
+    authInterceptor.deactivate();
+    // Dispatch Redux actions to remove user data
+    dispatch(logoutUser());
+  };
+};

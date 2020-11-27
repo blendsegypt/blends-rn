@@ -15,6 +15,7 @@ export default function userReducer(
     referralCode: "",
     loggedIn: false,
     addresses: [],
+    location: {},
   },
   action,
 ) {
@@ -82,6 +83,18 @@ export default function userReducer(
       return newState;
     case "UPDATE_PERSONAL_INFO":
       newState = {...state, ...action.personalInfo};
+      return newState;
+    case "LOGOUT_USER":
+      newState = {
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
+        wallet: null,
+        referralCode: "",
+        loggedIn: false,
+        addresses: [],
+        location: {},
+      };
       return newState;
     default:
       return state;
