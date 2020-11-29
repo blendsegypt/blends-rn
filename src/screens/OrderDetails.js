@@ -40,6 +40,7 @@ function OrderDetails({navigation, route}) {
         } else {
           //calculate delivery date
           order.deliveryDate = Moment(order.delivered_at).calendar();
+          order.createdAt = Moment(order.createdAt).startOf("minute").fromNow();
         }
         // Format order
         order.OrderItems.forEach((item) => {
@@ -47,7 +48,6 @@ function OrderDetails({navigation, route}) {
           item.image = item.Product.product_image_url;
           item.selectedOptions = JSON.parse(item.options);
         });
-        console.log(response.data.data);
         setOrder(order);
         setOrderLoaded(true);
       } catch (error) {

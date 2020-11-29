@@ -23,6 +23,8 @@ import API from "../utils/axios";
 import Moment from "moment";
 //Redux
 import {connect} from "react-redux";
+//Toast messages
+import Toast from "react-native-toast-message";
 
 function Orders({navigation, loggedIn}) {
   const [ordersLoaded, setOrdersLoaded] = useState(false);
@@ -59,9 +61,7 @@ function Orders({navigation, loggedIn}) {
   };
   // Refresh orders
   const refreshOrders = async () => {
-    //setRefreshing(true);
     await getUserOrders();
-    //setRefreshing(false);
   };
   useEffect(() => {
     getUserOrders();
@@ -247,7 +247,20 @@ function OrderInProgress({
   );
 }
 
-function DeliveredOrder({id, order_status, deliveryDate, stars, navigation}) {
+function DeliveredOrder({id, order_status, deliveryDate, rating, navigation}) {
+  const rateOrder = async (id, rating) => {
+    try {
+      await API.post(`app/orders/rate/${id}`, {rating});
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        topOffset: 50,
+        visibilityTime: 2000,
+        text1: "An Error Occured",
+        text2: "Something wrong happened on our side! Please try again.",
+      });
+    }
+  };
   return (
     <View style={styles.orderContainer}>
       {/* Order Status Bar */}
@@ -290,19 +303,16 @@ function DeliveredOrder({id, order_status, deliveryDate, stars, navigation}) {
           padding: 20,
         }}>
         {/* Order Rating */}
-        {/* <View
+        <View
           style={{
             flexDirection: "row",
             flex: 0.5,
           }}>
-          {
-            stars ? (
-              <Stars initialStars={stars} /> // Add onChange to send an API request and update order rating
-            ) : (
-              <Stars initialStars={0} />
-            ) // Add onChange to send an API request and rate the order
-          }
-        </View> */}
+          <Stars
+            initialStars={rating ? rating : 0}
+            onChange={(newRating) => rateOrder(id, newRating)}
+          />
+        </View>
         {/* View Order Details */}
         <View style={{flex: 0.5}}>
           <Link
