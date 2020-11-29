@@ -18,6 +18,7 @@ function ProductItem({
   product_image_url,
   sale_price,
   navigation,
+  Inventories,
   supportedArea,
   addToCart,
 }) {
@@ -70,6 +71,10 @@ function ProductItem({
             }}
             style={styles.itemButton}>
             Select
+          </Button>
+        ) : Inventories[0].actual_stock === 0 ? (
+          <Button disabled style={styles.itemButton} icon={faPlus}>
+            Out of Stock
           </Button>
         ) : (
           <Button

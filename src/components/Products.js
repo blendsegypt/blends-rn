@@ -8,7 +8,7 @@ import ProductItem from "../components/ProductItem";
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
 import API from "../utils/axios";
 
-function Products({navigation, supportedArea}) {
+function Products({navigation, supportedArea, branch_id}) {
   console.disableYellowBox = true;
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
@@ -48,7 +48,7 @@ function Products({navigation, supportedArea}) {
   useEffect(() => {
     const getProducts = async () => {
       const products = await API.get(
-        `app/products/categories/${activeCategory}`,
+        `app/products/category/${activeCategory}/branch/${branch_id}`,
       );
       setProducts(products.data.data);
       setProductsLoaded(true);

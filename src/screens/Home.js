@@ -21,6 +21,7 @@ function Home({
   chooseAddressShown,
   supportedArea,
   addresses,
+  branch_id,
 }) {
   const currentTime = () => {
     const timeNow = new Date();
@@ -85,6 +86,7 @@ function Home({
             <Products
               navigation={navigation}
               supportedArea={supportedArea || addresses.length > 1}
+              branch_id={branch_id}
             />
           </View>
         </View>
@@ -154,6 +156,7 @@ const mapStateToProps = (state) => {
       loggedIn: true,
       supportedArea: state.userReducer.location.supported,
       addresses: state.userReducer.addresses,
+      branch_id: state.userReducer.location.area.branch_id,
     };
   }
   return {
@@ -161,6 +164,7 @@ const mapStateToProps = (state) => {
     loggedIn: false,
     supportedArea: state.userReducer.location.supported,
     addresses: [],
+    branch_id: state.userReducer.location.area.branch_id,
   };
 };
 
