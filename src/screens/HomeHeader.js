@@ -16,6 +16,7 @@ function HomeHeader({
   navigation,
   setChooseAddressShown,
   chooseAddressShown,
+  branchOperating,
 }) {
   let location;
   if (user.addresses.length > 0) {
@@ -60,7 +61,7 @@ function HomeHeader({
             <Text style={[styles.tagText]}>{location}</Text>
           </View>
         </View>
-        <CartIcon navigation={navigation} />
+        <CartIcon navigation={navigation} branchOperating={branchOperating} />
       </View>
     </>
   );

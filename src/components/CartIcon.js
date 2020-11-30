@@ -8,12 +8,24 @@ import Text from "../components/ui/Text";
 //Redux
 import {connect} from "react-redux";
 import {getCartItems} from "../redux/selectors/cartItems";
+//Toast messages
+import Toast from "react-native-toast-message";
 
-function CartIcon({navigation, cartCount}) {
+function CartIcon({navigation, cartCount, branchOperating}) {
   return (
     <View style={styles.buttonContainer}>
       <TouchableOpacity
         onPress={() => {
+          if (!branchOperating) {
+            Toast.show({
+              type: "error",
+              topOffset: 50,
+              visibilityTime: 4000,
+              text1: "Blends is currently closed",
+              text2: "Please check our working hours listed in Home screen",
+            });
+            return;
+          }
           navigation.navigate("Cart");
         }}
         style={[styles.iconicButton, styles.cartButton]}>

@@ -38,6 +38,8 @@ export default async function getUserArea(coordinates) {
         area_id: area.id,
         area_name: area.name,
         branch_id: area.Branches[0].id,
+        branch_status: area.Branches[0].status,
+        branch_working_hours: area.Branches[0].working_hours,
       };
     }
   });
