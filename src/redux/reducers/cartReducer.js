@@ -11,11 +11,39 @@ const generateID = (cartItem) => {
   return id;
 };
 
+// Compare selectedOptions to check for repeated cart items
+const compareOptions = (options1, options2) => {
+  if (options1.length !== options2.length) return false;
+  let identical = true;
+  options1.forEach((property) => {
+    // check for existence in options2
+    const existing = options2.find(
+      (property2) =>
+        property.label === property2.label &&
+        property.value === property2.value,
+    );
+    if (!existing) identical = false;
+  });
+
+  return identical;
+};
+
 export default function cartReducer(state = [], action) {
   let newState;
   switch (action.type) {
     case "ADD_TO_CART":
       newState = [...state];
+      // If an identical item already exists, then increase its quantity
+      const existingItem = newState.find(
+        (item) =>
+          action.item.product_id === item.product_id &&
+          compareOptions(action.item.selectedOptions, item.selectedOptions),
+      );
+      console.log(existingItem);
+      if (existingItem) {
+        existingItem.quantity++;
+        return newState;
+      }
       // Assign an id to the new item
       action.item.id = generateID(action.item);
       // Push new item to cart array
