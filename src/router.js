@@ -5,7 +5,7 @@ import Home from "./screens/Home";
 import Orders from "./screens/Orders";
 import Support from "./screens/Support";
 // -- Home Stack navigation screens
-import PinDrop from "./screens/PinDrop";
+import ChooseLocation from "./screens/ChooseLocation";
 import Product from "./screens/Product";
 import Cart from "./screens/Cart";
 import AddressDetails from "./screens/AddressDetails";
@@ -115,7 +115,7 @@ function Router({initalRouteName}) {
       <Stack.Navigator
         screenOptions={{headerShown: false}}
         initialRouteName={initalRouteName}>
-        <Stack.Screen name="PinDrop" component={PinDrop} />
+        <Stack.Screen name="ChooseLocation" component={ChooseLocation} />
         <Stack.Screen name="Home" component={HomeTabs} />
         <Stack.Screen name="Product" component={Product} />
         <Stack.Screen name="Cart" component={Cart} />
