@@ -7,13 +7,16 @@ import {
   Platform,
 } from "react-native";
 //UI Components
-import Text from "./ui/Text";
+import Text from "../../../components/ui/Text";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 //Redux
 import {connect} from "react-redux";
-import {removeFromCart, changeQuantity} from "../redux/actions/cart.action";
+import {
+  removeFromCart,
+  changeQuantity,
+} from "../../../redux/actions/cart.action";
 
 function CartItem({
   id,

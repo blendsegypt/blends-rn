@@ -10,22 +10,22 @@ import {
   Keyboard,
 } from "react-native";
 //UI Components
-import Text from "../components/ui/Text";
-import Button from "../components/ui/Button";
+import Text from "../../components/ui/Text";
+import Button from "../../components/ui/Button";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 //Components
-import CheckoutProgress from "../components/CheckoutProgress";
-import CartItem from "../components/CartItem";
+import CheckoutProgress from "../../components/CheckoutProgress";
+import CartItem from "./components/CartItem";
 //Bottom Sheets
-import BottomSheetOverlay from "../components/BottomSheetOverlay";
-import UserActions from "./bottomSheets/UserActions";
+import BottomSheetOverlay from "../../components/BottomSheetOverlay";
+import UserActions from "../bottomSheets/UserActions";
 //Redux
 import {connect} from "react-redux";
-import {getCartItems} from "../redux/selectors/cartItems";
+import {getCartItems} from "../../redux/selectors/cartItems";
 //Assets
-import EmptyCartIllustration from "../../assets/EmptyCartIllustration.png";
+import EmptyCartIllustration from "../../../assets/EmptyCartIllustration.png";
 
 function Cart({
   navigation,
@@ -64,7 +64,7 @@ function Cart({
   };
 
   // Check if cart is empty
-  if (cartCount == 0) {
+  if (cartCount === 0) {
     return (
       <>
         <View style={{flexDirection: "column", flex: 1}}>
