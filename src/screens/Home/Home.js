@@ -4,10 +4,6 @@ import {ScrollView, View, StyleSheet, SafeAreaView, Image} from "react-native";
 import Text from "../../components/ui/Text";
 //Assets
 import Sun from "../../../assets/Sun.png";
-//Components
-import Banners from "../../components/Banners";
-import RecentOrders from "../../components/RecentOrders";
-import Products from "../../components/Products";
 //Redux
 import {connect} from "react-redux";
 //Toast Messages
@@ -17,6 +13,10 @@ import Header from "./components/Header";
 //Screen Helpers
 import getTimeName from "./helpers/getTimeName";
 import getBranchStatus from "./helpers/getBranchStatus";
+//Screen Components
+import Banners from "./components/Banners";
+import RecentOrders from "./components/RecentOrders";
+import Products from "./components/Products";
 
 function Home({
   setChooseAddressShown,

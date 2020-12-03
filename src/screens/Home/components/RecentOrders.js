@@ -7,19 +7,19 @@ import {
   TouchableOpacity,
 } from "react-native";
 //UI Components
-import Text from "./ui/Text";
+import Text from "../../../components/ui/Text";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faPlus, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
 //Axios instance
-import API from "../utils/axios";
+import API from "../../../utils/axios";
 //Toast messages
 import Toast from "react-native-toast-message";
 //Redux
 import {connect} from "react-redux";
-import {addToCart} from "../redux/actions/cart.action";
+import {addToCart} from "../../../redux/actions/cart.action";
 
 function RecentOrders({navigation, addToCart}) {
   const [itemsLoaded, setItemsLoaded] = useState(false);

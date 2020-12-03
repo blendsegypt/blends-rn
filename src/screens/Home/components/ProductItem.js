@@ -1,12 +1,12 @@
 import React from "react";
 import {View, StyleSheet, Image} from "react-native";
 //UI Components
-import Text from "../components/ui/Text";
-import Button from "../components/ui/Button";
+import Text from "../../../components/ui/Text";
+import Button from "../../../components/ui/Button";
 import Toast from "react-native-toast-message";
 //Redux
 import {connect} from "react-redux";
-import {addToCart} from "../redux/actions/cart.action";
+import {addToCart} from "../../../redux/actions/cart.action";
 //Icons Font
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 
@@ -20,6 +20,7 @@ function ProductItem({
   navigation,
   Inventories,
   supportedArea,
+  // eslint-disable-next-line no-shadow
   addToCart,
 }) {
   const unsupportedHandler = () => {

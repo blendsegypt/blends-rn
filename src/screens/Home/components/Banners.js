@@ -4,7 +4,7 @@ import {Image, Dimensions, TouchableOpacity} from "react-native";
 import Carousel from "react-native-snap-carousel";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
-import API from "../utils/axios";
+import API from "../../../utils/axios";
 
 function Banners({navigation}) {
   const [imagesLoaded, setImagesLoaded] = useState(false);

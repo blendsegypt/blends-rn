@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from "react";
 import {View, StyleSheet, FlatList, TouchableOpacity} from "react-native";
 //UI Components
-import Text from "./ui/Text";
+import Text from "../../../components/ui/Text";
 //Components
-import ProductItem from "../components/ProductItem";
+import ProductItem from "./ProductItem";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
-import API from "../utils/axios";
+import API from "../../../utils/axios";
 
 function Products({navigation, supportedArea, branch_id}) {
   console.disableYellowBox = true;
