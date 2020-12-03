@@ -7,14 +7,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 //UI Components
-import Text from "../components/ui/Text";
-import Button from "../components/ui/Button";
-import Link from "../components/ui/Link";
+import Text from "../../components/ui/Text";
+import Button from "../../components/ui/Button";
+import Link from "../../components/ui/Link";
 //Components
-import CheckoutProgress from "../components/CheckoutProgress";
-import OrderReceipt from "../components/OrderReceipt";
+import CheckoutProgress from "../../components/CheckoutProgress";
+import OrderReceipt from "../../components/OrderReceipt";
 //Bottom Sheets
-import ChooseAddress from "../screens/bottomSheets/ChooseAddress";
+import ChooseAddress from "../../screens/bottomSheets/ChooseAddress";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {
@@ -24,13 +24,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 //Redux
 import {connect} from "react-redux";
-import {getCartItems} from "../redux/selectors/cartItems";
+import {getCartItems} from "../../redux/selectors/cartItems";
 //Keyboard Aware ScrollView
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 //Toast messages
 import Toast from "react-native-toast-message";
-//Axios API instance
-import API from "../utils/axios";
+//Helpers
+import placeOrder from "./helpers/placeOrder";
 
 function ReviewOrder({
   route,
@@ -48,29 +48,17 @@ function ReviewOrder({
   const [orderPromo, setOrderPromo] = useState("");
 
   const handleSubmit = async () => {
-    const order = {
-      branch_id: branchID,
-      user_id: userID,
-      delivery_address_id: addressID,
-      sub_total: Number(cartTotal),
-      total: Number(cartTotal) + 5,
-      delivery_charges: 5,
-    };
-    order.OrderItems = cartItems.map((item) => {
-      return {
-        product_id: item.product_id,
-        quantity: item.quantity,
-        options: JSON.stringify(item.selectedOptions),
-      };
-    });
-    if (orderPromo !== "") {
-      order.promo_code = orderPromo;
-    }
     try {
-      await API.post("app/orders", order);
+      await placeOrder(
+        branchID,
+        userID,
+        addressID,
+        cartTotal,
+        cartItems,
+        orderPromo,
+      );
       navigation.navigate("OrderConfirmed");
     } catch (error) {
-      console.log(error.response);
       Toast.show({
         type: "error",
         visibilityTime: 2000,
@@ -80,6 +68,7 @@ function ReviewOrder({
       });
     }
   };
+
   return (
     <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
       {/* Bottom Sheet Overlay */}
