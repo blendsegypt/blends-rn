@@ -7,21 +7,21 @@ import {
   ScrollView,
 } from "react-native";
 //UI Components
-import Text from "../components/ui/Text";
-import TextInput from "../components/ui/TextInput";
-import Button from "../components/ui/Button";
+import Text from "../../components/ui/Text";
+import TextInput from "../../components/ui/TextInput";
+import Button from "../../components/ui/Button";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 //Components
-import CheckoutProgress from "../components/CheckoutProgress";
+import CheckoutProgress from "../../components/CheckoutProgress";
 //Redux
 import {connect} from "react-redux";
-import {addAddress} from "../redux/actions/user.action";
+import {addAddress} from "../../redux/actions/user.action";
 //Keyboard Aware ScrollView
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 //Form validation
-import validateField from "../utils/validateField";
+import validateField from "../../utils/validateField";
 
 function AddressDetails({navigation, location, addAddress}) {
   const [nickname, setNickname] = useState({
