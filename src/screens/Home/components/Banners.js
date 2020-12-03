@@ -1,23 +1,11 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import {Image, Dimensions, TouchableOpacity} from "react-native";
 // Images Carousel
 import Carousel from "react-native-snap-carousel";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
-import API from "../../../utils/axios";
 
-function Banners({navigation}) {
-  const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [banners, setBanners] = useState([]);
-  useEffect(() => {
-    const loadBanners = async () => {
-      const banners = await API.get("app/banners");
-      setBanners(banners.data.data);
-      setImagesLoaded(true);
-    };
-    loadBanners();
-  }, []);
-
+function Banners({navigation, bannersLoaded = false, banners = []}) {
   const renderItem = ({item, index}) => {
     return (
       <TouchableOpacity
@@ -35,7 +23,7 @@ function Banners({navigation}) {
   };
   return (
     <>
-      {imagesLoaded ? (
+      {bannersLoaded ? (
         <Carousel
           data={banners}
           renderItem={renderItem}

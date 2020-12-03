@@ -13,38 +13,23 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faPlus, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
-//Axios instance
-import API from "../../../utils/axios";
 //Toast messages
 import Toast from "react-native-toast-message";
 //Redux
 import {connect} from "react-redux";
 import {addToCart} from "../../../redux/actions/cart.action";
+//Helpers
+import getRecentOrders from "../helpers/getRecentOrders";
 
 function RecentOrders({navigation, addToCart}) {
   const [itemsLoaded, setItemsLoaded] = useState(false);
   const [ordersItems, setOrdersItems] = useState([]);
 
   useEffect(() => {
-    const getRecentOrders = async () => {
+    (async function () {
       try {
-        const recentOrders = await API.get("app/orders/recent");
-        const orders = recentOrders.data.data;
-        const recentOrderItems = [];
-        orders.forEach((order) => {
-          order.OrderItems.forEach((orderItem) => {
-            //check if product is already pushed
-            const check = recentOrderItems.find(
-              (item) => item.id === orderItem.Product.id,
-            );
-            if (check) return;
-
-            recentOrderItems.push({
-              ...orderItem.Product,
-            });
-          });
-        });
-        setOrdersItems(recentOrderItems);
+        const recentOrders = await getRecentOrders();
+        setOrdersItems(recentOrders);
         setItemsLoaded(true);
       } catch (error) {
         Toast.show({
@@ -55,8 +40,7 @@ function RecentOrders({navigation, addToCart}) {
           text2: "Something wrong happened while retrieving recent orders!",
         });
       }
-    };
-    getRecentOrders();
+    })();
   }, []);
 
   // Render single item

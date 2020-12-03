@@ -13,6 +13,7 @@ import Header from "./components/Header";
 //Screen Helpers
 import getTimeName from "./helpers/getTimeName";
 import getBranchStatus from "./helpers/getBranchStatus";
+import getBanners from "./helpers/getBanners";
 //Screen Components
 import Banners from "./components/Banners";
 import RecentOrders from "./components/RecentOrders";
@@ -30,16 +31,23 @@ function Home({
 }) {
   const [branchOperating, setBranchOperating] = useState(true);
   const [branchClosedMessage, setBranchClosedMessage] = useState("");
+  //Banners
+  const [bannersLoaded, setBannersLoaded] = useState(false);
+  const [banners, setBanners] = useState([]);
 
-  // Check if branch is closed
   useEffect(() => {
     (async function () {
       try {
+        // Check if branch is closed
         const [operating, closedMessage] = await getBranchStatus(branch_id);
         if (!operating) {
           setBranchOperating(false);
           setBranchClosedMessage(closedMessage);
         }
+        // Load banners
+        const fetchedBanners = await getBanners();
+        setBannersLoaded(true);
+        setBanners(fetchedBanners);
       } catch (error) {
         Toast.show({
           type: "error",
@@ -95,7 +103,11 @@ function Home({
             </View>
             {/* Banners Section */}
             <View style={{marginTop: 15}}>
-              <Banners navigation={navigation} />
+              <Banners
+                navigation={navigation}
+                bannersLoaded={bannersLoaded}
+                banners={banners}
+              />
             </View>
           </SafeAreaView>
         </View>

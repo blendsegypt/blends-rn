@@ -2,7 +2,6 @@
 
   Gets the name of the current time period (Morning, Afternoon, Evening)
   
-  @async
 
 */
 

@@ -6,15 +6,19 @@ import Text from "../../../components/ui/Text";
 import ProductItem from "./ProductItem";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
-import API from "../../../utils/axios";
+//Toast Messages
+import Toast from "react-native-toast-message";
+// Helpers
+import getCategories from "../helpers/getCategories";
+import getProductsByCategory from "../helpers/getProductsByCategory";
 
 function Products({navigation, supportedArea, branch_id}) {
   console.disableYellowBox = true;
-  const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [activeCategory, setActiveCategory] = useState(1);
   const [categoriesLoaded, setCategoriesLoaded] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [activeCategory, setActiveCategory] = useState(null);
   const [productsLoaded, setProductsLoaded] = useState(false);
+  const [products, setProducts] = useState([]);
 
   // Render single category
   const renderCategory = ({item, index}) => (
@@ -27,34 +31,56 @@ function Products({navigation, supportedArea, branch_id}) {
         style={[
           styles.category,
           activeCategory == item.id ? {color: "#11203E"} : {},
-          index == 0 ? {marginLeft: 0} : {},
+          index === 0 ? {marginLeft: 0} : {},
         ]}>
         {item.name}
       </Text>
     </TouchableOpacity>
   );
 
-  // Initialize component
+  // Load Categories
   useEffect(() => {
-    const getCategories = async () => {
-      const categories = await API.get("app/products/categories");
-      setCategories(categories.data.data);
-      setCategoriesLoaded(true);
-    };
-    getCategories();
+    (async function () {
+      try {
+        const categories = await getCategories();
+        setActiveCategory(categories[0].id);
+        setCategoriesLoaded(true);
+        setCategories(categories);
+      } catch (errors) {
+        Toast.show({
+          type: "error",
+          topOffset: 70,
+          visibilityTime: 2000,
+          text1: "An Error Occured",
+          text2:
+            "Something wrong happened while loading categories, please try again!",
+        });
+      }
+    })();
   }, []);
 
-  // On Category change
+  // Load Products
   useEffect(() => {
-    const getProducts = async () => {
-      const products = await API.get(
-        `app/products/category/${activeCategory}/branch/${branch_id}`,
-      );
-      setProducts(products.data.data);
-      setProductsLoaded(true);
-    };
-    setProductsLoaded(false);
-    getProducts();
+    if (!activeCategory) return;
+    (async function () {
+      try {
+        const fetchedProducts = await getProductsByCategory(
+          activeCategory,
+          branch_id,
+        );
+        setProductsLoaded(true);
+        setProducts(fetchedProducts);
+      } catch (errors) {
+        Toast.show({
+          type: "error",
+          topOffset: 70,
+          visibilityTime: 2000,
+          text1: "An Error Occured",
+          text2:
+            "Something wrong happened while loading products, please try again!",
+        });
+      }
+    })();
   }, [activeCategory]);
 
   return (
