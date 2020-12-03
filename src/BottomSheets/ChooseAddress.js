@@ -1,12 +1,12 @@
 import React, {useRef, useEffect, useState} from "react";
 import {View, StyleSheet, ScrollView, Dimensions, Platform} from "react-native";
 //UI Components
-import Text from "../../components/ui/Text";
-import Link from "../../components/ui/Link";
+import Text from "../components/ui/Text";
+import Link from "../components/ui/Link";
 //Bottom Sheet
 import BottomSheet from "@gorhom/bottom-sheet";
 //Components
-import Address from "../../components/Address";
+import Address from "../components/Address";
 //Redux
 import {connect} from "react-redux";
 //Close Sheet Component

@@ -8,20 +8,20 @@ import {
   Platform,
 } from "react-native";
 //UI Components
-import Text from "../../../components/ui/Text";
-import Link from "../../../components/ui/Link";
-import Button from "../../../components/ui/Button";
-import TextInput from "../../../components/ui/TextInput";
+import Text from "../../components/ui/Text";
+import Link from "../../components/ui/Link";
+import Button from "../../components/ui/Button";
+import TextInput from "../../components/ui/TextInput";
 //Assets
-import BlendsLogo from "../../../../assets/BlendsLogo.png";
+import BlendsLogo from "../../../assets/BlendsLogo.png";
 //Field Validation
-import validateField from "../../../utils/validateField";
+import validateField from "../../utils/validateField";
 import CloseSheet from "./utils/CloseSheet";
-import API from "../../../utils/axios";
+import API from "../../utils/axios";
 import Toast from "react-native-toast-message";
 //Redux
 import {connect} from "react-redux";
-import {login} from "../../../redux/actions/auth.action";
+import {login} from "../../redux/actions/auth.action";
 import {faFacebookF} from "@fortawesome/free-brands-svg-icons";
 
 // Login Sheet

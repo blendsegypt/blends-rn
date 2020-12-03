@@ -1,11 +1,11 @@
 import React from "react";
 import {View, ScrollView, Image, StyleSheet, Platform} from "react-native";
 //UI Components
-import Text from "../../../components/ui/Text";
-import Link from "../../../components/ui/Link";
-import Button from "../../../components/ui/Button";
+import Text from "../../components/ui/Text";
+import Link from "../../components/ui/Link";
+import Button from "../../components/ui/Button";
 //Assets
-import BlendsLogo from "../../../../assets/BlendsLogo.png";
+import BlendsLogo from "../../../assets/BlendsLogo.png";
 //Field Validation
 import CloseSheet from "./utils/CloseSheet";
 import {faFacebookF} from "@fortawesome/free-brands-svg-icons";

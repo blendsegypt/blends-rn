@@ -9,25 +9,25 @@ import {
   Platform,
 } from "react-native";
 //UI Components
-import Text from "../../../components/ui/Text";
-import Button from "../../../components/ui/Button";
-import TextInput from "../../../components/ui/TextInput";
+import Text from "../../components/ui/Text";
+import Button from "../../components/ui/Button";
+import TextInput from "../../components/ui/TextInput";
 //Assets
-import BlendsLogo from "../../../../assets/BlendsLogo.png";
+import BlendsLogo from "../../../assets/BlendsLogo.png";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 //Field Validation
-import validateField from "../../../utils/validateField";
+import validateField from "../../utils/validateField";
 //Close Sheet component
 import CloseSheet from "./utils/CloseSheet";
 // Redux
-import {login} from "../../../redux/actions/auth.action";
+import {login} from "../../redux/actions/auth.action";
 import {connect} from "react-redux";
 // Toast message
 import Toast from "react-native-toast-message";
 // Axios
-import API from "../../../utils/axios";
+import API from "../../utils/axios";
 
 function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
   const [buttonActive, setButtonActive] = useState(false);

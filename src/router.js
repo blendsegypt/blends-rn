@@ -26,7 +26,7 @@ import {createStackNavigator} from "@react-navigation/stack";
 //Tab Bar settings / styles
 import {tabBarSettings, tabBarStyle} from "./utils/tabBar";
 //Bottom Sheets
-import ChooseAddress from "./screens/bottomSheets/ChooseAddress";
+import ChooseAddress from "./BottomSheets/ChooseAddress";
 import BottomSheetOverlay from "./components/BottomSheetOverlay";
 
 const Tab = createBottomTabNavigator();

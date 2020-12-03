@@ -20,7 +20,7 @@ import CheckoutProgress from "../../components/CheckoutProgress";
 import CartItem from "./components/CartItem";
 //Bottom Sheets
 import BottomSheetOverlay from "../../components/BottomSheetOverlay";
-import UserActions from "../bottomSheets/UserActions";
+import UserActions from "../../BottomSheets/UserActions";
 //Redux
 import {connect} from "react-redux";
 import {getCartItems} from "../../redux/selectors/cartItems";

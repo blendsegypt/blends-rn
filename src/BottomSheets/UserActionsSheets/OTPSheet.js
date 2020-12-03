@@ -8,16 +8,16 @@ import {
   Platform,
 } from "react-native";
 //UI Components
-import Text from "../../../components/ui/Text";
-import Button from "../../../components/ui/Button";
-import TextInput from "../../../components/ui/TextInput";
-import Link from "../../../components/ui/Link";
+import Text from "../../components/ui/Text";
+import Button from "../../components/ui/Button";
+import TextInput from "../../components/ui/TextInput";
+import Link from "../../components/ui/Link";
 //Assets
-import BlendsLogo from "../../../../assets/BlendsLogo.png";
+import BlendsLogo from "../../../assets/BlendsLogo.png";
 //Close Sheet component (Android only)
 import Toast from "react-native-toast-message";
 import CloseSheet from "./utils/CloseSheet";
-import API from "../../../utils/axios";
+import API from "../../utils/axios";
 import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
 
 export default function OTPSheet({

@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {
   View,
-  ScrollView,
   Image,
   StyleSheet,
   Dimensions,
@@ -10,20 +9,20 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 //UI Components
-import Text from "../../../components/ui/Text";
-import Button from "../../../components/ui/Button";
-import TextInput from "../../../components/ui/TextInput";
+import Text from "../../components/ui/Text";
+import Button from "../../components/ui/Button";
+import TextInput from "../../components/ui/TextInput";
 //Assets
-import BlendsLogo from "../../../../assets/BlendsLogo.png";
+import BlendsLogo from "../../../assets/BlendsLogo.png";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 //Field Validation
-import validateField from "../../../utils/validateField";
+import validateField from "../../utils/validateField";
 //Close Sheet Component
 import Toast from "react-native-toast-message";
 import CloseSheet from "./utils/CloseSheet";
-import API from "../../../utils/axios";
+import API from "../../utils/axios";
 
 export default function PhoneNumberSheet({
   setSheet,
