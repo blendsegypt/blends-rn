@@ -1,12 +1,11 @@
 import React, {useState} from "react";
-import {StyleSheet} from "react-native";
 //Screens
 // -- Tab Screens
 import Home from "./screens/Home";
 import Orders from "./screens/Orders";
 import Support from "./screens/Support";
 // -- Home Stack navigation screens
-import PinDrop from "./screens/PinDrop";
+import ChooseLocation from "./screens/ChooseLocation";
 import Product from "./screens/Product";
 import Cart from "./screens/Cart";
 import AddressDetails from "./screens/AddressDetails";
@@ -15,19 +14,19 @@ import OrderConfirmed from "./screens/OrderConfirmed";
 // -- Orders Stack navigation screens
 import OrderDetails from "./screens/OrderDetails";
 // -- Account Stack navigation screens
-import Account from "./screens/Account";
-import PersonalInformation from "./screens/AccountStack/PersonalInformation";
-import SavedAddresses from "./screens/AccountStack/SavedAdresses";
-import InviteAFriend from "./screens/AccountStack/InviteAFriend";
-import EditAddress from "./screens/AccountStack/EditAddress";
+import AccountOverview from "./screens/AccountOverview";
+import PersonalInformation from "./screens/PersonalInformation";
+import SavedAddresses from "./screens/SavedAddresses";
+import InviteAFriend from "./screens/InviteAFriend";
+import EditAddress from "./screens/EditAddress";
 //Tab Navigation
 import {NavigationContainer} from "@react-navigation/native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {createStackNavigator} from "@react-navigation/stack";
-//Tab Bar settings
-import tabBarSettings from "./utils/tabBarSettings";
+//Tab Bar settings / styles
+import {tabBarSettings, tabBarStyle} from "./utils/tabBar";
 //Bottom Sheets
-import ChooseAddress from "./screens/bottomSheets/ChooseAddress";
+import ChooseAddress from "./BottomSheets/ChooseAddress";
 import BottomSheetOverlay from "./components/BottomSheetOverlay";
 
 const Tab = createBottomTabNavigator();
@@ -48,7 +47,7 @@ function OrdersStack() {
 function AccountStack() {
   return (
     <StackAccount.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Account" component={Account} />
+      <Stack.Screen name="Account" component={AccountOverview} />
       <Stack.Screen
         name="PersonalInformation"
         component={PersonalInformation}
@@ -65,6 +64,7 @@ function HomeTabs({navigation}) {
   /*
    *
    *  (note) Bottom sheet was placed here to snap above the tab bar
+   *  TODO: replace the bottom sheet to a more appropriate place
    *
    */
   const [chooseAddressShown, setChooseAddressShown] = useState(false);
@@ -79,7 +79,7 @@ function HomeTabs({navigation}) {
       )}
       <Tab.Navigator
         tabBarOptions={{
-          style: styles.tabBar,
+          style: tabBarStyle.tabBar,
           activeTintColor: "#C84D49",
           showLabel: false,
         }}
@@ -115,7 +115,7 @@ function Router({initalRouteName}) {
       <Stack.Navigator
         screenOptions={{headerShown: false}}
         initialRouteName={initalRouteName}>
-        <Stack.Screen name="PinDrop" component={PinDrop} />
+        <Stack.Screen name="ChooseLocation" component={ChooseLocation} />
         <Stack.Screen name="Home" component={HomeTabs} />
         <Stack.Screen name="Product" component={Product} />
         <Stack.Screen name="Cart" component={Cart} />
@@ -126,37 +126,5 @@ function Router({initalRouteName}) {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  tabBar: {
-    position: "absolute",
-    backgroundColor: "#fff",
-    marginBottom: 20,
-    marginHorizontal: 15,
-    borderRadius: 50,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 15.65,
-    elevation: 8,
-    borderStyle: "solid",
-    borderWidth: 0,
-    borderColor: "#fff",
-    paddingBottom: 0,
-    borderTopWidth: 0,
-    minHeight: 70,
-  },
-  overlay: {
-    backgroundColor: "black",
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    opacity: 0.8,
-    zIndex: 99,
-  },
-});
 
 export default Router;
