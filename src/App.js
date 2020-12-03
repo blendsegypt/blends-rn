@@ -1,16 +1,16 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import {StatusBar} from "react-native";
 //Redux
-import {store, persistor} from "./src/redux/store";
+import {store, persistor} from "./redux/store";
 import {Provider} from "react-redux";
 import {PersistGate} from "redux-persist/integration/react";
 //Toast messages
 import Toast from "react-native-toast-message";
-import toastConfig from "./src/utils/toastConfig";
+import toastConfig from "./utils/toastConfig";
 //Main navigation router
-import Router from "./src/router";
+import Router from "./router";
 //Axios
-import {authInterceptor} from "./src/utils/axios";
+import {authInterceptor} from "./utils/axios";
 
 function App() {
   const [initialRouteName, setInitialRouteName] = useState("Home");

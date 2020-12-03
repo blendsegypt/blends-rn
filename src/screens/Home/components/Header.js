@@ -2,16 +2,16 @@ import React from "react";
 import {View, StyleSheet} from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler";
 //UI Components
-import Text from "../components/ui/Text";
+import Text from "../../../components/ui/Text";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
 //Redux
 import {connect} from "react-redux";
 //Components
-import CartIcon from "../components/CartIcon";
+import CartIcon from "../../../components/CartIcon";
 
-function HomeHeader({
+function Header({
   user,
   navigation,
   setChooseAddressShown,
@@ -78,8 +78,6 @@ const styles = StyleSheet.create({
     flex: 0.5,
   },
   iconicButton: {
-    //paddingVertical: 18,
-    //paddingHorizontal: 24,
     justifyContent: "center",
     borderRadius: 50,
     width: 62,
@@ -129,4 +127,4 @@ const mapStateToProps = (state) => ({
   user: state.userReducer,
 });
 
-export default connect(mapStateToProps, null)(HomeHeader);
+export default connect(mapStateToProps, null)(Header);

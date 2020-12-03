@@ -1,19 +1,23 @@
 import React, {useState, useEffect} from "react";
 import {ScrollView, View, StyleSheet, SafeAreaView, Image} from "react-native";
 //UI Components
-import Text from "../components/ui/Text";
+import Text from "../../components/ui/Text";
 //Assets
-import Sun from "../../assets/Sun.png";
+import Sun from "../../../assets/Sun.png";
 //Components
-import Banners from "../components/Banners";
-import RecentOrders from "../components/RecentOrders";
-import Products from "../components/Products";
-//Headers
-import HomeHeader from "./HomeHeader";
+import Banners from "../../components/Banners";
+import RecentOrders from "../../components/RecentOrders";
+import Products from "../../components/Products";
 //Redux
 import {connect} from "react-redux";
-//Axios instance
-import API from "../utils/axios";
+//Toast Messages
+import Toast from "react-native-toast-message";
+
+//Screen Components
+import Header from "./components/Header";
+//Screen Helpers
+import getTimeName from "./helpers/getTimeName";
+import getBranchStatus from "./helpers/getBranchStatus";
 
 function Home({
   setChooseAddressShown,
@@ -30,90 +34,29 @@ function Home({
 
   // Check if branch is closed
   useEffect(() => {
-    const getBranchStatus = async () => {
+    (async function () {
       try {
-        const response = await API.get(`app/branch/${branch_id}`);
-        const branch = response.data.data;
-        if (branch.status === "open") {
-          // Check for working hours
-          const currentDate = new Date();
-          const opensAt = branch.working_hours[0].opens_at
-            .split(":")
-            .map((hour) => Number(hour));
-          const closesAt = branch.working_hours[0].closes_at
-            .split(":")
-            .map((hour) => Number(hour));
-          const currentHour = currentDate.getHours();
-          const currentMinute = currentDate.getMinutes();
-          if (
-            currentHour < opensAt[0] ||
-            currentHour > closesAt[0] ||
-            (currentHour === opensAt[0] && currentMinute < opensAt[1]) ||
-            (currentHour === closesAt[0] && currentMinute > closesAt[1])
-          ) {
-            setBranchOperating(false);
-            const {opens_at, closes_at} = branch.working_hours[0];
-            setBranchClosedMessage(
-              `We're currently closed, Blends operates from ${opens_at} to ${closes_at}`,
-            );
-          }
-          // Check for working days
-          const days = [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-          ];
-          const holidayDays = days.filter(
-            (day) =>
-              !branch.working_hours[0].days.find(
-                (working_day) => working_day === day,
-              ),
-          );
-          // Check if today is a holiday
-          if (holidayDays.includes(days[currentDate.getDay()])) {
-            setBranchOperating(false);
-            const {opens_at, closes_at} = branch.working_hours[0];
-            setBranchClosedMessage(
-              `We're currently closed, Blends operates from ${opens_at} to ${closes_at} every day except ${holidayDays.join(
-                ",",
-              )}`,
-            );
-          }
-        } else if (branch.status === "closed") {
+        const [operating, closedMessage] = await getBranchStatus(branch_id);
+        if (!operating) {
           setBranchOperating(false);
-          setBranchClosedMessage(
-            "We're not receiving orders temporarly, please check back after 10 minutes!",
-          );
-        } else if (branch.status === "under_maintenance") {
-          setBranchOperating(false);
-          setBranchClosedMessage("We're currently under maintenance.");
+          setBranchClosedMessage(closedMessage);
         }
       } catch (error) {
-        console.log(error);
+        Toast.show({
+          type: "error",
+          topOffset: 70,
+          visibilityTime: 2000,
+          text1: "An Error Occured",
+          text2: "Something wrong happened, sorry about that!",
+        });
       }
-    };
-    getBranchStatus();
+    })();
   }, []);
 
-  const currentTimePeriod = () => {
-    const timeNow = new Date();
-    const hours = timeNow.getHours();
-    if (hours < 12) {
-      return "Morning";
-    } else if (hours < 18) {
-      return "Afternoon";
-    } else {
-      return "Evening";
-    }
-  };
   return (
     <>
       <View style={{backgroundColor: "#fff"}}>
-        <HomeHeader
+        <Header
           branchOperating={branchOperating}
           navigation={navigation}
           setChooseAddressShown={setChooseAddressShown}
@@ -131,7 +74,7 @@ function Home({
               <View style={styles.goodMorning}>
                 <Image source={Sun} />
                 <Text style={styles.goodMorningText} regular>
-                  Good {currentTimePeriod()},
+                  Good {getTimeName()},
                 </Text>
                 <Text
                   style={[styles.goodMorningText, {paddingLeft: 3}]}

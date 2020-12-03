@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import {StyleSheet} from "react-native";
 //Screens
 // -- Tab Screens
 import Home from "./screens/Home";
@@ -24,8 +23,8 @@ import EditAddress from "./screens/AccountStack/EditAddress";
 import {NavigationContainer} from "@react-navigation/native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {createStackNavigator} from "@react-navigation/stack";
-//Tab Bar settings
-import tabBarSettings from "./utils/tabBarSettings";
+//Tab Bar settings / styles
+import {tabBarSettings, tabBarStyle} from "./utils/tabBar";
 //Bottom Sheets
 import ChooseAddress from "./screens/bottomSheets/ChooseAddress";
 import BottomSheetOverlay from "./components/BottomSheetOverlay";
@@ -65,6 +64,7 @@ function HomeTabs({navigation}) {
   /*
    *
    *  (note) Bottom sheet was placed here to snap above the tab bar
+   *  TODO: replace the bottom sheet to a more appropriate place
    *
    */
   const [chooseAddressShown, setChooseAddressShown] = useState(false);
@@ -79,7 +79,7 @@ function HomeTabs({navigation}) {
       )}
       <Tab.Navigator
         tabBarOptions={{
-          style: styles.tabBar,
+          style: tabBarStyle,
           activeTintColor: "#C84D49",
           showLabel: false,
         }}
@@ -126,37 +126,5 @@ function Router({initalRouteName}) {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  tabBar: {
-    position: "absolute",
-    backgroundColor: "#fff",
-    marginBottom: 20,
-    marginHorizontal: 15,
-    borderRadius: 50,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 15.65,
-    elevation: 8,
-    borderStyle: "solid",
-    borderWidth: 0,
-    borderColor: "#fff",
-    paddingBottom: 0,
-    borderTopWidth: 0,
-    minHeight: 70,
-  },
-  overlay: {
-    backgroundColor: "black",
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    opacity: 0.8,
-    zIndex: 99,
-  },
-});
 
 export default Router;

@@ -1,10 +1,10 @@
 /*
  *
- *  Tab Bar Settings Function
+ *  Tab Bar Settings & Styling
  *
  */
 import React from "react";
-import {Image} from "react-native";
+import {Image, StyleSheet} from "react-native";
 //Assets
 import BlendsIcon from "../../assets/BlendsIcon.png";
 import BlendsIconGray from "../../assets/BlendsIconGray.png";
@@ -12,7 +12,7 @@ import BlendsIconGray from "../../assets/BlendsIconGray.png";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faBars, faUser, faQuestion} from "@fortawesome/free-solid-svg-icons";
 
-export default ({route}) => ({
+export const tabBarSettings = ({route}) => ({
   tabBarIcon: ({focused}) => {
     if (route.name == "Home") {
       if (focused) {
@@ -41,5 +41,29 @@ export default ({route}) => ({
         return <FontAwesomeIcon icon={faQuestion} size={21} color="#AFAFAF" />;
       }
     }
+  },
+});
+
+export const tabBarStyle = StyleSheet.create({
+  tabBar: {
+    position: "absolute",
+    backgroundColor: "#fff",
+    marginBottom: 20,
+    marginHorizontal: 15,
+    borderRadius: 50,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 15.65,
+    elevation: 8,
+    borderStyle: "solid",
+    borderWidth: 0,
+    borderColor: "#fff",
+    paddingBottom: 0,
+    borderTopWidth: 0,
+    minHeight: 70,
   },
 });
