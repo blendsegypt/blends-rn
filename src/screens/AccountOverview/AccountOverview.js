@@ -8,13 +8,13 @@ import {
 } from "react-native";
 import {useFocusEffect} from "@react-navigation/native";
 //UI Components
-import Text from "../components/ui/Text";
-import Button from "../components/ui/Button";
+import Text from "../../components/ui/Text";
+import Button from "../../components/ui/Button";
 //Toast Messages
 import Toast from "react-native-toast-message";
 //Redux
 import {connect} from "react-redux";
-import {logout} from "../redux/actions/auth.action";
+import {logout} from "../../redux/actions/auth.action";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {
@@ -25,10 +25,10 @@ import {
   faPowerOff,
 } from "@fortawesome/free-solid-svg-icons";
 //Bottom Sheets
-import UserActions from "./bottomSheets/UserActions";
-import BottomSheetOverlay from "../components/BottomSheetOverlay";
-//axios instance
-import API from "../utils/axios";
+import UserActions from "../bottomSheets/UserActions";
+import BottomSheetOverlay from "../../components/BottomSheetOverlay";
+//Helpers
+import logoutUser from "./helpers/logoutUser";
 
 function Account({navigation, firstName, lastName, loggedIn, wallet, logout}) {
   const [showUserActionsSheet, setShowUserActionsSheet] = useState(false);
@@ -62,8 +62,7 @@ function Account({navigation, firstName, lastName, loggedIn, wallet, logout}) {
   // Logout user
   const handleLogout = async () => {
     try {
-      await API.post("app/auth/logout", {});
-      logout();
+      logoutUser(logout);
       navigation.navigate("ChooseLocation");
     } catch (error) {
       Toast.show({
@@ -71,10 +70,11 @@ function Account({navigation, firstName, lastName, loggedIn, wallet, logout}) {
         topOffset: 50,
         visibilityTime: 2000,
         text1: "An Error Occured",
-        text2: "Something wrong happened on our side! Please try again.",
+        text2: "Something wrong while logging out! Please try again.",
       });
     }
   };
+
   return (
     <>
       {showUserActionsSheet && (

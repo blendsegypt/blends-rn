@@ -14,7 +14,7 @@ import OrderConfirmed from "./screens/OrderConfirmed";
 // -- Orders Stack navigation screens
 import OrderDetails from "./screens/OrderDetails";
 // -- Account Stack navigation screens
-import Account from "./screens/Account";
+import AccountOverview from "./screens/AccountOverview";
 import PersonalInformation from "./screens/AccountStack/PersonalInformation";
 import SavedAddresses from "./screens/AccountStack/SavedAdresses";
 import InviteAFriend from "./screens/AccountStack/InviteAFriend";
@@ -47,7 +47,7 @@ function OrdersStack() {
 function AccountStack() {
   return (
     <StackAccount.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Account" component={Account} />
+      <Stack.Screen name="Account" component={AccountOverview} />
       <Stack.Screen
         name="PersonalInformation"
         component={PersonalInformation}

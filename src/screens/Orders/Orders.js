@@ -43,7 +43,7 @@ function Orders({navigation, loggedIn}) {
         });
       }
     })();
-  }, [ordersLoaded, orders, loggedIn]);
+  }, [ordersLoaded]);
 
   // Refresh orders
   const refreshOrders = async () => {
