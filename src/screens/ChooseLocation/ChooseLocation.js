@@ -29,7 +29,7 @@ import {faLocationArrow} from "@fortawesome/free-solid-svg-icons";
 import UserActions from "../../screens/bottomSheets/UserActions";
 import BottomSheetOverlay from "../../components/BottomSheetOverlay";
 //Search Location Component
-import SearchLocation from "../../components/SearchLocation";
+import SearchLocation from "./components/SearchLocation";
 //Axios
 import Axios from "axios";
 //Helpers
