@@ -64,7 +64,7 @@ function SavedAddresses({navigation, addresses}) {
         <Button
           icon={faMapMarkerAlt}
           onPress={() => {
-            navigation.navigate("PinDrop", {existingUser: true});
+            navigation.navigate("ChooseLocation", {existingUser: true});
           }}>
           Add New Address
         </Button>

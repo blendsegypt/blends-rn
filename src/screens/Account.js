@@ -64,7 +64,7 @@ function Account({navigation, firstName, lastName, loggedIn, wallet, logout}) {
     try {
       await API.post("app/auth/logout", {});
       logout();
-      navigation.navigate("PinDrop");
+      navigation.navigate("ChooseLocation");
     } catch (error) {
       Toast.show({
         type: "error",

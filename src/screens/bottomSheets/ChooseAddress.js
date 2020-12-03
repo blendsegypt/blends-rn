@@ -36,7 +36,7 @@ function Sheet({addresses, setChooseAddressShown, navigation, setSnap}) {
           </Text>
           <Link
             onPress={() => {
-              navigation.navigate("PinDrop", {existingUser: true});
+              navigation.navigate("ChooseLocation", {existingUser: true});
             }}
             style={{marginRight: 25}}>
             Add new Address
