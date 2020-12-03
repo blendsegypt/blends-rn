@@ -12,7 +12,6 @@ import Products from "../../components/Products";
 import {connect} from "react-redux";
 //Toast Messages
 import Toast from "react-native-toast-message";
-
 //Screen Components
 import Header from "./components/Header";
 //Screen Helpers

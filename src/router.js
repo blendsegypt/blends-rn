@@ -79,7 +79,7 @@ function HomeTabs({navigation}) {
       )}
       <Tab.Navigator
         tabBarOptions={{
-          style: tabBarStyle,
+          style: tabBarStyle.tabBar,
           activeTintColor: "#C84D49",
           showLabel: false,
         }}
