@@ -15,10 +15,10 @@ import OrderConfirmed from "./screens/OrderConfirmed";
 import OrderDetails from "./screens/OrderDetails";
 // -- Account Stack navigation screens
 import AccountOverview from "./screens/AccountOverview";
-import PersonalInformation from "./screens/AccountStack/PersonalInformation";
-import SavedAddresses from "./screens/AccountStack/SavedAdresses";
-import InviteAFriend from "./screens/AccountStack/InviteAFriend";
-import EditAddress from "./screens/AccountStack/EditAddress";
+import PersonalInformation from "./screens/PersonalInformation";
+import SavedAddresses from "./screens/SavedAddresses";
+import InviteAFriend from "./screens/InviteAFriend";
+import EditAddress from "./screens/EditAddress";
 //Tab Navigation
 import {NavigationContainer} from "@react-navigation/native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
