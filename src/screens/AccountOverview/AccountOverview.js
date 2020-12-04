@@ -25,7 +25,7 @@ import {
   faPowerOff,
 } from "@fortawesome/free-solid-svg-icons";
 //Bottom Sheets
-import UserActions from "../bottomSheets/UserActions";
+import UserActions from "../../BottomSheets/UserActions";
 import BottomSheetOverlay from "../../components/BottomSheetOverlay";
 //Helpers
 import logoutUser from "./helpers/logoutUser";

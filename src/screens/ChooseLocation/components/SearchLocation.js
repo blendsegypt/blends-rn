@@ -7,13 +7,13 @@ import {
   Platform,
 } from "react-native";
 //UI Components
-import TextInput from "./ui/TextInput";
-import Text from "./ui/Text";
+import TextInput from "../../../components/ui/TextInput";
+import Text from "../../../components/ui/Text";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 //Axios
-import Axios from "../utils/axios";
+import Axios from "../../../utils/axios";
 //Lodash debounce
 import debounce from "lodash.debounce";
 

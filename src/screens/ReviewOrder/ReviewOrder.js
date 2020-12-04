@@ -14,7 +14,7 @@ import Link from "../../components/ui/Link";
 import CheckoutProgress from "../../components/CheckoutProgress";
 import OrderReceipt from "../../components/OrderReceipt";
 //Bottom Sheets
-import ChooseAddress from "../../screens/bottomSheets/ChooseAddress";
+import ChooseAddress from "../../BottomSheets/ChooseAddress";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {

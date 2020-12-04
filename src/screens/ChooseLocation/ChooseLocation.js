@@ -26,7 +26,7 @@ import PinMarker from "../../../assets/mapMarker.png";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faLocationArrow} from "@fortawesome/free-solid-svg-icons";
 //Bottom Sheet
-import UserActions from "../../screens/bottomSheets/UserActions";
+import UserActions from "../../BottomSheets/UserActions";
 import BottomSheetOverlay from "../../components/BottomSheetOverlay";
 //Search Location Component
 import SearchLocation from "./components/SearchLocation";
