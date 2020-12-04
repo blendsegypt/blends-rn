@@ -10,7 +10,7 @@ import {
 import Text from "../../../components/ui/Text";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faPlus, faChevronRight} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faChevronRight, faBan} from "@fortawesome/free-solid-svg-icons";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
 //Toast messages
@@ -21,14 +21,14 @@ import {addToCart} from "../../../redux/actions/cart.action";
 //Helpers
 import getRecentOrders from "../helpers/getRecentOrders";
 
-function RecentOrders({navigation, addToCart}) {
+function RecentOrders({navigation, addToCart, branchID}) {
   const [itemsLoaded, setItemsLoaded] = useState(false);
   const [ordersItems, setOrdersItems] = useState([]);
 
   useEffect(() => {
     (async function () {
       try {
-        const recentOrders = await getRecentOrders();
+        const recentOrders = await getRecentOrders(branchID);
         setOrdersItems(recentOrders);
         setItemsLoaded(true);
       } catch (error) {
@@ -46,9 +46,29 @@ function RecentOrders({navigation, addToCart}) {
   // Render single item
   const renderItem = ({item, index}) => (
     <TouchableOpacity
-      style={[styles.recentOrder, index == 0 ? {marginLeft: 0} : {}]}
+      activeOpacity={
+        item.retail && item.Inventories[0].actual_stock === 0 ? 1 : 0.3
+      }
+      style={[
+        styles.recentOrder,
+        item.retail && item.Inventories[0].actual_stock === 0
+          ? {backgroundColor: "#dbdbdb"}
+          : {},
+        index === 0 ? {marginLeft: 0} : {},
+      ]}
       onPress={() => {
         if (item.retail) {
+          if (item.Inventories[0].actual_stock === 0) {
+            Toast.show({
+              type: "error",
+              topOffset: 50,
+              visibilityTime: 3000,
+              text1: "Out of stock!",
+              text2:
+                "This item is currently out of stock! We'll provide it as soon as possible!",
+            });
+            return;
+          }
           const cartItem = {
             name: item.name,
             product_id: item.id,
@@ -64,21 +84,35 @@ function RecentOrders({navigation, addToCart}) {
       }}>
       <Image
         source={{uri: item.product_image_url}}
-        style={{width: 55, height: 55, alignSelf: "center", marginTop: 5}}
+        style={[
+          {width: 55, height: 55, alignSelf: "center", marginTop: 5},
+          item.retail && item.Inventories[0].actual_stock === 0
+            ? {opacity: 0.3}
+            : {},
+        ]}
         resizeMode="contain"
       />
       <View style={styles.itemData}>
-        <Text bold style={styles.itemName}>
+        <Text
+          bold
+          style={[
+            styles.itemName,
+            item.retail && item.Inventories[0].actual_stock === 0
+              ? {color: "#999999"}
+              : {},
+          ]}>
           {item.name}
         </Text>
       </View>
       {item.retail ? (
-        <FontAwesomeIcon
-          style={styles.itemChevron}
-          icon={faPlus}
-          size={14}
-          color="#BCCAE9"
-        />
+        item.Inventories[0].actual_stock !== 0 && (
+          <FontAwesomeIcon
+            style={styles.itemChevron}
+            icon={faPlus}
+            size={15}
+            color={"#BCCAE9"}
+          />
+        )
       ) : (
         <FontAwesomeIcon
           style={styles.itemChevron}
@@ -102,7 +136,7 @@ function RecentOrders({navigation, addToCart}) {
             renderItem={renderItem}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{marginLeft: 25}}
+            contentContainerStyle={{marginLeft: 25, paddingRight: 50}}
           />
         ) : (
           <SkeletonContent

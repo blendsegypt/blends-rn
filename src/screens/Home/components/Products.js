@@ -12,7 +12,7 @@ import Toast from "react-native-toast-message";
 import getCategories from "../helpers/getCategories";
 import getProductsByCategory from "../helpers/getProductsByCategory";
 
-function Products({navigation, supportedArea, branch_id}) {
+function Products({navigation, supportedArea, branchID}) {
   console.disableYellowBox = true;
   const [categoriesLoaded, setCategoriesLoaded] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -24,6 +24,7 @@ function Products({navigation, supportedArea, branch_id}) {
   const renderCategory = ({item, index}) => (
     <TouchableOpacity
       onPress={() => {
+        setProductsLoaded(false);
         setActiveCategory(item.id);
       }}>
       <Text
@@ -66,7 +67,7 @@ function Products({navigation, supportedArea, branch_id}) {
       try {
         const fetchedProducts = await getProductsByCategory(
           activeCategory,
-          branch_id,
+          branchID,
         );
         setProductsLoaded(true);
         setProducts(fetchedProducts);

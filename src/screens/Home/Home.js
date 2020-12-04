@@ -27,7 +27,7 @@ function Home({
   chooseAddressShown,
   supportedArea,
   addresses,
-  branch_id,
+  branchID,
 }) {
   const [branchOperating, setBranchOperating] = useState(true);
   const [branchClosedMessage, setBranchClosedMessage] = useState("");
@@ -39,7 +39,7 @@ function Home({
     (async function () {
       try {
         // Check if branch is closed
-        const [operating, closedMessage] = await getBranchStatus(branch_id);
+        const [operating, closedMessage] = await getBranchStatus(branchID);
         if (!operating) {
           setBranchOperating(false);
           setBranchClosedMessage(closedMessage);
@@ -113,13 +113,15 @@ function Home({
         </View>
         <View style={{marginTop: 30, paddingBottom: 50}}>
           {/* Recent Orders */}
-          {loggedIn && <RecentOrders navigation={navigation} />}
+          {loggedIn && (
+            <RecentOrders navigation={navigation} branchID={branchID} />
+          )}
           {/* Products */}
           <View style={{marginTop: 20, paddingHorizontal: 25}}>
             <Products
               navigation={navigation}
               supportedArea={supportedArea || addresses.length > 1}
-              branch_id={branch_id}
+              branchID={branchID}
             />
           </View>
         </View>
@@ -199,7 +201,7 @@ const mapStateToProps = (state) => {
 
   // Check if user is in a supported area
   if (state.userReducer.location.supported) {
-    HomeState.branch_id = state.userReducer.location.area.branch_id;
+    HomeState.branchID = state.userReducer.location.area.branch_id;
   }
 
   return HomeState;
