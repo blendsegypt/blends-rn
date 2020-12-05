@@ -23,12 +23,14 @@ import {TextInput, StyleSheet, View} from "react-native";
 // Custom font for Text Input fields
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faLock} from "@fortawesome/free-solid-svg-icons";
+// UI Components
+import Text from "./Text";
 
 export default function (props) {
   return (
-    <>
+    <View style={props.style}>
       <TextInput
-        style={[styles.textInput, props.style]}
+        style={[styles.textInput, props.error ? styles.errorInput : {}]}
         placeholder={props.children}
         placeholderTextColor="#BCBCBC"
         onChangeText={(text) => {
@@ -44,12 +46,17 @@ export default function (props) {
         editable={props.editable === false ? false : true}
         value={props.value6t5}
       />
+      {props.errorMessage && (
+        <Text light style={styles.errorText}>
+          {props.errorMessage}
+        </Text>
+      )}
       {props.editable === false && (
         <View style={styles.lock}>
           <FontAwesomeIcon icon={faLock} size={14} color="#11203E" />
         </View>
       )}
-    </>
+    </View>
   );
 }
 
@@ -74,6 +81,13 @@ const styles = StyleSheet.create({
     borderColor: "#fff",
     color: "#11203E",
     fontFamily: "FiraSans-Regular",
+  },
+  errorInput: {
+    borderColor: "#ffb3b3",
+  },
+  errorText: {
+    fontSize: 13,
+    color: "#965a5a",
   },
   lock: {
     position: "absolute",
