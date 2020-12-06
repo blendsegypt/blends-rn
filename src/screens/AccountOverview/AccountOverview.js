@@ -29,7 +29,7 @@ import UserActions from "../../BottomSheets/UserActions";
 import BottomSheetOverlay from "../../components/BottomSheetOverlay";
 //Helpers
 import logoutUser from "./helpers/logoutUser";
-import getWallet from "./helpers/getWallet";
+import getWallet from "../../helpers/getWallet";
 
 function Account({navigation, firstName, lastName, loggedIn, wallet, logout}) {
   const [showUserActionsSheet, setShowUserActionsSheet] = useState(false);

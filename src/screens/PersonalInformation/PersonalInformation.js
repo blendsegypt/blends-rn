@@ -122,7 +122,7 @@ function PersonalInformation({
                 onChangeText={(text) => onChange(text)}
                 onBlur={onBlur}
                 value={value}
-                style={{marginLeft: 25, marginRight: 10, flex: 0.5}}>
+                containerStyle={{marginLeft: 25, marginRight: 10, flex: 0.5}}>
                 First Name
               </TextInput>
             )}
@@ -141,7 +141,7 @@ function PersonalInformation({
                 onBlur={onBlur}
                 value={value}
                 defaultValue=""
-                style={{marginRight: 25, flex: 0.5}}>
+                containerStyle={{marginRight: 25, flex: 0.5}}>
                 Last Name
               </TextInput>
             )}
@@ -153,7 +153,7 @@ function PersonalInformation({
           keyboardType="numeric"
           defaultValue={String(phoneNumber)}
           maxLength={11}
-          style={{marginHorizontal: 25}}>
+          containerStyle={{marginHorizontal: 25}}>
           Phone Number
         </TextInput>
         {/* Email */}
@@ -176,7 +176,7 @@ function PersonalInformation({
               onBlur={onBlur}
               value={value}
               defaultValue=""
-              style={{marginHorizontal: 25}}>
+              containerStyle={{marginHorizontal: 25}}>
               Email
             </TextInput>
           )}
@@ -185,7 +185,7 @@ function PersonalInformation({
         {/* <TextInput
           secureTextEntry
           onChangeText={(text) => {}}
-          style={{marginHorizontal: 25}}>
+          containerStyle={{marginHorizontal: 25}}>
           Password
         </TextInput> */}
         {/* Password Confirmation */}
@@ -193,7 +193,7 @@ function PersonalInformation({
           secureTextEntry
           onChangeText={(text) => {}}
           onBlur={() => {}}
-          style={{marginHorizontal: 25}}>
+          containerStyle={{marginHorizontal: 25}}>
           Password Confirmation
         </TextInput> */}
         {/* Save Button */}

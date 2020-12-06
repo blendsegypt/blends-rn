@@ -16,6 +16,7 @@ export default async function placeOrder(
   subtotal,
   cartItems,
   promocode,
+  walletUsed,
 ) {
   const order = {
     branch_id: branchID,
@@ -24,6 +25,7 @@ export default async function placeOrder(
     sub_total: Number(subtotal),
     total: Number(subtotal) + 5,
     delivery_charges: 5,
+    walletUsed,
   };
   order.OrderItems = cartItems.map((item) => {
     return {

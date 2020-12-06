@@ -20,6 +20,8 @@ function OrderReceipt({
   total,
   deliveryCharges,
   appliedPromocode,
+  walletActive,
+  walletAmount,
 }) {
   const [promocode, setPromocode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
@@ -174,6 +176,15 @@ function OrderReceipt({
           )}
         </View>
       </View>
+      {/* Substract from Wallet */}
+      {walletActive && (
+        <View style={styles.walletField}>
+          <Text style={{color: "white"}}>Wallet</Text>
+          <Text style={{color: "white"}}>
+            -{Math.min(walletAmount, Number(cartTotal) + 5)} EGP
+          </Text>
+        </View>
+      )}
       {/* Promotion Input Field */}
       {showPromotionInput &&
         (promoApplied ? (
@@ -224,11 +235,15 @@ function OrderReceipt({
         <Text bold style={{color: "#fff", flex: 0.6}}>
           Total
         </Text>
-        {!total ? (
+        {!total && total !== 0 ? (
           <Text bold style={{color: "#fff", flex: 0.4, textAlign: "right"}}>
             {!promoApplied
-              ? `${(Number(cartTotal) + 5).toFixed(2)} EGP`
-              : `${orderAfterPromo.total.toFixed(2)} EGP`}
+              ? `${Math.max(Number(cartTotal) + 5 - walletAmount, 0).toFixed(
+                  2,
+                )} EGP`
+              : `${Math.max(orderAfterPromo.total - walletAmount, 0).toFixed(
+                  2,
+                )} EGP`}
           </Text>
         ) : (
           <Text bold style={{color: "#fff", flex: 0.4, textAlign: "right"}}>
@@ -292,6 +307,13 @@ const styles = StyleSheet.create({
     padding: 2,
     paddingHorizontal: 7,
     borderRadius: 50,
+  },
+  walletField: {
+    padding: 20,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#9eb588",
   },
 });
 

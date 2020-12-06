@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useCallback} from "react";
 import {
   View,
   ScrollView,
@@ -31,6 +31,9 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import Toast from "react-native-toast-message";
 //Helpers
 import placeOrder from "./helpers/placeOrder";
+import getWallet from "../../helpers/getWallet";
+//React navigation
+import {useFocusEffect} from "@react-navigation/native";
 
 function ReviewOrder({
   route,
@@ -46,6 +49,29 @@ function ReviewOrder({
   const {threeStepsCheckout} = route.params;
   const [chooseAddressShown, setChooseAddressShown] = useState(false);
   const [orderPromo, setOrderPromo] = useState("");
+  const [walletActive, setWalletActive] = useState(false);
+  const [walletAmount, setWalletAmount] = useState(0);
+
+  // Check user wallet
+  useFocusEffect(
+    useCallback(() => {
+      checkUserWallet();
+    }, []),
+  );
+
+  const checkUserWallet = async () => {
+    try {
+      const wallet = await getWallet();
+      if (wallet !== 0) {
+        setWalletActive(true);
+        setWalletAmount(wallet);
+      } else {
+        console.log("sameeee");
+        setWalletActive(false);
+        setWalletAmount(0);
+      }
+    } catch (error) {}
+  };
 
   const handleSubmit = async () => {
     try {
@@ -56,9 +82,11 @@ function ReviewOrder({
         cartTotal,
         cartItems,
         orderPromo,
+        walletActive,
       );
       navigation.navigate("OrderConfirmed");
     } catch (error) {
+      console.log(error.response);
       Toast.show({
         type: "error",
         visibilityTime: 2000,
@@ -187,6 +215,8 @@ function ReviewOrder({
           </Text>
           <View style={{marginHorizontal: 25}}>
             <OrderReceipt
+              walletActive={walletActive}
+              walletAmount={walletAmount}
               cartItems={cartItems}
               cartTotal={cartTotal}
               showPromotionInput

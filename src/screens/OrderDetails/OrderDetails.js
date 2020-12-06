@@ -29,6 +29,7 @@ function OrderDetails({navigation, route}) {
       try {
         const order = await getOrder(orderId);
         setOrder(order);
+        console.log(order);
         setOrderLoaded(true);
       } catch (error) {
         Toast.show({

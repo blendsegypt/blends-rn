@@ -6,7 +6,7 @@
 
 */
 
-import API from "../../../utils/axios";
+import API from "../utils/axios";
 
 export default async function getWallet() {
   const userInfo = await API.get("app/user");

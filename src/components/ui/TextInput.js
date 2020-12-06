@@ -28,9 +28,13 @@ import Text from "./Text";
 
 export default function (props) {
   return (
-    <View style={props.style}>
+    <View style={props.containerStyle}>
       <TextInput
-        style={[styles.textInput, props.error ? styles.errorInput : {}]}
+        style={[
+          styles.textInput,
+          props.error ? styles.errorInput : {},
+          props.style,
+        ]}
         placeholder={props.children}
         placeholderTextColor="#BCBCBC"
         onChangeText={(text) => {
