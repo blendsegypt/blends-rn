@@ -13,17 +13,73 @@ import Button from "../../components/ui/Button";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faChevronLeft, faCheck} from "@fortawesome/free-solid-svg-icons";
+//Toast messages
+import Toast from "react-native-toast-message";
 //Redux
 import {connect} from "react-redux";
 import {updatePersonalInfo} from "../../redux/actions/user.action";
-//Icons Font
+//react-hook-form
+import {useForm, Controller} from "react-hook-form";
+//helpers
+import updateUserInfo from "./helpers/updateUserInfo";
+//Email regex
+const EMAIL_REGEX = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 function PersonalInformation({
   navigation,
-  fullNameRedux,
-  phoneNumberRedux,
+  firstName,
+  lastName,
+  phoneNumber,
   updatePersonalInfo,
 }) {
+  //forms configuration
+  const {handleSubmit, control, errors, formState, setValue} = useForm({
+    mode: "onChange",
+    defaultValues: {
+      first_name: firstName,
+      last_name: lastName,
+      email: "",
+    },
+  });
+  //button active/disabled state
+  const [canSave, setCanSave] = useState(false);
+
+  //check if form is touched & validated
+  useEffect(() => {
+    if (formState.isDirty && Object.keys(errors).length === 0) {
+      setCanSave(true);
+    } else {
+      setCanSave(false);
+    }
+  }, [formState]);
+
+  const onSubmit = async (data) => {
+    try {
+      await updateUserInfo(data);
+      updatePersonalInfo({
+        firstName: data.first_name,
+        lastName: data.last_name,
+        email: data.email || "",
+      });
+      navigation.navigate("Account");
+      Toast.show({
+        type: "success",
+        visibilityTime: 2000,
+        topOffset: 70,
+        text1: "Updated!",
+        text2: "Your personal details has been updated.",
+      });
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        visibilityTime: 2000,
+        topOffset: 70,
+        text1: "Error!",
+        text2: "An Error Occured! Please try again.",
+      });
+    }
+  };
+
   return (
     <View style={{flex: 1}}>
       {/* Header */}
@@ -49,104 +105,104 @@ function PersonalInformation({
       {/* Personal Information Form */}
       <ScrollView
         style={styles.container}
-        contentContainerStyle={{paddingBottom: 150}}>
-        {/* Error Messages */}
-        {/* {[
-          ...fullName.errors,
-          ...phoneNumber.errors,
-          ...email.errors,
-          ...passwordConfirmation.errors,
-        ].map((error, index) => {
-          return (
-            <View style={styles.errorMessage} key={index}>
-              <Text regular style={{color: "#b55b5b"}}>
-                {error.message}
-              </Text>
-            </View>
-          );
-        })} */}
-        {/* Full Name */}
-        <TextInput
-          onChangeText={(text) => {
-            //setFullName({...fullName, value: text});
-          }}
-          onBlur={() => {
-            //setFormChanged(true);
-            //validate(fullName, setFullName);
-          }}
-          //defaultValue={fullName.value}
-          style={{marginVertical: 7, marginHorizontal: 25}}>
-          Full Name
-        </TextInput>
+        contentContainerStyle={{paddingBottom: 150}}
+        keyboardShouldPersistTaps="always">
+        {/* First/Last Name */}
+        <View style={{flexDirection: "row"}}>
+          <Controller
+            name="first_name"
+            rules={{
+              required: {value: true, message: "First Name is required"},
+            }}
+            control={control}
+            render={({onBlur, onChange, value}) => (
+              <TextInput
+                error={errors.first_name}
+                errorMessage={errors?.first_name?.message}
+                onChangeText={(text) => onChange(text)}
+                onBlur={onBlur}
+                value={value}
+                style={{marginLeft: 25, marginRight: 10, flex: 0.5}}>
+                First Name
+              </TextInput>
+            )}
+          />
+          <Controller
+            name="last_name"
+            rules={{
+              required: {value: true, message: "Last Name is required"},
+            }}
+            control={control}
+            render={({onBlur, onChange, value}) => (
+              <TextInput
+                error={errors.last_name}
+                errorMessage={errors?.last_name?.message}
+                onChangeText={(text) => onChange(text)}
+                onBlur={onBlur}
+                value={value}
+                defaultValue=""
+                style={{marginRight: 25, flex: 0.5}}>
+                Last Name
+              </TextInput>
+            )}
+          />
+        </View>
         {/* Phone Number */}
         <TextInput
-          onChangeText={(text) => {
-            //setPhoneNumber({...phoneNumber, value: text});
-          }}
-          onBlur={() => {
-            //setFormChanged(true);
-            //validate(phoneNumber, setPhoneNumber);
-          }}
+          editable={false}
           keyboardType="numeric"
-          //defaultValue={phoneNumber.value}
+          defaultValue={String(phoneNumber)}
           maxLength={11}
-          style={{marginVertical: 7, marginHorizontal: 25}}>
+          style={{marginHorizontal: 25}}>
           Phone Number
         </TextInput>
         {/* Email */}
-        <TextInput
-          onChangeText={(text) => {
-            //setEmail({...email, value: text});
+        <Controller
+          name="email"
+          rules={{
+            validate: {
+              email: (value) =>
+                value === "" ||
+                (value.match(EMAIL_REGEX) && value !== "") ||
+                "Invalid Email",
+            },
           }}
-          onBlur={() => {
-            //setFormChanged(true);
-            //validate(email, setEmail);
-          }}
-          style={{marginVertical: 7, marginHorizontal: 25}}>
-          Email
-        </TextInput>
+          control={control}
+          render={({onBlur, onChange, value}) => (
+            <TextInput
+              error={errors.email}
+              errorMessage={errors?.email?.message}
+              onChangeText={(text) => onChange(text)}
+              onBlur={onBlur}
+              value={value}
+              defaultValue=""
+              style={{marginHorizontal: 25}}>
+              Email
+            </TextInput>
+          )}
+        />
         {/* Password */}
-        <TextInput
+        {/* <TextInput
           secureTextEntry
-          onChangeText={(text) => {
-            //setPassword({...password, value: text});
-            //setPasswordConfirmation({
-            //  ...passwordConfirmation,
-            //  equals: text,
-            //  validated: false,
-            //});
-          }}
-          style={{marginVertical: 7, marginHorizontal: 25}}>
+          onChangeText={(text) => {}}
+          style={{marginHorizontal: 25}}>
           Password
-        </TextInput>
+        </TextInput> */}
         {/* Password Confirmation */}
-        <TextInput
+        {/* <TextInput
           secureTextEntry
-          onChangeText={(text) => {
-            //setPasswordConfirmation({...passwordConfirmation, value: text});
-          }}
-          onBlur={() => {
-            //setFormChanged(true);
-            //validate(passwordConfirmation, setPasswordConfirmation);
-          }}
-          style={{marginVertical: 7, marginHorizontal: 25}}>
+          onChangeText={(text) => {}}
+          onBlur={() => {}}
+          style={{marginHorizontal: 25}}>
           Password Confirmation
-        </TextInput>
+        </TextInput> */}
         {/* Save Button */}
         <View style={{marginHorizontal: 25}}>
-          {true ? (
+          {canSave ? (
             <Button
               icon={faCheck}
               style={{marginTop: 10}}
-              onPress={() => {
-                const newPersonalInfo = {
-                  fullName: fullName.value,
-                  phoneNumber: phoneNumber.value,
-                  email: email.value,
-                };
-                updatePersonalInfo(newPersonalInfo);
-                navigation.navigate("Account");
-              }}>
+              onPress={handleSubmit(onSubmit)}>
               Save
             </Button>
           ) : (
@@ -197,8 +253,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  fullNameRedux: state.userReducer.fullName,
-  phoneNumberRedux: state.userReducer.phoneNumber,
+  firstName: state.userReducer.firstName,
+  lastName: state.userReducer.lastName,
+  phoneNumber: state.userReducer.phoneNumber,
 });
 
 const mapDispatchToProps = (dispatch) => ({

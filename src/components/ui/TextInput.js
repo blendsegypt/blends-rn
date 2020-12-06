@@ -44,7 +44,7 @@ export default function (props) {
         defaultValue={props.defaultValue}
         secureTextEntry={props.secureTextEntry}
         editable={props.editable === false ? false : true}
-        value={props.value6t5}
+        value={props.value}
       />
       {props.errorMessage && (
         <Text light style={styles.errorText}>
