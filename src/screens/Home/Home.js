@@ -201,7 +201,7 @@ const mapStateToProps = (state) => {
 
   // Check if user is in a supported area
   if (state.userReducer.location.supported) {
-    HomeState.branchID = state.userReducer.location.area.branch_id;
+    HomeState.branchID = state.userReducer.location.Area.Branches[0].id;
   }
 
   return HomeState;

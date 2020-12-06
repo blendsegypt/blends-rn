@@ -68,7 +68,7 @@ function Address({
           {/* Address Nickname */}
           <FontAwesomeIcon icon={faMapMarkerAlt} size={18} color="#11203E" />
           <Text style={{fontSize: 15, paddingHorizontal: 5, color: "#11203E"}}>
-            {address.addressNickname}
+            {address.nickname}
           </Text>
         </View>
         {/* Address Active? */}

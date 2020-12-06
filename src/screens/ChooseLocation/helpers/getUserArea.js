@@ -35,9 +35,9 @@ export default async function getUserArea(coordinates) {
     const testCoordinates = classifyPoint(area.area_fence, coordinates);
     if (testCoordinates === -1) {
       targetArea = {
-        area_id: area.id,
-        area_name: area.name,
-        branch_id: area.Branches[0].id,
+        id: area.id,
+        name: area.name,
+        Branches: area.Branches,
       };
     }
   });

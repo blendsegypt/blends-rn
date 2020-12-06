@@ -78,7 +78,7 @@ function ChooseLocation({addLocation, navigation, route, loggedIn, addresses}) {
         visibilityTime: 2000,
         topOffset: 50,
         text1: "An Error Occured",
-        text2: "Something wrong happened on our side! Please try again.",
+        text2: "Something wrong happened on our side! Please try againzz.",
       });
     }
   };
@@ -121,14 +121,24 @@ function ChooseLocation({addLocation, navigation, route, loggedIn, addresses}) {
       reverseGeocode();
       // Get User Area
       (async () => {
-        const userArea = await getUserArea(coordinates);
-        if (userArea) {
-          // Supported Area
-          setSupportedArea(true);
-          setArea(userArea);
-        } else {
-          setSupportedArea(false);
-          setArea({area_name: googleMapsAddress.area});
+        try {
+          const userArea = await getUserArea(coordinates);
+          if (userArea) {
+            // Supported Area
+            setSupportedArea(true);
+            setArea(userArea);
+          } else {
+            setSupportedArea(false);
+            setArea({name: googleMapsAddress.area});
+          }
+        } catch (error) {
+          Toast.show({
+            type: "error",
+            topOffset: 50,
+            visibilityTime: 2000,
+            text1: "An Error Occured",
+            text2: "Something wrong happened on our side! Please try again.",
+          });
         }
       })();
     }
@@ -159,10 +169,12 @@ function ChooseLocation({addLocation, navigation, route, loggedIn, addresses}) {
   const continueHandler = () => {
     const location = {
       ...googleMapsAddress,
+      coordinates,
     };
     if (supportedArea) {
       location.supported = true;
-      location.area = area;
+      delete location.area;
+      location.Area = area;
     } else {
       location.supported = false;
     }
@@ -289,7 +301,7 @@ function ChooseLocation({addLocation, navigation, route, loggedIn, addresses}) {
           <View style={styles.address}>
             {addressLoaded ? (
               <Text style={styles.addressText}>
-                {formattedAddress} ({area.area_name})
+                {formattedAddress} ({area.name})
               </Text>
             ) : (
               <SkeletonContent

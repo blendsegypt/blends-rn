@@ -20,74 +20,48 @@ import {connect} from "react-redux";
 import {addAddress} from "../../redux/actions/user.action";
 //Keyboard Aware ScrollView
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-//Form validation
-import validateField from "../../utils/validateField";
+//react-hook-form
+import {useForm, Controller} from "react-hook-form";
+//Axios instance
+import API from "../../utils/axios";
 
-function AddressDetails({navigation, location, addAddress}) {
-  const [nickname, setNickname] = useState({
-    text: "Address Nickname",
-    value: "",
-    notEmpty: true,
-    validated: false,
-    errors: [],
+function AddressDetails({navigation, location, userID, addAddress}) {
+  //form configuration
+  const {handleSubmit, control, errors} = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      nickname: "",
+      street: location.street,
+      details: "",
+      building: "",
+      floor: "",
+      flat: "",
+      driver_notes: "",
+    },
   });
-  const [street, setStreet] = useState({
-    text: "Street",
-    value: location.street,
-    notEmpty: true,
-    validated: true,
-    errors: [],
-  });
-  const [addressDetails, setAddressDetails] = useState({
-    value: "",
-  });
-  const [floor, setFloor] = useState({
-    value: "",
-  });
-  const [apartment, setApartment] = useState({
-    value: "",
-  });
-  const [deliveryNotes, setDeliveryNotes] = useState({
-    value: "",
-  });
-  // Review Order button state
-  const [buttonActive, setButtonActive] = useState(false);
 
-  // Validate fields using validate.js from utils folder
-  const validate = (field, fieldSetter) => {
-    // Validate field
-    const fieldAfterValidation = validateField(field);
-    // Use the supplied setter to set the validated field
-    fieldSetter(fieldAfterValidation);
-  };
-
-  // Check if there's no errors, activate the continue button
-  useEffect(() => {
-    const errorsLength = [...nickname.errors, ...street.errors].length;
-    const fieldsValidated = nickname.validated && street.validated;
-
-    if (errorsLength == 0 && fieldsValidated) {
-      setButtonActive(true);
-    } else {
-      setButtonActive(false);
+  const onSubmit = async (data) => {
+    try {
+      const address = {
+        ...data,
+        ...location,
+      };
+      address.coordinates = JSON.stringify(address.coordinates);
+      address.coordinates = address.coordinates.substring(
+        1,
+        address.coordinates.length - 1,
+      );
+      address.area_id = location.Area.id;
+      address.user_id = userID;
+      // Add address
+      const newAddress = await API.post("app/user/addresses", address);
+      address.id = newAddress.data.data.id;
+      addAddress(address);
+      navigation.navigate("ReviewOrder", {threeStepsCheckout: true});
+    } catch (error) {
+      console.log(error.response);
+      console.log(error);
     }
-  }, [nickname.errors, nickname.validated, street.errors, street.validated]);
-
-  // Review order button handler
-  const reviewOrder = () => {
-    const formattedAddress = `${location.governate} - ${street.value}, ${location.area}`;
-    const address = {
-      governate: location.governate,
-      area: location.area,
-      nickname: nickname.value,
-      street: street.value,
-      addressDetails: addressDetails.value,
-      floor: floor.value,
-      apartment: apartment.value,
-      deliveryNotes: deliveryNotes.value,
-    };
-    addAddress(address);
-    navigation.navigate("ReviewOrder", {threeStepsCheckout: true});
   };
 
   return (
@@ -123,39 +97,42 @@ function AddressDetails({navigation, location, addAddress}) {
             },
           ]}
         />
+        {/* Address Details Form */}
         <ScrollView
           style={styles.container}
           contentContainerStyle={{paddingBottom: 100}}>
           <Text style={styles.containerTitle}>Address Details</Text>
           <View style={{marginTop: 15}}>
-            {/* Error Messages */}
-            {[...nickname.errors, ...street.errors].map((error, index) => {
-              return (
-                <View style={styles.errorMessage} key={index}>
-                  <Text regular style={{color: "#b55b5b"}}>
-                    {error.message}
-                  </Text>
-                </View>
-              );
-            })}
-            {/* Address Form */}
             <View>
-              <TextInput
-                style={styles.textInput}
-                onChangeText={(text) => {
-                  setNickname({...nickname, value: text});
+              <Controller
+                name="nickname"
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Address Nickname is required",
+                  },
+                  maxLength: {
+                    value: 15,
+                    message: "Address Nickname cannot exceed 15 characters",
+                  },
                 }}
-                onBlur={() => {
-                  validate(nickname, setNickname);
-                }}
-                autoCapitalize="words">
-                Address Nickname (eg. Home/Work) *
-              </TextInput>
+                control={control}
+                render={({onBlur, onChange, value}) => (
+                  <TextInput
+                    error={errors.nickname}
+                    errorMessage={errors?.nickname?.message}
+                    onChangeText={(text) => onChange(text)}
+                    onBlur={onBlur}
+                    value={value}>
+                    Address Nickname (eg. Home/Work) *
+                  </TextInput>
+                )}
+              />
               <View>
                 <TextInput
                   editable={false}
                   defaultValue={location.governate}
-                  style={[styles.textInput, {flex: 0.6}]}>
+                  containerStyle={[styles.textInput, {flex: 0.6}]}>
                   Governate
                 </TextInput>
               </View>
@@ -163,54 +140,107 @@ function AddressDetails({navigation, location, addAddress}) {
                 <View style={{flex: 0.5, marginRight: 10}}>
                   <TextInput
                     editable={false}
-                    defaultValue={location.area.area_name}
-                    style={[styles.textInput]}>
+                    defaultValue={location.Area.name}
+                    containerStyle={[styles.textInput]}>
                     Area
                   </TextInput>
                 </View>
-                <TextInput
-                  defaultValue={location.street}
-                  style={[styles.textInput, {flex: 0.5}]}
-                  onChangeText={(text) => {
-                    setStreet({...street, value: text});
+                <Controller
+                  name="street"
+                  rules={{
+                    required: {
+                      value: true,
+                      message: "Street is required",
+                    },
                   }}
-                  onBlur={() => {
-                    validate(street, setStreet);
-                  }}>
-                  Street
-                </TextInput>
+                  control={control}
+                  render={({onBlur, onChange, value}) => (
+                    <TextInput
+                      error={errors.street}
+                      errorMessage={errors?.street?.message}
+                      onChangeText={(text) => onChange(text)}
+                      onBlur={onBlur}
+                      containerStyle={{flex: 0.5}}
+                      value={value}>
+                      Street *
+                    </TextInput>
+                  )}
+                />
               </View>
-              <TextInput
-                style={styles.textInput}
-                onChangeText={(text) => {
-                  setAddressDetails({...addressDetails, value: text});
-                }}>
-                Address Details
-              </TextInput>
+              <Controller
+                name="details"
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Address Details is required",
+                  },
+                }}
+                control={control}
+                render={({onBlur, onChange, value}) => (
+                  <TextInput
+                    error={errors.details}
+                    errorMessage={errors?.details?.message}
+                    onChangeText={(text) => onChange(text)}
+                    onBlur={onBlur}
+                    containerStyle={{flex: 0.5}}
+                    value={value}>
+                    Address Details (description) *
+                  </TextInput>
+                )}
+              />
               <View style={{flexDirection: "row"}}>
-                <TextInput
-                  style={[styles.textInput, {flex: 0.4, marginRight: 10}]}
-                  keyboardType="numeric"
-                  onChangeText={(text) => {
-                    setFloor({...floor, value: text});
-                  }}>
-                  Floor
-                </TextInput>
-                <TextInput
-                  style={[styles.textInput, {flex: 0.6}]}
-                  onChangeText={(text) => {
-                    setApartment({...apartment, value: text});
-                  }}>
-                  Apartment
-                </TextInput>
+                <Controller
+                  name="floor"
+                  control={control}
+                  render={({onBlur, onChange, value}) => (
+                    <TextInput
+                      onChangeText={(text) => onChange(text)}
+                      onBlur={onBlur}
+                      containerStyle={{flex: 0.333, marginRight: 10}}
+                      value={value}>
+                      Floor
+                    </TextInput>
+                  )}
+                />
+                <Controller
+                  name="building"
+                  control={control}
+                  render={({onBlur, onChange, value}) => (
+                    <TextInput
+                      onChangeText={(text) => onChange(text)}
+                      onBlur={onBlur}
+                      containerStyle={{flex: 0.333, marginRight: 10}}
+                      value={value}>
+                      Building
+                    </TextInput>
+                  )}
+                />
+                <Controller
+                  name="flat"
+                  control={control}
+                  render={({onBlur, onChange, value}) => (
+                    <TextInput
+                      onChangeText={(text) => onChange(text)}
+                      onBlur={onBlur}
+                      containerStyle={{flex: 0.333}}
+                      value={value}>
+                      Flat
+                    </TextInput>
+                  )}
+                />
               </View>
-              <TextInput
-                style={styles.textInput}
-                onChangeText={(text) => {
-                  setDeliveryNotes({...deliveryNotes, value: text});
-                }}>
-                Delivery Notes (eg. beside police station)
-              </TextInput>
+              <Controller
+                name="driver_notes"
+                control={control}
+                render={({onBlur, onChange, value}) => (
+                  <TextInput
+                    onChangeText={(text) => onChange(text)}
+                    onBlur={onBlur}
+                    value={value}>
+                    Delivery notes (eg. beside police station)
+                  </TextInput>
+                )}
+              />
             </View>
           </View>
         </ScrollView>
@@ -220,11 +250,7 @@ function AddressDetails({navigation, location, addAddress}) {
             backgroundColor: "#fff",
             paddingBottom: 25,
           }}>
-          {buttonActive ? (
-            <Button onPress={() => reviewOrder()}>Review Order</Button>
-          ) : (
-            <Button disabled>Review Order</Button>
-          )}
+          <Button onPress={handleSubmit(onSubmit)}>Review Order</Button>
         </View>
       </View>
     </KeyboardAwareScrollView>
@@ -268,9 +294,6 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     marginVertical: 10,
   },
-  textInput: {
-    marginVertical: 7,
-  },
   errorMessage: {
     backgroundColor: "#F3E1E1",
     padding: 15,
@@ -281,6 +304,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   location: state.userReducer.location,
+  userID: state.userReducer.id,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -23,7 +23,7 @@ function Header({
     location = user.addresses[0].nickname;
   } else if (user.location) {
     if (user.location.supported) {
-      location = user.location.area.area_name;
+      location = user.location.Area.name;
     } else {
       location = "Unsupported";
     }

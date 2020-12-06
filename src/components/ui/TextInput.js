@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     borderColor: "#ffb3b3",
   },
   errorText: {
+    textAlign: "right",
     fontSize: 13,
     color: "#965a5a",
   },

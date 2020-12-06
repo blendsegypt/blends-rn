@@ -125,9 +125,11 @@ function RecentOrders({navigation, addToCart, branchID}) {
   );
   return (
     <>
-      <Text semiBold style={styles.titleText}>
-        You Recently Ordered
-      </Text>
+      {itemsLoaded && ordersItems.length > 0 && (
+        <Text semiBold style={styles.titleText}>
+          You Recently Ordered
+        </Text>
+      )}
       <View>
         {itemsLoaded ? (
           <FlatList
