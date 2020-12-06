@@ -29,9 +29,11 @@ import UserActions from "../../BottomSheets/UserActions";
 import BottomSheetOverlay from "../../components/BottomSheetOverlay";
 //Helpers
 import logoutUser from "./helpers/logoutUser";
+import getWallet from "./helpers/getWallet";
 
 function Account({navigation, firstName, lastName, loggedIn, wallet, logout}) {
   const [showUserActionsSheet, setShowUserActionsSheet] = useState(false);
+  const [walletValue, setWalletValue] = useState(wallet);
 
   const closeSheet = () => {
     setShowUserActionsSheet(false);
@@ -39,6 +41,11 @@ function Account({navigation, firstName, lastName, loggedIn, wallet, logout}) {
     setTimeout(() => {
       navigation.navigate("Home");
     }, 200);
+  };
+
+  const updateWallet = async () => {
+    const walletFromAPI = await getWallet();
+    setWalletValue(walletFromAPI);
   };
 
   // Check if user is logged in when focusing the Account screen
@@ -55,6 +62,8 @@ function Account({navigation, firstName, lastName, loggedIn, wallet, logout}) {
         // Show tab bar
         navigation.dangerouslyGetParent().setOptions({tabBarVisible: true});
         setShowUserActionsSheet(false);
+        // Update wallet
+        updateWallet();
       }
     }, [loggedIn]),
   );
@@ -104,7 +113,7 @@ function Account({navigation, firstName, lastName, loggedIn, wallet, logout}) {
                 <Text
                   regular
                   style={{color: "#C84D49", fontSize: 17, textAlign: "right"}}>
-                  Balance: <Text bold>{wallet} EGP</Text>
+                  Balance: <Text bold>{walletValue} EGP</Text>
                 </Text>
               )}
             </View>
