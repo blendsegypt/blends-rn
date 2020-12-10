@@ -316,13 +316,17 @@ function Product({navigation, route, addToCart}) {
           paddingBottom: 25,
         }}>
         {/* Add to Cart Button */}
-        <Button
-          price={price.toFixed(2) + " EGP"}
-          onPress={() => {
-            addProductToCart();
-          }}>
-          Add to Cart
-        </Button>
+        {!loading ? (
+          <Button
+            price={price.toFixed(2) + " EGP"}
+            onPress={() => {
+              addProductToCart();
+            }}>
+            Add to Cart
+          </Button>
+        ) : (
+          <Button disabled>Add to Cart</Button>
+        )}
       </View>
     </View>
   );

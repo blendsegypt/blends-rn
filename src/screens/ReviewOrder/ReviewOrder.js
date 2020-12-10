@@ -157,7 +157,7 @@ function ReviewOrder({
         )}
         <ScrollView
           style={styles.container}
-          contentContainerStyle={{paddingBottom: 50}}>
+          contentContainerStyle={{paddingBottom: 100}}>
           <Text style={styles.containerTitle}>Delivery Details</Text>
           {/* Address / Payment Method */}
           <View style={styles.deliveryDetails}>

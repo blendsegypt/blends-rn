@@ -113,6 +113,7 @@ function PersonalInformation({
             name="first_name"
             rules={{
               required: {value: true, message: "First Name is required"},
+              pattern: {value: /^[A-Za-z]+$/, message: "Invalid First Name"},
             }}
             control={control}
             render={({onBlur, onChange, value}) => (
@@ -131,6 +132,7 @@ function PersonalInformation({
             name="last_name"
             rules={{
               required: {value: true, message: "Last Name is required"},
+              pattern: {value: /^[A-Za-z]+$/, message: "Invalid Last Name"},
             }}
             control={control}
             render={({onBlur, onChange, value}) => (

@@ -43,9 +43,9 @@ function Support({user}) {
             Talk to Support
           </Button>
         )}
-        <Button style={{marginTop: 10}} secondary icon={faHeart}>
+        {/* <Button style={{marginTop: 10}} secondary icon={faHeart}>
           Rate Blends on Appstore
-        </Button>
+        </Button> */}
       </ScrollView>
     </View>
   );
