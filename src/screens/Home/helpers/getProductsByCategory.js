@@ -10,8 +10,13 @@
 import API from "../../../utils/axios";
 
 export default async function getProductsByCategory(categoryID, branchID) {
-  const products = await API.get(
-    `app/products/category/${categoryID}/branch/${branchID}`,
-  );
+  let products;
+  if (branchID) {
+    products = await API.get(
+      `app/products/category/${categoryID}/branch/${branchID}`,
+    );
+  } else {
+    products = await API.get(`app/products/category/${categoryID}/branch/all`);
+  }
   return products.data.data;
 }

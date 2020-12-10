@@ -178,6 +178,15 @@ function ChooseLocation({addLocation, navigation, route, loggedIn, addresses}) {
     } else {
       location.supported = false;
     }
+    if (existingUser) {
+      navigation.navigate("Home", {
+        screen: "Account",
+        params: {
+          screen: "EditAddress",
+          params: {address: location, newAddress: true},
+        },
+      });
+    }
     addLocation(location);
     navigation.navigate("Home");
   };
@@ -202,6 +211,40 @@ function ChooseLocation({addLocation, navigation, route, loggedIn, addresses}) {
       500,
     );
   };
+  /*
+{addressLoaded ? (
+  <Button
+    onPress={() => {
+      continueHandler();
+    }}>
+    {!existingUser &&
+      (supportedArea ? "Continue" : "Go to Store anyways")}
+    {existingUser && "Add Location"}
+  </Button>
+) : (
+  <Button disabled>Continue</Button>
+)}
+*/
+  //Continue handler (Conditional rendering)
+  let continueButton;
+
+  if (addressLoaded) {
+    continueButton = (
+      <Button
+        onPress={() => {
+          continueHandler();
+        }}>
+        {!existingUser && (supportedArea ? "Continue" : "Go to Store anyways")}
+        {existingUser && "Add Location"}
+      </Button>
+    );
+  } else {
+    continueButton = <Button disabled>Continue</Button>;
+  }
+
+  if (addressLoaded && existingUser && !supportedArea) {
+    continueButton = <Button disabled>Add Location</Button>;
+  }
 
   return (
     <>
@@ -291,7 +334,7 @@ function ChooseLocation({addLocation, navigation, route, loggedIn, addresses}) {
             <Text style={styles.titleText} semiBold>
               Confirm your Location
             </Text>
-            {!existingUser && (
+            {!loggedIn && (
               <Link onPress={() => setShowUserActionsSheet(true)}>
                 Already a User?
               </Link>
@@ -373,39 +416,7 @@ function ChooseLocation({addLocation, navigation, route, loggedIn, addresses}) {
             </View>
           </View>
           {/* Continue Button */}
-          {!existingUser ? (
-            addressLoaded ? (
-              <Button
-                onPress={() => {
-                  continueHandler();
-                }}>
-                {supportedArea ? "Continue" : "Continue anyways"}
-              </Button>
-            ) : (
-              <Button disabled>Continue</Button>
-            )
-          ) : (
-            <Button
-              onPress={() => {
-                // Navigate to Edit Address in Account (Add address mode)
-                const address = {
-                  ...googleMapsAddress,
-                  addressDetails: "",
-                  floor: "",
-                  apartment: "",
-                  deliveryNotes: "",
-                };
-                navigation.navigate("Home", {
-                  screen: "Account",
-                  params: {
-                    screen: "EditAddress",
-                    params: {address, newAddress: true},
-                  },
-                });
-              }}>
-              Add Location
-            </Button>
-          )}
+          {continueButton}
         </View>
       </View>
       {showUserActionsSheet && (

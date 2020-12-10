@@ -26,7 +26,7 @@ function Address({
       <TouchableOpacity
         style={[styles.address]}
         onPress={() => {
-          switchActiveAddress(address.addressNickname);
+          switchActiveAddress(address.nickname);
           setChooseAddressShown(false);
         }}>
         <View style={{flex: 0.5, justifyContent: "space-between"}}>
@@ -83,7 +83,7 @@ function Address({
       <View style={{flex: 0.5}}>
         {/* Address Location */}
         <Text style={{fontSize: 14, lineHeight: 19, color: "#9c9c9c"}}>
-          {address.formattedAddress}
+          {address.governate} - {address.street}
         </Text>
       </View>
       {/* Chevron Right */}

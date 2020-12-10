@@ -43,8 +43,8 @@ function AddressDetails({navigation, location, userID, addAddress}) {
   const onSubmit = async (data) => {
     try {
       const address = {
-        ...data,
         ...location,
+        ...data,
       };
       address.coordinates = JSON.stringify(address.coordinates);
       address.coordinates = address.coordinates.substring(

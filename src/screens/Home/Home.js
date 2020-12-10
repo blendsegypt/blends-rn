@@ -204,6 +204,11 @@ const mapStateToProps = (state) => {
     HomeState.branchID = state.userReducer.location.Area.Branches[0].id;
   }
 
+  // Check if user already has an address
+  if (state.userReducer.addresses[0]) {
+    HomeState.branchID = state.userReducer.addresses[0].Area.Branches[0].id;
+  }
+
   return HomeState;
 };
 

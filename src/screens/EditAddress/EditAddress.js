@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,13 +10,17 @@ import {
 import Text from "../../components/ui/Text";
 import TextInput from "../../components/ui/TextInput";
 import Button from "../../components/ui/Button";
+//Toast Messages
+import Toast from "react-native-toast-message";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faChevronLeft, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faTrash,
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons";
 //Keyboard Aware ScrollView
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-//Form validation
-import validateField from "../../utils/validateField";
 //Redux
 import {connect} from "react-redux";
 import {
@@ -24,6 +28,12 @@ import {
   changeAddress,
   removeAddress,
 } from "../../redux/actions/user.action";
+//react-hook-form
+import {useForm, Controller} from "react-hook-form";
+//Helpers
+import updateAddress from "./helpers/updateAddress";
+//Axios instance
+import API from "../../utils/axios";
 
 function EditAddress({
   navigation,
@@ -31,85 +41,86 @@ function EditAddress({
   changeAddress,
   removeAddress,
   addAddress,
+  addresses,
 }) {
   const {address, newAddress} = route.params;
-  const [addressNickname, setAddressNickname] = useState({
-    text: "Address Nickname",
-    value: "",
-    notEmpty: true,
-    validated: false,
-    errors: [],
+  //form configuration
+  const {handleSubmit, control, errors} = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      nickname: address.nickname || "",
+      street: address.street,
+      details: address.details || "",
+      building: address.building || "",
+      floor: address.floor || "",
+      flat: address.flat || "",
+      driver_notes: address.driver_notes || "",
+    },
   });
-  const [street, setStreet] = useState({
-    text: "Street",
-    value: address.street,
-    notEmpty: true,
-    validated: true,
-    errors: [],
-  });
-  const [addressDetails, setAddressDetails] = useState({
-    value: address.addressDetails,
-  });
-  const [floor, setFloor] = useState({
-    value: address.floor,
-  });
-  const [apartment, setApartment] = useState({
-    value: address.apartment,
-  });
-  const [deliveryNotes, setDeliveryNotes] = useState({
-    value: address.deliveryNotes,
-  });
-  // Review Order button state
-  const [buttonActive, setButtonActive] = useState(false);
-  const [formChanged, setFormChanged] = useState(false);
 
-  // Validate fields using validate.js from utils folder
-  const validate = (field, fieldSetter) => {
-    // Validate field
-    const fieldAfterValidation = validateField(field);
-    // Use the supplied setter to set the validated field
-    fieldSetter(fieldAfterValidation);
+  const onSubmit = async (data) => {
+    try {
+      const updatedAddress = Object.assign(address, data);
+      if (!newAddress) {
+        // Updating already existing address
+        const addressID = updatedAddress.id;
+        await updateAddress(addressID, updatedAddress);
+        changeAddress(address.nickname, updatedAddress);
+        Toast.show({
+          type: "success",
+          visibilityTime: 2000,
+          topOffset: 70,
+          text1: "Updated!",
+          text2: `${address.nickname} has been updated.`,
+        });
+        navigation.navigate("SavedAddresses");
+      } else {
+        // Adding new address
+        updatedAddress.coordinates = JSON.stringify(updatedAddress.coordinates);
+        updatedAddress.area_id = address.Area.id;
+        const response = await API.post("app/user/addresses", updatedAddress);
+        updatedAddress.id = response.data.data.id;
+        addAddress(updatedAddress);
+        navigation.reset({
+          index: 0,
+          routes: [{name: "Account"}, {name: "SavedAddresses"}],
+        });
+      }
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        topOffset: 50,
+        visibilityTime: 2000,
+        text1: "An Error Occured",
+        text2: "Something went wrong! Please try again.",
+      });
+    }
   };
 
-  // Check if there's no errors, activate the continue button
-  useEffect(() => {
-    const errorsLength = [...street.errors].length;
-    const fieldsValidated = street.validated && formChanged;
-
-    if (errorsLength == 0 && fieldsValidated) {
-      setButtonActive(true);
-    } else {
-      setButtonActive(false);
-    }
-  }, [street.validated, formChanged]);
-
-  // Save button handler
-  const saveAddress = () => {
-    const formattedAddress = `${address.governate} - ${street.value}, ${address.area}`;
-    const addressObject = {
-      governate: address.governate,
-      area: address.area,
-      formattedAddress: formattedAddress,
-      addressNickname: address.addressNickname,
-      street: street.value,
-      addressDetails: addressDetails.value,
-      floor: floor.value,
-      apartment: apartment.value,
-      deliveryNotes: deliveryNotes.value,
-    };
-    if (newAddress) {
-      addressObject.addressNickname = addressNickname.value;
-      addAddress(addressObject);
-    } else {
-      changeAddress(address.addressNickname, addressObject);
-    }
-    if (newAddress) {
-      navigation.reset({
-        index: 0,
-        routes: [{name: "Account"}, {name: "SavedAddresses"}],
-      });
-    } else {
+  const onDelete = async () => {
+    try {
+      let onlyOneAddress = false;
+      await API.delete(`app/user/addresses/${address.id}`);
+      if (addresses.length === 1) {
+        onlyOneAddress = true;
+      }
+      removeAddress(address.nickname);
+      if (onlyOneAddress) {
+        navigation.reset({
+          index: 0,
+          routes: [{name: "Home"}, {name: "ChooseLocation"}],
+        });
+        return;
+      }
       navigation.navigate("SavedAddresses");
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        topOffset: 50,
+        visibilityTime: 2000,
+        text1: "An Error Occured",
+        text2: "Something went wrong! Please try again.",
+      });
     }
   };
 
@@ -131,21 +142,18 @@ function EditAddress({
             />
           </TouchableOpacity>
           <Text bold style={styles.screenTitle}>
-            {newAddress
-              ? "New Address"
-              : `Edit Address (${address.addressNickname})`}
+            {newAddress ? "New Address" : `Edit Address (${address.nickname})`}
           </Text>
           {!newAddress && (
             <TouchableOpacity
               onPress={() => {
-                removeAddress(address.addressNickname);
-                navigation.navigate("SavedAddresses");
+                onDelete();
               }}
               style={{flex: 0.5, paddingTop: 22, alignItems: "flex-end"}}>
-              <FontAwesome
+              <FontAwesomeIcon
                 style={styles.headerChevron}
                 icon={faTrash}
-                size={22}
+                size={18}
                 color="#ba4b43"
               />
             </TouchableOpacity>
@@ -153,33 +161,36 @@ function EditAddress({
         </View>
       </SafeAreaView>
       <ScrollView style={styles.container}>
-        {/* Error Messages */}
-        {[...street.errors].map((error, index) => {
-          return (
-            <View style={styles.errorMessage} key={index}>
-              <Text regular style={{color: "#b55b5b"}}>
-                {error.message}
-              </Text>
-            </View>
-          );
-        })}
         {/* Address Data Form */}
         <View>
-          <TextInput
-            style={[styles.textInput, !newAddress ? {display: "none"} : {}]}
-            onChangeText={(text) => {
-              setAddressNickname({...addressNickname, value: text});
-            }}
-            onBlur={() => {
-              validate(addressNickname, setAddressNickname);
-            }}>
-            Address Name (eg. Home / Work) *
-          </TextInput>
+          {newAddress && (
+            <Controller
+              name="nickname"
+              rules={{
+                required: {
+                  value: true,
+                  message: "Nickname is required",
+                },
+              }}
+              control={control}
+              render={({onBlur, onChange, value}) => (
+                <TextInput
+                  error={errors.nickname}
+                  errorMessage={errors?.nickname?.message}
+                  onChangeText={(text) => onChange(text)}
+                  onBlur={onBlur}
+                  containerStyle={{flex: 0.5}}
+                  value={value}>
+                  Nickname *
+                </TextInput>
+              )}
+            />
+          )}
           <View>
             <TextInput
               editable={false}
               defaultValue={address.governate}
-              style={[styles.textInput, {flex: 0.6}]}>
+              containerStyle={[styles.textInput, {flex: 0.6}]}>
               Governate
             </TextInput>
           </View>
@@ -187,74 +198,114 @@ function EditAddress({
             <View style={{flex: 0.5, marginRight: 10}}>
               <TextInput
                 editable={false}
-                defaultValue={address.area}
-                style={[styles.textInput]}>
+                defaultValue={address.Area.name}
+                containerStyle={[styles.textInput]}>
                 Area
               </TextInput>
             </View>
-            <TextInput
-              defaultValue={address.street}
-              style={[styles.textInput, {flex: 0.5}]}
-              onChangeText={(text) => {
-                setFormChanged(true);
-                setStreet({...street, value: text});
+            <Controller
+              name="street"
+              rules={{
+                required: {
+                  value: true,
+                  message: "Street is required",
+                },
               }}
-              onBlur={() => {
-                validate(street, setStreet);
-              }}>
-              Street
-            </TextInput>
+              control={control}
+              render={({onBlur, onChange, value}) => (
+                <TextInput
+                  error={errors.street}
+                  errorMessage={errors?.street?.message}
+                  onChangeText={(text) => onChange(text)}
+                  onBlur={onBlur}
+                  containerStyle={{flex: 0.5}}
+                  value={value}>
+                  Street *
+                </TextInput>
+              )}
+            />
           </View>
-          <TextInput
-            onChangeText={(text) => {
-              setFormChanged(true);
-              setAddressDetails({...addressDetails, value: text});
+          <Controller
+            name="details"
+            rules={{
+              required: {
+                value: true,
+                message: "Address Details is required",
+              },
             }}
-            defaultValue={addressDetails.value}>
-            Address Details
-          </TextInput>
-          <View style={{flexDirection: "row"}}>
-            <TextInput
-              style={[styles.textInput, {flex: 0.4, marginRight: 10}]}
-              keyboardType="numeric"
-              onChangeText={(text) => {
-                setFormChanged(true);
-                setFloor({...floor, value: text});
-              }}
-              defaultValue={floor.value}>
-              Floor
-            </TextInput>
-            <TextInput
-              style={[styles.textInput, {flex: 0.6}]}
-              onChangeText={(text) => {
-                setFormChanged(true);
-                setApartment({...apartment, value: text});
-              }}
-              defaultValue={apartment.value}>
-              Apartment
-            </TextInput>
-          </View>
-          <TextInput
-            onChangeText={(text) => {
-              setFormChanged(true);
-              setDeliveryNotes({...deliveryNotes, value: text});
-            }}
-            defaultValue={deliveryNotes.value}>
-            Delivery Notes
-          </TextInput>
-          <View>
-            {buttonActive ? (
-              <Button
-                style={{marginTop: 5}}
-                icon="check"
-                onPress={() => saveAddress()}>
-                Save
-              </Button>
-            ) : (
-              <Button disabled style={{marginTop: 5}} icon="check">
-                Save
-              </Button>
+            control={control}
+            render={({onBlur, onChange, value}) => (
+              <TextInput
+                error={errors.details}
+                errorMessage={errors?.details?.message}
+                onChangeText={(text) => onChange(text)}
+                onBlur={onBlur}
+                containerStyle={{flex: 0.5}}
+                value={value}>
+                Address Details (description) *
+              </TextInput>
             )}
+          />
+          <View style={{flexDirection: "row"}}>
+            <Controller
+              name="floor"
+              control={control}
+              render={({onBlur, onChange, value}) => (
+                <TextInput
+                  onChangeText={(text) => onChange(text)}
+                  onBlur={onBlur}
+                  containerStyle={{flex: 0.333, marginRight: 10}}
+                  value={value}>
+                  Floor
+                </TextInput>
+              )}
+            />
+            <Controller
+              name="building"
+              control={control}
+              render={({onBlur, onChange, value}) => (
+                <TextInput
+                  onChangeText={(text) => onChange(text)}
+                  onBlur={onBlur}
+                  containerStyle={{flex: 0.333, marginRight: 10}}
+                  value={value}>
+                  Building
+                </TextInput>
+              )}
+            />
+            <Controller
+              name="flat"
+              control={control}
+              render={({onBlur, onChange, value}) => (
+                <TextInput
+                  onChangeText={(text) => onChange(text)}
+                  onBlur={onBlur}
+                  containerStyle={{flex: 0.333}}
+                  value={value}>
+                  Flat
+                </TextInput>
+              )}
+            />
+          </View>
+          <Controller
+            name="driver_notes"
+            control={control}
+            render={({onBlur, onChange, value}) => (
+              <TextInput
+                onChangeText={(text) => onChange(text)}
+                onBlur={onBlur}
+                value={value}>
+                Delivery notes (eg. beside police station)
+              </TextInput>
+            )}
+          />
+          <View>
+            <Button
+              style={{marginTop: 5}}
+              icon={faCheck}
+              onPress={handleSubmit(onSubmit)}>
+              Save
+            </Button>
           </View>
         </View>
       </ScrollView>
@@ -303,12 +354,16 @@ const mapDispatchToProps = (dispatch) => ({
   addAddress: (address) => {
     dispatch(addAddress(address));
   },
-  changeAddress: (addressNickname, newAddress) => {
-    dispatch(changeAddress(addressNickname, newAddress));
+  changeAddress: (nickname, newAddress) => {
+    dispatch(changeAddress(nickname, newAddress));
   },
-  removeAddress: (addressNickname) => {
-    dispatch(removeAddress(addressNickname));
+  removeAddress: (nickname) => {
+    dispatch(removeAddress(nickname));
   },
 });
 
-export default connect(null, mapDispatchToProps)(EditAddress);
+const mapStateToProps = (state) => ({
+  addresses: state.userReducer.addresses,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditAddress);
