@@ -8,7 +8,9 @@ import Button from "../../components/ui/Button";
 import BlendsLogo from "../../../assets/BlendsLogo.png";
 //Field Validation
 import CloseSheet from "./utils/CloseSheet";
-import {faFacebookF} from "@fortawesome/free-brands-svg-icons";
+//Facebook Login
+import FacebookLoginButton from "../../components/FacebookLoginButton";
+import Toast from "react-native-toast-message";
 
 export default function StartSheet({setSheet, closeSheet}) {
   return (
@@ -49,12 +51,18 @@ export default function StartSheet({setSheet, closeSheet}) {
           }}>
           Continue
         </Button>
-        <Button
-          style={{marginTop: 10, backgroundColor: "#3077F2"}}
-          icon={faFacebookF}
-          onPress={() => setSheet("PhoneNumberSheet")}>
-          Continue using Facebook
-        </Button>
+        <FacebookLoginButton
+          onLoginCancelled={() => {
+            Toast.show({
+              type: "error",
+              visibilityTime: 2000,
+              topOffset: 70,
+              text1: "Facebook Login Cancelled",
+              text2:
+                "You've cancelled our request to use your Facebook account for login",
+            });
+          }}
+        />
       </ScrollView>
     </>
   );
