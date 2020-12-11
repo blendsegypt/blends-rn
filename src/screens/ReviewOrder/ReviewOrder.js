@@ -69,7 +69,6 @@ function ReviewOrder({
         setWalletActive(true);
         setWalletAmount(wallet);
       } else {
-        console.log("sameeee");
         setWalletActive(false);
         setWalletAmount(0);
       }
