@@ -9,6 +9,7 @@ import {
 import {useFocusEffect} from "@react-navigation/native";
 //UI Components
 import Text from "../../components/ui/Text";
+import Link from "../../components/ui/Link";
 //Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
 //Redux
@@ -69,9 +70,10 @@ function Orders({navigation, loggedIn}) {
   // Refresh orders on focus
   useFocusEffect(
     useCallback(() => {
-      refreshOrders();
+      if (loggedIn) refreshOrders();
     }, []),
   );
+
   return (
     <View style={{flex: 1}}>
       <SafeAreaView>
@@ -170,6 +172,19 @@ function Orders({navigation, loggedIn}) {
             ]}
           />
         )}
+        {!loggedIn && (
+          <View style={{marginHorizontal: 25, marginTop: 15}}>
+            <Text style={styles.loginMessageTitle}>No Account detected.</Text>
+            <Text style={styles.loginMessage}>
+              Please Sign In / Register so you can view your orders.
+            </Text>
+            <Link
+              onPress={() => navigation.navigate("Account")}
+              style={{marginTop: 5}}>
+              Go to Account
+            </Link>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -202,6 +217,14 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 10,
+  },
+  loginMessage: {
+    fontSize: 14,
+    marginTop: 3,
+  },
+  loginMessageTitle: {
+    fontSize: 18,
+    color: "#C84D49",
   },
 });
 

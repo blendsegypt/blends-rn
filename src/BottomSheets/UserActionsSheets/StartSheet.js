@@ -39,7 +39,7 @@ export default function StartSheet({setSheet, closeSheet}) {
           Create your Account
         </Text>
         <Text regular style={styles.message}>
-          We'll need some information from you to complete your order, don't
+          We'll need some information from you to complete your orders, don't
           worry it won't take minutes!
         </Text>
         <Button
@@ -53,7 +53,7 @@ export default function StartSheet({setSheet, closeSheet}) {
           style={{marginTop: 10, backgroundColor: "#3077F2"}}
           icon={faFacebookF}
           onPress={() => setSheet("PhoneNumberSheet")}>
-          Signup using Facebook
+          Continue using Facebook
         </Button>
       </ScrollView>
     </>

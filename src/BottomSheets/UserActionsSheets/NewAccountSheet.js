@@ -17,8 +17,6 @@ import BlendsLogo from "../../../assets/BlendsLogo.png";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
-//Field Validation
-import validateField from "../../utils/validateField";
 //Close Sheet component
 import CloseSheet from "./utils/CloseSheet";
 // Redux
@@ -28,98 +26,35 @@ import {connect} from "react-redux";
 import Toast from "react-native-toast-message";
 // Axios
 import API from "../../utils/axios";
+//react-hook-form
+import {useForm, Controller} from "react-hook-form";
 
 function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
+  const [referralCode, setReferralCode] = useState("");
   const [buttonActive, setButtonActive] = useState(false);
-  const [firstName, setFirstName] = useState({
-    text: "First Name",
-    value: "",
-    validated: false,
-    notEmpty: true,
-    regex: /^[a-zA-Z\s]*$/,
-    regexErrorMessage: "First name can only contain letters.",
-    errors: [],
-  });
-  const [lastName, setLastName] = useState({
-    text: "Last Name",
-    value: "",
-    validated: "",
-    notEmpty: true,
-    regex: /^[a-zA-Z\s]*$/,
-    regexErrorMessage: "Last Name can only contain letters.",
-    errors: [],
-  });
-  const [password, setPassword] = useState({
-    text: "Password",
-    value: "",
-    validated: false,
-    regex: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/,
-    regexErrorMessage:
-      "Password must be 8 characters or longer, contains atleast a letter and a number.",
-    errors: [],
-  });
-  const [passwordConfirmation, setPasswordConfirmation] = useState({
-    text: "Password Confirmation",
-    value: "",
-    equality: true,
-    equals: "",
-    validated: false,
-    errors: [],
-  });
-  const [referralCode, setReferralCode] = useState({
-    text: "Referral Code",
-    value: "",
+  //forms configuration
+  const {handleSubmit, control, errors, formState, watch} = useForm({
+    mode: "onChange",
   });
 
-  // Validate fields using validate.js from utils folder
-  const validate = (field, fieldSetter) => {
-    // Validate field
-    const fieldAfterValidation = validateField(field);
-    // Use the supplied setter to set the validated field
-    fieldSetter(fieldAfterValidation);
-  };
-
-  // Check if there's no errors, activate the continue button
+  //activate button if form is valid
   useEffect(() => {
-    const errorsLength = [
-      ...firstName.errors,
-      ...lastName.errors,
-      ...password.errors,
-      ...passwordConfirmation.errors,
-    ].length;
-    const fieldsValidated =
-      firstName.validated &&
-      lastName.validated &&
-      password.validated &&
-      passwordConfirmation.validated;
-
-    if (errorsLength == 0 && fieldsValidated) {
+    if (formState.isValid) {
       setButtonActive(true);
     } else {
       setButtonActive(false);
     }
-  }, [
-    firstName.errors,
-    firstName.validated,
-    lastName.errors,
-    lastName.validated,
-    password.errors,
-    password.validated,
-    passwordConfirmation.errors,
-    passwordConfirmation.validated,
-  ]);
+  }, [formState]);
 
-  const handleSubmit = async () => {
+  const onSubmit = async (data) => {
     try {
       const user = {
-        first_name: firstName.value,
-        last_name: lastName.value,
+        ...data,
         phone_number: userObject.phoneNumber,
-        password: password.value,
-        platform: "ios",
+        platform: Platform.OS === "ios" ? "ios" : "android",
       };
-      if (referralCode.value !== "") {
-        user.referring_user_code = referralCode.value;
+      if (referralCode !== "") {
+        user.referring_user_code = referralCode;
       }
       const response = await API.post("app/register/finish", user);
       // Extract user object
@@ -131,6 +66,7 @@ function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
       login(newUser, accessToken, refreshToken, []);
       closeSheet();
     } catch (error) {
+      console.log(error.response);
       Toast.show({
         type: "error",
         topOffset: 50,
@@ -173,92 +109,110 @@ function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
         <Text regular style={styles.message}>
           Complete the following fields and your account will be ready to go.
         </Text>
-        {/* Error Messages */}
-        {[
-          ...firstName.errors,
-          ...lastName.errors,
-          ...password.errors,
-          ...passwordConfirmation.errors,
-        ].map((error, index) => {
-          return (
-            <View style={styles.errorMessage} key={index}>
-              <Text regular style={{color: "#b55b5b"}}>
-                {error.message}
-              </Text>
-            </View>
-          );
-        })}
         <View style={{display: "flex", flexDirection: "row", marginTop: 7}}>
-          <TextInput
-            style={{marginVertical: 7, flex: 0.5, marginRight: 5}}
-            onChangeText={(text) => {
-              const newFirstName = {...firstName, value: text};
-              setFirstName({...firstName, value: text});
-              validate(newFirstName, setFirstName);
+          <Controller
+            name="first_name"
+            rules={{
+              required: {value: true, message: "First Name is required"},
+              pattern: {value: /^[A-Za-z]+$/, message: "Invalid First Name"},
             }}
-            onBlur={() => validate(firstName, setFirstName)}
-            defaultValue={firstName.value}>
-            First Name
-          </TextInput>
-          <TextInput
-            style={{marginVertical: 7, flex: 0.5, marginLeft: 5}}
-            onChangeText={(text) => {
-              const newLastName = {...lastName, value: text};
-              setLastName({...lastName, value: text});
-              validate(newLastName, setLastName);
+            control={control}
+            render={({onBlur, onChange, value}) => (
+              <TextInput
+                error={errors.first_name}
+                errorMessage={errors?.first_name?.message}
+                onChangeText={(text) => onChange(text)}
+                onBlur={onBlur}
+                value={value}
+                containerStyle={{flex: 0.5, marginRight: 5}}>
+                First Name *
+              </TextInput>
+            )}
+          />
+          <Controller
+            name="last_name"
+            rules={{
+              required: {value: true, message: "Last Name is required"},
+              pattern: {value: /^[A-Za-z]+$/, message: "Invalid Last Name"},
             }}
-            onBlur={() => validate(lastName, setLastName)}
-            defaultValue={lastName.value}>
-            Last Name
-          </TextInput>
+            control={control}
+            render={({onBlur, onChange, value}) => (
+              <TextInput
+                error={errors.last_name}
+                errorMessage={errors?.last_name?.message}
+                onChangeText={(text) => onChange(text)}
+                onBlur={onBlur}
+                value={value}
+                defaultValue=""
+                containerStyle={{flex: 0.5, marginLeft: 5}}>
+                Last Name *
+              </TextInput>
+            )}
+          />
         </View>
         <View>
-          <TextInput
-            style={{marginVertical: 7}}
-            keyboardType="numeric"
-            editable={false}
-            defaultValue={userObject.phoneNumber}
-            maxLength={11}>
-            Phone Number
+          <TextInput value={userObject.phoneNumber} editable={false}>
+            Phone Number *
           </TextInput>
         </View>
+        <Controller
+          name="password"
+          rules={{
+            required: {value: true, message: "Password is required"},
+            pattern: {
+              value: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/,
+              message:
+                "Password must be 8 characters or longer, contains atleast a letter and a number.",
+            },
+          }}
+          control={control}
+          render={({onBlur, onChange, value}) => (
+            <TextInput
+              error={errors.password}
+              errorMessage={errors?.password?.message}
+              onChangeText={(text) => onChange(text)}
+              onBlur={onBlur}
+              secureTextEntry
+              value={value}>
+              Password *
+            </TextInput>
+          )}
+        />
+        <Controller
+          name="password_confirmation"
+          rules={{
+            required: {
+              value: true,
+              message: "Password Confirmation is required",
+            },
+            validate: {
+              matchesPassword: (value) =>
+                value === watch("password") ||
+                "Password Confirmation doesn't match password",
+            },
+          }}
+          control={control}
+          render={({onBlur, onChange, value}) => (
+            <TextInput
+              error={errors.password_confirmation}
+              errorMessage={errors?.password_confirmation?.message}
+              onChangeText={(text) => onChange(text)}
+              onBlur={onBlur}
+              secureTextEntry
+              value={value}>
+              Password Confirmation *
+            </TextInput>
+          )}
+        />
         <TextInput
-          secureTextEntry
           style={{marginVertical: 7}}
           onChangeText={(text) => {
-            const passwordAfterEdit = {...password, value: text};
-            setPassword(passwordAfterEdit);
-            setPasswordConfirmation({...passwordConfirmation, equals: text});
-            validate(passwordAfterEdit, setPassword);
-          }}>
-          Password
-        </TextInput>
-        <TextInput
-          secureTextEntry
-          style={{marginVertical: 7}}
-          onChangeText={(text) => {
-            const passwordConfirmAfterEdit = {
-              ...passwordConfirmation,
-              value: text,
-            };
-            setPasswordConfirmation(passwordConfirmAfterEdit);
-            validate(passwordConfirmAfterEdit, setPasswordConfirmation);
-          }}>
-          Password Confirmation
-        </TextInput>
-        <TextInput
-          style={{marginVertical: 7}}
-          onChangeText={(text) => {
-            setReferralCode({...referralCode, value: text});
+            setReferralCode(text);
           }}>
           Referral Code (optional)
         </TextInput>
         {buttonActive ? (
-          <Button
-            style={{marginTop: 10}}
-            onPress={() => {
-              handleSubmit();
-            }}>
+          <Button style={{marginTop: 10}} onPress={handleSubmit(onSubmit)}>
             Continue
           </Button>
         ) : (

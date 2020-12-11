@@ -19,6 +19,8 @@ import Toast from "react-native-toast-message";
 import CloseSheet from "./utils/CloseSheet";
 import API from "../../utils/axios";
 import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
+//react-hook-form
+import {useForm, Controller} from "react-hook-form";
 
 export default function OTPSheet({
   setSheet,
@@ -27,10 +29,22 @@ export default function OTPSheet({
   fullName,
   phoneNumber,
 }) {
-  const [OTP, setOTP] = useState("");
   const [buttonActive, setButtonActive] = useState(false);
   const [canResend, setCanResend] = useState(false);
   const [resendTimeout, setResendTimeout] = useState(null);
+
+  const {handleSubmit, control, errors, formState} = useForm({
+    mode: "onChange",
+  });
+
+  //activate button if form is valid
+  useEffect(() => {
+    if (formState.isValid) {
+      setButtonActive(true);
+    } else {
+      setButtonActive(false);
+    }
+  }, [formState]);
 
   // Start Resending counter
   useEffect(() => {
@@ -43,18 +57,12 @@ export default function OTPSheet({
     };
   }, [canResend]);
 
-  // Make button active when OTP is fully entered
   useEffect(() => {
-    if (OTP.length == 4) {
-      setButtonActive(true);
-    } else {
-      setButtonActive(false);
-    }
     //Timeout cleanup
     return () => {
       clearTimeout(resendTimeout);
     };
-  }, [OTP]);
+  }, []);
 
   // Resend OTP
   const resendOTP = async () => {
@@ -82,11 +90,12 @@ export default function OTPSheet({
     }
   };
 
-  const handleSubmit = async () => {
+  // Confirm OTP
+  const onSubmit = async (data) => {
     try {
       await API.post("app/register/verify/otp", {
         phone_number: phoneNumber,
-        OTP: OTP,
+        OTP: data.OTP,
       });
       setSheet("NewAccountSheet");
     } catch (error) {
@@ -132,15 +141,27 @@ export default function OTPSheet({
           receive anything on your phone number, please click on Resend
         </Text>
         <View style={{flexDirection: "row", alignContent: "space-between"}}>
-          <TextInput
-            keyboardType="numeric"
-            style={{flex: 0.5}}
-            maxLength={4}
-            onChangeText={(text) => {
-              setOTP(text);
-            }}>
-            OTP (XXXX)
-          </TextInput>
+          <Controller
+            name="OTP"
+            rules={{
+              required: {value: true, message: "OTP is required"},
+              pattern: {value: /^\d+$/, message: "Invalid OTP"},
+            }}
+            control={control}
+            render={({onBlur, onChange, value}) => (
+              <TextInput
+                error={errors.OTP}
+                errorMessage={errors?.OTP?.message}
+                onChangeText={(text) => onChange(text)}
+                onBlur={onBlur}
+                keyboardType="numeric"
+                maxLength={4}
+                containerStyle={{flex: 0.5}}
+                value={value}>
+                OTP
+              </TextInput>
+            )}
+          />
           <View style={styles.resendButton}>
             {canResend ? (
               <Button
@@ -165,11 +186,7 @@ export default function OTPSheet({
           </View>
         </View>
         {buttonActive ? (
-          <Button
-            style={{marginTop: 20}}
-            onPress={() => {
-              handleSubmit();
-            }}>
+          <Button style={{marginTop: 20}} onPress={handleSubmit(onSubmit)}>
             Confirm
           </Button>
         ) : (

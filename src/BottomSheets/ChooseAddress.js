@@ -36,6 +36,7 @@ function Sheet({addresses, setChooseAddressShown, navigation, setSnap}) {
           </Text>
           <Link
             onPress={() => {
+              closeSheet();
               navigation.navigate("ChooseLocation", {existingUser: true});
             }}
             style={{marginRight: 25}}>

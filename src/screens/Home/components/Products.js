@@ -24,6 +24,7 @@ function Products({navigation, supportedArea, branchID}) {
   const renderCategory = ({item, index}) => (
     <TouchableOpacity
       onPress={() => {
+        if (activeCategory === item.id) return;
         setProductsLoaded(false);
         setActiveCategory(item.id);
       }}>

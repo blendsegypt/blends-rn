@@ -14,8 +14,6 @@ import Button from "../../components/ui/Button";
 import TextInput from "../../components/ui/TextInput";
 //Assets
 import BlendsLogo from "../../../assets/BlendsLogo.png";
-//Field Validation
-import validateField from "../../utils/validateField";
 import CloseSheet from "./utils/CloseSheet";
 import API from "../../utils/axios";
 import Toast from "react-native-toast-message";
@@ -23,51 +21,32 @@ import Toast from "react-native-toast-message";
 import {connect} from "react-redux";
 import {login} from "../../redux/actions/auth.action";
 import {faFacebookF} from "@fortawesome/free-brands-svg-icons";
+//react-hook-form
+import {useForm, Controller} from "react-hook-form";
 
 // Login Sheet
 function LoginSheet({setSheet, closeSheet, login, loginMode}) {
   const [buttonActive, setButtonActive] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState({
-    text: "Phone Number",
-    value: "",
-    minLength: 11,
-    validated: false,
-    errors: [],
-  });
-  const [password, setPassword] = useState({
-    text: "Password",
-    value: "",
-    notEmpty: true,
-    validated: false,
-    errors: [],
+  //forms configuration
+  const {handleSubmit, control, errors, formState} = useForm({
+    mode: "onChange",
   });
 
-  // Validate fields using validate.js from utils folder
-  const validate = (field, fieldSetter) => {
-    // Validate field
-    const fieldAfterValidation = validateField(field);
-    // Use the supplied setter to set the validated field
-    fieldSetter(fieldAfterValidation);
-  };
-
-  // Check if there's no errors, activate the continue button
+  //activate button if form is valid
   useEffect(() => {
-    const errorsLength = [...phoneNumber.errors, ...password.errors].length;
-    const fieldsValidated = phoneNumber.validated && password.validated;
-
-    if (errorsLength == 0 && fieldsValidated) {
+    if (formState.isValid) {
       setButtonActive(true);
     } else {
       setButtonActive(false);
     }
-  }, [phoneNumber.errors, password.errors]);
+  }, [formState]);
 
   // Login handler
-  const loginHandler = async () => {
+  const loginHandler = async (data) => {
     try {
       const response = await API.post("app/auth/login", {
-        phone_number: phoneNumber.value,
-        password: password.value,
+        phone_number: data.phone_number,
+        password: data.password,
       });
       // Extract user object and addresses array
       const user = Object.assign({}, response.data.data);
@@ -87,7 +66,6 @@ function LoginSheet({setSheet, closeSheet, login, loginMode}) {
       closeSheet();
     } catch (error) {
       if (error.response) {
-        console.log(error.response.config.data);
         if (error.response.data.error === "INVALID_CREDENTIALS") {
           Toast.show({
             type: "error",
@@ -143,37 +121,46 @@ function LoginSheet({setSheet, closeSheet, login, loginMode}) {
           Please enter your account credentials, or use Facebook if your account
           is linked
         </Text>
-        {/* Error Messages */}
-        {[...phoneNumber.errors, ...password.errors].map((error, index) => {
-          return (
-            <View style={styles.errorMessage} key={index}>
-              <Text regular style={{color: "#b55b5b"}}>
-                {error.message}
-              </Text>
-            </View>
-          );
-        })}
-        <TextInput
-          keyboardType="numeric"
-          maxLength={11}
-          onChangeText={(text) => {
-            const newPhoneNumber = {...phoneNumber, value: text};
-            setPhoneNumber(newPhoneNumber);
-            validate(newPhoneNumber, setPhoneNumber);
-          }}>
-          Phone Number *
-        </TextInput>
-        <TextInput
-          secureTextEntry
-          onChangeText={(text) => {
-            const newPassword = {...password, value: text};
-            setPassword(newPassword);
-            validate(newPassword, setPassword);
-          }}>
-          Password *
-        </TextInput>
+        <Controller
+          name="phone_number"
+          rules={{
+            required: {value: true, message: "Phone Number is required"},
+            pattern: {value: /^\d+$/, message: "Invalid Phone Number"},
+          }}
+          control={control}
+          render={({onBlur, onChange, value}) => (
+            <TextInput
+              error={errors.phone_number}
+              errorMessage={errors?.phone_number?.message}
+              onChangeText={(text) => onChange(text)}
+              onBlur={onBlur}
+              keyboardType="numeric"
+              maxLength={11}
+              value={value}>
+              Phone Number
+            </TextInput>
+          )}
+        />
+        <Controller
+          name="password"
+          rules={{
+            required: {value: true, message: "Password is required"},
+          }}
+          control={control}
+          render={({onBlur, onChange, value}) => (
+            <TextInput
+              error={errors.password}
+              errorMessage={errors?.password?.message}
+              onChangeText={(text) => onChange(text)}
+              onBlur={onBlur}
+              secureTextEntry
+              value={value}>
+              Password
+            </TextInput>
+          )}
+        />
         {buttonActive ? (
-          <Button style={{marginTop: 10}} onPress={() => loginHandler()}>
+          <Button style={{marginTop: 10}} onPress={handleSubmit(loginHandler)}>
             Continue
           </Button>
         ) : (
@@ -184,7 +171,7 @@ function LoginSheet({setSheet, closeSheet, login, loginMode}) {
         <Button
           style={{backgroundColor: "#3077F2", marginTop: 10}}
           icon={faFacebookF}>
-          Sign in using Facebook
+          Continue using Facebook
         </Button>
       </ScrollView>
     </>

@@ -3,6 +3,7 @@ import {View, ScrollView, StyleSheet, SafeAreaView} from "react-native";
 //UI Component
 import Text from "../../components/ui/Text";
 import Button from "../../components/ui/Button";
+import Link from "../../components/ui/Link";
 //Redux
 import {connect} from "react-redux";
 //FontAwesome icons
@@ -12,7 +13,7 @@ import initializeFreshchat from "./helpers/initializeFreshchat";
 //FreshChat Integration
 import {Freshchat} from "react-native-freshchat-sdk";
 
-function Support({user}) {
+function Support({user, navigation}) {
   useEffect(() => {
     if (!user.loggedIn) return;
     initializeFreshchat(user);
@@ -32,7 +33,7 @@ function Support({user}) {
         </View>
       </SafeAreaView>
       <ScrollView style={styles.container}>
-        {user.loggedIn && (
+        {user.loggedIn ? (
           <Button
             icon={faComment}
             textColor="#437FD9"
@@ -42,7 +43,20 @@ function Support({user}) {
             }}>
             Talk to Support
           </Button>
+        ) : (
+          <>
+            <Text style={styles.loginMessageTitle}>No Account detected.</Text>
+            <Text style={styles.loginMessage}>
+              Please Sign In / Register so we could better assist you.
+            </Text>
+            <Link
+              onPress={() => navigation.navigate("Account")}
+              style={{marginTop: 5}}>
+              Go to Account
+            </Link>
+          </>
         )}
+
         {/* <Button style={{marginTop: 10}} secondary icon={faHeart}>
           Rate Blends on Appstore
         </Button> */}
@@ -79,6 +93,14 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 25,
+  },
+  loginMessage: {
+    fontSize: 14,
+    marginTop: 3,
+  },
+  loginMessageTitle: {
+    fontSize: 18,
+    color: "#C84D49",
   },
 });
 

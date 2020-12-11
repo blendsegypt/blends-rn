@@ -17,12 +17,12 @@ import BlendsLogo from "../../../assets/BlendsLogo.png";
 //Icons Font
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
-//Field Validation
-import validateField from "../../utils/validateField";
 //Close Sheet Component
 import Toast from "react-native-toast-message";
 import CloseSheet from "./utils/CloseSheet";
 import API from "../../utils/axios";
+//react-hook-form
+import {useForm, Controller} from "react-hook-form";
 
 export default function PhoneNumberSheet({
   setSheet,
@@ -31,40 +31,26 @@ export default function PhoneNumberSheet({
   setUserObject,
 }) {
   const [buttonActive, setButtonActive] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState({
-    text: "Phone Number",
-    value: "",
-    minLength: 11,
-    validated: false,
-    errors: [],
+  //forms configuration
+  const {handleSubmit, control, errors, formState} = useForm({
+    mode: "onChange",
   });
 
-  // Validate fields using validate.js from utils folder
-  const validate = (field, fieldSetter) => {
-    // Validate field
-    const fieldAfterValidation = validateField(field);
-    // Use the supplied setter to set the validated field
-    fieldSetter(fieldAfterValidation);
-  };
-
-  // Check if there's no errors, activate the continue button
+  //activate button if form is valid
   useEffect(() => {
-    const errorsLength = [...phoneNumber.errors].length;
-    const fieldsValidated = phoneNumber.validated;
-
-    if (errorsLength == 0 && fieldsValidated) {
+    if (formState.isValid) {
       setButtonActive(true);
     } else {
       setButtonActive(false);
     }
-  }, [phoneNumber.errors]);
+  }, [formState]);
 
-  const handleSubmit = async () => {
+  const onSubmit = async (data) => {
     try {
       await API.post("app/register/verify/phone", {
-        phone_number: phoneNumber.value,
+        phone_number: data.phone_number,
       });
-      setUserObject({phoneNumber: phoneNumber.value});
+      setUserObject({phoneNumber: data.phone_number});
       setSheet("OTPSheet");
     } catch (error) {
       if (
@@ -124,32 +110,28 @@ export default function PhoneNumberSheet({
           We'll send you an OTP (One Time Password) to confirm your phone
           number.
         </Text>
-        {/* Error Messages */}
-        {[...phoneNumber.errors].map((error, index) => {
-          return (
-            <View style={styles.errorMessage} key={index}>
-              <Text regular style={{color: "#b55b5b"}}>
-                {error.message}
-              </Text>
-            </View>
-          );
-        })}
-        <TextInput
-          onChangeText={(text) => {
-            const newPhoneNumber = {...phoneNumber, value: text};
-            setPhoneNumber({...phoneNumber, value: text});
-            validate(newPhoneNumber, setPhoneNumber);
+        <Controller
+          name="phone_number"
+          rules={{
+            required: {value: true, message: "Phone Number is required"},
+            pattern: {value: /^\d+$/, message: "Invalid Phone Number"},
           }}
-          keyboardType="numeric"
-          maxLength={11}>
-          Phone Number
-        </TextInput>
+          control={control}
+          render={({onBlur, onChange, value}) => (
+            <TextInput
+              error={errors.phone_number}
+              errorMessage={errors?.phone_number?.message}
+              onChangeText={(text) => onChange(text)}
+              onBlur={onBlur}
+              keyboardType="numeric"
+              maxLength={11}
+              value={value}>
+              Phone Number
+            </TextInput>
+          )}
+        />
         {buttonActive ? (
-          <Button
-            style={{marginTop: 10}}
-            onPress={() => {
-              handleSubmit();
-            }}>
+          <Button style={{marginTop: 10}} onPress={handleSubmit(onSubmit)}>
             Continue
           </Button>
         ) : (

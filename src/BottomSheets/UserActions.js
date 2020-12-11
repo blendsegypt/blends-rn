@@ -29,8 +29,7 @@ function SheetsRouter({closeSheet, setSnap, loginMode}) {
     setSnap(0);
     return <StartSheet setSheet={setSheet} closeSheet={closeSheet} />;
   } else if (sheet === "LoginSheet") {
-    //setSnap(2);
-    setSnap(3);
+    setSnap(2);
     return <LoginSheet setSheet={setSheet} closeSheet={closeSheet} />;
   } else if (sheet === "NewAccountSheet") {
     setSnap(3);
