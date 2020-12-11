@@ -34,6 +34,8 @@ import placeOrder from "./helpers/placeOrder";
 import getWallet from "../../helpers/getWallet";
 //React navigation
 import {useFocusEffect} from "@react-navigation/native";
+// Spinner overlay
+import Spinner from "react-native-loading-spinner-overlay";
 
 function ReviewOrder({
   route,
@@ -51,6 +53,7 @@ function ReviewOrder({
   const [orderPromo, setOrderPromo] = useState("");
   const [walletActive, setWalletActive] = useState(false);
   const [walletAmount, setWalletAmount] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   // Check user wallet
   useFocusEffect(
@@ -70,6 +73,7 @@ function ReviewOrder({
         setWalletActive(false);
         setWalletAmount(0);
       }
+      setLoading(false);
     } catch (error) {}
   };
 
@@ -108,6 +112,13 @@ function ReviewOrder({
           }}></TouchableOpacity>
       )}
       <View style={{flex: 1}}>
+        <Spinner
+          visible={loading}
+          textContent={"Loading..."}
+          textStyle={{color: "white"}}
+          animation="fade"
+          overlayColor="rgba(0, 0, 0, 0.7)"
+        />
         {/* Header */}
         <SafeAreaView>
           <View style={styles.header}>
