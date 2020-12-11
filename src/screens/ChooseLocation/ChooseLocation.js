@@ -211,20 +211,7 @@ function ChooseLocation({addLocation, navigation, route, loggedIn, addresses}) {
       500,
     );
   };
-  /*
-{addressLoaded ? (
-  <Button
-    onPress={() => {
-      continueHandler();
-    }}>
-    {!existingUser &&
-      (supportedArea ? "Continue" : "Go to Store anyways")}
-    {existingUser && "Add Location"}
-  </Button>
-) : (
-  <Button disabled>Continue</Button>
-)}
-*/
+
   //Continue handler (Conditional rendering)
   let continueButton;
 
@@ -336,7 +323,7 @@ function ChooseLocation({addLocation, navigation, route, loggedIn, addresses}) {
             </Text>
             {!loggedIn && (
               <Link onPress={() => setShowUserActionsSheet(true)}>
-                Already a User?
+                Login / Register
               </Link>
             )}
           </View>
@@ -423,7 +410,6 @@ function ChooseLocation({addLocation, navigation, route, loggedIn, addresses}) {
         <UserActions
           showUserActionsSheet={showUserActionsSheet}
           closeSheet={closeSheet}
-          loginMode
         />
       )}
     </>

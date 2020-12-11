@@ -21,7 +21,7 @@ import {addToCart} from "../../../redux/actions/cart.action";
 //Helpers
 import getRecentOrders from "../helpers/getRecentOrders";
 
-function RecentOrders({navigation, addToCart, branchID}) {
+function RecentOrders({navigation, addToCart, branchID, supportedArea}) {
   const [itemsLoaded, setItemsLoaded] = useState(false);
   const [ordersItems, setOrdersItems] = useState([]);
 
@@ -57,6 +57,16 @@ function RecentOrders({navigation, addToCart, branchID}) {
         index === 0 ? {marginLeft: 0} : {},
       ]}
       onPress={() => {
+        if (!supportedArea) {
+          Toast.show({
+            type: "error",
+            topOffset: 50,
+            visibilityTime: 2000,
+            text1: "Unsupported Location",
+            text2: "Please change your location to add products to the cart.",
+          });
+          return;
+        }
         if (item.retail) {
           if (item.Inventories[0].actual_stock === 0) {
             Toast.show({

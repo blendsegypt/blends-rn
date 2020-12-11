@@ -40,7 +40,7 @@ export default function SearchLocation({navigateToPlaceID, coordinates}) {
     // Destruct coordinates to apply location bias
     const [lat, lng] = coordinates;
     const response = await Axios.get(
-      `https://maps.googleapis.com/maps/api/place/queryautocomplete/json?input=${text}&inputtype=textquery&fields=name,geometry&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY&location=${lat},${lng}&radius=100000`,
+      `https://maps.googleapis.com/maps/api/place/queryautocomplete/json?input=${text}&inputtype=textquery&fields=name,geometry&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY&location=${lat},${lng}&radius=200000`,
     );
     const results = [...response.data.predictions];
     // Filter for only inside-Egypt results

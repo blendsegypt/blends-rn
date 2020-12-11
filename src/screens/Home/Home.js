@@ -38,11 +38,13 @@ function Home({
   useEffect(() => {
     (async function () {
       try {
-        // Check if branch is closed
-        const [operating, closedMessage] = await getBranchStatus(branchID);
-        if (!operating) {
-          setBranchOperating(false);
-          setBranchClosedMessage(closedMessage);
+        // Check if branch is closed if user belongs to a branch
+        if (supportedArea) {
+          const [operating, closedMessage] = await getBranchStatus(branchID);
+          if (!operating) {
+            setBranchOperating(false);
+            setBranchClosedMessage(closedMessage);
+          }
         }
         // Load banners
         const fetchedBanners = await getBanners();
@@ -104,6 +106,7 @@ function Home({
             {/* Banners Section */}
             <View style={{marginTop: 15}}>
               <Banners
+                supportedArea={supportedArea}
                 navigation={navigation}
                 bannersLoaded={bannersLoaded}
                 banners={banners}
@@ -114,7 +117,11 @@ function Home({
         <View style={{marginTop: 30, paddingBottom: 50}}>
           {/* Recent Orders */}
           {loggedIn && (
-            <RecentOrders navigation={navigation} branchID={branchID} />
+            <RecentOrders
+              navigation={navigation}
+              branchID={branchID}
+              supportedArea={supportedArea}
+            />
           )}
           {/* Products */}
           <View style={{marginTop: 20, paddingHorizontal: 25}}>
@@ -207,6 +214,7 @@ const mapStateToProps = (state) => {
   // Check if user already has an address
   if (state.userReducer.addresses[0]) {
     HomeState.branchID = state.userReducer.addresses[0].Area.Branches[0].id;
+    HomeState.supportedArea = true;
   }
 
   return HomeState;

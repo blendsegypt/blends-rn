@@ -16,7 +16,7 @@ export default async function getProductsByCategory(categoryID, branchID) {
       `app/products/category/${categoryID}/branch/${branchID}`,
     );
   } else {
-    products = await API.get(`app/products/category/${categoryID}/branch/all`);
+    products = await API.get(`app/products/category/${categoryID}/branch/any`);
   }
   return products.data.data;
 }

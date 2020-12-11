@@ -4,13 +4,29 @@ import {Image, Dimensions, TouchableOpacity} from "react-native";
 import Carousel from "react-native-snap-carousel";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
+import Toast from "react-native-toast-message";
 
-function Banners({navigation, bannersLoaded = false, banners = []}) {
+function Banners({
+  navigation,
+  bannersLoaded = false,
+  banners = [],
+  supportedArea,
+}) {
   const renderItem = ({item, index}) => {
     return (
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
+          if (!supportedArea) {
+            Toast.show({
+              type: "error",
+              topOffset: 50,
+              visibilityTime: 2000,
+              text1: "Unsupported Location",
+              text2: "Please change your location to add products to the cart.",
+            });
+            return;
+          }
           navigation.navigate("Product", {product_id: item.product_id});
         }}>
         <Image
