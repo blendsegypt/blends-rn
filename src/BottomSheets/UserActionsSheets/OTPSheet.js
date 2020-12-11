@@ -119,7 +119,6 @@ function OTPSheet({
         });
         // Extract user object and addresses array
         const user = Object.assign({}, response.data.data);
-        console.log(user);
         const addresses = user.addresses;
         delete user.addresses;
         // Extract access/refresh tokens
@@ -137,7 +136,6 @@ function OTPSheet({
         closeSheet();
       } catch (error) {
         setFacebookLoading(false);
-        console.log(error.response);
         Toast.show({
           type: "error",
           topOffset: 70,
