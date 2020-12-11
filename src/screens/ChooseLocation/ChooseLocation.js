@@ -18,6 +18,7 @@ import Toast from "react-native-toast-message";
 //Redux
 import {connect} from "react-redux";
 import {addLocation} from "../../redux/actions/user.action";
+import {resetCart} from "../../redux/actions/cart.action";
 // Loading Skeleton
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
 // Custom Marker
@@ -37,7 +38,14 @@ import decodeAddressComponents from "./helpers/decodeAddressComponents";
 import getUserArea from "./helpers/getUserArea";
 import getUserLocation from "./helpers/getUserLocation";
 
-function ChooseLocation({addLocation, navigation, route, loggedIn, addresses}) {
+function ChooseLocation({
+  addLocation,
+  navigation,
+  route,
+  loggedIn,
+  addresses,
+  resetCart,
+}) {
   // UserActions bottom sheet state
   const [showUserActionsSheet, setShowUserActionsSheet] = useState(false);
   // Loading state
@@ -178,6 +186,7 @@ function ChooseLocation({addLocation, navigation, route, loggedIn, addresses}) {
     } else {
       location.supported = false;
     }
+    resetCart();
     if (existingUser) {
       navigation.navigate("Home", {
         screen: "Account",
@@ -522,6 +531,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   addLocation: (location) => {
     dispatch(addLocation(location));
+  },
+  resetCart: () => {
+    dispatch(resetCart());
   },
 });
 
