@@ -14,6 +14,7 @@ function SheetsRouter({closeSheet, setSnap, loginMode}) {
   // Sheet to be shown
   const [sheet, setSheet] = useState("StartSheet");
   const [facebook, setFacebook] = useState(false);
+  const [facebookToken, setFacebookToken] = useState("");
   const [userObject, setUserObject] = useState({
     firstName: "",
     lastName: "",
@@ -27,9 +28,16 @@ function SheetsRouter({closeSheet, setSnap, loginMode}) {
   // Sheets navigation
   if (sheet === "StartSheet") {
     setSnap(0);
-    return <StartSheet setSheet={setSheet} closeSheet={closeSheet} />;
+    return (
+      <StartSheet
+        setSheet={setSheet}
+        closeSheet={closeSheet}
+        setFacebookToken={setFacebookToken}
+        setFacebook={setFacebook}
+      />
+    );
   } else if (sheet === "LoginSheet") {
-    setSnap(2);
+    setSnap(1);
     return <LoginSheet setSheet={setSheet} closeSheet={closeSheet} />;
   } else if (sheet === "NewAccountSheet") {
     setSnap(3);
@@ -45,7 +53,7 @@ function SheetsRouter({closeSheet, setSnap, loginMode}) {
     return (
       <PhoneNumberSheet
         setSheet={setSheet}
-        setFacebook={setFacebook}
+        facebook={facebook}
         closeSheet={closeSheet}
         setUserObject={setUserObject}
       />
@@ -57,6 +65,7 @@ function SheetsRouter({closeSheet, setSnap, loginMode}) {
     <OTPSheet
       setSheet={setSheet}
       facebook={facebook}
+      facebookToken={facebookToken}
       closeSheet={closeSheet}
       fullName={userObject.fullName}
       phoneNumber={userObject.phoneNumber}

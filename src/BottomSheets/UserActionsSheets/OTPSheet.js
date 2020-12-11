@@ -21,17 +21,24 @@ import API from "../../utils/axios";
 import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
 //react-hook-form
 import {useForm, Controller} from "react-hook-form";
+// Spinner overlay
+import Spinner from "react-native-loading-spinner-overlay";
+// Login (in case FB login)
+import {login} from "../../redux/actions/auth.action";
+import {connect} from "react-redux";
 
-export default function OTPSheet({
+function OTPSheet({
   setSheet,
   facebook,
+  facebookToken,
   closeSheet,
-  fullName,
   phoneNumber,
+  login,
 }) {
   const [buttonActive, setButtonActive] = useState(false);
   const [canResend, setCanResend] = useState(false);
   const [resendTimeout, setResendTimeout] = useState(null);
+  const [facebookLoading, setFacebookLoading] = useState(false);
 
   const {handleSubmit, control, errors, formState} = useForm({
     mode: "onChange",
@@ -97,7 +104,49 @@ export default function OTPSheet({
         phone_number: phoneNumber,
         OTP: data.OTP,
       });
-      setSheet("NewAccountSheet");
+      // Normal registeration flow
+      if (!facebook) {
+        setSheet("NewAccountSheet");
+        return;
+      }
+      // Facebook registeration flow
+      try {
+        setFacebookLoading(true);
+        const response = await API.post("app/auth/facebook/finish", {
+          fbToken: facebookToken,
+          phone_number: phoneNumber,
+          platform: Platform.OS === "ios" ? "ios" : "android",
+        });
+        // Extract user object and addresses array
+        const user = Object.assign({}, response.data.data);
+        console.log(user);
+        const addresses = user.addresses;
+        delete user.addresses;
+        // Extract access/refresh tokens
+        const accessToken = response.headers["access-token"];
+        const refreshToken = response.headers["refresh-token"];
+        login(user, accessToken, refreshToken, addresses);
+        setFacebookLoading(false);
+        Toast.show({
+          type: "success",
+          visibilityTime: 2000,
+          topOffset: 50,
+          text1: `Hello, ${user.first_name}.`,
+          text2: "It's time for some fresh coffee!",
+        });
+        closeSheet();
+      } catch (error) {
+        setFacebookLoading(false);
+        console.log(error.response);
+        Toast.show({
+          type: "error",
+          topOffset: 70,
+          visibilityTime: 2000,
+          text1: "Facebook Login Error",
+          text2:
+            "Please try again, if the issue persist please use normal registeration",
+        });
+      }
     } catch (error) {
       Toast.show({
         type: "error",
@@ -115,6 +164,13 @@ export default function OTPSheet({
       <ScrollView
         style={styles.bottomSheetContainer}
         keyboardShouldPersistTaps="always">
+        <Spinner
+          visible={facebookLoading}
+          textContent={"Loading..."}
+          textStyle={{color: "white"}}
+          animation="fade"
+          overlayColor="rgba(0, 0, 0, 0.7)"
+        />
         <View
           style={{
             flexDirection: "row",
@@ -223,3 +279,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
 });
+
+const mapDispatchToProps = (dispatch) => ({
+  login: (user, accessToken, refreshToken, addresses) => {
+    dispatch(login(user, accessToken, refreshToken, addresses));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(OTPSheet);

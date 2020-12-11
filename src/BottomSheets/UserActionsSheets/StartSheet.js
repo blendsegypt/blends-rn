@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {View, ScrollView, Image, StyleSheet, Platform} from "react-native";
 //UI Components
 import Text from "../../components/ui/Text";
@@ -11,14 +11,33 @@ import CloseSheet from "./utils/CloseSheet";
 //Facebook Login
 import FacebookLoginButton from "../../components/FacebookLoginButton";
 import Toast from "react-native-toast-message";
+// Spinner overlay
+import Spinner from "react-native-loading-spinner-overlay";
+//Redux
+import {connect} from "react-redux";
+import {login} from "../../redux/actions/auth.action";
 
-export default function StartSheet({setSheet, closeSheet}) {
+function StartSheet({
+  setSheet,
+  closeSheet,
+  setFacebookToken,
+  setFacebook,
+  login,
+}) {
+  const [facebookLoading, setFacebookLoading] = useState(false);
   return (
     <>
       {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
       <ScrollView
         style={styles.bottomSheetContainer}
         contentContainerStyle={{paddingBottom: 300}}>
+        <Spinner
+          visible={facebookLoading}
+          textContent={"Loading..."}
+          textStyle={{color: "white"}}
+          animation="fade"
+          overlayColor="rgba(0, 0, 0, 0.7)"
+        />
         <View
           style={{
             flexDirection: "row",
@@ -52,10 +71,42 @@ export default function StartSheet({setSheet, closeSheet}) {
           Continue
         </Button>
         <FacebookLoginButton
+          setFacebookLoading={setFacebookLoading}
+          onLoginError={() => {
+            Toast.show({
+              type: "error",
+              visibilityTime: 3000,
+              topOffset: 70,
+              text1: "Facebook Login Error",
+              text2:
+                "Please try again, if the issue persist please use normal registeration",
+            });
+          }}
+          onLoginFinished={(accessToken, user, addresses, tokens) => {
+            // New User
+            if (accessToken) {
+              setFacebook(true);
+              setFacebookToken(accessToken);
+              setSheet("PhoneNumberSheet");
+              return;
+            }
+            // Existing User
+            const access_token = tokens.access_token;
+            const refresh_token = tokens.refresh_token;
+            login(user, access_token, refresh_token, addresses);
+            Toast.show({
+              type: "success",
+              visibilityTime: 2000,
+              topOffset: 50,
+              text1: `Hello, ${user.first_name}.`,
+              text2: "It's time for some fresh coffee!",
+            });
+            closeSheet();
+          }}
           onLoginCancelled={() => {
             Toast.show({
               type: "error",
-              visibilityTime: 2000,
+              visibilityTime: 3000,
               topOffset: 70,
               text1: "Facebook Login Cancelled",
               text2:
@@ -102,3 +153,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
 });
+
+const mapDispatchToProps = (dispatch) => ({
+  login: (user, accessToken, refreshToken, addresses) => {
+    dispatch(login(user, accessToken, refreshToken, addresses));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(StartSheet);

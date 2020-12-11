@@ -20,7 +20,6 @@ import Toast from "react-native-toast-message";
 //Redux
 import {connect} from "react-redux";
 import {login} from "../../redux/actions/auth.action";
-import {faFacebookF} from "@fortawesome/free-brands-svg-icons";
 //react-hook-form
 import {useForm, Controller} from "react-hook-form";
 
@@ -168,11 +167,6 @@ function LoginSheet({setSheet, closeSheet, login, loginMode}) {
             Continue
           </Button>
         )}
-        <Button
-          style={{backgroundColor: "#3077F2", marginTop: 10}}
-          icon={faFacebookF}>
-          Continue using Facebook
-        </Button>
       </ScrollView>
     </>
   );
