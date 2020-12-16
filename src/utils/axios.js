@@ -15,11 +15,11 @@ import createAuthRefreshInterceptor from "axios-auth-refresh";
 import Axios from "axios";
 
 const axios = Axios.create({
-  baseURL: "http://192.168.1.120:3000/",
+  baseURL: "https://blendseg.com/api/",
 });
 
 const axiosRefreshTokenInstance = Axios.create({
-  baseURL: "http://192.168.1.120:3000/",
+  baseURL: "https://blendseg.com/api/",
 });
 
 const refreshToken = async () => {
