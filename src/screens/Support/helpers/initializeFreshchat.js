@@ -24,7 +24,5 @@ export default function initializeFreshchat(user) {
   freshchatUser.firstName = user.firstName;
   freshchatUser.phoneCountryCode = "+2";
   freshchatUser.phone = String(user.phoneNumber);
-  Freshchat.setUser(freshchatUser, (error) => {
-    console.log(error);
-  });
+  Freshchat.setUser(freshchatUser, (error) => {});
 }

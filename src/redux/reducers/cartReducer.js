@@ -39,7 +39,6 @@ export default function cartReducer(state = [], action) {
           action.item.product_id === item.product_id &&
           compareOptions(action.item.selectedOptions, item.selectedOptions),
       );
-      console.log(existingItem);
       if (existingItem) {
         existingItem.quantity++;
         return newState;

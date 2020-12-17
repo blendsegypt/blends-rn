@@ -89,7 +89,6 @@ function ReviewOrder({
       );
       navigation.navigate("OrderConfirmed");
     } catch (error) {
-      console.log(error.response);
       Toast.show({
         type: "error",
         visibilityTime: 2000,

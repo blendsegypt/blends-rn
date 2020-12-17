@@ -58,10 +58,7 @@ function AddressDetails({navigation, location, userID, addAddress}) {
       address.id = newAddress.data.data.id;
       addAddress(address);
       navigation.navigate("ReviewOrder", {threeStepsCheckout: true});
-    } catch (error) {
-      console.log(error.response);
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (

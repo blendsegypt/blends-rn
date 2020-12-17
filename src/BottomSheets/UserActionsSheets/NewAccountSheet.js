@@ -66,7 +66,6 @@ function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
       login(newUser, accessToken, refreshToken, []);
       closeSheet();
     } catch (error) {
-      console.log(error.response);
       Toast.show({
         type: "error",
         topOffset: 50,
