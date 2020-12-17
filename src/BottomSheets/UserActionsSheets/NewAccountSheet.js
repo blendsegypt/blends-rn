@@ -56,7 +56,7 @@ function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
       if (referralCode !== "") {
         user.referring_user_code = referralCode;
       }
-      const response = await API.post("app/register/finish", user);
+      const response = await API.post("register/finish", user);
       // Extract user object
       const newUser = Object.assign({}, response.data.data);
       delete newUser.addresses;

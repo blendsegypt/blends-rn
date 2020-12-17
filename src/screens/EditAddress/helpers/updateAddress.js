@@ -10,5 +10,5 @@
 import API from "../../../utils/axios";
 
 export default async function updateAddress(addressID, updatedAddress) {
-  await API.put(`app/user/addresses/${addressID}`, updatedAddress);
+  await API.put(`user/addresses/${addressID}`, updatedAddress);
 }

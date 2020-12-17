@@ -10,6 +10,6 @@
 import API from "../../../utils/axios";
 
 export default async function getBanners() {
-  const banners = await API.get("app/banners");
+  const banners = await API.get("banners");
   return banners.data.data;
 }

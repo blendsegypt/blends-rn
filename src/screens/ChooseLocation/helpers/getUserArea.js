@@ -12,7 +12,7 @@ import classifyPoint from "robust-point-in-polygon";
 
 // Load areas from API
 const loadAreas = async () => {
-  const response = await API.get("app/areas");
+  const response = await API.get("areas");
   // Parse string coordinates to arrays [lat,lng]
   let areas = response.data.data;
   areas = areas.map((area) => {

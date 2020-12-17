@@ -15,18 +15,18 @@ import createAuthRefreshInterceptor from "axios-auth-refresh";
 import Axios from "axios";
 
 const axios = Axios.create({
-  baseURL: "https://blendseg.com/api/",
+  baseURL: "https://blendseg.com/api/app/v1/",
 });
 
 const axiosRefreshTokenInstance = Axios.create({
-  baseURL: "https://blendseg.com/api/",
+  baseURL: "https://blendseg.com/api/app/v1/",
 });
 
 const refreshToken = async () => {
   try {
     const refreshToken = await getRefreshToken();
     const accessToken = await getAccessToken();
-    const res = await axiosRefreshTokenInstance.post("app/auth/refresh", {
+    const res = await axiosRefreshTokenInstance.post("auth/refresh", {
       accessToken,
       refreshToken,
     });

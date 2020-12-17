@@ -74,7 +74,7 @@ function OTPSheet({
   // Resend OTP
   const resendOTP = async () => {
     try {
-      await API.post("app/register/resend/OTP", {
+      await API.post("register/resend/OTP", {
         phone_number: phoneNumber,
       });
       Toast.show({
@@ -100,7 +100,7 @@ function OTPSheet({
   // Confirm OTP
   const onSubmit = async (data) => {
     try {
-      await API.post("app/register/verify/otp", {
+      await API.post("register/verify/otp", {
         phone_number: phoneNumber,
         OTP: data.OTP,
       });
@@ -112,7 +112,7 @@ function OTPSheet({
       // Facebook registeration flow
       try {
         setFacebookLoading(true);
-        const response = await API.post("app/auth/facebook/finish", {
+        const response = await API.post("auth/facebook/finish", {
           fbToken: facebookToken,
           phone_number: phoneNumber,
           platform: Platform.OS === "ios" ? "ios" : "android",

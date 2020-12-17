@@ -43,7 +43,7 @@ function LoginSheet({setSheet, closeSheet, login, loginMode}) {
   // Login handler
   const loginHandler = async (data) => {
     try {
-      const response = await API.post("app/auth/login", {
+      const response = await API.post("auth/login", {
         phone_number: data.phone_number,
         password: data.password,
       });

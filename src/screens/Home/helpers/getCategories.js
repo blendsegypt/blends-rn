@@ -10,6 +10,6 @@
 import API from "../../../utils/axios";
 
 export default async function getCategories() {
-  const categories = await API.get("app/products/categories");
+  const categories = await API.get("products/categories");
   return categories.data.data;
 }

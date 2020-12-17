@@ -15,7 +15,7 @@ function FacebookLoginButton({
 }) {
   const checkIfUser = async (accessToken) => {
     try {
-      const response = await API.post("app/auth/facebook", {
+      const response = await API.post("auth/facebook", {
         fbToken: accessToken,
       });
       const user = Object.assign({}, response.data.data);

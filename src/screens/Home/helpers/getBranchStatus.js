@@ -13,7 +13,7 @@ export default async function getBranchStatus(branch_id) {
   let branchOperating = true;
   let branchClosedMessage = "";
 
-  const response = await API.get(`app/branch/${branch_id}`);
+  const response = await API.get(`branch/${branch_id}`);
   const branch = response.data.data;
   if (branch.status === "open") {
     // Check for working hours

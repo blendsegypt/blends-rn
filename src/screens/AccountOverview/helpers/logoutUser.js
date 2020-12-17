@@ -10,6 +10,6 @@
 import API from "../../../utils/axios";
 
 export default async function logoutUser(reduxLogoutAction) {
-  await API.post("app/auth/logout", {});
+  await API.post("auth/logout", {});
   reduxLogoutAction();
 }

@@ -54,7 +54,7 @@ function AddressDetails({navigation, location, userID, addAddress}) {
       address.area_id = location.Area.id;
       address.user_id = userID;
       // Add address
-      const newAddress = await API.post("app/user/addresses", address);
+      const newAddress = await API.post("user/addresses", address);
       address.id = newAddress.data.data.id;
       addAddress(address);
       navigation.navigate("ReviewOrder", {threeStepsCheckout: true});

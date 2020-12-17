@@ -10,5 +10,5 @@
 import API from "../../../utils/axios";
 
 export default async function rateOrder(orderID, rating) {
-  await API.post(`app/orders/rate/${orderID}`, {rating});
+  await API.post(`orders/rate/${orderID}`, {rating});
 }

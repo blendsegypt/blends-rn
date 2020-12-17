@@ -37,5 +37,5 @@ export default async function placeOrder(
   if (promocode !== "") {
     order.promo_code = promocode;
   }
-  await API.post("app/orders", order);
+  await API.post("orders", order);
 }

@@ -15,7 +15,7 @@ export default async function getUserOrders(loggedIn) {
   if (!loggedIn) {
     return [];
   }
-  const response = await API.get("app/orders");
+  const response = await API.get("orders");
   const orders = [...response.data.data];
   // Calculate order dates and time
   orders.forEach((order) => {

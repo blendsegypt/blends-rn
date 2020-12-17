@@ -36,7 +36,7 @@ function Product({navigation, route, addToCart}) {
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const response = await API.get(`app/products/${product_id}`);
+        const response = await API.get(`products/${product_id}`);
         const product = response.data.data;
         setProductData(product);
         setPrice(product.sale_price ? product.sale_price : product.price);

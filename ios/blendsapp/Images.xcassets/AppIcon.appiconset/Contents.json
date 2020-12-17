@@ -55,6 +55,7 @@
       "size" : "60x60"
     },
     {
+      "filename" : "AppStore-1024.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
@@ -87,12 +88,6 @@
       "idiom" : "universal",
       "scale" : "2x",
       "size" : "76x76"
-    },
-    {
-      "filename" : "AppStore-1024.png",
-      "idiom" : "universal",
-      "scale" : "1x",
-      "size" : "1024x1024"
     }
   ],
   "info" : {

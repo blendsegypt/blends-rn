@@ -47,7 +47,7 @@ export default function PhoneNumberSheet({
 
   const onSubmit = async (data) => {
     try {
-      await API.post("app/register/verify/phone", {
+      await API.post("register/verify/phone", {
         phone_number: data.phone_number,
       });
       setUserObject({phoneNumber: data.phone_number});

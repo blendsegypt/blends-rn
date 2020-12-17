@@ -56,7 +56,8 @@ function Home({
           topOffset: 70,
           visibilityTime: 2000,
           text1: "An Error Occured",
-          text2: "Something wrong happened, sorry about that!",
+          text2:
+            "Something wrong happened while loading banners, sorry about that!",
         });
       }
     })();

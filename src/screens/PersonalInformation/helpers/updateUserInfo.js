@@ -14,5 +14,5 @@ export default async function updateUserInfo(userInfo) {
       delete userInfo[field];
     }
   }
-  await API.put("app/user", userInfo);
+  await API.put("user", userInfo);
 }

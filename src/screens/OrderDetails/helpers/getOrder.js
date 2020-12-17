@@ -12,7 +12,7 @@ import API from "../../../utils/axios";
 import Moment from "moment";
 
 export default async function getOrder(orderID) {
-  const response = await API.get(`app/orders/order/${orderID}`);
+  const response = await API.get(`orders/order/${orderID}`);
   const order = Object.assign({}, response.data.data);
   // Calculate order dates and time
   if (order.order_status !== "Delivered") {

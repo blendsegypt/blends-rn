@@ -78,7 +78,7 @@ function EditAddress({
         // Adding new address
         updatedAddress.coordinates = JSON.stringify(updatedAddress.coordinates);
         updatedAddress.area_id = address.Area.id;
-        const response = await API.post("app/user/addresses", updatedAddress);
+        const response = await API.post("user/addresses", updatedAddress);
         updatedAddress.id = response.data.data.id;
         addAddress(updatedAddress);
         navigation.reset({
@@ -100,7 +100,7 @@ function EditAddress({
   const onDelete = async () => {
     try {
       let onlyOneAddress = false;
-      await API.delete(`app/user/addresses/${address.id}`);
+      await API.delete(`user/addresses/${address.id}`);
       if (addresses.length === 1) {
         onlyOneAddress = true;
       }

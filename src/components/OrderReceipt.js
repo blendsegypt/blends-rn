@@ -46,7 +46,7 @@ function OrderReceipt({
       };
     });
     try {
-      const response = await API.post("app/apply-promo-code", order);
+      const response = await API.post("apply-promo-code", order);
       setOrderAfterPromo(response.data.order);
       setPromoApplied(true);
       setOrderPromo(promocode);
