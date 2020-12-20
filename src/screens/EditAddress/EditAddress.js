@@ -65,7 +65,7 @@ function EditAddress({
         // Updating already existing address
         const addressID = updatedAddress.id;
         await updateAddress(addressID, updatedAddress);
-        changeAddress(address.nickname, updatedAddress);
+        changeAddress(address.id, updatedAddress);
         Toast.show({
           type: "success",
           visibilityTime: 2000,
@@ -104,7 +104,7 @@ function EditAddress({
       if (addresses.length === 1) {
         onlyOneAddress = true;
       }
-      removeAddress(address.nickname);
+      removeAddress(address.id);
       if (onlyOneAddress) {
         navigation.reset({
           index: 0,
@@ -354,11 +354,11 @@ const mapDispatchToProps = (dispatch) => ({
   addAddress: (address) => {
     dispatch(addAddress(address));
   },
-  changeAddress: (nickname, newAddress) => {
-    dispatch(changeAddress(nickname, newAddress));
+  changeAddress: (id, newAddress) => {
+    dispatch(changeAddress(id, newAddress));
   },
-  removeAddress: (nickname) => {
-    dispatch(removeAddress(nickname));
+  removeAddress: (id) => {
+    dispatch(removeAddress(id));
   },
 });
 

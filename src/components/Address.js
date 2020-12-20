@@ -26,7 +26,7 @@ function Address({
       <TouchableOpacity
         style={[styles.address]}
         onPress={() => {
-          switchActiveAddress(address.nickname);
+          switchActiveAddress(address.id);
           setChooseAddressShown(false);
         }}>
         <View style={{flex: 0.5, justifyContent: "space-between"}}>
@@ -131,8 +131,8 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  switchActiveAddress: (addressName) => {
-    dispatch(switchActiveAddress(addressName));
+  switchActiveAddress: (id) => {
+    dispatch(switchActiveAddress(id));
   },
 });
 
