@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
 	<string>1550860575117631</string>
 	<key>FacebookDisplayName</key>
@@ -73,7 +73,9 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>The application needs user's location for products home delivery.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>The application has image assets.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>FiraSans-Bold.ttf</string>

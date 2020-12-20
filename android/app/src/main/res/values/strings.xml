@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">blendsapp</string>
+    <string name="facebook_app_id">1550860575117631</string>
+    <string name="fb_login_protocol_scheme">fb1550860575117631</string>
 </resources>
