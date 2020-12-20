@@ -25,7 +25,10 @@ import SkeletonContent from "react-native-skeleton-content-nonexpo";
 import PinMarker from "../../../assets/mapMarker.png";
 // Font Icons
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faLocationArrow} from "@fortawesome/free-solid-svg-icons";
+import {
+  faLocationArrow,
+  faChevronLeft,
+} from "@fortawesome/free-solid-svg-icons";
 //Bottom Sheet
 import UserActions from "../../BottomSheets/UserActions";
 import BottomSheetOverlay from "../../components/BottomSheetOverlay";
@@ -72,6 +75,8 @@ function ChooseLocation({
     try {
       // Reverse Geocode coordinates using Google Maps API
       const [lat, lng] = coordinates;
+      // If there's no coordinates, return
+      if (!lat || !lng) return;
       const response = await Axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&result_type=street_address|administrative_area_level_1|administrative_area_level_2|administrative_area_level_3&key=AIzaSyAZOGnKWfosXqB9d_jkOS-T55K_b8PPOYY`,
       );
@@ -326,7 +331,30 @@ function ChooseLocation({
         </SafeAreaView>
         <View style={styles.container}>
           {/* Title */}
-          <View style={styles.title}>
+          <View
+            style={[
+              styles.title,
+              {justifyContent: "center", alignItems: "center"},
+            ]}>
+            {existingUser && (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("SavedAddresses");
+                }}
+                style={{
+                  backgroundColor: "#11203E",
+                  padding: 10,
+                  marginRight: 10,
+                  borderRadius: 50,
+                }}>
+                <FontAwesomeIcon
+                  style={styles.headerChevron}
+                  icon={faChevronLeft}
+                  size={15}
+                  color="white"
+                />
+              </TouchableOpacity>
+            )}
             <Text style={styles.titleText} semiBold>
               Confirm your Location
             </Text>
