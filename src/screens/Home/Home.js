@@ -117,7 +117,7 @@ function Home({
         </View>
         <View style={{marginTop: 30, paddingBottom: 50}}>
           {/* Recent Orders */}
-          {loggedIn && (
+          {loggedIn && branchID && (
             <RecentOrders
               navigation={navigation}
               branchID={branchID}

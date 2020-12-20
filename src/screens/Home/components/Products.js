@@ -63,7 +63,7 @@ function Products({navigation, supportedArea, branchID}) {
 
   // Load Products
   useEffect(() => {
-    if (!activeCategory) return;
+    if (!activeCategory || !branchID) return;
     (async function () {
       try {
         const fetchedProducts = await getProductsByCategory(
@@ -83,7 +83,7 @@ function Products({navigation, supportedArea, branchID}) {
         });
       }
     })();
-  }, [activeCategory]);
+  }, [activeCategory, branchID]);
 
   return (
     <View>
