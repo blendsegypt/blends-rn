@@ -120,7 +120,7 @@ function ChooseLocation({
         }
       }
       animateToUserLocation();
-    }, []),
+    }, [route.params]),
   );
 
   // Reverse geocode new coordinates
@@ -150,7 +150,7 @@ function ChooseLocation({
         }
       })();
     }
-  }, [coordinates]);
+  }, [coordinates, mapLoaded]);
 
   // Handler for search queries
   const navigateToPlaceID = async (placeID) => {
