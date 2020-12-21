@@ -101,7 +101,7 @@ function Products({navigation, supportedArea, branchID}) {
           containerStyle={{flexDirection: "row"}}
           isLoading={true}
           animationDirection="horizontalLeft"
-          duration="800"
+          duration={800}
           boneColor="#D1D1D1"
           layout={[
             {
@@ -160,7 +160,7 @@ function Products({navigation, supportedArea, branchID}) {
           }}
           isLoading={true}
           animationDirection="horizontalLeft"
-          duration="800"
+          duration={800}
           boneColor="#e3e3e3"
           layout={[
             {

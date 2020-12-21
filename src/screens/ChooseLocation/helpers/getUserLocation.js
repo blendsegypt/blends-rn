@@ -6,6 +6,7 @@
  *
  */
 
+import {Platform} from "react-native";
 //Geolocation
 import Geolocation from "@react-native-community/geolocation";
 
@@ -20,7 +21,11 @@ export default getUserLocation = () => {
       (error) => {
         reject(error);
       },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 5},
+      {
+        enableHighAccuracy: Platform.OS === "android" ? false : true,
+        timeout: 15000,
+        maximumAge: 5,
+      },
     );
   });
 };

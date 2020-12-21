@@ -375,7 +375,7 @@ function ChooseLocation({
                 containerStyle={{width: 100, height: 70}}
                 isLoading={true}
                 animationDirection="horizontalLeft"
-                duration="800"
+                duration={800}
                 boneColor="#D1D1D1"
                 layout={[
                   {
@@ -423,7 +423,7 @@ function ChooseLocation({
                   containerStyle={{width: 100, height: 70}}
                   isLoading={true}
                   animationDirection="horizontalLeft"
-                  duration="800"
+                  duration={800}
                   boneColor="#D1D1D1"
                   layout={[
                     {

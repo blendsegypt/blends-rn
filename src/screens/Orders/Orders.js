@@ -121,7 +121,7 @@ function Orders({navigation, loggedIn}) {
             }}
             isLoading={true}
             animationDirection="horizontalLeft"
-            duration="800"
+            duration={800}
             boneColor="#e3e3e3"
             layout={[
               {

@@ -163,7 +163,7 @@ function RecentOrders({navigation, addToCart, branchID, supportedArea}) {
             }}
             isLoading={true}
             animationDirection="horizontalLeft"
-            duration="800"
+            duration={800}
             boneColor="#e3e3e3"
             layout={[
               {

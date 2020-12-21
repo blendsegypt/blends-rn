@@ -155,7 +155,7 @@ function Product({navigation, route, addToCart}) {
             containerStyle={{marginBottom: 10}}
             isLoading={true}
             animationDirection="horizontalLeft"
-            duration="800"
+            duration={800}
             boneColor="#D1D1D1"
             layout={[
               {
@@ -187,7 +187,7 @@ function Product({navigation, route, addToCart}) {
             containerStyle={{}}
             isLoading={true}
             animationDirection="horizontalLeft"
-            duration="800"
+            duration={800}
             boneColor="#D1D1D1"
             layout={[
               {
@@ -220,7 +220,7 @@ function Product({navigation, route, addToCart}) {
             containerStyle={{marginTop: 5}}
             isLoading={true}
             animationDirection="horizontalLeft"
-            duration="800"
+            duration={800}
             boneColor="#D1D1D1"
             layout={[
               {
@@ -257,7 +257,7 @@ function Product({navigation, route, addToCart}) {
             containerStyle={{flexDirection: "row", marginTop: 15}}
             isLoading={true}
             animationDirection="horizontalLeft"
-            duration="800"
+            duration={800}
             boneColor="#D1D1D1"
             layout={[
               {

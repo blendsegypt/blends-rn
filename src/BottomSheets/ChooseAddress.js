@@ -78,18 +78,27 @@ function ChooseAddress({
   //if (!addresses) return <View></View>;
   return (
     <View style={{zIndex: 9999}}>
-      <BottomSheet
-        ref={sheetRef}
-        initialSnapIndex={-1}
-        snapPoints={[0, "50%"]}
-        enabled={false}>
+      {Platform.OS === "ios" ? (
+        <BottomSheet
+          ref={sheetRef}
+          initialSnapIndex={-1}
+          snapPoints={[0, "50%"]}
+          enabled={false}>
+          <Sheet
+            setSnap={setSnap}
+            addresses={addresses}
+            setChooseAddressShown={setChooseAddressShown}
+            navigation={navigation}
+          />
+        </BottomSheet>
+      ) : (
         <Sheet
           setSnap={setSnap}
           addresses={addresses}
           setChooseAddressShown={setChooseAddressShown}
           navigation={navigation}
         />
-      </BottomSheet>
+      )}
     </View>
   );
 }

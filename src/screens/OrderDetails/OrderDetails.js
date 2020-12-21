@@ -165,7 +165,7 @@ function OrderDetails({navigation, route}) {
             }}
             isLoading={true}
             animationDirection="horizontalLeft"
-            duration="800"
+            duration={800}
             boneColor="#e3e3e3"
             layout={[
               {
@@ -231,7 +231,7 @@ function OrderDetails({navigation, route}) {
               }}
               isLoading={true}
               animationDirection="horizontalLeft"
-              duration="800"
+              duration={800}
               boneColor="#e3e3e3"
               layout={[
                 {

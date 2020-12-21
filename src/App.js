@@ -11,6 +11,7 @@ import toastConfig from "./utils/toastConfig";
 import Router from "./router";
 //Axios
 import {authInterceptor} from "./utils/axios";
+import Animated from "react-native-reanimated";
 
 function App() {
   const [initialRouteName, setInitialRouteName] = useState("Home");

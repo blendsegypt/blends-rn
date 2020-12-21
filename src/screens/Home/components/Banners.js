@@ -51,7 +51,7 @@ function Banners({
           containerStyle={{width: 325, marginLeft: 25}}
           isLoading={true}
           animationDirection="horizontalLeft"
-          duration="800"
+          duration={800}
           boneColor="#D1D1D1"
           layout={[
             {
