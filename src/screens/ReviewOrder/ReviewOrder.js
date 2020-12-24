@@ -183,24 +183,17 @@ function ReviewOrder({
                 size={20}
                 color="#11203E"
               />
-              <Text bold style={{flex: 0.7, fontSize: 15, color: "#11203E"}}>
+              <Text bold style={{flex: 0.5, fontSize: 15, color: "#11203E"}}>
                 {activeAddress.nickname}
               </Text>
               <View
                 style={{
-                  flex: 0.3,
+                  flex: 0.5,
                   alignItems: "flex-end",
                 }}>
-                {addresses.length > 1 ? (
-                  <Link
-                    onPress={() => {
-                      setChooseAddressShown(true);
-                    }}>
-                    Change
-                  </Link>
-                ) : (
-                  <Link disabled>Change</Link>
-                )}
+                <Text style={{color: "#11203E"}}>
+                  {activeAddress.Area.name} - {activeAddress.street}
+                </Text>
               </View>
             </View>
             <View style={[styles.deliveryOption, {paddingBottom: 5}]}>
@@ -210,12 +203,12 @@ function ReviewOrder({
                 size={20}
                 color="#11203E"
               />
-              <Text bold style={{flex: 0.7, fontSize: 15, color: "#11203E"}}>
+              <Text bold style={{flex: 0.5, fontSize: 15, color: "#11203E"}}>
                 Cash on Delivery
               </Text>
-              <View style={{flex: 0.3, alignItems: "flex-end"}}>
+              <View style={{flex: 0.5, alignItems: "flex-end"}}>
                 <Link disabled style={{flex: 0.04}}>
-                  Change
+                  Credit Cards Soon!
                 </Link>
               </View>
             </View>
