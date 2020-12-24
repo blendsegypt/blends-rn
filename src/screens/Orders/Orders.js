@@ -22,6 +22,9 @@ import InProgressOrder from "./components/InProgressOrder";
 import DeliveredOrder from "./components/DeliveredOrder";
 //Toast messages
 import Toast from "react-native-toast-message";
+//Icons Fonts
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faRedo} from "@fortawesome/free-solid-svg-icons";
 
 function Orders({navigation, loggedIn}) {
   const [ordersLoaded, setOrdersLoaded] = useState(false);
@@ -92,6 +95,21 @@ function Orders({navigation, loggedIn}) {
             onRefresh={refreshOrders}
           />
         }>
+        {/* Orders Loaded and they're empty */}
+        {ordersLoaded && orders.length === 0 && (
+          <View style={styles.pullToRefresh}>
+            <FontAwesomeIcon icon={faRedo} size={22} color="#e3e3e3" />
+            <Text
+              style={{
+                color: "#e3e3e3",
+                fontSize: 17,
+                textAlign: "center",
+                marginTop: 20,
+              }}>
+              Pull to Refresh
+            </Text>
+          </View>
+        )}
         {/* Orders loading / loaded */}
         {ordersLoaded ? (
           orders.map((order, index) => {
@@ -225,6 +243,11 @@ const styles = StyleSheet.create({
   loginMessageTitle: {
     fontSize: 18,
     color: "#C84D49",
+  },
+  pullToRefresh: {
+    paddingHorizontal: 25,
+    marginTop: 20,
+    alignItems: "center",
   },
 });
 
