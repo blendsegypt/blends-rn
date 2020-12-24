@@ -96,7 +96,7 @@ function Orders({navigation, loggedIn}) {
           />
         }>
         {/* Orders Loaded and they're empty */}
-        {ordersLoaded && orders.length === 0 && (
+        {ordersLoaded && loggedIn && orders.length === 0 && (
           <View style={styles.pullToRefresh}>
             <FontAwesomeIcon icon={faRedo} size={22} color="#e3e3e3" />
             <Text
