@@ -6,7 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Platform,
-  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 //UI Components
 import Text from "../../components/ui/Text";
@@ -85,11 +85,9 @@ export default function PhoneNumberSheet({
   return (
     <>
       {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
-      <KeyboardAvoidingView
+      <ScrollView
         style={styles.bottomSheetContainer}
-        extraScrollHeight={10}
-        keyboardShouldPersistTaps="handled"
-        behavior="height">
+        keyboardShouldPersistTaps="handled">
         <Spinner
           visible={OTPRequestLoading}
           textContent={"Loading..."}
@@ -128,6 +126,7 @@ export default function PhoneNumberSheet({
           rules={{
             required: {value: true, message: "Phone Number is required"},
             pattern: {value: /^\d+$/, message: "Invalid Phone Number"},
+            minLength: {value: 11, message: "Invalid Phone Number"},
           }}
           control={control}
           render={({onBlur, onChange, value}) => (
@@ -152,7 +151,7 @@ export default function PhoneNumberSheet({
             Continue
           </Button>
         )}
-      </KeyboardAvoidingView>
+      </ScrollView>
     </>
   );
 }
