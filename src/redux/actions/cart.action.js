@@ -10,7 +10,7 @@ export const addToCart = (item) => {
   Toast.show({
     type: "success",
     topOffset: 50,
-    visibilityTime: 1000,
+    visibilityTime: 500,
     text1: "Added to Cart!",
     text2: `${item.name} has been added to cart.`,
   });
