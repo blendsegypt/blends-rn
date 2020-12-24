@@ -139,6 +139,7 @@ function OTPSheet({
         closeSheet();
       } catch (error) {
         setFacebookLoading(false);
+        setCreateAccountLoading(false);
         Toast.show({
           type: "error",
           topOffset: 70,

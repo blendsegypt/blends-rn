@@ -58,6 +58,7 @@ export default function PhoneNumberSheet({
       setOTPRequestLoading(false);
       setSheet("OTPSheet");
     } catch (error) {
+      setOTPRequestLoading(false);
       if (
         error.response ||
         error.response.data.errors[0] === "PHONE_NUMBER_EXISTS"
