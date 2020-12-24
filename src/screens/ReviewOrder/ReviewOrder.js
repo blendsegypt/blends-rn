@@ -78,6 +78,7 @@ function ReviewOrder({
 
   const handleSubmit = async () => {
     try {
+      setLoading(true);
       await placeOrder(
         branchID,
         userID,
@@ -87,6 +88,7 @@ function ReviewOrder({
         orderPromo,
         walletActive,
       );
+      setLoading(false);
       navigation.navigate("OrderConfirmed");
     } catch (error) {
       Toast.show({

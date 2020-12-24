@@ -23,6 +23,8 @@ import CloseSheet from "./utils/CloseSheet";
 import API from "../../utils/axios";
 //react-hook-form
 import {useForm, Controller} from "react-hook-form";
+// Spinner overlay
+import Spinner from "react-native-loading-spinner-overlay";
 
 export default function PhoneNumberSheet({
   setSheet,
@@ -31,6 +33,7 @@ export default function PhoneNumberSheet({
   setUserObject,
 }) {
   const [buttonActive, setButtonActive] = useState(false);
+  const [OTPRequestLoading, setOTPRequestLoading] = useState(false);
   //forms configuration
   const {handleSubmit, control, errors, formState} = useForm({
     mode: "onChange",
@@ -47,10 +50,12 @@ export default function PhoneNumberSheet({
 
   const onSubmit = async (data) => {
     try {
+      setOTPRequestLoading(true);
       await API.post("register/verify/phone", {
         phone_number: data.phone_number,
       });
       setUserObject({phoneNumber: data.phone_number});
+      setOTPRequestLoading(false);
       setSheet("OTPSheet");
     } catch (error) {
       if (
@@ -84,6 +89,13 @@ export default function PhoneNumberSheet({
         extraScrollHeight={10}
         keyboardShouldPersistTaps="always"
         behavior="height">
+        <Spinner
+          visible={OTPRequestLoading}
+          textContent={"Loading..."}
+          textStyle={{color: "white"}}
+          animation="fade"
+          overlayColor="rgba(0, 0, 0, 0.7)"
+        />
         <View
           style={{
             flexDirection: "row",

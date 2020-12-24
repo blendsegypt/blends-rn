@@ -39,6 +39,7 @@ function OTPSheet({
   const [canResend, setCanResend] = useState(false);
   const [resendTimeout, setResendTimeout] = useState(null);
   const [facebookLoading, setFacebookLoading] = useState(false);
+  const [createAccountLoading, setCreateAccountLoading] = useState(false);
 
   const {handleSubmit, control, errors, formState} = useForm({
     mode: "onChange",
@@ -100,10 +101,12 @@ function OTPSheet({
   // Confirm OTP
   const onSubmit = async (data) => {
     try {
+      setCreateAccountLoading(true);
       await API.post("register/verify/otp", {
         phone_number: phoneNumber,
         OTP: data.OTP,
       });
+      setCreateAccountLoading(false);
       // Normal registeration flow
       if (!facebook) {
         setSheet("NewAccountSheet");
@@ -163,7 +166,7 @@ function OTPSheet({
         style={styles.bottomSheetContainer}
         keyboardShouldPersistTaps="always">
         <Spinner
-          visible={facebookLoading}
+          visible={facebookLoading || createAccountLoading}
           textContent={"Loading..."}
           textStyle={{color: "white"}}
           animation="fade"
