@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  Keyboard,
 } from "react-native";
 import {useFocusEffect} from "@react-navigation/native";
 import MapView from "react-native-maps";
@@ -264,6 +265,7 @@ function ChooseLocation({
               longitudeDelta: 0.005,
               latitudeDelta: 0.005,
             }}
+            onPress={() => Keyboard.dismiss()}
             onMapReady={() => {
               setMapLoaded(true);
             }}
