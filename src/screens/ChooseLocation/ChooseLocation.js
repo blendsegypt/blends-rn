@@ -340,7 +340,12 @@ function ChooseLocation({
             {existingUser && (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("SavedAddresses");
+                  navigation.navigate("Home", {
+                    screen: "Account",
+                    params: {
+                      screen: "SavedAddresses",
+                    },
+                  });
                 }}
                 style={{
                   backgroundColor: "#11203E",
