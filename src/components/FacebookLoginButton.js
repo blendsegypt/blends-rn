@@ -35,6 +35,7 @@ function FacebookLoginButton({
   };
   const handleLogin = () => {
     setFacebookLoading(true);
+    LoginManager.logOut();
     LoginManager.logInWithPermissions(["public_profile"]).then(
       function (result) {
         if (result.isCancelled) {
@@ -48,6 +49,7 @@ function FacebookLoginButton({
         setFacebookLoading(false);
       },
       function (error) {
+        console.log(error);
         if (onLoginError) onLoginError();
         setFacebookLoading(false);
       },

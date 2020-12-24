@@ -82,7 +82,7 @@ function StartSheet({
                 "Please try again, if the issue persist please use normal registeration",
             });
           }}
-          onLoginFinished={(accessToken, user, addresses, tokens) => {
+          onLoginFinished={async (accessToken, user, addresses, tokens) => {
             // New User
             if (accessToken) {
               setFacebook(true);
@@ -93,7 +93,7 @@ function StartSheet({
             // Existing User
             const access_token = tokens.access_token;
             const refresh_token = tokens.refresh_token;
-            login(user, access_token, refresh_token, addresses);
+            await login(user, access_token, refresh_token, addresses);
             Toast.show({
               type: "success",
               visibilityTime: 2000,

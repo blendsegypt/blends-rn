@@ -191,7 +191,7 @@ function OTPSheet({
           OTP (One Time Password)
         </Text>
         <Text regular style={styles.message}>
-          We've sent an OTP to <Text bold>0112323123</Text> If you didn't
+          We've sent an OTP to <Text bold>{phoneNumber}</Text> If you didn't
           receive anything on your phone number, please click on Resend
         </Text>
         <View style={{flexDirection: "row", alignContent: "space-between"}}>

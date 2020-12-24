@@ -110,7 +110,7 @@ function UserActions({closeSheet, showUserActionsSheet, loginMode}) {
       {Platform.OS === "ios" ? (
         <BottomSheet
           ref={sheetRef}
-          snapPoints={["55%", "65%", "75%", "90%", "95%"]}
+          snapPoints={["60%", "65%", "75%", "90%", "95%"]}
           initialSnapIndex={-1}
           enabled={false}>
           <SheetsRouter

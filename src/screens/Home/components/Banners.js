@@ -32,7 +32,11 @@ function Banners({
         <Image
           key={index}
           source={{uri: item.banner_image_url, cache: "force-cache"}}
-          style={{width: 360, height: 155}}
+          style={{
+            width: Dimensions.get("window").width * 0.9,
+            height: 155,
+          }}
+          resizeMode="contain"
         />
       </TouchableOpacity>
     );
@@ -44,7 +48,7 @@ function Banners({
           data={banners}
           renderItem={renderItem}
           sliderWidth={Dimensions.get("window").width}
-          itemWidth={360}
+          itemWidth={Dimensions.get("window").width * 0.9}
         />
       ) : (
         <SkeletonContent

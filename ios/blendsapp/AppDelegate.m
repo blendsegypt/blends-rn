@@ -10,7 +10,7 @@
 #import <Firebase.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 
-
+ 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
 #import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
@@ -19,17 +19,6 @@
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
 
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-
-  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
-    openURL:url
-    sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-    annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
-  ];
-  return handled;
-}
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -50,17 +39,30 @@ static void InitializeFlipper(UIApplication *application) {
 
 @implementation AppDelegate
 
+// FB SDK Method
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+
+  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
+    openURL:url
+    sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+    annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
+  ];
+  // Add any custom logic here.
+  return handled;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  // Google Maps API
   [GMSServices provideAPIKey:@"AIzaSyA68T7sAx0oZOKA8zUlMdl-_QmGh7eibQc"];
   if ([FIRApp defaultApp] == nil) {
       [FIRApp configure];
   }
-  [[FBSDKApplicationDelegate sharedInstance] application:application
-      didFinishLaunchingWithOptions:launchOptions];
-#ifdef FB_SONARKIT_ENABLED
-  InitializeFlipper(application);
-#endif
+  #ifdef FB_SONARKIT_ENABLED
+    InitializeFlipper(application);
+  #endif
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
@@ -74,6 +76,10 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  // FB SDK intialization
+ [[FBSDKApplicationDelegate sharedInstance] application:application
+     didFinishLaunchingWithOptions:launchOptions];
   return YES;
 }
 

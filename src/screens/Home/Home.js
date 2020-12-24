@@ -63,6 +63,8 @@ function Home({
     })();
   }, []);
 
+  // Recent orders conditional rendering
+  const showRecentOrders = Boolean(loggedIn && branchID);
   return (
     <>
       <View style={{backgroundColor: "#fff"}}>
@@ -117,7 +119,7 @@ function Home({
         </View>
         <View style={{marginTop: 30, paddingBottom: 50}}>
           {/* Recent Orders */}
-          {loggedIn && branchID && (
+          {showRecentOrders && (
             <RecentOrders
               navigation={navigation}
               branchID={branchID}

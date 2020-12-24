@@ -63,7 +63,7 @@ function Products({navigation, supportedArea, branchID}) {
 
   // Load Products
   useEffect(() => {
-    if (!activeCategory || !branchID) return;
+    if (!activeCategory) return;
     (async function () {
       try {
         const fetchedProducts = await getProductsByCategory(

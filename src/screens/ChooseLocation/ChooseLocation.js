@@ -299,8 +299,7 @@ function ChooseLocation({
           style={{
             position: "absolute",
             top: 130,
-            right: 0,
-            left: 0,
+            right: 25,
             alignItems: "center",
           }}>
           <TouchableOpacity
@@ -358,11 +357,11 @@ function ChooseLocation({
             <Text style={styles.titleText} semiBold>
               Confirm your Location
             </Text>
-            {!loggedIn && (
+            {/* {!loggedIn && (
               <Link onPress={() => setShowUserActionsSheet(true)}>
                 Login / Register
               </Link>
-            )}
+            )} */}
           </View>
           {/* Address */}
           <View style={styles.address}>
