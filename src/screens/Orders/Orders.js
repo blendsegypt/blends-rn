@@ -27,14 +27,14 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faRedo} from "@fortawesome/free-solid-svg-icons";
 
 function Orders({navigation, loggedIn}) {
-  const [ordersLoaded, setOrdersLoaded] = useState(true);
+  const [ordersLoaded, setOrdersLoaded] = useState(false);
   const [orders, setOrders] = useState([]);
   // Get user orders from backend API
   useEffect(() => {
     (async function () {
       try {
         const fetchedOrders = await getUserOrders(loggedIn);
-        //setOrdersLoaded(true);
+        setOrdersLoaded(true);
         setOrders(fetchedOrders);
       } catch (error) {
         Toast.show({
