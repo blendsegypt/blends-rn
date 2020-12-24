@@ -17,8 +17,9 @@ import {TouchableOpacity} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faStar} from "@fortawesome/free-solid-svg-icons";
 
-export default function Stars({onChange, initialStars}) {
+export default function Stars({onChange, initialStars, alreadyRated}) {
   const [stars, setStars] = useState(initialStars);
+  const [rated, setRated] = useState(alreadyRated);
   return [...Array(5)].map((star, index) => {
     let color = "#ECECEC";
     if (index < stars) color = "#F4E385";
@@ -26,8 +27,10 @@ export default function Stars({onChange, initialStars}) {
       <TouchableOpacity
         key={index}
         onPress={() => {
+          if (rated) return;
           setStars(index + 1);
           if (onChange) onChange(index + 1);
+          setRated(true);
         }}>
         <FontAwesomeIcon
           icon={faStar}

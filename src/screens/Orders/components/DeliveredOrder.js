@@ -65,6 +65,7 @@ export default function DeliveredOrder({
           }}>
           <Stars
             initialStars={rating ? rating : 0}
+            alreadyRated={Boolean(rating)}
             onChange={(newRating) => rateDeliveredOrder(id, newRating)}
           />
         </View>
