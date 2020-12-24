@@ -27,14 +27,14 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faRedo} from "@fortawesome/free-solid-svg-icons";
 
 function Orders({navigation, loggedIn}) {
-  const [ordersLoaded, setOrdersLoaded] = useState(false);
+  const [ordersLoaded, setOrdersLoaded] = useState(true);
   const [orders, setOrders] = useState([]);
   // Get user orders from backend API
   useEffect(() => {
     (async function () {
       try {
         const fetchedOrders = await getUserOrders(loggedIn);
-        setOrdersLoaded(true);
+        //setOrdersLoaded(true);
         setOrders(fetchedOrders);
       } catch (error) {
         Toast.show({
@@ -145,16 +145,17 @@ function Orders({navigation, loggedIn}) {
               {
                 paddingVertical: 20,
                 flexDirection: "row",
+                justifyContent: "space-between",
                 children: [
                   {
                     key: "status",
-                    width: 100,
+                    width: "25%",
                     height: 20,
                     borderRadius: 20,
                   },
                   {
                     key: "details",
-                    width: 100,
+                    width: "25%",
                     height: 20,
                     borderRadius: 20,
                     marginLeft: 120,
@@ -164,16 +165,17 @@ function Orders({navigation, loggedIn}) {
               {
                 paddingVertical: 5,
                 flexDirection: "row",
+                justifyContent: "space-between",
                 children: [
                   {
-                    key: "ordered",
-                    width: 100,
+                    key: "status",
+                    width: "25%",
                     height: 20,
                     borderRadius: 20,
                   },
                   {
-                    key: "orderNumber",
-                    width: 100,
+                    key: "details",
+                    width: "25%",
                     height: 20,
                     borderRadius: 20,
                     marginLeft: 120,
