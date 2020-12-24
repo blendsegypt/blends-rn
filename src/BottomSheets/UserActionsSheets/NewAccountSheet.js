@@ -82,7 +82,7 @@ function NewAccountSheet({setSheet, userObject, closeSheet, login}) {
       <ScrollView
         style={styles.bottomSheetContainer}
         contentContainerStyle={{paddingBottom: 350}}
-        keyboardShouldPersistTaps="always">
+        keyboardShouldPersistTaps="handled">
         <View
           style={{
             flexDirection: "row",

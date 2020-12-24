@@ -92,7 +92,7 @@ function LoginSheet({setSheet, closeSheet, login, loginMode}) {
       <ScrollView
         style={[styles.bottomSheetContainer]}
         contentContainerStyle={{paddingBottom: 300}}
-        keyboardShouldPersistTaps="always">
+        keyboardShouldPersistTaps="handled">
         <View
           style={{
             flexDirection: "row",

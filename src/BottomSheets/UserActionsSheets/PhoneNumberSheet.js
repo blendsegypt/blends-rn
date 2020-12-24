@@ -88,7 +88,7 @@ export default function PhoneNumberSheet({
       <KeyboardAvoidingView
         style={styles.bottomSheetContainer}
         extraScrollHeight={10}
-        keyboardShouldPersistTaps="always"
+        keyboardShouldPersistTaps="handled"
         behavior="height">
         <Spinner
           visible={OTPRequestLoading}

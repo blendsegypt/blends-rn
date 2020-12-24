@@ -165,7 +165,7 @@ function OTPSheet({
       {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
       <ScrollView
         style={styles.bottomSheetContainer}
-        keyboardShouldPersistTaps="always">
+        keyboardShouldPersistTaps="handled">
         <Spinner
           visible={facebookLoading || createAccountLoading}
           textContent={"Loading..."}

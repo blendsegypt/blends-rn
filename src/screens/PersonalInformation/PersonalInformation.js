@@ -106,7 +106,7 @@ function PersonalInformation({
       <ScrollView
         style={styles.container}
         contentContainerStyle={{paddingBottom: 150}}
-        keyboardShouldPersistTaps="always">
+        keyboardShouldPersistTaps="handled">
         {/* First/Last Name */}
         <View style={{flexDirection: "row"}}>
           <Controller
