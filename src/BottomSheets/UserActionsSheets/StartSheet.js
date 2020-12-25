@@ -113,9 +113,9 @@ function StartSheet({
                 type: "error",
                 visibilityTime: 3000,
                 topOffset: 70,
-                text1: "Facebook Login Cancelled",
+                text1: "Apple Login Cancelled",
                 text2:
-                  "You've cancelled our request to use your Facebook account for login",
+                  "You've cancelled our request to use your AppleID for login",
               });
             }}
           />
