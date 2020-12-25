@@ -31,6 +31,8 @@ function OTPSheet({
   setSheet,
   facebook,
   facebookToken,
+  apple,
+  appleData,
   closeSheet,
   phoneNumber,
   login,
@@ -38,7 +40,7 @@ function OTPSheet({
   const [buttonActive, setButtonActive] = useState(false);
   const [canResend, setCanResend] = useState(false);
   const [resendTimeout, setResendTimeout] = useState(null);
-  const [facebookLoading, setFacebookLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [createAccountLoading, setCreateAccountLoading] = useState(false);
 
   const {handleSubmit, control, errors, formState} = useForm({
@@ -108,13 +110,53 @@ function OTPSheet({
       });
       setCreateAccountLoading(false);
       // Normal registeration flow
-      if (!facebook) {
+      if (!facebook && !apple) {
         setSheet("NewAccountSheet");
+        return;
+      }
+      if (apple) {
+        try {
+          setLoading(true);
+          const response = await API.post("auth/apple/finish", {
+            ...appleData,
+            phoneNumber,
+          });
+          // Extract user object and addresses array
+          const user = Object.assign({}, response.data.data);
+          const addresses = user.addresses;
+          delete user.addresses;
+          // Extract access/refresh tokens
+          const accessToken = response.headers["access-token"];
+          const refreshToken = response.headers["refresh-token"];
+          login(user, accessToken, refreshToken, addresses);
+          setLoading(false);
+          Toast.show({
+            type: "success",
+            visibilityTime: 2000,
+            topOffset: 50,
+            text1: `Hello, ${user.first_name}.`,
+            text2: "It's time for some fresh coffee!",
+          });
+          closeSheet();
+        } catch (error) {
+          console.log(error.response);
+          setLoading(false);
+          setCreateAccountLoading(false);
+          Toast.show({
+            type: "error",
+            topOffset: 70,
+            visibilityTime: 2000,
+            text1: "Apple Login Error",
+            text2:
+              "Please try again, if the issue persist please use normal registeration",
+          });
+        }
+
         return;
       }
       // Facebook registeration flow
       try {
-        setFacebookLoading(true);
+        setLoading(true);
         const response = await API.post("auth/facebook/finish", {
           fbToken: facebookToken,
           phone_number: phoneNumber,
@@ -128,7 +170,7 @@ function OTPSheet({
         const accessToken = response.headers["access-token"];
         const refreshToken = response.headers["refresh-token"];
         login(user, accessToken, refreshToken, addresses);
-        setFacebookLoading(false);
+        setLoading(false);
         Toast.show({
           type: "success",
           visibilityTime: 2000,
@@ -138,7 +180,7 @@ function OTPSheet({
         });
         closeSheet();
       } catch (error) {
-        setFacebookLoading(false);
+        setLoading(false);
         setCreateAccountLoading(false);
         Toast.show({
           type: "error",
@@ -150,7 +192,7 @@ function OTPSheet({
         });
       }
     } catch (error) {
-      setFacebookLoading(false);
+      setLoading(false);
       setCreateAccountLoading(false);
       Toast.show({
         type: "error",
@@ -169,7 +211,7 @@ function OTPSheet({
         style={styles.bottomSheetContainer}
         keyboardShouldPersistTaps="handled">
         <Spinner
-          visible={facebookLoading || createAccountLoading}
+          visible={loading || createAccountLoading}
           textContent={"Loading..."}
           textStyle={{color: "white"}}
           animation="fade"

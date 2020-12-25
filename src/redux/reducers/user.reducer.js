@@ -34,6 +34,7 @@ export default function userReducer(
       newState = {...state};
       newState.loggedIn = true;
       newState.id = action.user.id;
+      newState.email = action.user.email || null;
       newState.firstName = action.user.first_name;
       newState.lastName = action.user.last_name;
       newState.phoneNumber = action.user.phone_number;

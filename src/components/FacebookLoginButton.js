@@ -8,7 +8,7 @@ import {LoginManager, AccessToken} from "react-native-fbsdk";
 import API from "../utils/axios";
 
 function FacebookLoginButton({
-  setFacebookLoading,
+  setLoading,
   onLoginFinished,
   onLoginCancelled,
   onLoginError,
@@ -34,7 +34,7 @@ function FacebookLoginButton({
     }
   };
   const handleLogin = () => {
-    setFacebookLoading(true);
+    setLoading(true);
     LoginManager.logOut();
     LoginManager.logInWithPermissions(["public_profile"]).then(
       function (result) {
@@ -46,12 +46,12 @@ function FacebookLoginButton({
             checkIfUser(accessToken);
           });
         }
-        setFacebookLoading(false);
+        setLoading(false);
       },
       function (error) {
         console.log(error);
         if (onLoginError) onLoginError();
-        setFacebookLoading(false);
+        setLoading(false);
       },
     );
   };

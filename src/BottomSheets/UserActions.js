@@ -15,6 +15,8 @@ function SheetsRouter({closeSheet, setSnap, loginMode}) {
   const [sheet, setSheet] = useState("StartSheet");
   const [facebook, setFacebook] = useState(false);
   const [facebookToken, setFacebookToken] = useState("");
+  const [apple, setApple] = useState(false);
+  const [appleData, setAppleData] = useState({});
   const [userObject, setUserObject] = useState({
     firstName: "",
     lastName: "",
@@ -34,6 +36,8 @@ function SheetsRouter({closeSheet, setSnap, loginMode}) {
         closeSheet={closeSheet}
         setFacebookToken={setFacebookToken}
         setFacebook={setFacebook}
+        setApple={setApple}
+        setAppleData={setAppleData}
       />
     );
   } else if (sheet === "LoginSheet") {
@@ -66,6 +70,8 @@ function SheetsRouter({closeSheet, setSnap, loginMode}) {
       setSheet={setSheet}
       facebook={facebook}
       facebookToken={facebookToken}
+      apple={apple}
+      appleData={appleData}
       closeSheet={closeSheet}
       fullName={userObject.fullName}
       phoneNumber={userObject.phoneNumber}
@@ -110,7 +116,7 @@ function UserActions({closeSheet, showUserActionsSheet, loginMode}) {
       {Platform.OS === "ios" ? (
         <BottomSheet
           ref={sheetRef}
-          snapPoints={["60%", "65%", "75%", "90%", "95%"]}
+          snapPoints={["64%", "65%", "75%", "90%", "95%"]}
           initialSnapIndex={-1}
           enabled={false}>
           <SheetsRouter

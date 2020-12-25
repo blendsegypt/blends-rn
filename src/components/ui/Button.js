@@ -110,7 +110,7 @@ export default function Button(props) {
         <FontAwesomeIcon
           style={styles.icon}
           icon={props.icon || faChevronRight}
-          size={12}
+          size={15}
           color={buttonTextColor}
         />
       </View>

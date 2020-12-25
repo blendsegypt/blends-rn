@@ -30,6 +30,7 @@ function PersonalInformation({
   firstName,
   lastName,
   phoneNumber,
+  email,
   updatePersonalInfo,
 }) {
   //forms configuration
@@ -38,7 +39,7 @@ function PersonalInformation({
     defaultValues: {
       first_name: firstName,
       last_name: lastName,
-      email: "",
+      email: email || "",
     },
   });
   //button active/disabled state
@@ -258,6 +259,7 @@ const mapStateToProps = (state) => ({
   firstName: state.userReducer.firstName,
   lastName: state.userReducer.lastName,
   phoneNumber: state.userReducer.phoneNumber,
+  email: state.userReducer.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({

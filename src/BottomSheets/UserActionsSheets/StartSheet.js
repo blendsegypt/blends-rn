@@ -10,6 +10,8 @@ import BlendsLogo from "../../../assets/BlendsLogo.png";
 import CloseSheet from "./utils/CloseSheet";
 //Facebook Login
 import FacebookLoginButton from "../../components/FacebookLoginButton";
+//Apple Login
+import AppleLoginButton from "../../components/AppleLoginButton";
 import Toast from "react-native-toast-message";
 // Spinner overlay
 import Spinner from "react-native-loading-spinner-overlay";
@@ -22,9 +24,11 @@ function StartSheet({
   closeSheet,
   setFacebookToken,
   setFacebook,
+  setApple,
+  setAppleData,
   login,
 }) {
-  const [facebookLoading, setFacebookLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   return (
     <>
       {Platform.OS === "android" && <CloseSheet closeSheet={closeSheet} />}
@@ -32,7 +36,7 @@ function StartSheet({
         style={styles.bottomSheetContainer}
         contentContainerStyle={{paddingBottom: 300}}>
         <Spinner
-          visible={facebookLoading}
+          visible={loading}
           textContent={"Loading..."}
           textStyle={{color: "white"}}
           animation="fade"
@@ -70,8 +74,54 @@ function StartSheet({
           }}>
           Continue
         </Button>
+        {Platform.OS === "ios" && (
+          <AppleLoginButton
+            setLoading={setLoading}
+            onLoginFinished={async (appleData, user, addresses, tokens) => {
+              // New User
+              if (appleData) {
+                setApple(true);
+                setAppleData(appleData);
+                setSheet("PhoneNumberSheet");
+                return;
+              }
+              // Existing User
+              const access_token = tokens.access_token;
+              const refresh_token = tokens.refresh_token;
+              await login(user, access_token, refresh_token, addresses);
+              Toast.show({
+                type: "success",
+                visibilityTime: 2000,
+                topOffset: 50,
+                text1: `Hello, ${user.first_name}.`,
+                text2: "It's time for some fresh coffee!",
+              });
+              closeSheet();
+            }}
+            onLoginError={() => {
+              Toast.show({
+                type: "error",
+                visibilityTime: 3000,
+                topOffset: 70,
+                text1: "Apple Login Error",
+                text2:
+                  "Please try again, if the issue persist please use normal registeration",
+              });
+            }}
+            onLoginCancelled={() => {
+              Toast.show({
+                type: "error",
+                visibilityTime: 3000,
+                topOffset: 70,
+                text1: "Facebook Login Cancelled",
+                text2:
+                  "You've cancelled our request to use your Facebook account for login",
+              });
+            }}
+          />
+        )}
         <FacebookLoginButton
-          setFacebookLoading={setFacebookLoading}
+          setLoading={setLoading}
           onLoginError={() => {
             Toast.show({
               type: "error",
