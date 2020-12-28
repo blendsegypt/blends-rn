@@ -13,7 +13,6 @@ import {useFocusEffect} from "@react-navigation/native";
 import MapView from "react-native-maps";
 //UI Components
 import Text from "../../components/ui/Text";
-import Link from "../../components/ui/Link";
 import Button from "../../components/ui/Button";
 import Toast from "react-native-toast-message";
 //Redux
@@ -41,6 +40,7 @@ import Axios from "axios";
 import decodeAddressComponents from "./helpers/decodeAddressComponents";
 import getUserArea from "./helpers/getUserArea";
 import getUserLocation from "./helpers/getUserLocation";
+import {request, PERMISSIONS} from "react-native-permissions";
 
 function ChooseLocation({
   addLocation,
@@ -85,7 +85,6 @@ function ChooseLocation({
       const googleMapsAddress = decodeAddressComponents(response);
       setFormattedAddress(googleMapsAddress.formattedAddress);
       setGoogleMapsAddress(googleMapsAddress);
-      setAddressLoaded(true);
     } catch (error) {
       Toast.show({
         type: "error",
@@ -100,11 +99,16 @@ function ChooseLocation({
   // Detect user's location
   const animateToUserLocation = async () => {
     try {
+      await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
       const coordinates = await getUserLocation();
       // Set original user coordinates
       setUserCoordinates(coordinates);
       setLocationLoaded(true);
-    } catch (errors) {
+    } catch (error) {
+      if (error.code === 1) {
+        Geolocation.requestAuthorization();
+        return;
+      }
       Toast.show({
         type: "error",
         topOffset: 50,
@@ -145,6 +149,7 @@ function ChooseLocation({
             setSupportedArea(false);
             setArea({name: googleMapsAddress.area});
           }
+          setAddressLoaded(true);
         } catch (error) {
           Toast.show({
             type: "error",

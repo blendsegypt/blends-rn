@@ -10,9 +10,10 @@ import {Platform} from "react-native";
 //Geolocation
 import Geolocation from "@react-native-community/geolocation";
 
-export default getUserLocation = () => {
+export default function getUserLocation() {
   // Promisify Geolocation.getCurrentPosition since it relies on outdated callbacks
   return new Promise((resolve, reject) => {
+    //Geolocation.requestAuthorization();
     Geolocation.getCurrentPosition(
       (position) => {
         const {latitude, longitude} = position.coords;
@@ -28,4 +29,4 @@ export default getUserLocation = () => {
       },
     );
   });
-};
+}
