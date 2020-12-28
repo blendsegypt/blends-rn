@@ -75,13 +75,13 @@
 		</dict>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>The application needs user's location for products home delivery.</string>
+	<string>Blends needs your location to offer you home delivery for your products</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>An external library used is using the API to determine user location to geocode user's address for items delivery.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>The application needs user's location for products home delivery.</string>
+  <string>Blends needs your location to offer you home delivery for your products</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>The application has image assets.</string>
+	<string>The application might prompt the user to upload photos to assist them in Customer Support section</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>FiraSans-Bold.ttf</string>
