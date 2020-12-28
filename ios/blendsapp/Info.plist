@@ -79,7 +79,7 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>An external library used is using the API to determine user location to geocode user's address for items delivery.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-  <string>Blends needs your location to offer you home delivery for your products</string>
+	<string>Blends needs your location to offer you home delivery for your products</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>The application might prompt the user to upload photos to assist them in Customer Support section</string>
 	<key>UIAppFonts</key>
